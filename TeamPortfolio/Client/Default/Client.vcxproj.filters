@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="02.Scene">
+      <UniqueIdentifier>{de039a8e-bfad-4c87-96d2-1b6e7bf87b62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Define">
+      <UniqueIdentifier>{c136a25f-0fbf-46e5-a5db-cff715297a66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp">
+      <UniqueIdentifier>{53801efc-0620-403e-beb4-3e0a86be5d94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject">
+      <UniqueIdentifier>{3b51f9e3-48ec-4419-89eb-40304826580a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default">
+      <UniqueIdentifier>{6d3a2f04-29af-4cbd-826b-0750d8a4e669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default\02.Etc">
+      <UniqueIdentifier>{8901a05c-3436-460e-b685-d60c09f1cfcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default\00.Win32Frame">
+      <UniqueIdentifier>{b6d2d0b4-c2de-4b91-8614-71230c7bf9b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default\01.Resource">
+      <UniqueIdentifier>{7eb04293-0b03-4623-a0cc-38b43de955d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\01.Scene_Loby">
+      <UniqueIdentifier>{351fd0de-474c-44a0-b0eb-3af26fe2d30d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\02.Scene_Loading">
+      <UniqueIdentifier>{c4869001-5b45-4191-9d81-7ff6fc2c625b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Camera_Main">
+      <UniqueIdentifier>{390e68c8-c972-427a-8e80-da02d31dc230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\BackGround">
+      <UniqueIdentifier>{48e0425e-956d-43f9-9707-ac4d8d0476b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\TerrainGround">
+      <UniqueIdentifier>{cbd747af-2f62-4957-8812-5d2041d4d053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\04.Scene_GamePlay">
+      <UniqueIdentifier>{7cadbb85-30f7-4488-a938-8491fa4aa6d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\04.Scene_GamePlay\01.Scene_Stage1">
+      <UniqueIdentifier>{18100fcb-4783-4955-842e-a3f3f171d842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\04.Scene_GamePlay\02.Scene_Stage2">
+      <UniqueIdentifier>{7cabdc3e-d35b-47de-98cc-007b7fd27df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\04.Scene_GamePlay\03.Scene_Stage3">
+      <UniqueIdentifier>{13ae6c46-c43f-4970-b01b-ac494f510323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\03.Scene_StageSelect">
+      <UniqueIdentifier>{16243827-2244-474c-8282-1b05b887c682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Player">
+      <UniqueIdentifier>{63f7a4c0-c3a7-4a7c-b577-4a0bbf0eb738}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Client.h">
+      <Filter>Default\00.Win32Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Default\01.Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Default\02.Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Default\02.Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Client_Define.h">
+      <Filter>99.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Client_Enum.h">
+      <Filter>99.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MainApp.h">
+      <Filter>00.MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_Main.h">
+      <Filter>01.GameObject\Camera_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BackGround.h">
+      <Filter>01.GameObject\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Loader.h">
+      <Filter>02.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Scene_Loby.h">
+      <Filter>02.Scene\01.Scene_Loby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Scene_Loading.h">
+      <Filter>02.Scene\02.Scene_Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TerrainGround.h">
+      <Filter>01.GameObject\TerrainGround</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Scene_StageSelect.h">
+      <Filter>02.Scene\03.Scene_StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Player.h">
+      <Filter>01.GameObject\Player</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Client.cpp">
+      <Filter>Default\00.Win32Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Default\02.Etc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MainApp.cpp">
+      <Filter>00.MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_Main.cpp">
+      <Filter>01.GameObject\Camera_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BackGround.cpp">
+      <Filter>01.GameObject\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Loader.cpp">
+      <Filter>02.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scene_Loby.cpp">
+      <Filter>02.Scene\01.Scene_Loby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scene_Loading.cpp">
+      <Filter>02.Scene\02.Scene_Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TerrainGround.cpp">
+      <Filter>01.GameObject\TerrainGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scene_StageSelect.cpp">
+      <Filter>02.Scene\03.Scene_StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Player.cpp">
+      <Filter>01.GameObject\Player</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Default\01.Resource</Filter>
+    </Image>
+    <Image Include="Client.ico">
+      <Filter>Default\01.Resource</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client.rc">
+      <Filter>Default\01.Resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt">
+      <Filter>Default\02.Etc</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
