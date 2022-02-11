@@ -65,7 +65,14 @@ void CTransform::LookAt(_float3 vTarget)
 	_float3 vLook, vRight, vUp;
 
 	vLook = (vTarget - vPos).Get_Nomalize() * vScale.z;
-	vRight = _float3(0, 1, 0).Get_Cross(vLook).Get_Nomalize() * vScale.x;
+
+	if (vLook.Get_Nomalize() == _float3(0, 1, 0)) 
+	{
+		MSGBOX("정규화 된 벡터가 _float3(0,1,0)일 경우 외적이 불가능합니다.");
+	}
+	else
+		vRight = _float3(0, 1, 0).Get_Cross(vLook).Get_Nomalize() * vScale.x;
+
 	vUp = vLook.Get_Cross(vRight).Get_Nomalize() * vScale.y;
 
 
@@ -138,6 +145,44 @@ HRESULT CTransform::Bind_WorldMatrix()
 		return E_FAIL;
 
 	m_pGraphicDevice->SetTransform(D3DTS_WORLD, &m_WorldMatirx);
+
+	return S_OK;
+}
+
+HRESULT CTransform::Bind_WorldMatrix_Look_Camera(_float3 vCameraPos)
+{
+	if (m_pGraphicDevice == nullptr)
+		return E_FAIL;
+
+	_float3 vPos = Get_MatrixState(STATE_POS);
+	_float3 vScale = Get_MatrixScale();
+
+	_float3 vLook, vRight, vUp;
+
+	vLook = (vPos - vCameraPos).Get_Nomalize() * vScale.z;
+
+	if (vLook.Get_Nomalize() == _float3(0, 1, 0))
+	{
+		MSGBOX("정규화 된 벡터가 _float3(0,1,0)일 경우 외적이 불가능합니다.");
+	}
+	else
+		vRight = _float3(0, 1, 0).Get_Cross(vLook).Get_Nomalize() * vScale.x;
+
+	vUp = vLook.Get_Cross(vRight).Get_Nomalize() * vScale.y;
+
+
+
+	_Matrix LookCameraStateMatrix
+	{
+		vRight.x,	vRight.y,	vRight.z,	0,
+		vUp.x,		vUp.y,		vUp.z,		0,
+		vLook.x,	vLook.y,	vLook.z,	0,
+		vPos.x,		vPos.y,		vPos.z,		1
+	};
+
+
+
+	m_pGraphicDevice->SetTransform(D3DTS_WORLD, &LookCameraStateMatrix);
 
 	return S_OK;
 }

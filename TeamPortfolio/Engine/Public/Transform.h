@@ -67,6 +67,7 @@ public:
 public:
 	//장치에 월드 행렬을 연결시키는 함수
 	HRESULT Bind_WorldMatrix();
+	HRESULT Bind_WorldMatrix_Look_Camera(_float3 vCameraPos);
 
 public:
 	HRESULT Initialize_Protoype(void * pArg);
