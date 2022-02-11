@@ -1,6 +1,10 @@
 ## OSX artifacts
 .DS_Store
 
+## 폴더 제외는 이렇게
+## Floder이하의 파일 전부 ** 리소스는 이렇게 관리.
+## TeamPortfolio/Folder/**/*.* 
+
 ## Dear ImGui artifacts
 imgui.ini
 
