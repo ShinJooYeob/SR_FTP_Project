@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\public\Player.h"
+#include "Camera_Main.h"
 
 
 
@@ -72,8 +73,14 @@ _int CPlayer::Update(_float fDeltaTime)
 	}
 
 
+	if (pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
+	{
+
+
+
+	
+	}
 		 
-	//if (!m_bIsJumped && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
 	if (pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
 	{
 		m_fNowJumpPower = m_fJumpPower;
@@ -81,9 +88,7 @@ _int CPlayer::Update(_float fDeltaTime)
 
 		m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
 	}
-	//else {
-	//	m_fNowJumpPower += m_fJumpPower * fDeltaTime * 0.5f;
-	//}
+
 
 
 
@@ -117,10 +122,15 @@ _int CPlayer::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL; 
 
-	 
-	 if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		return E_FAIL;
 
+	CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Camera_Main")));
+	
+	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
+		return E_FAIL;
+	 
+	 //if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		//return E_FAIL;
+	
 	if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
 		return E_FAIL;
 
@@ -150,7 +160,7 @@ HRESULT CPlayer::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
-	TransformDesc.fMovePerSec = 5.f;
+	TransformDesc.fMovePerSec = rand() % 50 + 1;
 	TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))

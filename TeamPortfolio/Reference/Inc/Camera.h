@@ -10,7 +10,7 @@ class ENGINE_DLL CCamera abstract : public CGameObject
 public:	
 	typedef struct tagCameraDesc
 	{
-		_bool		bIsOrtho;
+		_bool		bIsOrtho =  false;
 		_float3		vEye, vAt, vAxisY;
 		_float		fFovy, fAspect, fNear, fFar;
 		CTransform::TRANSFORMDESC TransformDesc;
@@ -28,6 +28,8 @@ public:
 	virtual _int LateUpdate(_float fDeltaTime);
 	virtual _int Render();
 	virtual _int LateRender();
+
+	_float3 Get_Camera_Position() {	return m_pTransform->Get_MatrixState(CTransform::STATE_POS);};
 
 public:
 	HRESULT Camera_Shaking(_float fDeltaTime);
