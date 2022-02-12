@@ -4,7 +4,7 @@
 #include "BackGround.h"
 #include "TerrainGround.h"
 #include "Player.h"
-
+#include "Shop.h"
 
 _uint CALLBACK LoadingThread(void* _Prameter)
 {
@@ -102,6 +102,12 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Terrain"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//Shop Texture
+	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/UI/drapes_ground.png");
+	TextureDesc.m_iNumTexture = 1;
+
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Shop"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
 #pragma endregion
 
@@ -113,6 +119,8 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Player"), CPlayer::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Shop"), CShop::Create(m_pGraphicDevice))))
+		return E_FAIL;
 #pragma endregion
 
 

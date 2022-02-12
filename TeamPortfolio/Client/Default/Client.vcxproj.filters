@@ -58,6 +58,18 @@
     <Filter Include="01.GameObject\Player">
       <UniqueIdentifier>{63f7a4c0-c3a7-4a7c-b577-4a0bbf0eb738}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI">
+      <UniqueIdentifier>{4a556078-a1e7-4733-be1c-5b7b63cbffc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI\Shop">
+      <UniqueIdentifier>{802a000e-c779-46d3-904b-1ca8393c7319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI\Inventory">
+      <UniqueIdentifier>{1322d80a-c865-458d-8105-9fef1d791317}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI\ITem">
+      <UniqueIdentifier>{c3d706df-ac0c-4d33-a8fc-af07b1c4e5f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -105,6 +117,9 @@
     <ClInclude Include="..\public\Player.h">
       <Filter>01.GameObject\Player</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Shop.h">
+      <Filter>01.GameObject\UI\Shop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -139,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
       <Filter>01.GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Shop.cpp">
+      <Filter>01.GameObject\UI\Shop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

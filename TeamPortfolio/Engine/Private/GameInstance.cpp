@@ -139,6 +139,15 @@ CGameObject * CGameInstance::Get_GameObject_By_LayerIndex(_uint eSceneNum, const
 	return m_pObjectMgr->Get_GameObject_By_LayerIndex(eSceneNum, tagLayer,iLayerIndex);
 }
 
+CGameObject * CGameInstance::Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, const _tchar * tagLayer, _uint iLayerIndex)
+{
+	if (tagLayer == nullptr || m_pObjectMgr == nullptr)
+		return nullptr;
+
+	return m_pObjectMgr->Change_Camera_Ortho_By_LayerIndex(eSceneNum, tagLayer, iLayerIndex);
+}
+
+
 CLayer * CGameInstance::Get_Layer(_uint eSceneNum, const _tchar * tagLayer)
 {
 	if (tagLayer == nullptr || m_pObjectMgr == nullptr)

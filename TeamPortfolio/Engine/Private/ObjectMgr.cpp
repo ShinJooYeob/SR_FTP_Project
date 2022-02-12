@@ -100,7 +100,7 @@ CComponent * CObjectMgr::Get_Commponent_By_LayerIndex(_uint eSceneNum, const _tc
 	if (pLayer == nullptr)
 		return nullptr;
 
-	return pLayer->Get_Commponent_By_LayerIndex(tagComponet, iLayerIndex);;
+	return pLayer->Get_Commponent_By_LayerIndex(tagComponet, iLayerIndex);
 }
 
 CGameObject * CObjectMgr::Get_GameObject_By_LayerIndex(_uint eSceneNum, const _tchar * tagLayer, _uint iLayerIndex)
@@ -113,8 +113,24 @@ CGameObject * CObjectMgr::Get_GameObject_By_LayerIndex(_uint eSceneNum, const _t
 	if (pLayer == nullptr)
 		return nullptr;
 
-	return pLayer->Get_GameObject_By_LayerIndex(iLayerIndex);;
+	return pLayer->Get_GameObject_By_LayerIndex(iLayerIndex);
 }
+
+CGameObject * CObjectMgr::Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, const _tchar * tagLayer, _uint iLayerIndex)
+{
+	if (eSceneNum >= m_iMaxSceneNum || m_mapLayer == nullptr)
+		return nullptr;
+
+	CLayer* pLayer = Find_Layer(eSceneNum, tagLayer);
+
+	if (pLayer == nullptr)
+		return nullptr;
+	CGameObject * pTemp = pLayer->Get_GameObject_By_LayerIndex(iLayerIndex);;
+	
+
+	return nullptr;
+}
+
 
 CLayer * CObjectMgr::Get_Layer(_uint iSceneNum, const _tchar * tagLayer)
 {
