@@ -22,6 +22,7 @@ protected:
 
 
 	/**/
+	/*커밋 확인용*/
 public:
 	virtual CComponent* Clone(void* pArg = nullptr)PURE;
 	virtual void  Free() override;
