@@ -13,7 +13,7 @@ CCamera_Main::CCamera_Main(const CCamera_Main & rhs)
 	:CCamera(rhs)
 {
 }
-
+//1
 HRESULT CCamera_Main::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
