@@ -163,7 +163,7 @@ HRESULT CMainApp::Ready_Static_GameObject_Prototype()
 	CCamera::CAMERADESC CameraDesc;
 
 	CameraDesc.vEye = _float3(0.f, 7.f, -5.f);
-	CameraDesc.vAt = _float3(0, 0, 0);
+	CameraDesc.vAt = _float3(0, 7, 0);
 	CameraDesc.vAxisY = _float3(0, 1, 0);
 
 	CameraDesc.fFovy = D3DXToRadian(60.0f);

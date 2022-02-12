@@ -15,7 +15,8 @@ public:
 		_float		fMovePerSec;
 		//(Radian)Rotation Speed Per Sec 
 		_float		fRotationPerSec;
-
+		//텍스쳐를 그릴 때 로컬의 중점 좌표 설정 용
+		_float3		vPivot = _float3(0, 0, 0);
 	}TRANSFORMDESC;
 
 

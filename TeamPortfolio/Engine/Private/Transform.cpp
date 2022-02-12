@@ -144,7 +144,13 @@ HRESULT CTransform::Bind_WorldMatrix()
 	if (m_pGraphicDevice == nullptr)
 		return E_FAIL;
 
-	m_pGraphicDevice->SetTransform(D3DTS_WORLD, &m_WorldMatirx);
+	_Matrix WorldMatrixSetbyPivot = m_WorldMatirx;
+
+	WorldMatrixSetbyPivot._41 -= m_TransforDesc.vPivot.x;
+	WorldMatrixSetbyPivot._42 -= m_TransforDesc.vPivot.y;
+	WorldMatrixSetbyPivot._43 -= m_TransforDesc.vPivot.z;
+
+	m_pGraphicDevice->SetTransform(D3DTS_WORLD, &WorldMatrixSetbyPivot);
 
 	return S_OK;
 }
@@ -171,13 +177,12 @@ HRESULT CTransform::Bind_WorldMatrix_Look_Camera(_float3 vCameraPos)
 	vUp = vLook.Get_Cross(vRight).Get_Nomalize() * vScale.y;
 
 
-
 	_Matrix LookCameraStateMatrix
 	{
 		vRight.x,	vRight.y,	vRight.z,	0,
 		vUp.x,		vUp.y,		vUp.z,		0,
 		vLook.x,	vLook.y,	vLook.z,	0,
-		vPos.x,		vPos.y,		vPos.z,		1
+		vPos.x- m_TransforDesc.vPivot.x,		vPos.y - m_TransforDesc.vPivot.y,		vPos.z - m_TransforDesc.vPivot.z,		1
 	};
 
 
