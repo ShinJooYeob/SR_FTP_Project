@@ -22,7 +22,7 @@ public:
 	_float TargetQuadIn(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime)
 	{
 		fPassedTime /= fTotalTime;
-		return (fTargetPoint - fStartPoint) * fPassedTime * fPassedTime + fStartPoint;
+		return (fTargetPoint - fStartPoint) * fPassedTime* fPassedTime* fPassedTime* fPassedTime + fStartPoint;
 	}
 
 

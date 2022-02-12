@@ -100,7 +100,6 @@ _int CCamera_Main::Update(_float fDeltaTime)
 		m_fPassedTime = 0;
 		m_IsTurning = true;
 
-		Revolution_Turn_AxisY_CW(m_vWorldRotAxis, fDeltaTime);
 	}
 	if (m_IsTurning) {
 
@@ -160,6 +159,12 @@ HRESULT CCamera_Main::Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelt
 	vCameraPos.y = 0;
 
 	_float fRadianAngle = GetSingle(CGameInstance)->TargetQuadIn(m_fStartAngle, m_fTargetAngle, m_fPassedTime);
+
+	_float TempAngle = D3DXToDegree(m_fStartAngle);
+	_float TempAngle2 = D3DXToDegree(m_fTargetAngle);
+	_float TempAngle3 = D3DXToDegree(fRadianAngle);
+
+
 
 	if (m_fPassedTime >= 1.f) 
 	{
