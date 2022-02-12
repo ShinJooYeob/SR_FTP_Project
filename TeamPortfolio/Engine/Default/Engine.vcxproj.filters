@@ -94,6 +94,9 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\Texture">
       <UniqueIdentifier>{71379223-b9d8-45c6-bd83-3a8be86fb2b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\06.EasingMgr">
+      <UniqueIdentifier>{b3f2df39-b50b-4d0c-9307-a44f22a1638b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -158,6 +161,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Texture.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EasingMgr.cpp">
+      <Filter>01.Utility\06.EasingMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Texture.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EasingMgr.h">
+      <Filter>01.Utility\06.EasingMgr</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
 #include "ObjectMgr.h"
 #include "GameObject.h"
 #include "ComponentMgr.h"
-//#include "SeverMgr.h"
+#include "EasingMgr.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -17,7 +17,8 @@ CGameInstance::CGameInstance()
 	m_pSceneMgr(GetSingle(CSceneMgr)),
 	m_pObjectMgr(GetSingle(CObjectMgr)),
 	m_pComponenetMgr(GetSingle(CComponentMgr)),
-	m_pInputDevice(GetSingle(CInput_Device))
+	m_pInputDevice(GetSingle(CInput_Device)),
+	m_pEasingMgr(GetSingle(CEasingMgr))
 {
 	m_pThreadMgr->AddRef();
 	m_pTimerMgr->AddRef();
@@ -26,6 +27,7 @@ CGameInstance::CGameInstance()
 	m_pObjectMgr->AddRef();
 	m_pComponenetMgr->AddRef();
 	m_pInputDevice->AddRef();
+	m_pEasingMgr->AddRef();
 }
 
 
@@ -255,6 +257,22 @@ _byte CGameInstance::Get_DIMouseButtonState(CInput_Device::MOUSEBUTTONSTATE eMou
 	return m_pInputDevice->Get_DIMouseButtonState(eMouseButtonState);
 }
 
+
+_float CGameInstance::TargetLinear(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime)
+{
+	if (m_pEasingMgr == nullptr)
+		return 0;
+	return m_pEasingMgr->TargetLinear(fStartPoint, fTargetPoint,  fPassedTime, fTotalTime);
+}
+
+_float CGameInstance::TargetQuadIn(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime)
+{
+	if (m_pEasingMgr == nullptr)
+		return 0;
+
+	return m_pEasingMgr->TargetQuadIn(fStartPoint, fTargetPoint,  fPassedTime, fTotalTime);
+}
+
 void CGameInstance::Release_Engine()
 {
 
@@ -264,6 +282,10 @@ void CGameInstance::Release_Engine()
 
 	if (0 != GetSingle(CThreadMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com ThreadMgr ");
+
+
+	if (0 != GetSingle(CEasingMgr)->DestroyInstance())
+		MSGBOX("Failed to Release Com EasingMgr ");
 
 	if (0 != GetSingle(CObjectMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com ObjectMgr ");
@@ -294,4 +316,5 @@ void CGameInstance::Free()
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pInputDevice);
 	Safe_Release(m_pTimerMgr);
+	Safe_Release(m_pEasingMgr);
 }

@@ -73,12 +73,61 @@ _int CPlayer::Update(_float fDeltaTime)
 	}
 
 
+	static _bool IsRTurning = false;
+	static _bool IsLTurning = false;
+	static _float fPassedTime = false;
+	static _float fStarPoint = 0;
+	static _float fTargetPoint = 0;
+
 	if (pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
 	{
+		IsRTurning = true;
+		fPassedTime = 0;
+		fTargetPoint = fStarPoint+90;
 
 
+	}
+	else if(IsRTurning)
+	{
 
-	
+		fPassedTime += fDeltaTime;
+
+		_float fNowPoint;
+		fNowPoint = pInstance->TargetLinear(fStarPoint, fTargetPoint,  fPassedTime);
+
+		if (fNowPoint >= fTargetPoint)
+		{
+			IsRTurning = false;
+			fNowPoint = fTargetPoint;
+		}
+
+		m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(fNowPoint));
+
+	}
+
+	if (pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
+	{
+
+		IsLTurning = true;
+		fPassedTime = 0;
+		fTargetPoint = fStarPoint - 90;
+
+	}
+	else if(IsLTurning)
+	{
+		fPassedTime += fDeltaTime;
+
+		_float fNowPoint;
+		fNowPoint = pInstance->TargetQuadIn(fStarPoint, fTargetPoint, fPassedTime);
+
+		if (fNowPoint <= fTargetPoint)
+		{
+			IsLTurning = false;
+			fNowPoint = fTargetPoint;
+		}
+
+		m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(fNowPoint));
+
 	}
 		 
 	if (pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
@@ -123,13 +172,13 @@ _int CPlayer::Render()
 		return E_FAIL; 
 
 
-	CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Camera_Main")));
-	
-	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
-		return E_FAIL;
+	//CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Camera_Main")));
+	//
+	//if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
+	//	return E_FAIL;
 	 
-	 //if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		//return E_FAIL;
+	 if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
 	
 	if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
 		return E_FAIL;
@@ -160,7 +209,7 @@ HRESULT CPlayer::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
-	TransformDesc.fMovePerSec = rand() % 50 + 1;
+	TransformDesc.fMovePerSec = 5.f;
 	TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))

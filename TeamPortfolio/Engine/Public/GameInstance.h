@@ -14,6 +14,7 @@ class CThreadMgr;
 class CObjectMgr;
 class CGameObject;
 class CLayer;
+class CEasingMgr;
 
 class ENGINE_DLL CGameInstance final :public CBase
 {
@@ -65,6 +66,9 @@ public: /* For.Input_Device */
 	_long Get_DIMouseMoveState(CInput_Device::MOUSEMOVESTATE eMouseMoveState);
 	_byte Get_DIMouseButtonState(CInput_Device::MOUSEBUTTONSTATE eMouseButtonState);
 
+public:
+	_float TargetLinear(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime = 1.0f);
+	_float TargetQuadIn(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime = 1.0f);
 
 private:
 	CGraphic_Device*	m_pGraphicDevice = nullptr;
@@ -74,6 +78,7 @@ private:
 	CObjectMgr*			m_pObjectMgr = nullptr;
 	CComponentMgr*		m_pComponenetMgr = nullptr;
 	CInput_Device*		m_pInputDevice = nullptr;
+	CEasingMgr*			m_pEasingMgr = nullptr;
 
 public:
 	static void Release_Engine();
