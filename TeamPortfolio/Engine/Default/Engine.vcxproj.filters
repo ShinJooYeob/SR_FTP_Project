@@ -94,6 +94,9 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\Texture">
       <UniqueIdentifier>{71379223-b9d8-45c6-bd83-3a8be86fb2b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98.ImguiLib">
+      <UniqueIdentifier>{11514805-b8dc-48b5-a602-05c2139856b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -158,6 +161,27 @@
     </ClCompile>
     <ClCompile Include="..\private\Texture.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_impl_dx9.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_impl_win32.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_tables.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_widgets.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_demo.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_draw.cpp">
+      <Filter>98.ImguiLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +262,30 @@
     </ClInclude>
     <ClInclude Include="..\public\Texture.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imgui_internal.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imstb_rectpack.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imstb_textedit.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imstb_truetype.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imconfig.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imgui.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imgui_impl_dx9.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imgui_impl_win32.h">
+      <Filter>98.ImguiLib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
