@@ -1,6 +1,7 @@
 #include "..\Public\Renderer.h"
 #include "GameObject.h"
 
+
 CRenderer::CRenderer(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CComponent(pGraphicDevice)
 {
@@ -37,15 +38,17 @@ HRESULT CRenderer::Render_RenderGroup()
 	{
 		for (auto& RenderObject : m_RenderObjectList[i])
 		{
-
-			if (RenderObject != nullptr) 
-			{
-				if (FAILED(RenderObject->Render()))
-					return E_FAIL;
-				Safe_Release(RenderObject);
-			}
+			
+				if (RenderObject != nullptr)
+				{
+		
+					if (FAILED(RenderObject->Render()))
+						return E_FAIL;
+					Safe_Release(RenderObject);
+				}
 
 		}
+	
 		m_RenderObjectList[i].clear();
 	}
 	return S_OK;

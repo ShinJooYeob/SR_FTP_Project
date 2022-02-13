@@ -181,6 +181,7 @@
     <ClCompile Include="..\Private\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Private\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\Input_Device.cpp" />
+    <ClCompile Include="..\private\Inventory.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
     <ClCompile Include="..\Private\ObjectMgr.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="..\Public\imgui\imstb_textedit.h" />
     <ClInclude Include="..\Public\imgui\imstb_truetype.h" />
     <ClInclude Include="..\Public\Input_Device.h" />
+    <ClInclude Include="..\public\Inventory.h" />
     <ClInclude Include="..\Public\Layer.h" />
     <ClInclude Include="..\Public\ObjectMgr.h" />
     <ClInclude Include="..\Public\Renderer.h" />

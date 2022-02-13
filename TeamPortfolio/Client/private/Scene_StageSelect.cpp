@@ -21,6 +21,7 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Shop(TEXT("Layer_Shop"))))
 		return E_FAIL;
+
 	//ZeroMemory(&m_Light, sizeof(m_Light));
 	//m_Light.Type = D3DLIGHT_DIRECTIONAL;
 
@@ -115,6 +116,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 
 	return S_OK;
 }
+
 
 
 CScene_StageSelect * CScene_StageSelect::Create(LPDIRECT3DDEVICE9 GraphicDevice)

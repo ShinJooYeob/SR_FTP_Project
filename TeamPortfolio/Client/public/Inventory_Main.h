@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Item.h"
 
 BEGIN(Engine)
 //class CTexture;
@@ -11,16 +10,12 @@ class CTransform;
 END
 
 
-class CShop final :public CGameObject
+class Inventory_Main final :public CGameObject
 {
-public:
-	enum ITEMTYPE
-	{ITEMTYPE_BUFF, ITEMTYPE_EQUIP, ITEMTYPE_END};
-	
 private:
-	explicit CShop(LPDIRECT3DDEVICE9 pGraphicDevice);
-	explicit CShop(const CShop& rhs);
-	virtual ~CShop() = default;
+	explicit Inventory_Main(LPDIRECT3DDEVICE9 pGraphicDevice);
+	explicit Inventory_Main(const Inventory_Main& rhs);
+	virtual ~Inventory_Main() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
@@ -45,17 +40,17 @@ private:
 
 private:
 	_float			m_fFrame = 0.f;
-	list<CItem*>	m_pItemList[ITEMTYPE_END];
+
 private:
 	HRESULT			SetUp_Components();
-	HRESULT			SetUP_Items();
+	
 
 
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
 public:
-	static CShop* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
+	static Inventory_Main* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg = nullptr)override;
 	virtual void Free()override;
 
