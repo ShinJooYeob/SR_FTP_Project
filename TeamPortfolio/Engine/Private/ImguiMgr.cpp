@@ -23,7 +23,7 @@ CImguiMgr::CImguiMgr()
 {
 }
 
-HRESULT CImguiMgr::InitIMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device)
+HRESULT CImguiMgr::Initialize_IMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device)
 {
 	// IMGUI √ ±‚»≠
 	IMGUI_CHECKVERSION();
@@ -187,7 +187,6 @@ HRESULT CImguiMgr::Render_IMGUI()
 }
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 
 IMGUI_IMPL_API LRESULT  CImguiMgr::ImGui_Handle(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {	

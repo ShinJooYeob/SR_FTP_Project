@@ -18,7 +18,7 @@ protected:
 
 public:
 	// IMGUI 초기화
-	HRESULT InitIMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device);
+	HRESULT Initialize_IMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device);
 
 	// 클라이언트마다 업데이트가 다르기 때문에 개별 구현 필요
 	//	HRESULT Tick_IMGUI();

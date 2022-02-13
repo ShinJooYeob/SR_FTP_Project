@@ -158,7 +158,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
+
+	// IMGui 핸들러 필수
+	if ((GetSingle(CGameInstance)->GetIMGui()->ImGui_Handle(hWnd, message, wParam, lParam)))
+		return true;
+
+	switch (message)
     {
     case WM_COMMAND:
         {

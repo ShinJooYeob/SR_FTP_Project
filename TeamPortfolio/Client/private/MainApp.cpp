@@ -27,6 +27,10 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(g_hInst, GraphicDesc, SCENEID::SCENE_END, &m_pGraphicDevice)))
 		return E_FAIL;
 
+	// IMGUI 초기화
+	if (FAILED(m_pGameInstance->GetIMGui()->Initialize_IMGUI(GraphicDesc.hWnd, m_pGraphicDevice)))
+		return E_FAIL;
+
 	if (FAILED(Default_Setting()))
 		return E_FAIL;
 
@@ -49,7 +53,12 @@ _int CMainApp::Update(_float fDeltaTime)
 {
 	if (m_pGameInstance == nullptr)
 		return -1;
+
+	// IMGUI 메뉴바 테스트
+	m_pGameInstance->GetIMGui()->Text("testbar");
 	return m_pGameInstance->Update_Engine(fDeltaTime);
+
+
 }
 
 HRESULT CMainApp::Render()
@@ -59,7 +68,8 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Render_Begin();
 
-
+	// IMGUI 랜더링 테스트 / 후에 씬에서 수행
+	m_pGameInstance->GetIMGui()->Render_IMGUI();
 
 	m_pComRenderer->Render_RenderGroup();
 
@@ -139,8 +149,6 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	//버퍼인덱스 프로토타입 생성
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pGraphicDevice))))
 		return E_FAIL;
-
-
 
 	//Transform 프로토타입 생성
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), CTransform::Create(m_pGraphicDevice))))
