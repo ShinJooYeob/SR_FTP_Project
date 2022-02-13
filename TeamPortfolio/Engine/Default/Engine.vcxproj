@@ -169,7 +169,7 @@
     <ClCompile Include="..\Private\GameInstance.cpp" />
     <ClCompile Include="..\Private\GameObject.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
-    <ClCompile Include="..\Private\ImguiManager.cpp" />
+    <ClCompile Include="..\Private\ImguiMgr.cpp" />
     <ClCompile Include="..\Private\imgui\imgui.cpp" />
     <ClCompile Include="..\Private\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\Private\imgui\imgui_draw.cpp" />
@@ -205,7 +205,7 @@
     <ClInclude Include="..\Public\GameInstance.h" />
     <ClInclude Include="..\Public\GameObject.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
-    <ClInclude Include="..\Public\ImguiManager.h" />
+    <ClInclude Include="..\Public\ImguiMgr.h" />
     <ClInclude Include="..\Public\imgui\imconfig.h" />
     <ClInclude Include="..\Public\imgui\imgui.h" />
     <ClInclude Include="..\Public\imgui\imgui_impl_dx9.h" />

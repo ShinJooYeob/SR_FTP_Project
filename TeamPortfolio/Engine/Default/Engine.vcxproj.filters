@@ -186,7 +186,7 @@
     <ClCompile Include="..\Private\imgui\imgui_draw.cpp">
       <Filter>98.ImguiLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ImguiManager.cpp">
+    <ClCompile Include="..\Private\ImguiMgr.cpp">
       <Filter>01.Utility\06.ImguiMgr</Filter>
     </ClCompile>
   </ItemGroup>
@@ -293,7 +293,7 @@
     <ClInclude Include="..\Public\imgui\imgui_impl_win32.h">
       <Filter>98.ImguiLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ImguiManager.h">
+    <ClInclude Include="..\Public\ImguiMgr.h">
       <Filter>01.Utility\06.ImguiMgr</Filter>
     </ClInclude>
   </ItemGroup>

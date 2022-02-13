@@ -17,7 +17,8 @@ CGameInstance::CGameInstance()
 	m_pSceneMgr(GetSingle(CSceneMgr)),
 	m_pObjectMgr(GetSingle(CObjectMgr)),
 	m_pComponenetMgr(GetSingle(CComponentMgr)),
-	m_pInputDevice(GetSingle(CInput_Device))
+	m_pInputDevice(GetSingle(CInput_Device)),
+	m_pImguiMgr(GetSingle(CImguiMgr))
 {
 	m_pThreadMgr->AddRef();
 	m_pTimerMgr->AddRef();
@@ -26,6 +27,7 @@ CGameInstance::CGameInstance()
 	m_pObjectMgr->AddRef();
 	m_pComponenetMgr->AddRef();
 	m_pInputDevice->AddRef();
+	m_pImguiMgr->AddRef();
 }
 
 
@@ -255,6 +257,11 @@ _byte CGameInstance::Get_DIMouseButtonState(CInput_Device::MOUSEBUTTONSTATE eMou
 	return m_pInputDevice->Get_DIMouseButtonState(eMouseButtonState);
 }
 
+CImguiMgr * CGameInstance::GetIMGui()
+{
+	return m_pImguiMgr->GetInstance();
+}
+
 void CGameInstance::Release_Engine()
 {
 
@@ -283,6 +290,10 @@ void CGameInstance::Release_Engine()
 	if (0 != GetSingle(CTimeMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com TimeMgr ");
 
+	if (0 != GetSingle(CImguiMgr)->DestroyInstance())
+		MSGBOX("Failed to Release Com CImguiMgr ");
+
+
 }
 
 void CGameInstance::Free()
@@ -293,5 +304,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pComponenetMgr);
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pInputDevice);
+	Safe_Release(m_pImguiMgr);
 	Safe_Release(m_pTimerMgr);
+
 }

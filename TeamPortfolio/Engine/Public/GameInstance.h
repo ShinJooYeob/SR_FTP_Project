@@ -4,6 +4,7 @@
 #include "Graphic_Device.h"
 #include "ComponentMgr.h"
 #include "Input_Device.h"
+#include "ImguiMgr.h"
 
 BEGIN(Engine)
 
@@ -14,6 +15,7 @@ class CThreadMgr;
 class CObjectMgr;
 class CGameObject;
 class CLayer;
+class CImguiMgr;
 
 class ENGINE_DLL CGameInstance final :public CBase
 {
@@ -65,6 +67,8 @@ public: /* For.Input_Device */
 	_long Get_DIMouseMoveState(CInput_Device::MOUSEMOVESTATE eMouseMoveState);
 	_byte Get_DIMouseButtonState(CInput_Device::MOUSEBUTTONSTATE eMouseButtonState);
 
+public: /* For. IMGUI Interface */
+	CImguiMgr* GetIMGui();
 
 private:
 	CGraphic_Device*	m_pGraphicDevice = nullptr;
@@ -73,6 +77,7 @@ private:
 	CThreadMgr*			m_pThreadMgr = nullptr;
 	CObjectMgr*			m_pObjectMgr = nullptr;
 	CComponentMgr*		m_pComponenetMgr = nullptr;
+	CImguiMgr*			m_pImguiMgr = nullptr;
 	CInput_Device*		m_pInputDevice = nullptr;
 
 public:

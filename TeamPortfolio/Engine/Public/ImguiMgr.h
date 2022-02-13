@@ -7,13 +7,13 @@ BEGIN(Engine)
 // 기능이 달라서 이 매니저는 따로 열어서 관리.
 // CGameInstace보단 여기에 정의하는 것이 맞다고 판단함.
 
-class ENGINE_DLL CImguiManager final : public CBase
+class ENGINE_DLL CImguiMgr final : public CBase
 {
-	DECLARE_SINGLETON(CImguiManager);
+	DECLARE_SINGLETON(CImguiMgr);
 
 protected:
-	explicit CImguiManager(); // 장치를 넘겨줘야 생성된다.
-	virtual ~CImguiManager() = default;
+	explicit CImguiMgr(); // 장치를 넘겨줘야 생성된다.
+	virtual ~CImguiMgr() = default;
 
 
 public:

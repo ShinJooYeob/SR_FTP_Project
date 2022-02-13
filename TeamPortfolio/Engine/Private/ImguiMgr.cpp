@@ -1,8 +1,8 @@
-#include "..\Public\ImguiManager.h"
+#include "..\Public\ImguiMgr.h"
 
 
 
-IMPLEMENT_SINGLETON(CImguiManager);
+IMPLEMENT_SINGLETON(CImguiMgr);
 
 /*
 
@@ -19,11 +19,11 @@ IMGUI_IMPL_API void     ImGui_ImplDX9_InvalidateDeviceObjects();
 
 */
 
-CImguiManager::CImguiManager()
+CImguiMgr::CImguiMgr()
 {
 }
 
-HRESULT CImguiManager::InitIMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device)
+HRESULT CImguiMgr::InitIMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device)
 {
 	// IMGUI 초기화
 	IMGUI_CHECKVERSION();
@@ -41,15 +41,13 @@ HRESULT CImguiManager::InitIMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device)
 	ImGui::StyleColorsClassic();
 
 	// Setup Platform/Renderer backends
+	// 연결 플랫폼에 따라 다름
 	ImGui_ImplWin32_Init(hwnd);
 	ImGui_ImplDX9_Init(device);
-
-	
-
 	return S_OK;
 }
 
-HRESULT CImguiManager::Text(const char* str)
+HRESULT CImguiMgr::Text(const char* str)
 {
 	// IMGUI 프레임 초기화
 	ImGui_ImplDX9_NewFrame();
@@ -77,7 +75,7 @@ HRESULT CImguiManager::Text(const char* str)
 }
 
 
-//HRESULT CImguiManager::Tick_IMGUI()
+//HRESULT CImguiMgr::Tick_IMGUI()
 //{
 //	// IMGUI 프레임 초기화
 //	ImGui_ImplDX9_NewFrame();
@@ -181,7 +179,7 @@ HRESULT CImguiManager::Text(const char* str)
 //
 //}
 
-HRESULT CImguiManager::Render_IMGUI()
+HRESULT CImguiMgr::Render_IMGUI()
 {
 	ImGui::Render();
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
@@ -191,7 +189,7 @@ HRESULT CImguiManager::Render_IMGUI()
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
-IMGUI_IMPL_API LRESULT  CImguiManager::ImGui_Handle(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+IMGUI_IMPL_API LRESULT  CImguiMgr::ImGui_Handle(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {	
 	return ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 }
@@ -208,7 +206,7 @@ IMGUI_IMPL_API LRESULT  CImguiManager::ImGui_Handle(HWND hWnd, UINT msg, WPARAM 
 //	return S_OK;
 //}
 
-//_tchar * CImguiManager::Castingchar2Tchar(const char * str)
+//_tchar * CImguiMgr::Castingchar2Tchar(const char * str)
 //{
 //
 //	//char->TCHAR
@@ -219,7 +217,7 @@ IMGUI_IMPL_API LRESULT  CImguiManager::ImGui_Handle(HWND hWnd, UINT msg, WPARAM 
 //	return szUniCode;
 //}
 
-void CImguiManager::Free()
+void CImguiMgr::Free()
 {
 	// 삭제시 제공함수로 삭제.
 	ImGui_ImplDX9_Shutdown();
