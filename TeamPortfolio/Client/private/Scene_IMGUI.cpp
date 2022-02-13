@@ -25,8 +25,14 @@ _int CScene_IMGUI::Update(_float fDeltaTime)
 	if (__super::Update(fDeltaTime) < 0)
 		return -1;
 
-	GETIMGUI->Text("testbar");
+	GETIMGUI->Update_IMGUI_Start();
 	mbIsFrame = true;
+
+	GETIMGUI->Text("AAA");
+	GETIMGUI->Text("문자테스트");
+	GETIMGUI->Text("Go String");
+	GETIMGUI->Text("aaa");
+
 	return 0;
 
 }
@@ -35,6 +41,8 @@ _int CScene_IMGUI::LateUpdate(_float fDeltaTime)
 {
 	if (__super::LateUpdate(fDeltaTime) < 0)
 		return -1;
+
+	GETIMGUI->Update_IMGUI_End();
 
 	return 0;
 }

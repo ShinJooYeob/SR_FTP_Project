@@ -53,11 +53,7 @@ _int CMainApp::Update(_float fDeltaTime)
 {
 	if (m_pGameInstance == nullptr)
 		return -1;
-
-	// IMGUI 메뉴바 테스트	
-//	GETIMGUI->Text("testbar");
 	return m_pGameInstance->Update_Engine(fDeltaTime);
-
 
 }
 
@@ -68,8 +64,6 @@ HRESULT CMainApp::Render()
 
 	m_pGameInstance->Render_Begin();
 
-	// IMGUI 랜더링 테스트 / 후에 씬에서 수행
-//	GETIMGUI->Render_IMGUI();
 
 	m_pComRenderer->Render_RenderGroup();
 

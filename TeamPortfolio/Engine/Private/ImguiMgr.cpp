@@ -47,32 +47,21 @@ HRESULT CImguiMgr::Initialize_IMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device)
 	return S_OK;
 }
 
-HRESULT CImguiMgr::Text(const char* str)
+HRESULT CImguiMgr::Update_IMGUI_Start()
 {
-	// IMGUI 프레임 초기화
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+	return S_OK;
+}
 
-	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-	// 데모 예제 포럼 참고
-
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu(str))
-		{
-			if (ImGui::MenuItem(str))
-			{
-			}
-			ImGui::EndMenu();
-		}
-		ImGui::EndMainMenuBar();
-	}
-
+HRESULT CImguiMgr::Update_IMGUI_End()
+{
 	ImGui::EndFrame();
 	return S_OK;
-
 }
+
+
 
 
 //HRESULT CImguiMgr::Tick_IMGUI()
@@ -186,12 +175,56 @@ HRESULT CImguiMgr::Render_IMGUI()
 	return S_OK;
 }
 
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-IMGUI_IMPL_API LRESULT  CImguiMgr::ImGui_Handle(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{	
-	return ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
+HRESULT CImguiMgr::MainFrame(const char * str)
+{
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu(str))
+		{
+
+		}
+		ImGui::EndMainMenuBar();
+	}
+	return S_OK;
 }
+
+HRESULT CImguiMgr::Popup(const char * str)
+{
+	static bool mPopup1 = false;
+	mPopup1 = !mPopup1;
+
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::MenuItem("menu item"))
+		{
+			mPopup1 = true;
+		}
+		ImGui::EndMenu();
+	}
+
+	if (mPopup1)
+	{
+		ImGui::OpenPopup(str);
+	}
+
+	if (ImGui::BeginPopupModal("popup"))
+	{
+		ImGui::Text("lorem ipsum");
+		ImGui::EndPopup();
+	}
+
+	return S_OK;
+}
+
+HRESULT CImguiMgr::Text(const char* str)
+{
+
+	ImGui::Text(str);
+	return S_OK;
+
+}
+
 
 //HRESULT CastingTchar2char(const _tchar* strtchar, const char* strchar)
 //{
@@ -223,3 +256,12 @@ void CImguiMgr::Free()
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 }
+
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+IMGUI_IMPL_API LRESULT  CImguiMgr::ImGui_Handle(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	return ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
+}
+

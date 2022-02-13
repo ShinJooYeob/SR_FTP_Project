@@ -20,8 +20,11 @@ public:
 	// IMGUI 초기화
 	HRESULT Initialize_IMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device);
 
-	// 클라이언트마다 업데이트가 다르기 때문에 개별 구현 필요
-	//	HRESULT Tick_IMGUI();
+	// Update도 RenderBegin ~ End의 개념
+	// Start UIUpdate
+	HRESULT Update_IMGUI_Start();
+	// End UIUpdate
+	HRESULT Update_IMGUI_End();
 
 	// IMGUI 렌더링
 	// Reder는 호출 위치가 같기 때문에 여기서 수행한다.
@@ -33,7 +36,17 @@ public:
 
 public:
 	// 쓸만한 기능 함수화
-	HRESULT Text(const char* str);	// 텍스트 출력 / 
+	// 메인 프레임 추가
+	HRESULT MainFrame(const char* str);	 
+	
+	// 팝업 추가
+	HRESULT Popup(const char* str);
+
+	// 텍스트 추가
+	HRESULT Text(const char* str);
+
+
+
 private:
 
 //	HRESULT CastingTchar2char(const _tchar* strtchar,const char* strchar);
