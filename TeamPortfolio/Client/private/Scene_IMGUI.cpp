@@ -28,11 +28,17 @@ _int CScene_IMGUI::Update(_float fDeltaTime)
 	GETIMGUI->Update_IMGUI_Start();
 	mbIsFrame = true;
 
-	GETIMGUI->Text("AAA");
-	GETIMGUI->Text("문자테스트");
-	GETIMGUI->Text("Go String");
-	GETIMGUI->Text("aaa");
 
+//	GETIMGUI->Demo();
+//	GETIMGUI->Demo_Test();
+//	GETIMGUI->TestWindow1();
+	GETIMGUI->TestWindow2();
+
+	
+	
+//	GETIMGUI->Text("AAA");
+//	GETIMGUI->Text("Go String");
+//	GETIMGUI->Text("aaa");
 	return 0;
 
 }

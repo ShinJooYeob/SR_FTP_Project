@@ -11,6 +11,18 @@ class ENGINE_DLL CImguiMgr final : public CBase
 {
 	DECLARE_SINGLETON(CImguiMgr);
 
+// 창 플래그 설정
+enum ImGuiWindowFlags_Test_
+{
+	ImGuiWindowFlags_Test_None = 0,
+	ImGuiWindowFlags_Test_ONE = 1 << 0,
+	ImGuiWindowFlags_Test_TOW = 1 << 2,
+	ImGuiWindowFlags_Test_3 = 1 << 3,
+	ImGuiWindowFlags_Test_4 = 1 << 4,
+	ImGuiWindowFlags_Test_5 = 1 << 5
+};
+
+
 protected:
 	explicit CImguiMgr(); // 장치를 넘겨줘야 생성된다.
 	virtual ~CImguiMgr() = default;
@@ -35,19 +47,31 @@ public:
 	IMGUI_IMPL_API LRESULT  ImGui_Handle(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 public:
-	// 쓸만한 기능 함수화
-	// 메인 프레임 추가
-	HRESULT MainFrame(const char* str);	 
-	
-	// 팝업 추가
-	HRESULT Popup(const char* str);
+	// 개별 기능
+	// 팝업창 Cilcked
+	HRESULT Popup(const char * maintitle, const char* clickmenu,const char* popupname);
 
 	// 텍스트 추가
 	HRESULT Text(const char* str);
 
+public:
+	// 모음 기능
+	// 데모화면
+	HRESULT Demo();
+
+	// 데모에서 쓸만한기능 재구현
+	HRESULT Demo_Test();
+	HRESULT ShowExampleAppMainMenuBar();
+
+	HRESULT TestWindow1();
+	HRESULT TestWindow2();
 
 
 private:
+	void SaveFunc();
+private:
+	bool mDemo;
+
 
 //	HRESULT CastingTchar2char(const _tchar* strtchar,const char* strchar);
 //	_tchar*   Castingchar2Tchar(const char* str);

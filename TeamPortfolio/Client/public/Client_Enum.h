@@ -42,7 +42,6 @@ static const wchar_t* StrLayer(E_LAYERTAG tag)
 		return TEXT("LAYER_UI");
 	case LAYER_END:
 		return TEXT("LAYER_END");
-
 	default:
 		break;
 	}
