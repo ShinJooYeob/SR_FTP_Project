@@ -99,7 +99,7 @@
     </Filter>
     <Filter Include="01.Utility\06.ImguiMgr">
       <UniqueIdentifier>{cb8abdb4-32dc-44af-a439-3ab76149bd45}</UniqueIdentifier>
-     </Filter>
+    </Filter>
     <Filter Include="01.Utility\06.EasingMgr">
       <UniqueIdentifier>{b3f2df39-b50b-4d0c-9307-a44f22a1638b}</UniqueIdentifier>
     </Filter>
@@ -304,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\ImguiMgr.h">
       <Filter>01.Utility\06.ImguiMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Easing.h">
+      <Filter>99.Define</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
