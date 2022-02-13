@@ -15,8 +15,8 @@ class CThreadMgr;
 class CObjectMgr;
 class CGameObject;
 class CLayer;
-class CEasingMgr;
 class CImguiMgr;
+class CEasingMgr;
 
 class ENGINE_DLL CGameInstance final :public CBase
 {
@@ -82,9 +82,9 @@ private:
 	CThreadMgr*			m_pThreadMgr = nullptr;
 	CObjectMgr*			m_pObjectMgr = nullptr;
 	CComponentMgr*		m_pComponenetMgr = nullptr;
-	CImguiMgr*			m_pImguiMgr = nullptr;
 	CInput_Device*		m_pInputDevice = nullptr;
 	CEasingMgr*			m_pEasingMgr = nullptr;
+	CImguiMgr*			m_pImguiMgr = nullptr;
 
 public:
 	static void Release_Engine();

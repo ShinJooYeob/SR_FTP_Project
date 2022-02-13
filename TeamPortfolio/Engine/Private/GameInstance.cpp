@@ -18,7 +18,7 @@ CGameInstance::CGameInstance()
 	m_pObjectMgr(GetSingle(CObjectMgr)),
 	m_pComponenetMgr(GetSingle(CComponentMgr)),
 	m_pInputDevice(GetSingle(CInput_Device)),
-	m_pImguiMgr(GetSingle(CImguiMgr))
+	m_pImguiMgr(GetSingle(CImguiMgr)),
 	m_pEasingMgr(GetSingle(CEasingMgr))
 {
 	m_pThreadMgr->AddRef();
