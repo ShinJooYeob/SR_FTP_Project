@@ -143,6 +143,14 @@ CGameObject * CGameInstance::Get_GameObject_By_LayerIndex(_uint eSceneNum, const
 	return m_pObjectMgr->Get_GameObject_By_LayerIndex(eSceneNum, tagLayer,iLayerIndex);
 }
 
+list<CGameObject*>* CGameInstance::Get_ObjectList_from_Layer(_uint eSceneNum, const _tchar * tagLayer)
+{
+	if (tagLayer == nullptr || m_pObjectMgr == nullptr)
+		return nullptr;
+
+	return m_pObjectMgr->Get_ObjectList_from_Layer(eSceneNum, tagLayer);
+}
+
 CGameObject * CGameInstance::Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, const _tchar * tagLayer, _uint iLayerIndex)
 {
 	if (tagLayer == nullptr || m_pObjectMgr == nullptr)
@@ -151,14 +159,6 @@ CGameObject * CGameInstance::Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, 
 	return m_pObjectMgr->Change_Camera_Ortho_By_LayerIndex(eSceneNum, tagLayer, iLayerIndex);
 }
 
-
-CLayer * CGameInstance::Get_Layer(_uint eSceneNum, const _tchar * tagLayer)
-{
-	if (tagLayer == nullptr || m_pObjectMgr == nullptr)
-		return nullptr;
-
-	return m_pObjectMgr->Get_Layer(eSceneNum, tagLayer);
-}
 
 
 _float CGameInstance::Get_DeltaTime(const _tchar * tagTimer)
@@ -217,6 +217,15 @@ _int CGameInstance::Render_Scene()
 		return -1;
 
 	return 0;
+}
+
+_uint CGameInstance::Get_NowSceneNum()
+{
+	if (m_pSceneMgr == nullptr)
+		return -1;
+
+
+	return m_pSceneMgr->Get_NowSceneNum();
 }
 
 HRESULT CGameInstance::Add_Component_Prototype(_uint eSceneIdx, const _tchar * tagPrototypeComponent, CComponent * pComponenet)

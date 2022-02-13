@@ -27,7 +27,7 @@ HRESULT CCamera_Main::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
-	m_vWorldRotAxis = _float3(64.f, 0, 64.f);
+	m_vWorldRotAxis = _float3(0.f, 0, 0.f);
 
 	return S_OK;
 }
@@ -114,17 +114,17 @@ _int CCamera_Main::Update(_float fDeltaTime)
 		Change_Camera_Demension();
 	}
 
-	_long MoveDist;
+	//_long MoveDist;
 
-	if (MoveDist = pInstance->Get_DIMouseMoveState(CInput_Device::MMS_X))
-	{
-		m_pTransform->Turn_CW({0,1,0}, fDeltaTime * MoveDist * 0.1f);
+	//if (MoveDist = pInstance->Get_DIMouseMoveState(CInput_Device::MMS_X))
+	//{
+	//	m_pTransform->Turn_CW({0,1,0}, fDeltaTime * MoveDist * 0.1f);
 
-	}
-	if (MoveDist = pInstance->Get_DIMouseMoveState(CInput_Device::MMS_Y))
-	{
-		m_pTransform->Turn_CW(m_pTransform->Get_MatrixState(CTransform::STATE_RIGHT), fDeltaTime * MoveDist * 0.1f);
-	}
+	//}
+	//if (MoveDist = pInstance->Get_DIMouseMoveState(CInput_Device::MMS_Y))
+	//{
+	//	m_pTransform->Turn_CW(m_pTransform->Get_MatrixState(CTransform::STATE_RIGHT), fDeltaTime * MoveDist * 0.1f);
+	//}
 
 
 	__super::Update(fDeltaTime);

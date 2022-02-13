@@ -19,7 +19,7 @@ public:
 	virtual _int Render();
 	virtual _int LateRender();
 
-
+	void Set_NowSceneNum(_uint eNowSceneNum) {	m_eNowSceneNum = eNowSceneNum; };
 	class CComponent* Find_Components(const _tchar* tagComponent);
 
 protected:
@@ -28,6 +28,7 @@ protected:
 
 protected:
 	LPDIRECT3DDEVICE9			m_pGraphicDevice = nullptr;
+	_uint						m_eNowSceneNum = 0;
 	_bool						m_bIsClone = false;
 
 protected:

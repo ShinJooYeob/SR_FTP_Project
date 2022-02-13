@@ -29,7 +29,8 @@ public:
 	virtual _int Render();
 	virtual _int LateRender();
 
-	_float3 Get_Camera_Position() {	return m_pTransform->Get_MatrixState(CTransform::STATE_POS);};
+	_float3 Get_Camera_Position() { return m_pTransform->Get_MatrixState(CTransform::STATE_POS); };
+	CTransform*	 Get_Camera_Transform() { return m_pTransform; };
 
 public:
 	HRESULT Camera_Shaking(_float fDeltaTime);

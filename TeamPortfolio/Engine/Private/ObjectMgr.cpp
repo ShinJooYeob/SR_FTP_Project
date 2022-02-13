@@ -47,6 +47,8 @@ HRESULT CObjectMgr::Add_GameObject_To_Layer(_uint eSceneNum, const _tchar * tagL
 	if (pInstance == nullptr)
 		return E_FAIL;
 
+	pInstance->Set_NowSceneNum(eSceneNum);
+
 	CLayer* pLayer = Find_Layer(eSceneNum,tagLayer);
 
 	if (pLayer == nullptr)
@@ -132,12 +134,12 @@ CGameObject * CObjectMgr::Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, con
 }
 
 
-CLayer * CObjectMgr::Get_Layer(_uint iSceneNum, const _tchar * tagLayer)
+list<CGameObject*>* CObjectMgr::Get_ObjectList_from_Layer(_uint iSceneNum, const _tchar * tagLayer)
 {
 	if (iSceneNum >= m_iMaxSceneNum || m_mapLayer == nullptr)
 		return nullptr;
 
-	return Find_Layer(iSceneNum, tagLayer);
+	return Find_Layer(iSceneNum, tagLayer)->Get_ObjectList();
 }
 
 _int CObjectMgr::Update(_float fDeltaTime)

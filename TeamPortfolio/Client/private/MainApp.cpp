@@ -170,8 +170,8 @@ HRESULT CMainApp::Ready_Static_GameObject_Prototype()
 {	//Camera_Main 프로토타입 생성
 	CCamera::CAMERADESC CameraDesc;
 
-	CameraDesc.vEye = _float3(0.f, 5.f, -5.f);
-	CameraDesc.vAt = _float3(0, 5.f, 0);
+	CameraDesc.vEye = _float3(0.f, 0.f, -5.f);
+	CameraDesc.vAt = _float3(0, 0.f, 0);
 	CameraDesc.vAxisY = _float3(0, 1, 0);
 
 	CameraDesc.fFovy = D3DXToRadian(60.0f);

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\BackGround.h"
+#include "Camera_Main.h"
 
 
 CBackGround::CBackGround(LPDIRECT3DDEVICE9 pGraphicDevice)
@@ -34,8 +35,10 @@ HRESULT CBackGround::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_ComTransform->Scaled({ 1.5f,1.5f,1.5f });
-	
+	static _float TempFloat = -1.f;
+	//m_ComTransform->Scaled({ 1.5f,1.5f,1.5f });
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, { TempFloat ,TempFloat ,TempFloat });
+	TempFloat++;
 	
 	//m_ComTransform->Rotation_CW({ 0,1,0 }, D3DXToRadian(90));
 
@@ -71,8 +74,15 @@ _int CBackGround::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+
+	CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, TEXT("Layer_Camera_Main")));
+
+	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
 		return E_FAIL;
+
+
+	/*if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;*/
 
 	if (FAILED(m_ComTexture->Bind_Texture()))
 		return E_FAIL;
