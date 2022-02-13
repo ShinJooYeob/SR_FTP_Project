@@ -97,6 +97,9 @@
     <Filter Include="98.ImguiLib">
       <UniqueIdentifier>{11514805-b8dc-48b5-a602-05c2139856b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\06.ImguiMgr">
+      <UniqueIdentifier>{cb8abdb4-32dc-44af-a439-3ab76149bd45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -182,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\imgui\imgui_draw.cpp">
       <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImguiManager.cpp">
+      <Filter>01.Utility\06.ImguiMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\imgui\imgui_impl_win32.h">
       <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImguiManager.h">
+      <Filter>01.Utility\06.ImguiMgr</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
