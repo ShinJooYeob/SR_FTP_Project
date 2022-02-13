@@ -146,7 +146,7 @@ namespace Engine
 		//(매개 변수)백터와의 거리 반환
 		_float Get_Distance(const _float3& _Param)
 		{
-			return sqrtf((_Param.x - x) * 2 + (_Param.y - y) * 2 + (_Param.y - y) * 2);
+			return sqrtf((_Param.x - x) * (_Param.x - x) + (_Param.y - y) *  (_Param.y - y) + (_Param.z - z) * (_Param.z - z));
 		}
 
 
