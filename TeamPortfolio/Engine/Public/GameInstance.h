@@ -4,6 +4,7 @@
 #include "Graphic_Device.h"
 #include "ComponentMgr.h"
 #include "Input_Device.h"
+#include "ImguiMgr.h"
 
 BEGIN(Engine)
 
@@ -14,6 +15,7 @@ class CThreadMgr;
 class CObjectMgr;
 class CGameObject;
 class CLayer;
+class CImguiMgr;
 class CEasingMgr;
 
 class ENGINE_DLL CGameInstance final :public CBase
@@ -69,6 +71,9 @@ public: /* For.Input_Device */
 public:
 	_float TargetLinear(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime = 1.0f);
 	_float TargetQuadIn(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime = 1.0f);
+	
+public: /* For. IMGUI Interface */
+	CImguiMgr* GetIMGui();
 
 private:
 	CGraphic_Device*	m_pGraphicDevice = nullptr;
@@ -79,6 +84,7 @@ private:
 	CComponentMgr*		m_pComponenetMgr = nullptr;
 	CInput_Device*		m_pInputDevice = nullptr;
 	CEasingMgr*			m_pEasingMgr = nullptr;
+	CImguiMgr*			m_pImguiMgr = nullptr;
 
 public:
 	static void Release_Engine();

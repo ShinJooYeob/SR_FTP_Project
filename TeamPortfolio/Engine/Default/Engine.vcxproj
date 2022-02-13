@@ -109,7 +109,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../public/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../public/;../public/imgui/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,7 +148,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../public/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../public/;../public/imgui/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -170,6 +170,14 @@
     <ClCompile Include="..\Private\GameInstance.cpp" />
     <ClCompile Include="..\Private\GameObject.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
+    <ClCompile Include="..\Private\ImguiMgr.cpp" />
+    <ClCompile Include="..\Private\imgui\imgui.cpp" />
+    <ClCompile Include="..\Private\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Private\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Private\imgui\imgui_impl_dx9.cpp" />
+    <ClCompile Include="..\Private\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\Private\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\Private\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\Input_Device.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
     <ClCompile Include="..\Private\ObjectMgr.cpp" />
@@ -199,6 +207,15 @@
     <ClInclude Include="..\Public\GameInstance.h" />
     <ClInclude Include="..\Public\GameObject.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
+    <ClInclude Include="..\Public\ImguiMgr.h" />
+    <ClInclude Include="..\Public\imgui\imconfig.h" />
+    <ClInclude Include="..\Public\imgui\imgui.h" />
+    <ClInclude Include="..\Public\imgui\imgui_impl_dx9.h" />
+    <ClInclude Include="..\Public\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="..\Public\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Public\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Public\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Public\imgui\imstb_truetype.h" />
     <ClInclude Include="..\Public\Input_Device.h" />
     <ClInclude Include="..\Public\Layer.h" />
     <ClInclude Include="..\Public\ObjectMgr.h" />

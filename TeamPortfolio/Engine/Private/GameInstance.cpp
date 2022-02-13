@@ -18,6 +18,7 @@ CGameInstance::CGameInstance()
 	m_pObjectMgr(GetSingle(CObjectMgr)),
 	m_pComponenetMgr(GetSingle(CComponentMgr)),
 	m_pInputDevice(GetSingle(CInput_Device)),
+	m_pImguiMgr(GetSingle(CImguiMgr))
 	m_pEasingMgr(GetSingle(CEasingMgr))
 {
 	m_pThreadMgr->AddRef();
@@ -28,6 +29,7 @@ CGameInstance::CGameInstance()
 	m_pComponenetMgr->AddRef();
 	m_pInputDevice->AddRef();
 	m_pEasingMgr->AddRef();
+	m_pImguiMgr->AddRef();
 }
 
 
@@ -274,6 +276,11 @@ _float CGameInstance::TargetLinear(_float fStartPoint, _float fTargetPoint,  _fl
 	return m_pEasingMgr->TargetLinear(fStartPoint, fTargetPoint,  fPassedTime, fTotalTime);
 }
 
+CImguiMgr * CGameInstance::GetIMGui()
+{
+	return m_pImguiMgr->GetInstance();
+}
+
 _float CGameInstance::TargetQuadIn(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime)
 {
 	if (m_pEasingMgr == nullptr)
@@ -291,8 +298,7 @@ void CGameInstance::Release_Engine()
 
 	if (0 != GetSingle(CThreadMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com ThreadMgr ");
-
-
+		
 	if (0 != GetSingle(CEasingMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com EasingMgr ");
 
@@ -314,6 +320,8 @@ void CGameInstance::Release_Engine()
 	if (0 != GetSingle(CTimeMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com TimeMgr ");
 
+	if (0 != GetSingle(CImguiMgr)->DestroyInstance())
+		MSGBOX("Failed to Release Com CImguiMgr ");
 }
 
 void CGameInstance::Free()
@@ -324,6 +332,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pComponenetMgr);
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pInputDevice);
+	Safe_Release(m_pImguiMgr);
 	Safe_Release(m_pTimerMgr);
 	Safe_Release(m_pEasingMgr);
 }

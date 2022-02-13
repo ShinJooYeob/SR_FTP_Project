@@ -94,6 +94,11 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\Texture">
       <UniqueIdentifier>{71379223-b9d8-45c6-bd83-3a8be86fb2b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98.ImguiLib">
+      <UniqueIdentifier>{11514805-b8dc-48b5-a602-05c2139856b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\06.ImguiMgr">
+      <UniqueIdentifier>{cb8abdb4-32dc-44af-a439-3ab76149bd45}</UniqueIdentifier>
     <Filter Include="01.Utility\06.EasingMgr">
       <UniqueIdentifier>{b3f2df39-b50b-4d0c-9307-a44f22a1638b}</UniqueIdentifier>
     </Filter>
@@ -164,6 +169,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\EasingMgr.cpp">
       <Filter>01.Utility\06.EasingMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_impl_dx9.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_impl_win32.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_tables.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_widgets.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_demo.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui\imgui_draw.cpp">
+      <Filter>98.ImguiLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImguiMgr.cpp">
+      <Filter>01.Utility\06.ImguiMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +276,33 @@
     </ClInclude>
     <ClInclude Include="..\Public\EasingMgr.h">
       <Filter>01.Utility\06.EasingMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imgui_internal.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imstb_rectpack.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imstb_textedit.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imstb_truetype.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imconfig.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imgui.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imgui_impl_dx9.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui\imgui_impl_win32.h">
+      <Filter>98.ImguiLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImguiMgr.h">
+      <Filter>01.Utility\06.ImguiMgr</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
