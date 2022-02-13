@@ -2,9 +2,9 @@
 
 #define PI 3.14f
 
+// Easing 관련 함수 모음
 class CEasingClass
 {
-
 public:
 	enum E_EasingType
 	{

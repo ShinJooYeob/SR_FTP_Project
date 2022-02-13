@@ -13,3 +13,6 @@ namespace Client {};
 using namespace Client;
 
 #include "Client_Enum.h"
+
+#define GETIMGUI GetSingle(CGameInstance)->GetIMGui()
+

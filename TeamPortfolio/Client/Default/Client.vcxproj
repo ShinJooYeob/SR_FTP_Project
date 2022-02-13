@@ -160,6 +160,7 @@
     <ClInclude Include="..\public\Client_Define.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\Player.h" />
+    <ClInclude Include="..\public\Scene_IMGUI.h" />
     <ClInclude Include="..\public\Scene_StageSelect.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\Scene_Loading.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\private\Camera_Main.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
+    <ClCompile Include="..\private\Scene_IMGUI.cpp" />
     <ClCompile Include="..\private\Scene_StageSelect.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\Scene_Loading.cpp" />

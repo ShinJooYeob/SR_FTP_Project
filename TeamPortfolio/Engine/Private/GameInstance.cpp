@@ -78,10 +78,12 @@ _int CGameInstance::Update_Engine(_float fDeltaTime)
 	if (FAILED(m_pInputDevice->SetUp_InputDeviceState(fDeltaTime)))
 		return -1;
 
+	if (m_pSceneMgr->Update(fDeltaTime) < 0)
+		return -1;
+
 	if (m_pObjectMgr->Update(fDeltaTime) < 0)
 		return -1;
-	if(m_pSceneMgr->Update(fDeltaTime) < 0 )
-		return -1;
+	
 
 
 

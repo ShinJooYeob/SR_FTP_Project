@@ -54,8 +54,8 @@ _int CMainApp::Update(_float fDeltaTime)
 	if (m_pGameInstance == nullptr)
 		return -1;
 
-	// IMGUI 메뉴바 테스트
-	m_pGameInstance->GetIMGui()->Text("testbar");
+	// IMGUI 메뉴바 테스트	
+//	GETIMGUI->Text("testbar");
 	return m_pGameInstance->Update_Engine(fDeltaTime);
 
 
@@ -69,7 +69,7 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Render_Begin();
 
 	// IMGUI 랜더링 테스트 / 후에 씬에서 수행
-	m_pGameInstance->GetIMGui()->Render_IMGUI();
+//	GETIMGUI->Render_IMGUI();
 
 	m_pComRenderer->Render_RenderGroup();
 
@@ -95,6 +95,7 @@ HRESULT CMainApp::Scene_Change(SCENEID eSceneID)
 	case SCENEID::SCENE_STAGE1:
 	case SCENEID::SCENE_STAGE2:
 	case SCENEID::SCENE_STAGE3:
+	case SCENEID::SCENE_IMGUISCENE:
 
 		m_pGameInstance->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, eSceneID), SCENEID::SCENE_LOADING);
 
