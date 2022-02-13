@@ -65,7 +65,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 {
 
 
-	if (FAILED(GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BackGround"), CBackGround::Create(m_pGraphicDevice))))
+	if (FAILED(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_BackGround), CBackGround::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 	m_bIsLoadingFinished = true;
@@ -84,7 +84,7 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	//버퍼인덱스 프로토타입 생성
 	CVIBuffer_Terrain::TERRAINDESC TerrainDesc;
 	TerrainDesc.szHeightFilePath = TEXT("../Bin/Resources/Textures/Terrain/Height.bmp");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_VIBuffer_Terrain128x128"), CVIBuffer_Terrain::Create(m_pGraphicDevice, &TerrainDesc))))
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_VIBuffer_Terrain128x128), CVIBuffer_Terrain::Create(m_pGraphicDevice, &TerrainDesc))))
 		return E_FAIL;
 
 	//Player Texture
@@ -92,34 +92,34 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Player/AKIHA_AKI00_00%d.png");
 	TextureDesc.m_iNumTexture = 12;
 
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Player"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Player), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 	
 	//Terrain Texture
 	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.tga");
 	TextureDesc.m_iNumTexture = 2;
 
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Terrain"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Terrain), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 	//Shop Texture
 	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/UI/drapes_ground.png");
 	TextureDesc.m_iNumTexture = 1;
 
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Shop"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Shop), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 #pragma endregion
 
 #pragma  region PROTOTYPE_GAMEOBJECT
 
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TerrainGround"), CTerrainGround::Create(m_pGraphicDevice))))
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainGround), CTerrainGround::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Player"), CPlayer::Create(m_pGraphicDevice))))
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Player), CPlayer::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Shop"), CShop::Create(m_pGraphicDevice))))
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Shop), CShop::Create(m_pGraphicDevice))))
 		return E_FAIL;
 #pragma endregion
 

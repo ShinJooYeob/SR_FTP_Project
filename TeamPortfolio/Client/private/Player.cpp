@@ -217,16 +217,15 @@ HRESULT CPlayer::SetUp_Components()
 	TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 	TransformDesc.vPivot = _float3(0, -0.5f, 0);
 
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))
-		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_ComVIBuffer)))
-		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
-		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Player"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
-		return E_FAIL;
 
-
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Renderer), TAG_COM(Com_Renderer), (CComponent**)&m_ComRenderer)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), TAG_COM(Com_Transform), (CComponent**)&m_ComTransform, &TransformDesc)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_Player), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -236,7 +235,7 @@ HRESULT CPlayer::Find_FootHold_Object()
 {
 	CGameInstance* pGameInstance = GetSingle(CGameInstance);
 
-	CTransform* pCameraTransform = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Camera_Main"))))->Get_Camera_Transform();
+	CTransform* pCameraTransform = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))))->Get_Camera_Transform();
 
 	//뷰스페이스 변환 행렬
 	_Matrix matVeiwSpace = pCameraTransform->Get_InverseWorldMatrix();
@@ -244,7 +243,7 @@ HRESULT CPlayer::Find_FootHold_Object()
 	_float3 vPlayerViewPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
 
 
-	 list<CGameObject*>* pTerrainLayer= pGameInstance->Get_ObjectList_from_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_Terrain"));
+	 list<CGameObject*>* pTerrainLayer= pGameInstance->Get_ObjectList_from_Layer(SCENEID::SCENE_STAGESELECT, TAG_LAY(Layer_Terrain));
 
 
 	 CGameObject* pNearObject = nullptr;
@@ -254,7 +253,7 @@ HRESULT CPlayer::Find_FootHold_Object()
 
 	 for (; ObjectListIter != pTerrainLayer->end();)
 	 {
-		 _float3 vTerrainObjectViewPos = ((CTransform*)((*ObjectListIter)->Find_Components(TEXT("Com_Transform"))))
+		 _float3 vTerrainObjectViewPos = ((CTransform*)((*ObjectListIter)->Find_Components(TAG_COM(Com_Transform))))
 											->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
 
 		 if (vTerrainObjectViewPos.x + 0.5f >= vPlayerViewPos.x && vTerrainObjectViewPos.x - 0.5f < vPlayerViewPos.x &&
@@ -283,7 +282,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 {
 	CGameInstance* pGameInstance = GetSingle(CGameInstance);
 
-	CTransform* pCameraTransform = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Camera_Main"))))->Get_Camera_Transform();
+	CTransform* pCameraTransform = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))))->Get_Camera_Transform();
 
 	_float3 vResultPos;
 	_float3 vPlayerPos = vResultPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
@@ -298,7 +297,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 
 	if (m_FootHoldObject != nullptr) 
 	{
-		_float3		vFootHoldObjectViewPos = (((CTransform*)(m_FootHoldObject->Find_Components(TEXT("Com_Transform"))))->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(pCameraTransform->Get_InverseWorldMatrix());
+		_float3		vFootHoldObjectViewPos = (((CTransform*)(m_FootHoldObject->Find_Components(TAG_COM(Com_Transform))))->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(pCameraTransform->Get_InverseWorldMatrix());
 		
 		if (vResultPos.y > vFootHoldObjectViewPos.y) //지형보다 플레이어가 위에 있다면
 		{

@@ -19,7 +19,7 @@ public:
 		_float3		vPivot = _float3(0, 0, 0);
 	}TRANSFORMDESC;
 
-
+	
 
 private:
 	explicit CTransform(LPDIRECT3DDEVICE9 pGraphicDevice);
