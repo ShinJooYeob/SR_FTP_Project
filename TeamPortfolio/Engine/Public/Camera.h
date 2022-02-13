@@ -36,12 +36,14 @@ public:
 	void ShakeFunction(_bool* IsClientQuit, CRITICAL_SECTION* _CriSec);
 	
 	void Change_Camera_Demension() { bIsOrtho = !bIsOrtho; };
+	_Matrix CalculateOrtho(_float WINCX, _float WINCY);
 
 
 protected:
 	_bool						bIsOrtho = false;
 	CTransform*					m_pTransform = nullptr;
 	CAMERADESC					m_CameraDesc;
+	_Matrix						m_OrthoMatrix;
 
 private:
 	_float						m_fTempDeltaTime = 0;

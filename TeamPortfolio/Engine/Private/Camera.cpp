@@ -80,9 +80,10 @@ _int CCamera::Update(_float fDeltaTime)
 		return -1;
 
 	_Matrix matProj;
-
+	
 	if (bIsOrtho)
 		D3DXMatrixOrthoLH(&matProj, 1.f, 1.f / m_CameraDesc.fAspect, m_CameraDesc.fNear, m_CameraDesc.fFar);
+	
 	else
 		D3DXMatrixPerspectiveFovLH(&matProj, m_CameraDesc.fFovy, m_CameraDesc.fAspect, m_CameraDesc.fNear, m_CameraDesc.fFar);
 	
@@ -147,6 +148,25 @@ void CCamera::ShakeFunction(_bool * IsClientQuit, CRITICAL_SECTION * _CriSec)
 	EnterCriticalSection(_CriSec);
 	IsShaking = false;
 	LeaveCriticalSection(_CriSec);
+}
+
+_Matrix CCamera::CalculateOrtho(_float WINCX, _float WINCY)
+{
+	float fFar = 1;
+	float fNear = 0;
+	float w = 2.f / WINCX;
+	float h = 2.f / WINCY;
+	float a = 1.f;
+	float b = 0;
+	_Matrix Matrix(
+	w,		0.f,	0.f,	0.f,
+	0.f,	h,		0.f,	0.f,
+	0.f,	0.f,	a,		0.f,
+	0.f,	0.f,	b,		1.f);
+	/*D3DXMatrixOrthoLH(&pMatrix, g_iWinCX*2.f, g_iWinCY*2.f, 1.f, 0.f);*/
+
+	m_OrthoMatrix = Matrix;
+	return m_OrthoMatrix;
 }
 
 void CCamera::Free()
