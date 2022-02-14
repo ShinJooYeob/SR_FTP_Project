@@ -6,12 +6,13 @@ IMPLEMENT_SINGLETON(CDevice)
 CDevice::CDevice()
 	: m_p3D(nullptr) , m_pDevice(nullptr), m_pSprite(nullptr), m_pFont(nullptr)
 {
+
 }
 
 
 CDevice::~CDevice()
 {
-	Release();
+	//Release();
 }
 
 HRESULT CDevice::InitDevice(void)
@@ -161,7 +162,7 @@ void CDevice::Render_End(HWND hWnd)
 
 }
 
-void CDevice::Release(void)
+void CDevice::Free()
 {
 	Safe_Release(m_pFont);
 	Safe_Release(m_pSprite);

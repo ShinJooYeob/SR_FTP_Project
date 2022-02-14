@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Texture.h"
+#include "Texture_Tool.h"
 
-class CMultiTexture :	public CTexture
+class CMultiTexture : public CTexture_Tool
 {
 public:
 	CMultiTexture();

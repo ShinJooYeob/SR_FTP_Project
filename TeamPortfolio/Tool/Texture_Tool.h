@@ -2,11 +2,11 @@
 
 #include "Include.h"
 
-class CTexture
+class CTexture_Tool
 {
 public:
-	CTexture();
-	virtual ~CTexture();
+	CTexture_Tool();
+	virtual ~CTexture_Tool();
 
 public:
 	virtual const TEXINFO*		Get_Texture(const TCHAR* pStateKey = L"", const int& iCnt = 0)PURE;

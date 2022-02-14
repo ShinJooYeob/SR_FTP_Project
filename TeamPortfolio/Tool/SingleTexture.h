@@ -1,6 +1,6 @@
 #pragma once
-#include "Texture.h"
-class CSingleTexture :	public CTexture
+#include "Texture_Tool.h"
+class CSingleTexture :	public CTexture_Tool
 {
 public:
 	CSingleTexture();

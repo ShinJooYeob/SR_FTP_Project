@@ -8,10 +8,6 @@ CTextureMgr::CTextureMgr()
 }
 
 
-CTextureMgr::~CTextureMgr()
-{
-	Release();
-}
 
 const TEXINFO * CTextureMgr::Get_Texture(const TCHAR* pObjKey, const TCHAR * pStateKey, const int & iCnt)
 {
@@ -46,7 +42,7 @@ HRESULT CTextureMgr::InsertTexture(TEXTYPE eType, const TCHAR * pFilePath, const
 
 	if (iter == m_mapTexture.end())
 	{
-		CTexture*		pTexture = nullptr;
+		CTexture_Tool*		pTexture = nullptr;
 
 		switch (eType)
 		{
@@ -73,14 +69,13 @@ HRESULT CTextureMgr::InsertTexture(TEXTYPE eType, const TCHAR * pFilePath, const
 	return S_OK;
 }
 
-void CTextureMgr::Release(void)
+void CTextureMgr::Free()
 {
-	for_each(m_mapTexture.begin(), m_mapTexture.end(), 
+	for_each(m_mapTexture.begin(), m_mapTexture.end(),
 		[](auto& MyPair)
 	{
 		Safe_Delete(MyPair.second);
 	});
 
 	m_mapTexture.clear();
-
 }

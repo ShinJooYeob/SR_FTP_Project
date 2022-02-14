@@ -11,6 +11,13 @@
 
 
 // CMiniView
+#ifdef _DEBUG 
+
+#define new DEBUG_NEW 
+
+#endif 
+
+
 
 IMPLEMENT_DYNCREATE(CMiniView, CView)
 

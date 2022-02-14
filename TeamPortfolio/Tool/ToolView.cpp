@@ -173,9 +173,8 @@ void CToolView::OnInitialUpdate()
 
 
 	// #Tag Tool 디바이스 초기화
-
-
 	g_hWnd = m_hWnd;
+	
 
 	if (FAILED(CDevice::GetInstance()->InitDevice()))
 	{

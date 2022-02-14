@@ -68,7 +68,10 @@
 #include <afxdlgs.h>
 #include <afxwin.h>
 
+
 using namespace std;
+
+#include "Include.h"
 
 #pragma warning(disable : 4005)
 

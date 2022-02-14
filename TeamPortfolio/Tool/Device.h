@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Include.h"
+#include "Base.h"
 
-class CDevice
+class CDevice : public CBase
 {
 	DECLARE_SINGLETON(CDevice)
 
@@ -22,8 +22,7 @@ public:
 	void		Render_Begin(void);
 	void		Render_End(HWND hWnd = NULL);
 
-	void		Release(void);
-
+	virtual		void	Free()override;
 private:
 	LPDIRECT3D9				m_p3D;
 	LPDIRECT3DDEVICE9		m_pDevice;

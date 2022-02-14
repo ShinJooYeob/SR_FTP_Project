@@ -79,7 +79,7 @@
     <Filter Include="00. Special\01. View\00. MyForm\03. PathFind">
       <UniqueIdentifier>{099e32db-2a44-4167-8120-80f8b66a3666}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Header">
+    <Filter Include="99.Header">
       <UniqueIdentifier>{87b56aa3-1153-4e8e-8fea-c7ee7910b36d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -98,9 +98,6 @@
     </ClInclude>
     <ClInclude Include="Device.h">
       <Filter>01. Device</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>02. Texture</Filter>
     </ClInclude>
     <ClInclude Include="SingleTexture.h">
       <Filter>02. Texture\00. SingleTexture</Filter>
@@ -151,19 +148,22 @@
       <Filter>00. Special\01. View\00. MyForm\03. PathFind</Filter>
     </ClInclude>
     <ClInclude Include="Header\Include.h">
-      <Filter>04.Header</Filter>
+      <Filter>99.Header</Filter>
     </ClInclude>
     <ClInclude Include="Header\Struct.h">
-      <Filter>04.Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Define.h">
-      <Filter>04.Header</Filter>
+      <Filter>99.Header</Filter>
     </ClInclude>
     <ClInclude Include="Header\Enum.h">
-      <Filter>04.Header</Filter>
+      <Filter>99.Header</Filter>
     </ClInclude>
     <ClInclude Include="Header\Functor.h">
-      <Filter>04.Header</Filter>
+      <Filter>99.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Tool_Define.h">
+      <Filter>99.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture_Tool.h">
+      <Filter>02. Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,9 +175,6 @@
     </ClCompile>
     <ClCompile Include="Device.cpp">
       <Filter>01. Device</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>02. Texture</Filter>
     </ClCompile>
     <ClCompile Include="SingleTexture.cpp">
       <Filter>02. Texture\00. SingleTexture</Filter>
@@ -226,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="PathFind.cpp">
       <Filter>00. Special\01. View\00. MyForm\03. PathFind</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture_Tool.cpp">
+      <Filter>02. Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

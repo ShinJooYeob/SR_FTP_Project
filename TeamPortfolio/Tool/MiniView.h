@@ -2,6 +2,7 @@
 
 
 // CMiniView ∫‰¿‘¥œ¥Ÿ.
+// πÃ¥œ∏  ∫∏±‚
 
 class CMiniView : public CView
 {
