@@ -20,9 +20,9 @@ HRESULT CScene_Loby::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+	if (FAILED(Ready_Layer_BackGround(TAG_LAY(Layer_BackGround))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_MainCamera(TEXT("Layer_Camera_Main"))))
+	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
 
 	return S_OK;
@@ -76,14 +76,14 @@ _int CScene_Loby::LateRender()
 HRESULT CScene_Loby::Ready_Layer_BackGround(const _tchar * pLayerTag)
 {
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TEXT("Prototype_GameObject_BackGround")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TAG_OP(Prototype_BackGround)))
 		return E_FAIL;
 	return S_OK;
 }
 
 HRESULT CScene_Loby::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TEXT("Prototype_GameObject_Camera_Main")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TAG_OP(Prototype_Camera_Main)))
 		return E_FAIL;
 	return S_OK;
 }

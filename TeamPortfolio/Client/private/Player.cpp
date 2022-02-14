@@ -39,6 +39,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	return S_OK;
 }
 
+
 _int CPlayer::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
@@ -53,12 +54,39 @@ _int CPlayer::Update(_float fDeltaTime)
 
 	if (pInstance->Get_DIKeyState(DIK_UP) & DIS_Press)
 	{
-		m_ComTransform->Move_Forward(fDeltaTime);
+		if (m_BackWardObject != nullptr)
+		{
+			m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
+			m_fNowJumpPower = 0;
+
+			m_bIsCliming = true;
+		}
 	}
 
 	if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_Press)
 	{
-		m_ComTransform->Move_Backward(fDeltaTime);
+		if (m_bIsCliming) 
+		{
+			if (m_BackWardObject != nullptr)
+			{
+				m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), -fDeltaTime);
+				m_fNowJumpPower = 0;
+
+				m_bIsCliming = true;
+			}
+
+		}
+		else 
+		{
+			if (m_FootHoldObject != nullptr)
+			{
+				m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), -fDeltaTime);
+				m_fNowJumpPower = 0;
+
+				m_bIsCliming = true;
+			}
+
+		}
 
 	}
 
@@ -139,7 +167,9 @@ _int CPlayer::Update(_float fDeltaTime)
 	}
 
 
-
+	if (FAILED(Find_FootHold_Object())) {
+		return E_FAIL;
+	}
 
 	
 
@@ -153,10 +183,9 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 		return E_FAIL;
 
 
-	if (FAILED(Set_PosOnTerrain(fDeltaTime)))
-	{
+	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
 		return E_FAIL;
-	}
+
 
 
 	//렌더링 그룹에 넣어주는 역활
@@ -172,13 +201,13 @@ _int CPlayer::Render()
 		return E_FAIL; 
 
 
-	CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Camera_Main")));
+	//CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Camera_Main")));
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
-		return E_FAIL;
+	//if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
+	//	return E_FAIL;
 	 
-	 //if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		//return E_FAIL;
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
 	
 	if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
 		return E_FAIL;
@@ -213,24 +242,151 @@ HRESULT CPlayer::SetUp_Components()
 	TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 	TransformDesc.vPivot = _float3(0, -0.5f, 0);
 
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))
-		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_ComVIBuffer)))
-		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
-		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Player"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
-		return E_FAIL;
 
-
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Renderer), TAG_COM(Com_Renderer), (CComponent**)&m_ComRenderer)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), TAG_COM(Com_Transform), (CComponent**)&m_ComTransform, &TransformDesc)))
+		return E_FAIL;
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_Player), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
+		return E_FAIL;
 
 
 	return S_OK;
 }
 
-HRESULT CPlayer::Jump(_float fDeltaTime)
+HRESULT CPlayer::Find_FootHold_Object()
 {
-	return E_NOTIMPL;
+	CGameInstance* pGameInstance = GetSingle(CGameInstance);
+
+	CTransform* pCameraTransform = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))))->Get_Camera_Transform();
+
+	if (pCameraTransform == nullptr)
+		return E_FAIL;
+
+	//뷰스페이스 변환 행렬
+	_Matrix matVeiwSpace = pCameraTransform->Get_InverseWorldMatrix();
+	_float3 vPlayerViewPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
+
+	 list<CGameObject*>* pTerrainLayer= pGameInstance->Get_ObjectList_from_Layer(SCENEID::SCENE_STAGESELECT, TAG_LAY(Layer_Terrain));
+
+	 if (pTerrainLayer == nullptr)
+		 return E_FAIL;
+
+
+	 CGameObject* pYNearObject = nullptr;
+	 CGameObject* pZNearObject = nullptr;
+	 
+	 _float		fNearYLenth = (_float)0x0fffffff;
+	 _float		fNearZLenth = -(_float)0x0fffffff;
+	  
+	 auto ObjectListIter = pTerrainLayer->begin();
+
+	 for (; ObjectListIter != pTerrainLayer->end();)
+	 {
+		 _float3 vTerrainObjectViewPos = ((CTransform*)((*ObjectListIter)->Find_Components(TAG_COM(Com_Transform))))
+											->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
+
+		 if (vTerrainObjectViewPos.x + 0.5f >= vPlayerViewPos.x && vTerrainObjectViewPos.x - 0.5f < vPlayerViewPos.x)
+		 {
+			 //바닥 오브젝트 파악
+			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y + 0.1f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 1.f)
+			 {
+				 if (vTerrainObjectViewPos.z < fNearYLenth)
+				 {
+					 pYNearObject = (*ObjectListIter);
+					 fNearYLenth = vTerrainObjectViewPos.z;
+				 }
+			 }
+			 //바로 뒤 오브젝트 파악(등반하기 위해서)
+			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y + 1.f && vTerrainObjectViewPos.y > vPlayerViewPos.y)
+			 {
+				 if (vTerrainObjectViewPos.z >= vPlayerViewPos. z  && vTerrainObjectViewPos.z > fNearZLenth)
+				 {
+					 pZNearObject = (*ObjectListIter);
+					 fNearZLenth = vTerrainObjectViewPos.z;
+				 }
+			 }
+		 }
+		 
+		 ObjectListIter++;
+	 }
+
+
+	 Safe_Release(m_FootHoldObject);
+	 m_FootHoldObject = pYNearObject;
+	 Safe_AddRef(m_FootHoldObject);
+
+	 Safe_Release(m_BackWardObject);
+	 m_BackWardObject = pZNearObject;
+	 Safe_AddRef(m_BackWardObject);
+	 
+	 if (m_BackWardObject == nullptr)
+		 m_bIsCliming = false;
+
+	 //카메라 바라보도록 설정
+
+	 _float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+	 _float3 vCamPos = pCameraTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	 _float3 vNewLook = (vPlayerPos - vCamPos).Get_Nomalize();
+
+	 m_ComTransform->LookAt(vPlayerPos + vNewLook);
+
+
+	return S_OK;
+}
+
+HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
+{
+	CGameInstance* pGameInstance = GetSingle(CGameInstance);
+
+	CTransform* pCameraTransform = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))))->Get_Camera_Transform();
+
+	if (pCameraTransform == nullptr)
+		return E_FAIL;
+
+	_float3 vResultPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+
+
+	if (!m_bIsCliming)
+	{
+		/////////중력 적용
+		m_fNowJumpPower -= fDeltaTime * m_fJumpPower *2.f;
+		_float Time = 1 - (m_fNowJumpPower / m_fJumpPower);
+		vResultPos.y = vResultPos.y + (m_fNowJumpPower - Time*Time * m_fJumpPower)*fDeltaTime;
+
+		vResultPos = vResultPos.PosVector_Matrix(pCameraTransform->Get_InverseWorldMatrix());
+
+		if (m_FootHoldObject != nullptr)
+		{
+			_float3		vFootHoldObjectViewPos = (((CTransform*)(m_FootHoldObject->Find_Components(TAG_COM(Com_Transform))))->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(pCameraTransform->Get_InverseWorldMatrix());
+
+			if (vResultPos.y <= vFootHoldObjectViewPos.y) //지형보다 플레이어가 위에 있다면
+			{
+				vResultPos.y = vFootHoldObjectViewPos.y;
+				vResultPos.z = vFootHoldObjectViewPos.z;
+
+				m_fNowJumpPower = 0;
+				m_bIsJumped = false;
+
+			}
+		}
+	}
+	else {
+		vResultPos = vResultPos.PosVector_Matrix(pCameraTransform->Get_InverseWorldMatrix());
+	}
+
+
+
+
+	vResultPos = vResultPos.PosVector_Matrix(pCameraTransform->Get_InverseWorldMatrix().InverseMatrix());
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vResultPos);
+
+
+
+	return S_OK;
 }
 
 HRESULT CPlayer::Set_PosOnTerrain(_float fDeltaTime)
@@ -349,7 +505,8 @@ void CPlayer::Free()
 {
 	__super::Free();
 
-
+	Safe_Release(m_BackWardObject);
+	Safe_Release(m_FootHoldObject);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);

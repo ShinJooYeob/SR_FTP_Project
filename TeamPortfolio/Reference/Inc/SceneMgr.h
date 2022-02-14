@@ -16,6 +16,7 @@ private:
 
 public:
 	HRESULT Scene_Chage(CScene * _pScene, _int iNextSceneIndex);
+	_uint	Get_NowSceneNum() {	return (_uint)m_iCurrentSceneIdx;}
 
 public:
 	_int Update(_float fDeltaTime);

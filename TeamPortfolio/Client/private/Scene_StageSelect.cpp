@@ -13,13 +13,13 @@ HRESULT CScene_StageSelect::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_Terrain(TAG_LAY(Layer_Terrain))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_MainCamera(TEXT("Layer_Camera_Main"))))
+	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
+	if (FAILED(Ready_Layer_Player(TAG_LAY(Layer_Player))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_Shop(TEXT("Layer_Shop"))))
+	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
 		return E_FAIL;
 	//ZeroMemory(&m_Light, sizeof(m_Light));
 	//m_Light.Type = D3DLIGHT_DIRECTIONAL;
@@ -86,14 +86,36 @@ _int CScene_StageSelect::LateRender()
 
 HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_TerrainGround")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround),&_float3(0,0,0)))
 		return E_FAIL;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(1, 0, 0)))
+		return E_FAIL;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround),&_float3(2,0,0)))
+		return E_FAIL;																										
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround),&_float3(3,0,0)))
+		return E_FAIL;																										
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround),&_float3(4,0,0)))
+		return E_FAIL;																										
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround),&_float3(5,0,0)))
+		return E_FAIL;
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(0, 2, 5)))
+		return E_FAIL;
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(0, 1, 2)))
+		return E_FAIL;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(0, 3, 8)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
 HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Camera_Main")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Camera_Main)))
 		return E_FAIL;
 	return S_OK;
 }
@@ -101,7 +123,7 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 {
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Player")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Player)))
 		return E_FAIL;
 	
 	return S_OK;
@@ -110,8 +132,8 @@ HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 {
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Shop")))
-		return E_FAIL;
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Shop")))
+	//	return E_FAIL;
 
 	return S_OK;
 }

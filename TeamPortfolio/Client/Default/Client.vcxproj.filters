@@ -131,9 +131,6 @@
     <ClCompile Include="..\private\MainApp.cpp">
       <Filter>00.MainApp</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Camera_Main.cpp">
-      <Filter>01.GameObject\Camera_Main</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>01.GameObject\BackGround</Filter>
     </ClCompile>
@@ -157,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Shop.cpp">
       <Filter>01.GameObject\UI\Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_Main.cpp">
+      <Filter>01.GameObject\Camera_Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

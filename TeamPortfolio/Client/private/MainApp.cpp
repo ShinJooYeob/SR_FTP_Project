@@ -56,9 +56,9 @@ _int CMainApp::Update(_float fDeltaTime)
 
 	// IMGUI 메뉴바 테스트
 	m_pGameInstance->GetIMGui()->Text("testbar");
-	return m_pGameInstance->Update_Engine(fDeltaTime);
-
-
+	
+	
+	 return  m_pGameInstance->Update_Engine(fDeltaTime);
 }
 
 HRESULT CMainApp::Render()
@@ -141,24 +141,24 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 		return E_FAIL;
 
 	//렌더러 컴객체 프로토타입 생성
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), m_pComRenderer = CRenderer::Create(m_pGraphicDevice))))
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Renderer), m_pComRenderer = CRenderer::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	Safe_AddRef(m_pComRenderer);
 
 
 	//버퍼인덱스 프로토타입 생성
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pGraphicDevice))))
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), CVIBuffer_Rect::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 	//Transform 프로토타입 생성
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), CTransform::Create(m_pGraphicDevice))))
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), CTransform::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 	/* 디폴트 텍스처 프로토타입 생성 */
 	CTexture::TEXTUREDESC TextureDesc{};
 	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Default.jpg");
 
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), CTexture::Create(m_pGraphicDevice,&TextureDesc))))
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), CTexture::Create(m_pGraphicDevice,&TextureDesc))))
 		return E_FAIL;
 
 
@@ -170,8 +170,8 @@ HRESULT CMainApp::Ready_Static_GameObject_Prototype()
 {	//Camera_Main 프로토타입 생성
 	CCamera::CAMERADESC CameraDesc;
 
-	CameraDesc.vEye = _float3(0.f, 5.f, -5.f);
-	CameraDesc.vAt = _float3(0, 5.f, 0);
+	CameraDesc.vEye = _float3(2.5f, 2.f, -10.f);
+	CameraDesc.vAt = _float3(2.5f, 2.f, 0);
 	CameraDesc.vAxisY = _float3(0, 1, 0);
 
 	CameraDesc.fFovy = D3DXToRadian(60.0f);
@@ -182,7 +182,7 @@ HRESULT CMainApp::Ready_Static_GameObject_Prototype()
 	CameraDesc.TransformDesc.fMovePerSec = 10.f;
 	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Camera_Main"), CCamera_Main::Create(m_pGraphicDevice, &CameraDesc))))
+	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Main::Create(m_pGraphicDevice, &CameraDesc))))
 		return E_FAIL;
 
 	return S_OK;

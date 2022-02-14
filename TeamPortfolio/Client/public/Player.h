@@ -38,13 +38,21 @@ private:
 	_bool					m_bIsJumped = false;
 	_float					m_fJumpPower = 5.f;
 	_float					m_fNowJumpPower = 0.f;
+	_bool					m_bIsCliming = false;
 
 private:
+
 	_float			m_fFrame = 0.f;
+	CGameObject*	m_FootHoldObject = nullptr;
+	CGameObject*	m_BackWardObject = nullptr;
+
 
 private:
 	HRESULT			SetUp_Components();
-	HRESULT			Jump(_float fDeltaTime);
+
+	HRESULT			Find_FootHold_Object();
+
+	HRESULT			Set_PosOnFootHoldObject(_float fDeltaTime);
 	HRESULT			Set_PosOnTerrain(_float fDeltaTime);
 
 
