@@ -5,4 +5,4 @@ xcopy /y ..\Bin\"*.lib" ..\..\Reference\bin\
 xcopy /y ..\Bin\"*.dll" ..\..\Client\Bin\
 
 // tool추가
-xcopy /y ..\Bin\"*.dll" ..\..\tool\
+xcopy /y ..\Bin\"*.dll" ..\..\Tool\bin\

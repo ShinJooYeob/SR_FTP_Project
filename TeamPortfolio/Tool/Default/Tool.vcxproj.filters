@@ -4,11 +4,11 @@
     <Filter Include="Default">
       <UniqueIdentifier>{4d9d0c39-82cd-4502-ac34-280b583651f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Default\Frame">
+      <UniqueIdentifier>{7bdb03ec-c0a3-453e-98bf-ac078c91b965}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MainFrm.cpp">
-      <Filter>Default</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Default</Filter>
     </ClCompile>
@@ -21,11 +21,11 @@
     <ClCompile Include="ToolView.cpp">
       <Filter>Default</Filter>
     </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Default\Frame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainFrm.h">
-      <Filter>Default</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Default</Filter>
     </ClInclude>
@@ -43,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="ToolView.h">
       <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Default\Frame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
