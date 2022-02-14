@@ -29,14 +29,9 @@ HRESULT CMainApp::Initialize()
 
 	//// IMGUI 초기화
 	//	// IMGUI 초기화
-	//if (m_pGraphicDevice == nullptr)
-	//	return E_FAIL;
-
-	//if (GETIMGUI->Initialize_IMGUI(g_hWnd, m_pGraphicDevice))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pGameInstance->GetIMGui()->Initialize_IMGUI(GraphicDesc.hWnd, m_pGraphicDevice)))
-	//	return E_FAIL;
+	
+	if (GETIMGUI->Initialize_IMGUI(g_hWnd, m_pGraphicDevice))
+		return E_FAIL;
 
 	if (FAILED(Default_Setting()))
 		return E_FAIL;
@@ -60,10 +55,6 @@ _int CMainApp::Update(_float fDeltaTime)
 {
 	if (m_pGameInstance == nullptr)
 		return -1;
-
-
-	
-	
 
 	if (FAILED(m_pGameInstance->Update_Engine(fDeltaTime)))
 	{
