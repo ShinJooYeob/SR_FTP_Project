@@ -35,6 +35,10 @@ _uint CALLBACK LoadingThread(void* _Prameter)
 	case SCENEID::SCENE_STAGE3:
 		pLoader->Load_Scene_Stage3(tThreadArg.IsClientQuit, tThreadArg.CriSec);
 		break;
+	case SCENEID::SCENE_IMGUISCENE:
+		pLoader->Load_Scene_IMGUI(tThreadArg.IsClientQuit, tThreadArg.CriSec);
+		break;
+
 
 	default:
 		MSGBOX("Failed to Create Scene");
@@ -153,17 +157,29 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 HRESULT CLoader::Load_Scene_Stage1(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
+	m_bIsLoadingFinished = true;
+
 	return S_OK;
 }
 
 HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
+	m_bIsLoadingFinished = true;
+
 	return S_OK;
 }
 
 HRESULT CLoader::Load_Scene_Stage3(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
+	m_bIsLoadingFinished = true;
 
+	return S_OK;
+}
+
+HRESULT CLoader::Load_Scene_IMGUI(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
+{
+
+	m_bIsLoadingFinished = true;	
 	return S_OK;
 }
 

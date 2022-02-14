@@ -76,6 +76,9 @@
     <Filter Include="01.GameObject\TestObject\FixObject">
       <UniqueIdentifier>{ddaed1a3-f81e-4c77-ba58-1eb309196797}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.Scene\05.Scene_IMGUI">
+      <UniqueIdentifier>{90b323d6-6a89-43a9-9136-49e1cbede64e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -138,6 +141,9 @@
     <ClInclude Include="..\public\Inventory_Main.h">
       <Filter>01.GameObject\UI\Inventory_Main</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Scene_IMGUI.h">
+      <Filter>02.Scene\05.Scene_IMGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -187,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Inventory_Main.cpp">
       <Filter>01.GameObject\UI\Inventory_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scene_IMGUI.cpp">
+      <Filter>02.Scene\05.Scene_IMGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

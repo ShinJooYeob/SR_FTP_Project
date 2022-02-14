@@ -14,6 +14,8 @@ TeamPortfolio/Client/Default/x86/**/*.*
 TeamPortfolio/Engine/Default/x64/**/*.*
 TeamPortfolio/Engine/Default/x86/**/*.*
 
+TeamPortfolio/Tool/x64/**/*.*
+TeamPortfolio/Tool/x86/**/*.*
 
 \Engine
 

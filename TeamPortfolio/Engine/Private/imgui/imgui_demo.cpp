@@ -409,138 +409,138 @@ void ImGui::ShowDemoWindow(bool* p_open)
     ImGui::Text("dear imgui says hello. (%s)", IMGUI_VERSION);
     ImGui::Spacing();
 
-    IMGUI_DEMO_MARKER("Help");
-    if (ImGui::CollapsingHeader("Help"))
-    {
-        ImGui::Text("ABOUT THIS DEMO:");
-        ImGui::BulletText("Sections below are demonstrating many aspects of the library.");
-        ImGui::BulletText("The \"Examples\" menu above leads to more demo contents.");
-        ImGui::BulletText("The \"Tools\" menu above gives access to: About Box, Style Editor,\n"
-                          "and Metrics/Debugger (general purpose Dear ImGui debugging tool).");
-        ImGui::Separator();
+	//IMGUI_DEMO_MARKER("Help");
+	//if (ImGui::CollapsingHeader("Help"))
+	//{
+	//    ImGui::Text("ABOUT THIS DEMO:");
+	//    ImGui::BulletText("Sections below are demonstrating many aspects of the library.");
+	//    ImGui::BulletText("The \"Examples\" menu above leads to more demo contents.");
+	//    ImGui::BulletText("The \"Tools\" menu above gives access to: About Box, Style Editor,\n"
+	//                      "and Metrics/Debugger (general purpose Dear ImGui debugging tool).");
+	//    ImGui::Separator();
 
-        ImGui::Text("PROGRAMMER GUIDE:");
-        ImGui::BulletText("See the ShowDemoWindow() code in imgui_demo.cpp. <- you are here!");
-        ImGui::BulletText("See comments in imgui.cpp.");
-        ImGui::BulletText("See example applications in the examples/ folder.");
-        ImGui::BulletText("Read the FAQ at http://www.dearimgui.org/faq/");
-        ImGui::BulletText("Set 'io.ConfigFlags |= NavEnableKeyboard' for keyboard controls.");
-        ImGui::BulletText("Set 'io.ConfigFlags |= NavEnableGamepad' for gamepad controls.");
-        ImGui::Separator();
+	//    ImGui::Text("PROGRAMMER GUIDE:");
+	//    ImGui::BulletText("See the ShowDemoWindow() code in imgui_demo.cpp. <- you are here!");
+	//    ImGui::BulletText("See comments in imgui.cpp.");
+	//    ImGui::BulletText("See example applications in the examples/ folder.");
+	//    ImGui::BulletText("Read the FAQ at http://www.dearimgui.org/faq/");
+	//    ImGui::BulletText("Set 'io.ConfigFlags |= NavEnableKeyboard' for keyboard controls.");
+	//    ImGui::BulletText("Set 'io.ConfigFlags |= NavEnableGamepad' for gamepad controls.");
+	//    ImGui::Separator();
 
-        ImGui::Text("USER GUIDE:");
-        ImGui::ShowUserGuide();
-    }
+	//    ImGui::Text("USER GUIDE:");
+	//    ImGui::ShowUserGuide();
+	//}
 
-    IMGUI_DEMO_MARKER("Configuration");
-    if (ImGui::CollapsingHeader("Configuration"))
-    {
-        ImGuiIO& io = ImGui::GetIO();
+	//IMGUI_DEMO_MARKER("Configuration");
+	//if (ImGui::CollapsingHeader("Configuration"))
+	//{
+	//    ImGuiIO& io = ImGui::GetIO();
 
-        if (ImGui::TreeNode("Configuration##2"))
-        {
-            ImGui::CheckboxFlags("io.ConfigFlags: NavEnableKeyboard",    &io.ConfigFlags, ImGuiConfigFlags_NavEnableKeyboard);
-            ImGui::SameLine(); HelpMarker("Enable keyboard controls.");
-            ImGui::CheckboxFlags("io.ConfigFlags: NavEnableGamepad",     &io.ConfigFlags, ImGuiConfigFlags_NavEnableGamepad);
-            ImGui::SameLine(); HelpMarker("Enable gamepad controls. Require backend to set io.BackendFlags |= ImGuiBackendFlags_HasGamepad.\n\nRead instructions in imgui.cpp for details.");
-            ImGui::CheckboxFlags("io.ConfigFlags: NavEnableSetMousePos", &io.ConfigFlags, ImGuiConfigFlags_NavEnableSetMousePos);
-            ImGui::SameLine(); HelpMarker("Instruct navigation to move the mouse cursor. See comment for ImGuiConfigFlags_NavEnableSetMousePos.");
-            ImGui::CheckboxFlags("io.ConfigFlags: NoMouse",              &io.ConfigFlags, ImGuiConfigFlags_NoMouse);
-            if (io.ConfigFlags & ImGuiConfigFlags_NoMouse)
-            {
-                // The "NoMouse" option can get us stuck with a disabled mouse! Let's provide an alternative way to fix it:
-                if (fmodf((float)ImGui::GetTime(), 0.40f) < 0.20f)
-                {
-                    ImGui::SameLine();
-                    ImGui::Text("<<PRESS SPACE TO DISABLE>>");
-                }
-                if (ImGui::IsKeyPressed(ImGuiKey_Space))
-                    io.ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
-            }
-            ImGui::CheckboxFlags("io.ConfigFlags: NoMouseCursorChange", &io.ConfigFlags, ImGuiConfigFlags_NoMouseCursorChange);
-            ImGui::SameLine(); HelpMarker("Instruct backend to not alter mouse cursor shape and visibility.");
-            ImGui::Checkbox("io.ConfigInputTrickleEventQueue", &io.ConfigInputTrickleEventQueue);
-            ImGui::SameLine(); HelpMarker("Enable input queue trickling: some types of events submitted during the same frame (e.g. button down + up) will be spread over multiple frames, improving interactions with low framerates.");
-            ImGui::Checkbox("io.ConfigInputTextCursorBlink", &io.ConfigInputTextCursorBlink);
-            ImGui::SameLine(); HelpMarker("Enable blinking cursor (optional as some users consider it to be distracting).");
-            ImGui::Checkbox("io.ConfigDragClickToInputText", &io.ConfigDragClickToInputText);
-            ImGui::SameLine(); HelpMarker("Enable turning DragXXX widgets into text input with a simple mouse click-release (without moving).");
-            ImGui::Checkbox("io.ConfigWindowsResizeFromEdges", &io.ConfigWindowsResizeFromEdges);
-            ImGui::SameLine(); HelpMarker("Enable resizing of windows from their edges and from the lower-left corner.\nThis requires (io.BackendFlags & ImGuiBackendFlags_HasMouseCursors) because it needs mouse cursor feedback.");
-            ImGui::Checkbox("io.ConfigWindowsMoveFromTitleBarOnly", &io.ConfigWindowsMoveFromTitleBarOnly);
-            ImGui::Checkbox("io.MouseDrawCursor", &io.MouseDrawCursor);
-            ImGui::SameLine(); HelpMarker("Instruct Dear ImGui to render a mouse cursor itself. Note that a mouse cursor rendered via your application GPU rendering path will feel more laggy than hardware cursor, but will be more in sync with your other visuals.\n\nSome desktop applications may use both kinds of cursors (e.g. enable software cursor only when resizing/dragging something).");
-            ImGui::Text("Also see Style->Rendering for rendering options.");
-            ImGui::TreePop();
-            ImGui::Separator();
-        }
+	//    if (ImGui::TreeNode("Configuration##2"))
+	//    {
+	//        ImGui::CheckboxFlags("io.ConfigFlags: NavEnableKeyboard",    &io.ConfigFlags, ImGuiConfigFlags_NavEnableKeyboard);
+	//        ImGui::SameLine(); HelpMarker("Enable keyboard controls.");
+	//        ImGui::CheckboxFlags("io.ConfigFlags: NavEnableGamepad",     &io.ConfigFlags, ImGuiConfigFlags_NavEnableGamepad);
+	//        ImGui::SameLine(); HelpMarker("Enable gamepad controls. Require backend to set io.BackendFlags |= ImGuiBackendFlags_HasGamepad.\n\nRead instructions in imgui.cpp for details.");
+	//        ImGui::CheckboxFlags("io.ConfigFlags: NavEnableSetMousePos", &io.ConfigFlags, ImGuiConfigFlags_NavEnableSetMousePos);
+	//        ImGui::SameLine(); HelpMarker("Instruct navigation to move the mouse cursor. See comment for ImGuiConfigFlags_NavEnableSetMousePos.");
+	//        ImGui::CheckboxFlags("io.ConfigFlags: NoMouse",              &io.ConfigFlags, ImGuiConfigFlags_NoMouse);
+	//        if (io.ConfigFlags & ImGuiConfigFlags_NoMouse)
+	//        {
+	//            // The "NoMouse" option can get us stuck with a disabled mouse! Let's provide an alternative way to fix it:
+	//            if (fmodf((float)ImGui::GetTime(), 0.40f) < 0.20f)
+	//            {
+	//                ImGui::SameLine();
+	//                ImGui::Text("<<PRESS SPACE TO DISABLE>>");
+	//            }
+	//            if (ImGui::IsKeyPressed(ImGuiKey_Space))
+	//                io.ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+	//        }
+	//        ImGui::CheckboxFlags("io.ConfigFlags: NoMouseCursorChange", &io.ConfigFlags, ImGuiConfigFlags_NoMouseCursorChange);
+	//        ImGui::SameLine(); HelpMarker("Instruct backend to not alter mouse cursor shape and visibility.");
+	//        ImGui::Checkbox("io.ConfigInputTrickleEventQueue", &io.ConfigInputTrickleEventQueue);
+	//        ImGui::SameLine(); HelpMarker("Enable input queue trickling: some types of events submitted during the same frame (e.g. button down + up) will be spread over multiple frames, improving interactions with low framerates.");
+	//        ImGui::Checkbox("io.ConfigInputTextCursorBlink", &io.ConfigInputTextCursorBlink);
+	//        ImGui::SameLine(); HelpMarker("Enable blinking cursor (optional as some users consider it to be distracting).");
+	//        ImGui::Checkbox("io.ConfigDragClickToInputText", &io.ConfigDragClickToInputText);
+	//        ImGui::SameLine(); HelpMarker("Enable turning DragXXX widgets into text input with a simple mouse click-release (without moving).");
+	//        ImGui::Checkbox("io.ConfigWindowsResizeFromEdges", &io.ConfigWindowsResizeFromEdges);
+	//        ImGui::SameLine(); HelpMarker("Enable resizing of windows from their edges and from the lower-left corner.\nThis requires (io.BackendFlags & ImGuiBackendFlags_HasMouseCursors) because it needs mouse cursor feedback.");
+	//        ImGui::Checkbox("io.ConfigWindowsMoveFromTitleBarOnly", &io.ConfigWindowsMoveFromTitleBarOnly);
+	//        ImGui::Checkbox("io.MouseDrawCursor", &io.MouseDrawCursor);
+	//        ImGui::SameLine(); HelpMarker("Instruct Dear ImGui to render a mouse cursor itself. Note that a mouse cursor rendered via your application GPU rendering path will feel more laggy than hardware cursor, but will be more in sync with your other visuals.\n\nSome desktop applications may use both kinds of cursors (e.g. enable software cursor only when resizing/dragging something).");
+	//        ImGui::Text("Also see Style->Rendering for rendering options.");
+	//        ImGui::TreePop();
+	//        ImGui::Separator();
+	//    }
 
-        IMGUI_DEMO_MARKER("Configuration/Backend Flags");
-        if (ImGui::TreeNode("Backend Flags"))
-        {
-            HelpMarker(
-                "Those flags are set by the backends (imgui_impl_xxx files) to specify their capabilities.\n"
-                "Here we expose them as read-only fields to avoid breaking interactions with your backend.");
+	//    IMGUI_DEMO_MARKER("Configuration/Backend Flags");
+	//    if (ImGui::TreeNode("Backend Flags"))
+	//    {
+	//        HelpMarker(
+	//            "Those flags are set by the backends (imgui_impl_xxx files) to specify their capabilities.\n"
+	//            "Here we expose them as read-only fields to avoid breaking interactions with your backend.");
 
-            // Make a local copy to avoid modifying actual backend flags.
-            // FIXME: We don't use BeginDisabled() to keep label bright, maybe we need a BeginReadonly() equivalent..
-            ImGuiBackendFlags backend_flags = io.BackendFlags;
-            ImGui::CheckboxFlags("io.BackendFlags: HasGamepad",           &backend_flags, ImGuiBackendFlags_HasGamepad);
-            ImGui::CheckboxFlags("io.BackendFlags: HasMouseCursors",      &backend_flags, ImGuiBackendFlags_HasMouseCursors);
-            ImGui::CheckboxFlags("io.BackendFlags: HasSetMousePos",       &backend_flags, ImGuiBackendFlags_HasSetMousePos);
-            ImGui::CheckboxFlags("io.BackendFlags: RendererHasVtxOffset", &backend_flags, ImGuiBackendFlags_RendererHasVtxOffset);
-            ImGui::TreePop();
-            ImGui::Separator();
-        }
+	//        // Make a local copy to avoid modifying actual backend flags.
+	//        // FIXME: We don't use BeginDisabled() to keep label bright, maybe we need a BeginReadonly() equivalent..
+	//        ImGuiBackendFlags backend_flags = io.BackendFlags;
+	//        ImGui::CheckboxFlags("io.BackendFlags: HasGamepad",           &backend_flags, ImGuiBackendFlags_HasGamepad);
+	//        ImGui::CheckboxFlags("io.BackendFlags: HasMouseCursors",      &backend_flags, ImGuiBackendFlags_HasMouseCursors);
+	//        ImGui::CheckboxFlags("io.BackendFlags: HasSetMousePos",       &backend_flags, ImGuiBackendFlags_HasSetMousePos);
+	//        ImGui::CheckboxFlags("io.BackendFlags: RendererHasVtxOffset", &backend_flags, ImGuiBackendFlags_RendererHasVtxOffset);
+	//        ImGui::TreePop();
+	//        ImGui::Separator();
+	//    }
 
-        IMGUI_DEMO_MARKER("Configuration/Style");
-        if (ImGui::TreeNode("Style"))
-        {
-            HelpMarker("The same contents can be accessed in 'Tools->Style Editor' or by calling the ShowStyleEditor() function.");
-            ImGui::ShowStyleEditor();
-            ImGui::TreePop();
-            ImGui::Separator();
-        }
+	//    IMGUI_DEMO_MARKER("Configuration/Style");
+	//    if (ImGui::TreeNode("Style"))
+	//    {
+	//        HelpMarker("The same contents can be accessed in 'Tools->Style Editor' or by calling the ShowStyleEditor() function.");
+	//        ImGui::ShowStyleEditor();
+	//        ImGui::TreePop();
+	//        ImGui::Separator();
+	//    }
 
-        IMGUI_DEMO_MARKER("Configuration/Capture, Logging");
-        if (ImGui::TreeNode("Capture/Logging"))
-        {
-            HelpMarker(
-                "The logging API redirects all text output so you can easily capture the content of "
-                "a window or a block. Tree nodes can be automatically expanded.\n"
-                "Try opening any of the contents below in this window and then click one of the \"Log To\" button.");
-            ImGui::LogButtons();
+	//    IMGUI_DEMO_MARKER("Configuration/Capture, Logging");
+	//    if (ImGui::TreeNode("Capture/Logging"))
+	//    {
+	//        HelpMarker(
+	//            "The logging API redirects all text output so you can easily capture the content of "
+	//            "a window or a block. Tree nodes can be automatically expanded.\n"
+	//            "Try opening any of the contents below in this window and then click one of the \"Log To\" button.");
+	//        ImGui::LogButtons();
 
-            HelpMarker("You can also call ImGui::LogText() to output directly to the log without a visual output.");
-            if (ImGui::Button("Copy \"Hello, world!\" to clipboard"))
-            {
-                ImGui::LogToClipboard();
-                ImGui::LogText("Hello, world!");
-                ImGui::LogFinish();
-            }
-            ImGui::TreePop();
-        }
-    }
+	//        HelpMarker("You can also call ImGui::LogText() to output directly to the log without a visual output.");
+	//        if (ImGui::Button("Copy \"Hello, world!\" to clipboard"))
+	//        {
+	//            ImGui::LogToClipboard();
+	//            ImGui::LogText("Hello, world!");
+	//            ImGui::LogFinish();
+	//        }
+	//        ImGui::TreePop();
+	//    }
+	//}
 
-    IMGUI_DEMO_MARKER("Window options");
-    if (ImGui::CollapsingHeader("Window options"))
-    {
-        if (ImGui::BeginTable("split", 3))
-        {
-            ImGui::TableNextColumn(); ImGui::Checkbox("No titlebar", &no_titlebar);
-            ImGui::TableNextColumn(); ImGui::Checkbox("No scrollbar", &no_scrollbar);
-            ImGui::TableNextColumn(); ImGui::Checkbox("No menu", &no_menu);
-            ImGui::TableNextColumn(); ImGui::Checkbox("No move", &no_move);
-            ImGui::TableNextColumn(); ImGui::Checkbox("No resize", &no_resize);
-            ImGui::TableNextColumn(); ImGui::Checkbox("No collapse", &no_collapse);
-            ImGui::TableNextColumn(); ImGui::Checkbox("No close", &no_close);
-            ImGui::TableNextColumn(); ImGui::Checkbox("No nav", &no_nav);
-            ImGui::TableNextColumn(); ImGui::Checkbox("No background", &no_background);
-            ImGui::TableNextColumn(); ImGui::Checkbox("No bring to front", &no_bring_to_front);
-            ImGui::TableNextColumn(); ImGui::Checkbox("Unsaved document", &unsaved_document);
-            ImGui::EndTable();
-        }
-    }
+	//IMGUI_DEMO_MARKER("Window options");
+	//if (ImGui::CollapsingHeader("Window options"))
+	//{
+	//    if (ImGui::BeginTable("split", 3))
+	//    {
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("No titlebar", &no_titlebar);
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("No scrollbar", &no_scrollbar);
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("No menu", &no_menu);
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("No move", &no_move);
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("No resize", &no_resize);
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("No collapse", &no_collapse);
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("No close", &no_close);
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("No nav", &no_nav);
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("No background", &no_background);
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("No bring to front", &no_bring_to_front);
+	//        ImGui::TableNextColumn(); ImGui::Checkbox("Unsaved document", &unsaved_document);
+	//        ImGui::EndTable();
+	//    }
+	//}
 
     // All demo contents
     ShowDemoWindowWidgets();

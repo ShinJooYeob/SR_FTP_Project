@@ -30,8 +30,10 @@ private:
 
 public:/*엔진이 돌아갈 때 전반적으로 처리해줘야할 것들*/
 	HRESULT		Initialize_Engine(HINSTANCE hInst, const CGraphic_Device::GRAPHICDESC& GraphicDesc,_uint iMaxSceneNum , LPDIRECT3DDEVICE9* ppOut, _float fDoubleInterver = 0.3f);
+	HRESULT		Initialize_Engine_Tool(const CGraphic_Device::GRAPHICDESC& GraphicDesc, _uint iMaxSceneNum, LPDIRECT3DDEVICE9* ppOut);
 	_int		Update_Engine(_float fDeltaTime);
-	_int		LateUpdate_Engine(_float fDeltaTime);
+	_int		Update_Engine_Tool(_float fDeltaTime);
+
 	HRESULT		Clear_Scene_Resource(_uint eSceneNum);
 
 
@@ -40,7 +42,7 @@ public:/* For.ObjectMgr */
 	HRESULT			Add_GameObject_To_Layer(_uint eSceneNum, const _tchar* tagLayer, const _tchar* tagPrototype, void* pArg = nullptr);
 	CComponent*		Get_Commponent_By_LayerIndex(_uint eSceneNum, const _tchar* tagLayer, const _tchar* tagComponet, _uint iLayerIndex = 0);
 	CGameObject*	Get_GameObject_By_LayerIndex(_uint eSceneNum, const _tchar* tagLayer, _uint iLayerIndex = 0);
-	list<CGameObject*>*	Get_ObjectList_from_Layer(_uint eSceneNum, const _tchar* tagLayer);
+	CLayer*			Get_Layer(_uint eSceneNum, const _tchar* tagLayer);
 	CGameObject*	Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, const _tchar* tagLayer, _uint iLayerIndex = 0);
 
 public: /*For.ComMgr*/
@@ -59,7 +61,6 @@ public:  /*For Graphic Device*/
 public: /*For SceneMgr*/
 	HRESULT Scene_Change(CScene* pScene, _int iNextSceneIdx);
 	_int	Render_Scene(); // 
-	_uint	Get_NowSceneNum();
 
 
 public: /*For TreadMgr*/

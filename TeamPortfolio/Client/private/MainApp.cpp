@@ -28,6 +28,11 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	// IMGUI 초기화
+		// IMGUI 초기화
+	if (m_pGraphicDevice != nullptr)
+		GETIMGUI->Initialize_IMGUI(g_hWnd, m_pGraphicDevice);
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->GetIMGui()->Initialize_IMGUI(GraphicDesc.hWnd, m_pGraphicDevice)))
 		return E_FAIL;
 
@@ -54,8 +59,7 @@ _int CMainApp::Update(_float fDeltaTime)
 	if (m_pGameInstance == nullptr)
 		return -1;
 
-	// IMGUI 메뉴바 테스트
-	m_pGameInstance->GetIMGui()->Text("testbar");
+
 	
 	
 
@@ -67,7 +71,6 @@ _int CMainApp::Update(_float fDeltaTime)
 
 	//콜리전 내부 탐색중
 	m_pCollision->Collision_Obsever(fDeltaTime);
-
 	if (FAILED(m_pGameInstance->LateUpdate_Engine(fDeltaTime)))
 	{
 		MSGBOX("Failed to LateUpdate_Engine ");
@@ -83,9 +86,6 @@ HRESULT CMainApp::Render()
 		return -1;
 
 	m_pGameInstance->Render_Begin();
-
-	// IMGUI 랜더링 테스트 / 후에 씬에서 수행
-	m_pGameInstance->GetIMGui()->Render_IMGUI();
 
 	m_pComRenderer->Render_RenderGroup();
 
@@ -114,6 +114,7 @@ HRESULT CMainApp::Scene_Change(SCENEID eSceneID)
 	case SCENEID::SCENE_STAGE1:
 	case SCENEID::SCENE_STAGE2:
 	case SCENEID::SCENE_STAGE3:
+	case SCENEID::SCENE_IMGUISCENE:
 
 		m_pGameInstance->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, eSceneID), SCENEID::SCENE_LOADING);
 
