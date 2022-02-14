@@ -69,6 +69,22 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst,const CGraphic_Device::
 	return S_OK;
 }
 
+HRESULT CGameInstance::Initialize_Engine_Tool(const CGraphic_Device::GRAPHICDESC & GraphicDesc, _uint iMaxSceneNum, LPDIRECT3DDEVICE9 * ppOut)
+{
+	if (m_pGraphicDevice == nullptr || m_pObjectMgr == nullptr || m_pComponenetMgr == nullptr || m_pSceneMgr == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pGraphicDevice->InitDevice(GraphicDesc, ppOut)))
+		return E_FAIL;
+
+	if (FAILED(m_pObjectMgr->Reserve_Container(iMaxSceneNum)))
+		return E_FAIL;
+
+	if (FAILED(m_pComponenetMgr->Reserve_Container(iMaxSceneNum)))
+		return E_FAIL;
+	return S_OK;
+}
+
 _int CGameInstance::Update_Engine(_float fDeltaTime)
 {
 	if (m_pSceneMgr == nullptr || m_pObjectMgr == nullptr)

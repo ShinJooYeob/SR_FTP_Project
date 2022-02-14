@@ -49,8 +49,8 @@ void CMiniView::OnDraw(CDC* pDC)
 	CMainFrame*		pMain = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
 	CToolView*		pMainView = dynamic_cast<CToolView*>(pMain->m_MainSplitter.GetPane(0, 1));
 
-	CTerrain*		pTerrain = pMainView->Get_Terrain();
-	pTerrain->MiniRender();
+//	CTerrain*		pTerrain = pMainView->Get_Terrain();
+//	pTerrain->MiniRender();
 
 
 	CDevice::GetInstance()->Render_End(m_hWnd);

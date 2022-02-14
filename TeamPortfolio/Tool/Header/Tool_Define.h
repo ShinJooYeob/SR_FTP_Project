@@ -20,8 +20,16 @@
 
 
 #define	MSG_BOX(message)			MessageBoxW(g_hWnd, message, L"System Message", MB_OK)
-#define GetGameInstance				GetSingle(CGameInstance)	
+// #define GetGameInstance				GetSingle(CGameInstance)	
 
+enum SCENE_ID
+{
+	SCENE_ID_STATIC,
+	SCENE_ID_A,
+	SCENE_ID_B,
+	SCENE_ID_END,
+};
 
 extern HWND g_hWnd;
+extern HINSTANCE g_hInstance;
 

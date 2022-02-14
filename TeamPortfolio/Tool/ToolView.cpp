@@ -22,6 +22,8 @@
 // CToolView
 
 HWND	g_hWnd;
+HINSTANCE g_hInstance;
+
 IMPLEMENT_DYNCREATE(CToolView, CScrollView)
 
 BEGIN_MESSAGE_MAP(CToolView, CScrollView)
@@ -40,6 +42,7 @@ CToolView::CToolView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
+
 }
 
 CToolView::~CToolView()
@@ -49,6 +52,9 @@ CToolView::~CToolView()
 	
 	CTextureMgr::GetInstance()->DestroyInstance();
 	CDevice::GetInstance()->DestroyInstance();
+	CGameInstance::Release_Engine();
+
+
 }
 
 BOOL CToolView::PreCreateWindow(CREATESTRUCT& cs)
@@ -111,7 +117,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 
 	CDevice::GetInstance()->Render_Begin();
 
-	m_pTerrain->Render();
+//	m_pTerrain->Render();
 	
 	CDevice::GetInstance()->Render_End();
 
@@ -182,15 +188,15 @@ void CToolView::OnInitialUpdate()
 		return;
 	}
 
-	if (FAILED(CTextureMgr::GetInstance()->InsertTexture(TEX_SINGLE, L"../Texture/Cube.png", L"CUBE")))
-	{
-		AfxMessageBox(L"Cube Texture Insert Failed");
-		return;
-	}
+	//if (FAILED(CTextureMgr::GetInstance()->InsertTexture(TEX_SINGLE, L"../Texture/Cube.png", L"CUBE")))
+	//{
+	//	AfxMessageBox(L"Cube Texture Insert Failed");
+	//	return;
+	//}
 
-	m_pTerrain = new CTerrain;
-	m_pTerrain->Initialize();
-	m_pTerrain->SetMainView(this);
+	//m_pTerrain = new CTerrain;
+	//m_pTerrain->Initialize();
+	//m_pTerrain->SetMainView(this);
 
 		// AfxGetMainWnd : 현재 메인 윈도우를 반환하는 전역 함수
 		// 반환타입이 부모타입이어서 자식 타입으로 형변환 했음
@@ -230,32 +236,33 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	CScrollView::OnLButtonDown(nFlags, point);
 
-
+	// #Tag 툴창에서 마우스 피킹
 
 	//Invalidate : 호출 시 윈도우 wm_paint와 wm_erasebkgnd 메세지를 발생시킴
 	// ondraw 함수를 다시 한 번 호출
 	// 인자값이 FALSE일때는 wm_paint만 메시지만 발생
 	// 인자값이 true일때 wm_paint와 wm_erasebkgnd 두 메세지를 동시에 발생
 	// wm_erasebkgnd 메세지 : 배경을 지우라는 메시지
+	
 	Invalidate(FALSE);
-
 
 	CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 	//CMainFrame*	pMain = dynamic_cast<CMainFrame*>(GetParentFrame());
 
-	CMiniView*	pMiniView = dynamic_cast<CMiniView*>(pMain->m_SecondSplitter.GetPane(0, 0));
+	//CMiniView*	pMiniView = dynamic_cast<CMiniView*>(pMain->m_SecondSplitter.GetPane(0, 0));
 
-	CMyForm*	pMyForm = dynamic_cast<CMyForm*>(pMain->m_SecondSplitter.GetPane(1, 0));
+	//CMyForm*	pMyForm = dynamic_cast<CMyForm*>(pMain->m_SecondSplitter.GetPane(1, 0));
 
-	CMapTool*	pMapTool = &pMyForm->m_MapTool;
-
-
-	m_pTerrain->TileChange(D3DXVECTOR3(point.x + GetScrollPos(0),
-		point.y + GetScrollPos(1),
-		0.f), pMapTool->m_iDrawID);
+	//CMapTool*	pMapTool = &pMyForm->m_MapTool;
 
 
-	pMiniView->Invalidate(FALSE);
+	//m_pTerrain->TileChange(D3DXVECTOR3(point.x + GetScrollPos(0),
+	//	point.y + GetScrollPos(1),
+	//	0.f), pMapTool->m_iDrawID);
+
+
+	// pMiniView->Invalidate(FALSE);
+	Invalidate(FALSE);
 }
 
 
@@ -265,18 +272,19 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 
 	CScrollView::OnMouseMove(nFlags, point);
 
-	if (GetAsyncKeyState(VK_LBUTTON))
-	{
-		
-		Invalidate(FALSE);
+// #Tag 마우스 피킹
+	//if (GetAsyncKeyState(VK_LBUTTON))
+	//{
+	//	
+	//	Invalidate(FALSE);
 
-		CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-		CMiniView*	pMiniView = dynamic_cast<CMiniView*>(pMain->m_SecondSplitter.GetPane(0, 0));
-		CMyForm*	pMyForm = dynamic_cast<CMyForm*>(pMain->m_SecondSplitter.GetPane(1, 0));
-		CMapTool*	pMapTool = &pMyForm->m_MapTool;
+	//	CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	//	CMiniView*	pMiniView = dynamic_cast<CMiniView*>(pMain->m_SecondSplitter.GetPane(0, 0));
+	//	CMyForm*	pMyForm = dynamic_cast<CMyForm*>(pMain->m_SecondSplitter.GetPane(1, 0));
+	//	CMapTool*	pMapTool = &pMyForm->m_MapTool;
 
-		m_pTerrain->TileChange(D3DXVECTOR3(point.x + GetScrollPos(0), point.y + GetScrollPos(1), 0.f), pMapTool->m_iDrawID);
+	//	m_pTerrain->TileChange(D3DXVECTOR3(point.x + GetScrollPos(0), point.y + GetScrollPos(1), 0.f), pMapTool->m_iDrawID);
 
-		pMiniView->Invalidate(FALSE);
-	}
+	//	pMiniView->Invalidate(FALSE);
+	//}
 }

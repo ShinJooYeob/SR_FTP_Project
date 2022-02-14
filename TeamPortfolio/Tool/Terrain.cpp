@@ -53,7 +53,9 @@ void CTerrain::Update(void)
 void CTerrain::MiniRender(void)
 {
 	D3DXMATRIX	matWorld, matScale, matTrans;
-	
+	if (m_vecTile.empty())
+		return;
+
 	for (auto& iter : m_vecTile)
 	{
 		D3DXMatrixIdentity(&matWorld);
