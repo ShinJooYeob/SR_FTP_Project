@@ -27,7 +27,7 @@ HRESULT CCamera_Main::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
-	m_vWorldRotAxis = _float3(0.f, 0, 0.f);
+	m_vWorldRotAxis = _float3(2.5f, 0, 2.5f);
 
 	return S_OK;
 }

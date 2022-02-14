@@ -37,12 +37,14 @@ HRESULT CBackGround::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	static _float TempFloat = -1.f;
-	//m_ComTransform->Scaled({ 1.5f,1.5f,1.5f });
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, { TempFloat ,TempFloat ,TempFloat });
-	TempFloat++;
+	if (pArg != nullptr) {
+
+		_float3 vSettingPoint;
+		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+
+	}
 	
-	//m_ComTransform->Rotation_CW({ 0,1,0 }, D3DXToRadian(90));
 
 
 

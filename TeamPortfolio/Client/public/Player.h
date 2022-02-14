@@ -38,11 +38,13 @@ private:
 	_bool					m_bIsJumped = false;
 	_float					m_fJumpPower = 5.f;
 	_float					m_fNowJumpPower = 0.f;
+	_bool					m_bIsCliming = false;
 
 private:
 
 	_float			m_fFrame = 0.f;
 	CGameObject*	m_FootHoldObject = nullptr;
+	CGameObject*	m_BackWardObject = nullptr;
 
 
 private:
