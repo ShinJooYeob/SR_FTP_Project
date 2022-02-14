@@ -13,7 +13,7 @@ private:
 
 public:
 	CGameInstance*				Get_GameInstance() { return m_GameInstance; }
-	LPDIRECT3DDEVICE9			Get_Device(void) { return m_pDevice; }
+	LPDIRECT3DDEVICE9			Get_Device(void) { return m_pGraphicDevice; }
 	LPD3DXSPRITE				Get_Sprite(void) { return m_pSprite; }
 	LPD3DXFONT					Get_Font(void) { return m_pFont; }
 public:
@@ -25,7 +25,7 @@ public:
 	virtual		void	Free()override;
 private:
 	LPDIRECT3D9				m_p3D;
-	LPDIRECT3DDEVICE9		m_pDevice;
+	LPDIRECT3DDEVICE9		m_pGraphicDevice;
 
 	class CGameInstance*			m_GameInstance;
 

@@ -4,7 +4,7 @@
 IMPLEMENT_SINGLETON(CDevice)
 
 CDevice::CDevice()
-	: m_p3D(nullptr), m_pDevice(nullptr), m_pSprite(nullptr), m_pFont(nullptr)
+	: m_p3D(nullptr), m_pGraphicDevice(nullptr), m_pSprite(nullptr), m_pFont(nullptr)
 	, m_GameInstance(GetSingle(CGameInstance))
 {
 	Safe_AddRef(m_GameInstance);
@@ -20,10 +20,30 @@ HRESULT CDevice::InitDevice(void)
 	desc.iWinCY = WINCY;
 
 	// 툴 Init으로 변경
-	m_GameInstance->Initialize_Engine_Tool(desc, SCENEID::SCENE_END, &m_pDevice);
+	m_GameInstance->Initialize_Engine_Tool(desc, SCENEID::SCENE_END, &m_pGraphicDevice);
 
 	// IMGUI 라이브러리때문에 IMGUI 초기화 해줘야한다. / 삭제는 자동으로 매니저에서 삭제
-	m_GameInstance->GetIMGui()->Initialize_IMGUI(desc.hWnd, m_pDevice);
+	m_GameInstance->GetIMGui()->Initialize_IMGUI(desc.hWnd, m_pGraphicDevice);
+
+
+	// 랜더링 설정
+
+	//와이어 프레임
+	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	//잠시 조명연산을 꺼놓자
+	m_pGraphicDevice->SetRenderState(D3DRS_LIGHTING, false);
+
+	// 텍스처
+	m_pGraphicDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	m_pGraphicDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	//텍스쳐의 사이즈가 확대되거나 축소될때 변경 된 사이즈에 발생한 공백을 선형 보간해서 채움
+
+	m_pGraphicDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+	//텍스쳐를 인게임 내에서 수정하게 되면 과하게 선명해서 오히려 눈이 아픈 경우가 발생
+
+	m_pGraphicDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+	m_pGraphicDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+	//UV좌표를 1을 넘어가게 작성할 경우 다시 1인 점을 0으로 치환하여 좌표를 찍음
 
 	return S_OK;
 }
@@ -46,8 +66,8 @@ void CDevice::Render_End(HWND hWnd)
 {
 	//	m_pSprite->End();
 
-	m_pDevice->EndScene();
-	m_pDevice->Present(nullptr, nullptr, hWnd, nullptr);
+	m_pGraphicDevice->EndScene();
+	m_pGraphicDevice->Present(nullptr, nullptr, hWnd, nullptr);
 
 	//	GetGameInstance->Render_End(hWnd);
 }
@@ -55,7 +75,7 @@ void CDevice::Render_End(HWND hWnd)
 void CDevice::Free()
 {
 	Safe_Release(m_p3D);
-	Safe_Release(m_pDevice);
+	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pFont);
 	Safe_Release(m_pSprite);
 	Safe_Release(m_GameInstance);
