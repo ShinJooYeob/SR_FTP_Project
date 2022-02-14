@@ -13,7 +13,7 @@ public:
 	virtual ~CInventory() = default;
 
 private:
-	virtual HRESULT Initialize_Protoype(void * pArg)override;
+	virtual HRESULT Initialize_Prototype(void * pArg)override;
 	virtual HRESULT Initialize_Clone(void * pArg)override;
 public:
 	_int Get_Gold() { return m_iGold; }

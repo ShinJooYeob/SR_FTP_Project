@@ -14,7 +14,7 @@ CQuest::CQuest(const CQuest & rhs)
 {
 }
 
-HRESULT CQuest::Initialize_Protoype(void * pArg)
+HRESULT CQuest::Initialize_Prototype(void * pArg)
 {
 	return S_OK;
 }
@@ -51,7 +51,7 @@ bool CQuest::Get_QuestResult(_int eQuest)
 CQuest * CQuest::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 {
 	CQuest* pInstance = new CQuest(pGraphicDevice);
-	if (FAILED(pInstance->Initialize_Protoype(pArg)))
+	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
 		MSGBOX("Failed to Create Quest Prototype");
 		Safe_Release(pInstance);

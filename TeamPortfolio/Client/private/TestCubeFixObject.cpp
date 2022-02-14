@@ -59,8 +59,8 @@ _int CTestCubeFixObject::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
-	if (FAILED(SetUp_OnTerrain(fTimeDelta)))
-		return -1;
+	//if (FAILED(SetUp_OnTerrain(fTimeDelta)))
+	//	return -1;
 
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 

@@ -16,8 +16,8 @@ HRESULT CScene_IMGUI::Initialize()
 		return E_FAIL;
 	
 
-	FAILED_CHECK(Ready_Layer_BackGround(StrLayer(LAYER_DEFAULT)));
-	FAILED_CHECK(Ready_Layer_BackGround(StrLayer(LAYER_BACKGROUND)));
+	FAILED_CHECK(Ready_Layer_BackGround(TAG_LAY(Layer_BackGround)));
+	FAILED_CHECK(Ready_Layer_BackGround(TAG_LAY(Layer_BackGround)));
 
 	return S_OK;
 }

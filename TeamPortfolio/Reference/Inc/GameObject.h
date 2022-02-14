@@ -19,8 +19,9 @@ public:
 	virtual _int Render();
 	virtual _int LateRender();
 
-	void Set_Layer_Tag(const _tchar* _pLayer_Tag);
 	void Set_NowSceneNum(_uint eNowSceneNum) {	m_eNowSceneNum = eNowSceneNum; };
+	void Set_Layer_Tag(const _tchar* _pLayer_Tag);
+
 	const _tchar* Get_Layer_Tag();
 
 
@@ -40,7 +41,7 @@ protected:
 	LPDIRECT3DDEVICE9			m_pGraphicDevice = nullptr;
 	_uint						m_eNowSceneNum = 0;
 	_bool						m_bIsClone = false;
-	const _tchar*				m_Layer_Tag = nullptr;
+	const _tchar*				m_Layer_Tag = nullptr;;
 
 protected:
 	HRESULT Add_Component(_uint iScenenNum, const _tchar* tagPrototype,const _tchar* tagComponent, CComponent** ppOut , void* pArg =nullptr);

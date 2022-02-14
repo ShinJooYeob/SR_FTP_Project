@@ -376,8 +376,8 @@ void CGameInstance::Release_Engine()
 	if (0 != GetSingle(CTimeMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com TimeMgr ");
 
-	if (0 != GetSingle(CImguiMgr)->DestroyInstance())
-		MSGBOX("Failed to Release Com CImguiMgr ");
+	//if (0 != GetSingle(CImguiMgr)->DestroyInstance())
+	//	MSGBOX("Failed to Release Com CImguiMgr ");
 }
 
 void CGameInstance::Free()
@@ -388,7 +388,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pComponenetMgr);
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pInputDevice);
-	Safe_Release(m_pImguiMgr);
+	//Safe_Release(m_pImguiMgr);
 	Safe_Release(m_pTimerMgr);
 	Safe_Release(m_pEasingMgr);
 }

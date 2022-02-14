@@ -205,6 +205,7 @@ HRESULT CTestCubeMove::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Collision"), TEXT("Com_Collision"), (CComponent**)&m_pCollisionCom)))
 		return E_FAIL;
 	//////////////////////////////////////////////
+	return S_OK;
 }
 
 HRESULT CTestCubeMove::SetUp_OnTerrain(_float fDeltaTime)

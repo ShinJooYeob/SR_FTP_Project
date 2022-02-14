@@ -11,7 +11,7 @@ private:
 	explicit CQuest(const CQuest &rhs);
 	virtual ~CQuest() = default;
 public:
-	virtual HRESULT Initialize_Protoype(void * pArg)override;
+	virtual HRESULT Initialize_Prototype(void * pArg)override;
 	virtual HRESULT Initialize_Clone(void * pArg)override;
 public:
 	HRESULT Initialize_Quest(_int eQuest);

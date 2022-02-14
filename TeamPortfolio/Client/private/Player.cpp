@@ -512,6 +512,8 @@ void CPlayer::Free()
 	__super::Free();
 
 
+	Safe_Release(m_ComInventory);
+	Safe_Release(m_BackWardObject);
 	Safe_Release(m_FootHoldObject);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);

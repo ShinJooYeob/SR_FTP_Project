@@ -11,7 +11,7 @@ CInventory::CInventory(const CInventory & rhs)
 {
 }
 
-HRESULT CInventory::Initialize_Protoype(void * pArg)
+HRESULT CInventory::Initialize_Prototype(void * pArg)
 {
 	return S_OK;
 }
@@ -55,7 +55,7 @@ CInventory * CInventory::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 {
 	CInventory*	pInstance = new CInventory(pGraphicDevice);
 
-	if (FAILED(pInstance->Initialize_Protoype(pArg)))
+	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
 		MSGBOX("Failed to Creating CInventory");
 		Safe_Release(pInstance);
@@ -80,6 +80,6 @@ CComponent * CInventory::Clone(void * pArg)
 void CInventory::Free()
 {
 	__super::Free();
-	if(m_bIsClone)
-	Safe_Delete_Array(m_pSkill_Index);
+	if (m_bIsClone)
+		Safe_Delete_Array(m_pSkill_Index);
 }
