@@ -1,22 +1,22 @@
 #include "stdafx.h"
-#include "..\public\Shop.h"
+#include "..\public\Item.h"
 #include "Camera_Main.h"
 #include "Camera.h"
 
 
 
 
-CShop::CShop(LPDIRECT3DDEVICE9 pGraphicDevice)
+CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CGameObject(pGraphicDevice)
 {
 }
 
-CShop::CShop(const CShop & rhs)
+CItem::CItem(const CItem & rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT CShop::Initialize_Prototype(void * pArg)
+HRESULT CItem::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
@@ -25,37 +25,42 @@ HRESULT CShop::Initialize_Prototype(void * pArg)
 	return S_OK;
 }
 
-HRESULT CShop::Initialize_Clone(void * pArg)
+HRESULT CItem::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	
-	if (FAILED(SetUp_Skills()))
-		return E_FAIL;
-	
+
+
 	return S_OK;
 }
 
-_int CShop::Update(_float fDeltaTime)
+_int CItem::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
+
+	/*
+
+	CGameInstance* pInstance = GetSingle(CGameInstance);
+*/
+	
+	
 
 
 	return _int();
 }
 
-_int CShop::LateUpdate(_float fDeltaTime)
+_int CItem::LateUpdate(_float fDeltaTime)
 {
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
 
 
-
 	
+
 
 	//렌더링 그룹에 넣어주는 역활
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
@@ -64,7 +69,7 @@ _int CShop::LateUpdate(_float fDeltaTime)
 	return _int();
 }
 
-_int CShop::Render()
+_int CItem::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL; 
@@ -75,6 +80,7 @@ _int CShop::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
 		return E_FAIL;
 	 
+	
 	 //if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		//return E_FAIL;
 	
@@ -95,7 +101,7 @@ _int CShop::Render()
 	return _int();
 }
 
-_int CShop::LateRender()
+_int CItem::LateRender()
 {
 	if (FAILED(__super::LateRender()))
 		return E_FAIL;
@@ -103,7 +109,7 @@ _int CShop::LateRender()
 	return _int();
 }
 
-HRESULT CShop::SetUp_Components()
+HRESULT CItem::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
@@ -117,43 +123,16 @@ HRESULT CShop::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Shop"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
-	Safe_AddRef(m_Player_Inventory);
+
+
 
 
 	return S_OK;
 }
 
-HRESULT CShop::SetUp_Skills()
-{
-	ZeroMemory(m_Skill, sizeof(_int)*SKILL_END);
-	m_Skill[SKILL_SPEEDUP].Move_Speed+= 1*(m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP));
-	m_Skill[SKILL_SPEEDUP].Price = 1000;
-	
-	m_Skill[SKILL_DUBBLEJUMP].Price = 3000;
-	
-	m_Skill[SKILL_DASH].Price = 3000;
-	
-	m_Skill[SKILL_POTION].Price = 500;
 
 
-	return S_OK;
-}
-
-HRESULT CShop::Buy_Skill(_int eSKILL)
-{
-	if (m_Skill[eSKILL].Price <= m_Player_Inventory->Get_Gold())
-	{
-		m_Player_Inventory->Set_Skill_Level(eSKILL, 1);
-		m_Player_Inventory->Set_Gold(-m_Skill[eSKILL].Price);
-	}
-	else
-		MSGBOX("소지금이 부족합니다")
-
-	return S_OK;
-}
-
-HRESULT CShop::SetUp_RenderState()
+HRESULT CItem::SetUp_RenderState()
 {
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
@@ -171,7 +150,7 @@ HRESULT CShop::SetUp_RenderState()
 	return S_OK;
 }
 
-HRESULT CShop::Release_RenderState()
+HRESULT CItem::Release_RenderState()
 {
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
@@ -180,13 +159,13 @@ HRESULT CShop::Release_RenderState()
 }
 
 
-CShop * CShop::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
+CItem * CItem::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 {
-	CShop* pInstance = new CShop(pGraphicDevice);
+	CItem* pInstance = new CItem(pGraphicDevice);
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CShop_ProtoType");
+		MSGBOX("Fail to Create CPlayer_ProtoType");
 		Safe_Release(pInstance);
 
 	}
@@ -195,13 +174,13 @@ CShop * CShop::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 	return pInstance;
 }
 
-CGameObject * CShop::Clone(void * pArg)
+CGameObject * CItem::Clone(void * pArg)
 {
-	CShop* pInstance = new CShop((*this));
+	CItem* pInstance = new CItem((*this));
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CShop_Clone");
+		MSGBOX("Fail to Create CPlayer_Clone");
 		Safe_Release(pInstance);
 
 	}
@@ -210,11 +189,11 @@ CGameObject * CShop::Clone(void * pArg)
 	return pInstance;
 }
 
-void CShop::Free()
+void CItem::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_Player_Inventory);
+
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);

@@ -184,3 +184,11 @@ static const _tchar* Tag_Component(COMPONENTID eTag)
 }
 #define  TAG_COM Tag_Component
 
+enum SKILL
+{
+	SKILL_SPEEDUP,
+	SKILL_DUBBLEJUMP,
+	SKILL_DASH,
+	SKILL_POTION,
+	SKILL_END,
+};

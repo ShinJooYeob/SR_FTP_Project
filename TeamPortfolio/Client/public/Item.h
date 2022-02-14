@@ -7,16 +7,16 @@ BEGIN(Engine)
 class CRenderer;
 class CVIBuffer_Rect;
 class CTransform;
-class CInventory;
 END
 
 
-class CPlayer final :public CGameObject
+class CItem final :public CGameObject
 {
 private:
-	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphicDevice);
-	explicit CPlayer(const CPlayer& rhs);
-	virtual ~CPlayer() = default;
+	explicit CItem(LPDIRECT3DDEVICE9 pGraphicDevice);
+	explicit CItem(const CItem& rhs);
+	virtual ~CItem() = default;
+
 
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
@@ -35,33 +35,23 @@ private:
 	CTransform*				m_ComTransform = nullptr;
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
-	CInventory*				m_ComInventory = nullptr;
-	_bool					m_bIsJumped = false;
-	_float					m_fJumpPower = 5.f;
-	_float					m_fNowJumpPower = 0.f;
-	_bool					m_bIsCliming = false;
+
+	
+	
 
 private:
-
 	_float			m_fFrame = 0.f;
-	CGameObject*	m_FootHoldObject = nullptr;
-	CGameObject*	m_BackWardObject = nullptr;
-
 
 private:
 	HRESULT			SetUp_Components();
-
-	HRESULT			Find_FootHold_Object();
-
-	HRESULT			Set_PosOnFootHoldObject(_float fDeltaTime);
-	HRESULT			Set_PosOnTerrain(_float fDeltaTime);
+	
 
 
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
 public:
-	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
+	static CItem* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg);
 	virtual CGameObject* Clone(void* pArg = nullptr)override;
 	virtual void Free()override;
 

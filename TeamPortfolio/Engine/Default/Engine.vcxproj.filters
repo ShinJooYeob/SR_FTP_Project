@@ -106,6 +106,15 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\Collision">
       <UniqueIdentifier>{483e76bc-b82f-4701-b8c0-2f9c3be2da18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI">
+      <UniqueIdentifier>{fc911220-cf11-44b4-b447-4f91312dbe78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Inventory">
+      <UniqueIdentifier>{24564cf4-a693-4d56-ae2c-ed8ccd7c82cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Quest">
+      <UniqueIdentifier>{1355212b-e71e-4a2a-819a-4ecd458fbb9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -203,6 +212,12 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Cube.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Model\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Inventory.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Quest.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Quest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +334,12 @@
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Cube.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Model\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Inventory.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Quest.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Quest</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

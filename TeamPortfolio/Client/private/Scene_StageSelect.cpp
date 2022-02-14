@@ -164,6 +164,7 @@ HRESULT CScene_StageSelect::Ready_Layer_FixCube(const _tchar * pLayerTag)
 }
 
 
+
 CScene_StageSelect * CScene_StageSelect::Create(LPDIRECT3DDEVICE9 GraphicDevice)
 {
 	CScene_StageSelect* pTempGame = new CScene_StageSelect(GraphicDevice);

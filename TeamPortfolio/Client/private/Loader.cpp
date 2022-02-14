@@ -118,6 +118,8 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_FixObject_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	
+
 #pragma endregion
 
 #pragma  region PROTOTYPE_GAMEOBJECT
@@ -138,6 +140,8 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TestCubeFixObject"), CTestCubeFixObject::Create(m_pGraphicDevice))))
 		return E_FAIL;
+	
+	
 #pragma endregion
 
 

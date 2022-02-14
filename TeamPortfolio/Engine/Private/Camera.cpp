@@ -83,7 +83,8 @@ _int CCamera::Update(_float fDeltaTime)
 	
 	if (bIsOrtho)
 		D3DXMatrixOrthoLH(&matProj, 20, 10, m_CameraDesc.fNear, m_CameraDesc.fFar);
-	
+	/*CalculateOrtho(1280.f, 720.f);*/
+
 	else
 		D3DXMatrixPerspectiveFovLH(&matProj, m_CameraDesc.fFovy, m_CameraDesc.fAspect, m_CameraDesc.fNear, m_CameraDesc.fFar);
 	

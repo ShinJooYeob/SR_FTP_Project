@@ -3,10 +3,9 @@
 #include "Renderer.h"
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Terrain.h"
-#include "VIBuffer_Cube.h"
 #include "Transform.h"
 #include "Texture.h"
-#include "Collision.h"
+#include "Inventory.h"
 
 BEGIN(Engine)
 class CComponent;
