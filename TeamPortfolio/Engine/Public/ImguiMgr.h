@@ -58,25 +58,30 @@ public:
 	// 모음 기능
 	// 데모화면
 	HRESULT Demo();
-
-	// 데모에서 쓸만한기능 재구현
-	HRESULT Demo_Test();
-	HRESULT ShowExampleAppMainMenuBar();
+	HRESULT Demo_Wiget();
 
 	HRESULT TestWindow1();
 	HRESULT TestWindow2();
 
+	HRESULT GameWindow();
+
+	void SetViewport(HWND hwnd);
 
 private:
 	void SaveFunc();
+	void SimpleLayout();
 private:
 	bool mDemo;
+
+	bool mToolWindow;
+
 
 
 //	HRESULT CastingTchar2char(const _tchar* strtchar,const char* strchar);
 //	_tchar*   Castingchar2Tchar(const char* str);
 
 public:
+	void DestroyIMGUI();
 	virtual void Free() override; // 장치를 지워준다.
 };
 

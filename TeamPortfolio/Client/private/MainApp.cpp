@@ -28,8 +28,9 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	// IMGUI 초기화
-	if (FAILED(m_pGameInstance->GetIMGui()->Initialize_IMGUI(GraphicDesc.hWnd, m_pGraphicDevice)))
-		return E_FAIL;
+		// IMGUI 초기화
+	if (m_pGraphicDevice != nullptr)
+		GETIMGUI->Initialize_IMGUI(g_hWnd, m_pGraphicDevice);
 
 	if (FAILED(Default_Setting()))
 		return E_FAIL;
@@ -53,6 +54,8 @@ _int CMainApp::Update(_float fDeltaTime)
 {
 	if (m_pGameInstance == nullptr)
 		return -1;
+
+
 	return m_pGameInstance->Update_Engine(fDeltaTime);
 
 }
@@ -63,7 +66,6 @@ HRESULT CMainApp::Render()
 		return -1;
 
 	m_pGameInstance->Render_Begin();
-
 
 	m_pComRenderer->Render_RenderGroup();
 

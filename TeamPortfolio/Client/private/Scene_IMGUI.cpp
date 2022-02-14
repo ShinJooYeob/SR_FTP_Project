@@ -7,12 +7,14 @@ CScene_IMGUI::CScene_IMGUI(LPDIRECT3DDEVICE9 GraphicDevice)
 	:CScene(GraphicDevice)
 {
 	mbIsFrame = false;
+
 }
 
 HRESULT CScene_IMGUI::Initialize()
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
+	
 
 	FAILED_CHECK(Ready_Layer_BackGround(StrLayer(LAYER_DEFAULT)));
 	FAILED_CHECK(Ready_Layer_BackGround(StrLayer(LAYER_BACKGROUND)));
@@ -32,9 +34,9 @@ _int CScene_IMGUI::Update(_float fDeltaTime)
 //	GETIMGUI->Demo();
 //	GETIMGUI->Demo_Test();
 //	GETIMGUI->TestWindow1();
-	GETIMGUI->TestWindow2();
+//	GETIMGUI->TestWindow2();
+	GETIMGUI->GameWindow();
 
-	
 	
 //	GETIMGUI->Text("AAA");
 //	GETIMGUI->Text("Go String");
@@ -81,8 +83,8 @@ _int CScene_IMGUI::LateRender()
 
 HRESULT CScene_IMGUI::Ready_Layer_BackGround(const _tchar * pLayerTag)
 {
-//	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_TerrainGround")))
-//		return E_FAIL;
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_TerrainGround")))
+	//	return E_FAIL;
 
 	return S_OK;
 }

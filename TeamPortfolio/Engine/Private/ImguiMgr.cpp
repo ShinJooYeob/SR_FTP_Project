@@ -19,10 +19,10 @@ IMGUI_IMPL_API void     ImGui_ImplDX9_InvalidateDeviceObjects();
 
 */
 
-// #Bug: 마우스 위치가 맞지 않음 
 
 CImguiMgr::CImguiMgr()
 {
+	mToolWindow = false;
 }
 
 HRESULT CImguiMgr::Initialize_IMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device)
@@ -35,12 +35,12 @@ HRESULT CImguiMgr::Initialize_IMGUI(HWND hwnd, LPDIRECT3DDEVICE9 device)
 	// IMGUI_API ImGuiIO& GetIO(); 
 
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	// io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	// io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+//	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+//	io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
 
 	// Setup Dear ImGui style
-	//ImGui::StyleColorsDark();
-	ImGui::StyleColorsClassic();
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsClassic();
 
 	// Setup Platform/Renderer backends
 	// 연결 플랫폼에 따라 다름
@@ -56,6 +56,12 @@ HRESULT CImguiMgr::Update_IMGUI_Start()
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+
+	// #Bug 윈도우 사이즈가 안맞음
+	// 예제프로젝트는 잘되니까 그거보고 해결
+	//	auto windowsize = ImGui::GetMainViewport();
+	//	auto size = ImGui::GetMainViewport();
+
 	return S_OK;
 }
 
@@ -163,26 +169,7 @@ HRESULT CImguiMgr::Text(const char* str)
 
 HRESULT CImguiMgr::Demo()
 {
-	//// 타이틀바 예제 목록	
-
-	//// 메인바
-	//static bool show_app_main_menu_bar = false;
-	//static bool show_app_documents = false;
-	//// 콘솔
-	//static bool show_app_console = false;
-	//// 로그
-	//static bool show_app_log = false;
-	//static bool show_app_layout = false;
-	//static bool show_app_property_editor = false;
-	//static bool show_app_long_text = false;
-	//static bool show_app_auto_resize = false;
-	//static bool show_app_constrained_resize = false;
-	//static bool show_app_simple_overlay = false;
-	//static bool show_app_fullscreen = false;
-	//static bool show_app_window_titles = false;
-	//static bool show_app_custom_rendering = false;
-
-
+// 데모 실행
 	if (mDemo)
 	{
 		ImGui::ShowDemoWindow(&mDemo);
@@ -194,70 +181,21 @@ HRESULT CImguiMgr::Demo()
 //#define IMGUI_DEMO_MARKER(section)  do { if (GImGuiDemoMarkerCallback != NULL) GImGuiDemoMarkerCallback(__FILE__, __LINE__, section, GImGuiDemoMarkerCallbackUserData); } while (0)
 
 
-HRESULT CImguiMgr::Demo_Test()
+HRESULT CImguiMgr::Demo_Wiget()
 {
-	// 데모에서 쓸만한것 간단한 코드로 만듬
-
-#pragma region 타이틀바
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			ImGui::MenuItem("(demo menu)", NULL, false, false);
-			if (ImGui::MenuItem("New")) {}
-			if (ImGui::MenuItem("Open", "Ctrl+O")) {}			
-			if (ImGui::MenuItem("Save", "Ctrl+S")) {}
-			if (ImGui::MenuItem("Save As..")) {}
-
-			ImGui::EndMenu();
-		}
-		ImGui::EndMainMenuBar();
-	}
-#pragma endregion
-
-#pragma region 파일입출력
+	// 데모 위젯에서 쓸기능 탐색
 
 
-#pragma endregion 
-
-
-#pragma region 체크박스
-
-
-#pragma endregion 
 
 
 	return S_OK;
 
-}
-
-HRESULT CImguiMgr::ShowExampleAppMainMenuBar()
-{
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-		//	ShowExampleMenuFile();
-			ImGui::EndMenu();
-		}
-		if (ImGui::BeginMenu("Edit"))
-		{
-			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
-			ImGui::Separator();
-			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
-			ImGui::EndMenu();
-		}
-		ImGui::EndMainMenuBar();
-	}
-
-	return S_OK;
 }
 
 HRESULT CImguiMgr::TestWindow1()
 {
+	// 예제윈도우1
+	
 	static _int iData = 0;
 
 	// 텍스트
@@ -278,6 +216,8 @@ HRESULT CImguiMgr::TestWindow1()
 
 HRESULT CImguiMgr::TestWindow2()
 {
+	// 예제 2
+
 	// Create a window called "My First Tool", with a menu bar.
 	static bool my_tool_active;
 	ImGui::Begin("My First Tool", &my_tool_active, ImGuiWindowFlags_HorizontalScrollbar);
@@ -309,6 +249,7 @@ HRESULT CImguiMgr::TestWindow2()
 	// 하위창을 바로 만듬
 	ImGui::BeginChild("Scrolling");
 	for (int n = 0; n < 50; n++)
+		// 서식묹 %04d 적용 // 0001 0002 이렇게 출력
 		ImGui::Text("%04d: Some text", n);
 	// 종료 표시 필수
 	ImGui::EndChild();
@@ -316,8 +257,137 @@ HRESULT CImguiMgr::TestWindow2()
 	return S_OK;
 }
 
+HRESULT CImguiMgr::GameWindow()
+{
+	// 텍스트 파일 탐색창에서 선택하고 입출력
+	
+	// 클릭시 툴이 열림
+	ImVec2 size = { 100, 50 };
+	if(ImGui::Button("PathTool", size))
+	{
+		mToolWindow = true;
+	}
+
+	if (mToolWindow)
+	{
+
+		//ImGui::Begin("PathTool2", &mToolWindow, ImGuiWindowFlags_HorizontalScrollbar);
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				// 메뉴와 메뉴키 지원
+				if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
+				if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
+				if (ImGui::MenuItem("Close", "Ctrl+W")) { mToolWindow = false; }
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();		
+		}
+		ImGui::End();
+	}
+
+	// 파일 입출력 기능 // MFC
+	
+
+	// 드래그인 드랍
+
+	// 정점을 데이터에 맞게 그리는 기능
+
+
+	return S_OK;
+}
+
+void CImguiMgr::SetViewport(HWND hwnd)
+{
+	ImGui::GetMainViewport()->PlatformHandleRaw = (void*)hwnd;
+
+}
+
 void CImguiMgr::SaveFunc()
 {
+
+
+	static bool my_tool_active;
+	ImGui::Begin("My First Tool", &my_tool_active, ImGuiWindowFlags_HorizontalScrollbar);
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			// 메뉴와 메뉴키 지원
+			if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
+			if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
+			if (ImGui::MenuItem("Close", "Ctrl+W")) { my_tool_active = false; }
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}
+}
+
+void CImguiMgr::SimpleLayout()
+{
+	// 오브젝트 출력 / 텍스쳐 데이터 출력용으로 사용
+
+	static bool pOpen[2] = {};
+	ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+	if (ImGui::Begin("Example: Simple layout", pOpen, ImGuiWindowFlags_MenuBar))
+	{
+
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("Close")) *pOpen = false;
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
+
+		// Left
+		static int selected = 0;
+		{
+			ImGui::BeginChild("left pane", ImVec2(150, 0), true);
+			for (int i = 0; i < 100; i++)
+			{
+				// FIXME: Good candidate to use ImGuiSelectableFlags_SelectOnNav
+				char label[128];
+				sprintf_s(label, "MyObject %d", i);
+				if (ImGui::Selectable(label, selected == i))
+					selected = i;
+			}
+			ImGui::EndChild();
+		}
+		ImGui::SameLine();
+
+		// Right
+		{
+			ImGui::BeginGroup();
+			ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+			ImGui::Text("MyObject: %d", selected);
+			ImGui::Separator();
+			if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
+			{
+				if (ImGui::BeginTabItem("Description"))
+				{
+					ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+					ImGui::EndTabItem();
+				}
+				if (ImGui::BeginTabItem("Details"))
+				{
+					ImGui::Text("ID: 0123456789");
+					ImGui::EndTabItem();
+				}
+				ImGui::EndTabBar();
+			}
+			ImGui::EndChild();
+			if (ImGui::Button("Revert")) {}
+			ImGui::SameLine();
+			if (ImGui::Button("Save")) {}
+			ImGui::EndGroup();
+		}
+	}
+	ImGui::End();
+
 }
 
 
@@ -343,6 +413,14 @@ void CImguiMgr::SaveFunc()
 //	MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, str, len, szUniCode, 256);
 //	return szUniCode;
 //}
+
+void CImguiMgr::DestroyIMGUI()
+{
+	// 삭제시 제공함수로 삭제.
+	ImGui_ImplDX9_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+}
 
 void CImguiMgr::Free()
 {
