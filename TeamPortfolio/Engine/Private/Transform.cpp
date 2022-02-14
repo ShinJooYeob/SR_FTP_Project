@@ -10,7 +10,7 @@ CTransform::CTransform(LPDIRECT3DDEVICE9 pGraphicDevice)
 
 CTransform::CTransform(const CTransform & rhs)
 	:CComponent(rhs),
-	m_WorldMatirx(rhs.m_WorldMatirx)
+	m_WorldMatrix(rhs.m_WorldMatrix)
 {
 }
 
@@ -144,7 +144,7 @@ HRESULT CTransform::Bind_WorldMatrix()
 	if (m_pGraphicDevice == nullptr)
 		return E_FAIL;
 
-	_Matrix WorldMatrixSetbyPivot = m_WorldMatirx;
+	_Matrix WorldMatrixSetbyPivot = m_WorldMatrix;
 
 	WorldMatrixSetbyPivot._41 -= m_TransforDesc.vPivot.x;
 	WorldMatrixSetbyPivot._42 -= m_TransforDesc.vPivot.y;
@@ -192,12 +192,12 @@ HRESULT CTransform::Bind_WorldMatrix_Look_Camera(_float3 vCameraPos)
 	return S_OK;
 }
 
-HRESULT CTransform::Initialize_Protoype(void * pArg)
+HRESULT CTransform::Initialize_Prototype(void * pArg)
 {
-	if (FAILED(__super::Initialize_Protoype(pArg)))
+	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
 
-	D3DXMatrixIdentity(&m_WorldMatirx);
+	D3DXMatrixIdentity(&m_WorldMatrix);
 
 	return S_OK; 
 }
@@ -218,7 +218,7 @@ CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 
 	CTransform* pInstance = new CTransform(pGraphicDevice);
 
-	if (FAILED(pInstance->Initialize_Protoype(pArg))) {
+	if (FAILED(pInstance->Initialize_Prototype(pArg))) {
 		MSGBOX("Failed to Create Transform Prototype");
 		Safe_Release(pInstance);
 	}

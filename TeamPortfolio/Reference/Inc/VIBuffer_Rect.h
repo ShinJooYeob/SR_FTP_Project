@@ -11,7 +11,7 @@ private:
 	virtual ~CVIBuffer_Rect() = default;
 
 private:
-	virtual HRESULT Initialize_Protoype(void * pArg);
+	virtual HRESULT Initialize_Prototype(void * pArg);
 	virtual HRESULT Initialize_Clone(void * pArg);
 
 

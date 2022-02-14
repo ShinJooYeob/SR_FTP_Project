@@ -85,6 +85,11 @@ _int CGameInstance::Update_Engine(_float fDeltaTime)
 
 
 
+	return 0;
+}
+
+_int CGameInstance::LateUpdate_Engine(_float fDeltaTime)
+{
 	if (m_pObjectMgr->LateUpdate(fDeltaTime) < 0)
 		return -1;
 	if (m_pSceneMgr->LateUpdate(fDeltaTime) < 0)
@@ -297,6 +302,7 @@ _float CGameInstance::TargetQuadIn(_float fStartPoint, _float fTargetPoint,  _fl
 
 	return m_pEasingMgr->TargetQuadIn(fStartPoint, fTargetPoint,  fPassedTime, fTotalTime);
 }
+
 
 void CGameInstance::Release_Engine()
 {

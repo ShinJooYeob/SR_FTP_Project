@@ -21,6 +21,14 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Cube(TEXT("Layer_Cube"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_FixCube(TEXT("Layer_FixCube"))))
+		return E_FAIL;
+
+
 	//ZeroMemory(&m_Light, sizeof(m_Light));
 	//m_Light.Type = D3DLIGHT_DIRECTIONAL;
 
@@ -135,6 +143,23 @@ HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Shop")))
 	//	return E_FAIL;
 
+	return S_OK;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_Cube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_TestCubeMove")))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_FixCube(const _tchar * pLayerTag)
+{
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_TestCubeFixObject")))
+		return E_FAIL;
 	return S_OK;
 }
 

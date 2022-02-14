@@ -25,7 +25,7 @@ private:
 	virtual ~CVIBuffer_Terrain() = default;
 
 private:
-	virtual HRESULT Initialize_Protoype(void * pArg);
+	virtual HRESULT Initialize_Prototype(void * pArg);
 	virtual HRESULT Initialize_Clone(void * pArg);
 
 

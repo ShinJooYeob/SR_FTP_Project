@@ -19,6 +19,7 @@ private:
 	LPDIRECT3DDEVICE9		m_pGraphicDevice = nullptr;
 	CGameInstance*			m_pGameInstance = nullptr;
 	CRenderer*				m_pComRenderer = nullptr;
+	CCollision*				m_pCollision = nullptr;
 
 private:
 	HRESULT Scene_Change(SCENEID eSceneID);

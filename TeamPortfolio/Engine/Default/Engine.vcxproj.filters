@@ -99,9 +99,12 @@
     </Filter>
     <Filter Include="01.Utility\06.ImguiMgr">
       <UniqueIdentifier>{cb8abdb4-32dc-44af-a439-3ab76149bd45}</UniqueIdentifier>
-     </Filter>
+    </Filter>
     <Filter Include="01.Utility\06.EasingMgr">
       <UniqueIdentifier>{b3f2df39-b50b-4d0c-9307-a44f22a1638b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\Collision">
+      <UniqueIdentifier>{483e76bc-b82f-4701-b8c0-2f9c3be2da18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +197,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImguiMgr.cpp">
       <Filter>01.Utility\06.ImguiMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Collision.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Cube.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Model\Cube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -304,6 +313,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\ImguiMgr.h">
       <Filter>01.Utility\06.ImguiMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Collision.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Cube.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Model\Cube</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

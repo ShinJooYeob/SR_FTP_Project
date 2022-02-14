@@ -15,7 +15,7 @@ CVIBuffer_Rect::CVIBuffer_Rect(const CVIBuffer_Rect & rhs)
 }
 
 
-HRESULT CVIBuffer_Rect::Initialize_Protoype(void * pArg)
+HRESULT CVIBuffer_Rect::Initialize_Prototype(void * pArg)
 {
 
 	//////////vertex¹öÆÛ///////////////
@@ -93,7 +93,7 @@ CVIBuffer_Rect * CVIBuffer_Rect::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void *
 {
 	CVIBuffer_Rect* pInstance = new CVIBuffer_Rect(pGraphicDevice);
 
-	if (FAILED(pInstance->Initialize_Protoype(pArg))) 
+	if (FAILED(pInstance->Initialize_Prototype(pArg))) 
 	{
 
 		MSGBOX("Failed to Creating VIBuffer_Rect Prototype");

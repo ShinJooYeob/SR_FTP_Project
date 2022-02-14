@@ -27,6 +27,7 @@ public:
 	CGameObject*	Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, const _tchar* tagLayer, _uint iLayerIndex);
 	list<CGameObject*>*			Get_ObjectList_from_Layer(_uint iSceneNum, const _tchar* tagLayer);
 
+
 public:
 	_int Update(_float fDeltaTime);
 	_int LateUpdate(_float fDeltaTime);

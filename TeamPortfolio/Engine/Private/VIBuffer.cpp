@@ -27,9 +27,9 @@ CVIBuffer::CVIBuffer(const CVIBuffer & rhs)
 	Safe_AddRef(m_pIB);
 }
 
-HRESULT CVIBuffer::Initialize_Protoype(void * pArg)
+HRESULT CVIBuffer::Initialize_Prototype(void * pArg)
 {
-	if (FAILED(__super::Initialize_Protoype(pArg)))
+	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
 
 
@@ -43,6 +43,11 @@ HRESULT CVIBuffer::Initialize_Clone(void * pArg)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void * CVIBuffer::Get_Vtxtex()
+{
+	return (VTXTEX*)m_pVertices;
 }
 
 HRESULT CVIBuffer::Render()

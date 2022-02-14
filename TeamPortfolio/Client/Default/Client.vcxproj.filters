@@ -70,6 +70,12 @@
     <Filter Include="01.GameObject\UI\ITem">
       <UniqueIdentifier>{c3d706df-ac0c-4d33-a8fc-af07b1c4e5f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\TestObject">
+      <UniqueIdentifier>{5266ee06-8b31-4753-adfb-8b8aa3eb5575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\TestObject\FixObject">
+      <UniqueIdentifier>{ddaed1a3-f81e-4c77-ba58-1eb309196797}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -120,6 +126,12 @@
     <ClInclude Include="..\public\Shop.h">
       <Filter>01.GameObject\UI\Shop</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TestCubeMove.h">
+      <Filter>01.GameObject\TestObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TestCubeFixObject.h">
+      <Filter>01.GameObject\TestObject\FixObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -157,6 +169,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_Main.cpp">
       <Filter>01.GameObject\Camera_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TestCubeMove.cpp">
+      <Filter>01.GameObject\TestObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TestCubeFixObject.cpp">
+      <Filter>01.GameObject\TestObject\FixObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@ CRenderer::CRenderer(LPDIRECT3DDEVICE9 pGraphicDevice)
 {
 }
 
-HRESULT CRenderer::Initialize_Protoype(void * pArg)
+HRESULT CRenderer::Initialize_Prototype(void * pArg)
 {
 	return S_OK;
 }
@@ -55,7 +55,7 @@ CRenderer * CRenderer::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 {
 	CRenderer* pInstance = new CRenderer(pGraphicDevice);
 
-	if (FAILED(pInstance->Initialize_Protoype(pArg))) 
+	if (FAILED(pInstance->Initialize_Prototype(pArg))) 
 	{
 		MSGBOX("Failed to Creating CRenderer");
 		Safe_Release(pInstance);

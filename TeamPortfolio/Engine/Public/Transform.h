@@ -56,14 +56,16 @@ public:
 
 
 public:
-	_float3 Get_MatrixState(TransformState eState) { return *(_float3*)(m_WorldMatirx.m[eState]); };
+	_float3 Get_MatrixState(TransformState eState) { return *(_float3*)(m_WorldMatrix.m[eState]); };
 	_float3 Get_MatrixScale() { return _float3(Get_MatrixState(STATE_RIGHT).Get_Lenth(), Get_MatrixState(STATE_UP).Get_Lenth(), Get_MatrixState(STATE_LOOK).Get_Lenth()); };
 
-	void Set_MatrixState(TransformState eState, const _float3& vRow) { memcpy(m_WorldMatirx.m[eState], &vRow, sizeof(_float3)); };
+	void Set_MatrixState(TransformState eState, const _float3& vRow) { memcpy(m_WorldMatrix.m[eState], &vRow, sizeof(_float3)); };
 
-	_Matrix Get_InverseWorldMatrix() { return m_WorldMatirx.InverseMatrix(); };
+	_Matrix Get_InverseWorldMatrix() { return m_WorldMatrix.InverseMatrix(); };
 
 	void Set_TransformDesc(const TRANSFORMDESC& TransformDesc) {m_TransforDesc = TransformDesc;	};
+
+	_Matrix Get_WorldMatrix() { return m_WorldMatrix; }
 
 public:
 	//장치에 월드 행렬을 연결시키는 함수
@@ -71,12 +73,12 @@ public:
 	HRESULT Bind_WorldMatrix_Look_Camera(_float3 vCameraPos);
 
 public:
-	HRESULT Initialize_Protoype(void * pArg);
+	HRESULT Initialize_Prototype(void * pArg);
 	HRESULT Initialize_Clone(void * pArg);
 
 
 private:
-	_Matrix			m_WorldMatirx;
+	_Matrix			m_WorldMatrix;
 	TRANSFORMDESC	m_TransforDesc;
 
 public:

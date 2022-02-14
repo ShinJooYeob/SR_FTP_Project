@@ -167,6 +167,8 @@
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\public\Shop.h" />
     <ClInclude Include="..\public\TerrainGround.h" />
+    <ClInclude Include="..\public\TestCubeFixObject.h" />
+    <ClInclude Include="..\public\TestCubeMove.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -183,6 +185,8 @@
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
     <ClCompile Include="..\private\TerrainGround.cpp" />
+    <ClCompile Include="..\private\TestCubeFixObject.cpp" />
+    <ClCompile Include="..\private\TestCubeMove.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

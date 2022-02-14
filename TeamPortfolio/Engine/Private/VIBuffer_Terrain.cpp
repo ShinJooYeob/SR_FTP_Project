@@ -14,7 +14,7 @@ CVIBuffer_Terrain::CVIBuffer_Terrain(const CVIBuffer_Terrain & rhs)
 {
 }
 
-HRESULT CVIBuffer_Terrain::Initialize_Protoype(void * pArg)
+HRESULT CVIBuffer_Terrain::Initialize_Prototype(void * pArg)
 {
 	ZeroMemory(&m_TerrainDesc, sizeof(TERRAINDESC));
 	
@@ -210,7 +210,7 @@ CVIBuffer_Terrain * CVIBuffer_Terrain::Create(LPDIRECT3DDEVICE9 pGraphicDevice, 
 	CVIBuffer_Terrain* pInstance = new CVIBuffer_Terrain(pGraphicDevice);
 
 
-	if (FAILED(pInstance->Initialize_Protoype(pArg))) {
+	if (FAILED(pInstance->Initialize_Prototype(pArg))) {
 
 		MSGBOX("Failed to Creating CVIBuffer_Terrain Prototype");
 		Safe_Release(pInstance);
