@@ -13,7 +13,7 @@ public:
 	CUnitTool(CWnd* pParent = NULL);   // 표준 생성자입니다.
 	virtual ~CUnitTool();
 
-// 대화 상자 데이터입니다.
+	// 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_UNITTOOL };
 #endif
@@ -37,7 +37,6 @@ public:
 	int m_iDef;
 	CString m_strFindName;
 
-
 	// control
 	CListBox m_ListBox;
 	CButton m_Radio[3];
@@ -53,7 +52,6 @@ public:
 	afx_msg void OnSaveData();
 	afx_msg void OnLoadData();
 };
-
 
 // 삭제, 저장, 불러오기 버튼 기능을 구현해오기
 

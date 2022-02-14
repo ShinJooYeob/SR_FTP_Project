@@ -1,4 +1,3 @@
-
 // ToolView.cpp : CToolView 클래스의 구현
 //
 
@@ -14,6 +13,8 @@
 #include "MainFrm.h"
 #include "MiniView.h"
 #include "MyForm.h"
+
+#include "ObjectTool_Rect.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -38,23 +39,22 @@ END_MESSAGE_MAP()
 // CToolView 생성/소멸
 
 CToolView::CToolView()
-	
+
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-
-
 }
 
 CToolView::~CToolView()
 {
 	// #Tag Tool 소멸자
 	Safe_Delete(m_pTerrain);
+	Safe_Release(m_pComRenderer);
+	Safe_Release(m_pGraphicDevice);
 	
+
 	CTextureMgr::GetInstance()->DestroyInstance();
 	CDevice::GetInstance()->DestroyInstance();
 	CGameInstance::Release_Engine();
-
-
 }
 
 BOOL CToolView::PreCreateWindow(CREATESTRUCT& cs)
@@ -83,7 +83,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	nullptr,	// 출력할 이미지의 중심 축 좌표를 vec3 타입의 주소값, null인 경우 0,0이 중심 좌표가 됨
 	nullptr,	// 위치 좌표에 대한 vec3타입의 주소값, null인 경우 스크린 상의 0, 0 좌표 출력
 	D3DCOLOR_ARGB(255, 255, 255, 255));*/
-	// 출력할 원본 이미지와 섞을 색상 값, 0xffffffff값을 넘겨주면 원본 색상을 유지하는 옵션	
+	// 출력할 원본 이미지와 섞을 색상 값, 0xffffffff값을 넘겨주면 원본 색상을 유지하는 옵션
 
 	/*const	TEXINFO*		pTextureInfo = CTextureMgr::GetInstance()->Get_Texture(L"Terrain", L"Tile", 2);
 	if (nullptr == pTextureInfo)
@@ -112,17 +112,24 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 		nullptr,	// 위치 좌표에 대한 vec3타입의 주소값, null인 경우 스크린 상의 0, 0 좌표 출력
 		D3DCOLOR_ARGB(255, 255, 255, 255));*/
 #pragma endregion 복습용
-	
-	// #Tag Tool Renderer
 
+		/*CGameInstance*		m_pGameInstance = GetSingle(CDevice)->Get_GameInstance();
+		if (m_pGameInstance == nullptr)
+			return;
+	*/
+
+	// #Bug 정적으로 그리기 때문에 업데이트가 필요없고 데이터만 있으면 될듯.
+	CDevice::GetInstance()->Get_GameInstance()->Update_Engine_Tool(0.1f);
+
+
+	// #Tag Tool Renderer
 	CDevice::GetInstance()->Render_Begin();
 
-//	m_pTerrain->Render();
-	
+	// 랜더링
+	m_pComRenderer->Render_RenderGroup();
+
 	CDevice::GetInstance()->Render_End();
-
 }
-
 
 // CToolView 인쇄
 
@@ -141,7 +148,6 @@ void CToolView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
 	// TODO: 인쇄 후 정리 작업을 추가합니다.
 }
-
 
 // CToolView 진단
 
@@ -163,10 +169,7 @@ CToolDoc* CToolView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지
 }
 #endif //_DEBUG
 
-
 // CToolView 메시지 처리기
-
-
 
 void CToolView::OnInitialUpdate()
 {
@@ -177,15 +180,18 @@ void CToolView::OnInitialUpdate()
 	// 2인자 : 사이즈를 표현하는 클래스
 	SetScrollSizes(MM_TEXT, CSize(TILECX * TILEX, (TILECY * TILEY / 2)));
 
-
 	// #Tag Tool 디바이스 초기화
 	g_hWnd = m_hWnd;
-	
 
 	if (FAILED(CDevice::GetInstance()->InitDevice()))
 	{
 		AfxMessageBox(L"Device Init Failed");
 		return;
+	}
+	if (m_pGraphicDevice == nullptr)
+	{
+		m_pGraphicDevice = CDevice::GetInstance()->Get_Device();
+		Safe_AddRef(m_pGraphicDevice);
 	}
 
 	//if (FAILED(CTextureMgr::GetInstance()->InsertTexture(TEX_SINGLE, L"../Texture/Cube.png", L"CUBE")))
@@ -198,6 +204,7 @@ void CToolView::OnInitialUpdate()
 	//m_pTerrain->Initialize();
 	//m_pTerrain->SetMainView(this);
 
+	// #Tag 창 크기 재설정
 		// AfxGetMainWnd : 현재 메인 윈도우를 반환하는 전역 함수
 		// 반환타입이 부모타입이어서 자식 타입으로 형변환 했음
 	CMainFrame*	pMainFrm = (CMainFrame*)AfxGetMainWnd();
@@ -223,12 +230,33 @@ void CToolView::OnInitialUpdate()
 	// 1인자 : 배치할 윈도우의 z순서에 대한 포인터
 	// x좌표, y좌표, 가로 크기, 세로 크기
 	// SWP_NOZORDER : 현재 z순서를 유지하겠다는 플래그 값
-	pMainFrm->SetWindowPos(NULL, 0,0, int(WINCX + fRowFrm), int(WINCY + fColFrm), SWP_NOZORDER);
-	
+	pMainFrm->SetWindowPos(NULL, 0, 0, int(WINCX + fRowFrm), int(WINCY + fColFrm), SWP_NOZORDER);
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-}
 
+	// 오브젝트 / 컴포넌트 프로토타입
+
+	if (FAILED(Ready_Static_Component_Prototype()))
+	{
+		FAILED_TOOL
+	}
+
+	if (FAILED(Ready_Static_GameObject_Prototype()))
+	{
+		FAILED_TOOL
+	}
+
+	if (FAILED(Ready_GameObject_Layer(TEXT("OBJECTLAYER"))))
+	{
+		FAILED_TOOL
+	}
+
+	if (FAILED(Scene_Change(SCENEID::SCENE_LOBY)))
+	{
+		FAILED_TOOL
+	}
+	return;
+}
 
 void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
@@ -243,7 +271,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	// 인자값이 FALSE일때는 wm_paint만 메시지만 발생
 	// 인자값이 true일때 wm_paint와 wm_erasebkgnd 두 메세지를 동시에 발생
 	// wm_erasebkgnd 메세지 : 배경을 지우라는 메시지
-	
+
 	Invalidate(FALSE);
 
 	CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
@@ -255,16 +283,13 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	//CMapTool*	pMapTool = &pMyForm->m_MapTool;
 
-
 	//m_pTerrain->TileChange(D3DXVECTOR3(point.x + GetScrollPos(0),
 	//	point.y + GetScrollPos(1),
 	//	0.f), pMapTool->m_iDrawID);
 
-
 	// pMiniView->Invalidate(FALSE);
 	Invalidate(FALSE);
 }
-
 
 void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 {
@@ -272,10 +297,11 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 
 	CScrollView::OnMouseMove(nFlags, point);
 
-// #Tag 마우스 피킹
+	// #Tag 툴창에서 마우스 MOVE
+
 	//if (GetAsyncKeyState(VK_LBUTTON))
 	//{
-	//	
+	//
 	//	Invalidate(FALSE);
 
 	//	CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
@@ -287,4 +313,61 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 
 	//	pMiniView->Invalidate(FALSE);
 	//}
+}
+
+// #Tag 툴 프로토 초기화
+HRESULT CToolView::Ready_Static_Component_Prototype()
+{
+	CGameInstance*		m_pGameInstance = GetSingle(CDevice)->Get_GameInstance();
+	if (m_pGameInstance == nullptr)
+		return E_FAIL;
+
+	//렌더러 컴객체 프로토타입 생성
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), m_pComRenderer = CRenderer::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pComRenderer);
+
+	//버퍼인덱스 프로토타입 생성
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	//Transform 프로토타입 생성
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), CTransform::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	/* 디폴트 텍스처 프로토타입 생성 */
+//	CTexture::TEXTUREDESC TextureDesc{};
+//	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Default.jpg");
+
+//	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+//		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CToolView::Ready_Static_GameObject_Prototype()
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BackGround"), CObjectTool_Rect::Create(m_pGraphicDevice)))
+		return E_FAIL;
+	return S_OK;
+}
+HRESULT CToolView::Ready_GameObject_Layer(const _tchar * layertag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TEXT("Prototype_GameObject_BackGround")))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CToolView::Scene_Change(SCENEID eSceneID)
+{
+
+	// 씬체인지
+
+	CGameInstance*		m_pGameInstance = GetSingle(CDevice)->Get_GameInstance();
+
+	if (m_pGameInstance == nullptr)
+		return E_FAIL;
+
+	return S_OK;
 }

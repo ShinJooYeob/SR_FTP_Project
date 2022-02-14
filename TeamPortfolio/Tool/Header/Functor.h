@@ -31,7 +31,6 @@
 //	}
 //}
 
-
 static D3DXVECTOR3		GetMouse(void)
 {
 	POINT	Pt{};

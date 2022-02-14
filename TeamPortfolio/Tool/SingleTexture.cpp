@@ -6,7 +6,6 @@ CSingleTexture::CSingleTexture()
 {
 }
 
-
 CSingleTexture::~CSingleTexture()
 {
 	Release();
@@ -28,14 +27,14 @@ HRESULT CSingleTexture::InsertTexture(const TCHAR* pFilePath, const TCHAR* pStat
 	// D3DPOOL_MANAGED = 1, : direct3d에 의해 자원을 관리하며 그래픽 메모리를 사용하지만 이를 ram에 백업하는 옵션
 	// D3DPOOL_SYSTEMMEM = 2, : ram을 사용하겠다는 옵션
 	// D3DPOOL_SCRATCH : 시스템 메모리를 사용하지만 dx 장치로부터 접근할 수 없다.
-	
-	if (FAILED(D3DXCreateTextureFromFileEx(CDevice::GetInstance()->Get_Device(), 
-		pFilePath, 
-		m_pTexInfo->tImgInfo.Width, 
-		m_pTexInfo->tImgInfo.Height, 
+
+	if (FAILED(D3DXCreateTextureFromFileEx(CDevice::GetInstance()->Get_Device(),
+		pFilePath,
+		m_pTexInfo->tImgInfo.Width,
+		m_pTexInfo->tImgInfo.Height,
 		m_pTexInfo->tImgInfo.MipLevels,
 		0, // D3DUSAGE_RENDERTARGET 화면 전체출력용 텍스처 생성 옵션
-		m_pTexInfo->tImgInfo.Format, 
+		m_pTexInfo->tImgInfo.Format,
 		D3DPOOL_MANAGED,
 		D3DX_DEFAULT,  // 이미지 필터링 방식 : 픽셀의 확대축소 시 어떻게 처리할 것인지 묻는 인자
 		D3DX_DEFAULT,  // 밉맵을 이용한 확대 축소 시 필터링을 어떻게 할지 지정

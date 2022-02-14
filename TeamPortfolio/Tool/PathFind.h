@@ -2,7 +2,6 @@
 #include "afxwin.h"
 #include "Include.h"
 
-
 // CPathFind 대화 상자입니다.
 
 class CPathFind : public CDialog
@@ -13,7 +12,7 @@ public:
 	CPathFind(CWnd* pParent = NULL);   // 표준 생성자입니다.
 	virtual ~CPathFind();
 
-// 대화 상자 데이터입니다.
+	// 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_PATHFIND };
 #endif

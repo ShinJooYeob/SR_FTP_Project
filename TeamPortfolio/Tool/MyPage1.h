@@ -1,6 +1,5 @@
 #pragma once
 
-
 // CMyPage1 대화 상자입니다.
 
 class CMyPage1 : public CPropertyPage
@@ -11,7 +10,7 @@ public:
 	CMyPage1();
 	virtual ~CMyPage1();
 
-// 대화 상자 데이터입니다.
+	// 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_MYPAGE1 };
 #endif

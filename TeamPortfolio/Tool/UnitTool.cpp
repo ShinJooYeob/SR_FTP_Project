@@ -6,7 +6,6 @@
 #include "UnitTool.h"
 #include "afxdialogex.h"
 
-
 // CUnitTool 대화 상자입니다.
 
 IMPLEMENT_DYNAMIC(CUnitTool, CDialog)
@@ -20,7 +19,6 @@ CUnitTool::CUnitTool(CWnd* pParent /*=NULL*/)
 	, m_iDef(0)
 	, m_strFindName(_T(""))
 {
-
 }
 
 CUnitTool::~CUnitTool()
@@ -29,8 +27,6 @@ CUnitTool::~CUnitTool()
 		Safe_Delete(iter.second);
 
 	m_mapUnitData.clear();
-
-	
 }
 
 void CUnitTool::DoDataExchange(CDataExchange* pDX)
@@ -64,7 +60,6 @@ void CUnitTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT6, m_strFindName);
 }
 
-
 BEGIN_MESSAGE_MAP(CUnitTool, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &CUnitTool::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CUnitTool::OnAddCharacter)
@@ -75,14 +70,11 @@ BEGIN_MESSAGE_MAP(CUnitTool, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON5, &CUnitTool::OnLoadData)
 END_MESSAGE_MAP()
 
-
 // CUnitTool 메시지 처리기입니다.
-
 
 void CUnitTool::OnBnClickedButton1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 
 	// UpdateData(TRUE) : 다이얼로그 박스로부터 입력된 값들을 얻어옴
 	UpdateData(TRUE);
@@ -92,7 +84,6 @@ void CUnitTool::OnBnClickedButton1()
 	// UpdateData(FALSE) : 변수에 저장된 값들을 다이얼로그 박스에 반영
 	UpdateData(FALSE);
 }
-
 
 void CUnitTool::OnAddCharacter()
 {
@@ -124,7 +115,6 @@ void CUnitTool::OnAddCharacter()
 
 	if (m_Check[2].GetCheck())
 		pUnit->byItem |= SAPPHIRE;
-		
 
 	m_ListBox.AddString(pUnit->strName);
 
@@ -132,7 +122,6 @@ void CUnitTool::OnAddCharacter()
 
 	UpdateData(FALSE);
 }
-
 
 void CUnitTool::OnListBox()
 {
@@ -158,10 +147,9 @@ void CUnitTool::OnListBox()
 	m_iDef = iter->second->iDef;
 
 	for (int i = 0; i < 3; ++i)
-		m_Radio[i].SetCheck(FALSE);	 
-	
-	m_Radio[iter->second->byJobIndex].SetCheck(TRUE);
+		m_Radio[i].SetCheck(FALSE);
 
+	m_Radio[iter->second->byJobIndex].SetCheck(TRUE);
 
 	for (int i = 0; i < 3; ++i)
 		m_Check[i].SetCheck(FALSE);
@@ -175,10 +163,8 @@ void CUnitTool::OnListBox()
 	if (iter->second->byItem & SAPPHIRE)
 		m_Check[2].SetCheck(TRUE);
 
-
 	UpdateData(FALSE);
 }
-
 
 void CUnitTool::OnDelete()
 {
@@ -211,12 +197,10 @@ void CUnitTool::OnDelete()
 	UpdateData(FALSE);
 }
 
-
-
 void CUnitTool::OnSearch()
 {
 	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialog::OnInitDialog() 함수를 재지정 
+	// CDialog::OnInitDialog() 함수를 재지정
 	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
 	// 이 알림 메시지를 보내지 않습니다.
 
@@ -237,7 +221,6 @@ void CUnitTool::OnSearch()
 	// 현재 인덱스가 선택된 것처럼 표시
 	m_ListBox.SetCurSel(iIndex);
 
-
 	m_strName = iter->second->strName;
 	m_iAttack = iter->second->iAttack;
 	m_iDef = iter->second->iDef;
@@ -246,7 +229,6 @@ void CUnitTool::OnSearch()
 		m_Radio[i].SetCheck(FALSE);
 
 	m_Radio[iter->second->byJobIndex].SetCheck(TRUE);
-
 
 	for (int i = 0; i < 3; ++i)
 		m_Check[i].SetCheck(FALSE);
@@ -260,11 +242,8 @@ void CUnitTool::OnSearch()
 	if (iter->second->byItem & SAPPHIRE)
 		m_Check[2].SetCheck(TRUE);
 
-
 	UpdateData(FALSE);
-
 }
-
 
 void CUnitTool::OnSaveData()
 {
@@ -280,11 +259,11 @@ void CUnitTool::OnSaveData()
 	6. 부모 윈도우 주소*/
 
 	CFileDialog		Dlg(FALSE,
-					L"dat",
-					L"*.dat", 
-					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, 
-					L"Data Files(*.dat)|*.dat||",
-					this);
+		L"dat",
+		L"*.dat",
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		L"Data Files(*.dat)|*.dat||",
+		this);
 
 	TCHAR	szPath[MAX_PATH] = L"";
 
@@ -298,7 +277,7 @@ void CUnitTool::OnSaveData()
 
 	PathRemoveFileSpec(szPath);
 	//	D:\유준환\124기\Frame124\
-	
+
 	lstrcat(szPath, L"\\Data");
 	//	D:\유준환\124기\Frame124\Data
 
@@ -333,7 +312,6 @@ void CUnitTool::OnSaveData()
 			WriteFile(hFile, &(iter.second->byJobIndex), sizeof(BYTE), &dwByte, nullptr);
 			WriteFile(hFile, &(iter.second->iDef), sizeof(int), &dwByte, nullptr);
 			WriteFile(hFile, &(iter.second->iAttack), sizeof(int), &dwByte, nullptr);
-
 		}
 		CloseHandle(hFile);
 	}
@@ -353,11 +331,11 @@ void CUnitTool::OnLoadData()
 	UpdateData(TRUE);
 
 	CFileDialog		Dlg(TRUE,
-						L"dat",
-						L"*.dat",
-						OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-						L"Data Files(*.dat)|*.dat||",
-						this);
+		L"dat",
+		L"*.dat",
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		L"Data Files(*.dat)|*.dat||",
+		this);
 
 	TCHAR	szPath[MAX_PATH] = L"";
 
@@ -377,7 +355,6 @@ void CUnitTool::OnLoadData()
 
 		// 기존의 리스트 목록을 모두 초기화
 		m_ListBox.ResetContent();
-
 
 		CString				str = Dlg.GetPathName().GetString();
 		const TCHAR*		pGetPath = str.GetString();
@@ -423,12 +400,11 @@ void CUnitTool::OnLoadData()
 			pUnitData->iDef = tData.iDef;
 			pUnitData->iAttack = tData.iAttack;
 
-			m_mapUnitData.emplace( pUnitData->strName, pUnitData);
+			m_mapUnitData.emplace(pUnitData->strName, pUnitData);
 			m_ListBox.AddString(pUnitData->strName);
 		}
 		CloseHandle(hFile);
 	}
-
 
 	UpdateData(FALSE);
 }

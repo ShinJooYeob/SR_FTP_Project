@@ -2,11 +2,9 @@
 #include "MultiTexture.h"
 #include "Device.h"
 
-
 CMultiTexture::CMultiTexture()
 {
 }
-
 
 CMultiTexture::~CMultiTexture()
 {
@@ -31,8 +29,8 @@ const TEXINFO* CMultiTexture::Get_Texture(const TCHAR* pStateKey /*= L""*/, cons
 	return iter->second[iCnt];
 }
 
-HRESULT CMultiTexture::InsertTexture(const TCHAR* pFilePath, 
-	const TCHAR* pStateKey /*= L""*/, 
+HRESULT CMultiTexture::InsertTexture(const TCHAR* pFilePath,
+	const TCHAR* pStateKey /*= L""*/,
 	const int& iCnt /*= 0*/)
 {
 	// 우리가 지정하는 경로의 최대 범위는 MAX_PATH크기 내에서 가능하다.
@@ -44,7 +42,7 @@ HRESULT CMultiTexture::InsertTexture(const TCHAR* pFilePath,
 
 		TEXINFO*	pTexInfo = new TEXINFO;
 		ZeroMemory(pTexInfo, sizeof(TEXINFO));
-				
+
 		if (FAILED(D3DXGetImageInfoFromFile(szFullPath, &(pTexInfo->tImgInfo))))
 		{
 			MSG_BOX(szFullPath);

@@ -9,7 +9,6 @@
 #define		TILEX	20
 #define		TILEY	30
 
-
 #define		RUBY		0x01		// -> 0001
 #define		DIAMOND		0X02		// -> 0010
 #define		SAPPHIRE	0x04		// -> 0100
@@ -17,19 +16,20 @@
 #define		MIN_STR		64
 #define		MAX_STR		256
 
-
-
 #define	MSG_BOX(message)			MessageBoxW(g_hWnd, message, L"System Message", MB_OK)
-// #define GetGameInstance				GetSingle(CGameInstance)	
+#define FAILED_TOOL {AfxMessageBox(L"Fail", MB_OK);__debugbreak();}
 
-enum SCENE_ID
+enum SCENEID
 {
-	SCENE_ID_STATIC,
-	SCENE_ID_A,
-	SCENE_ID_B,
-	SCENE_ID_END,
+	SCENE_STATIC,
+	SCENE_LOBY,
+	SCENE_IMGUISCENE,
+	SCENE_END
 };
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;
 
+namespace Tool {};
+
+using namespace Tool;

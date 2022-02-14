@@ -9,7 +9,6 @@
 #include "ToolView.h"
 #include "Terrain.h"
 
-
 // CMapTool 대화 상자입니다.
 
 IMPLEMENT_DYNAMIC(CMapTool, CDialog)
@@ -17,7 +16,6 @@ IMPLEMENT_DYNAMIC(CMapTool, CDialog)
 CMapTool::CMapTool(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_MAPTOOL, pParent)
 {
-
 }
 
 CMapTool::~CMapTool()
@@ -28,7 +26,6 @@ CMapTool::~CMapTool()
 		Safe_Delete(iter.second);
 	}
 	m_MapPngImage.clear();
-
 }
 
 void CMapTool::DoDataExchange(CDataExchange* pDX)
@@ -38,16 +35,13 @@ void CMapTool::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PICTURE, m_Picture);
 }
 
-
 BEGIN_MESSAGE_MAP(CMapTool, CDialog)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CMapTool::OnLbnSelchangeList1)
 	ON_WM_DROPFILES()
 	ON_BN_CLICKED(IDC_BUTTON1, &CMapTool::OnSaveData)
 END_MESSAGE_MAP()
 
-
 // CMapTool 메시지 처리기입니다.
-
 
 void CMapTool::OnLbnSelchangeList1()
 {
@@ -88,13 +82,11 @@ void CMapTool::OnLbnSelchangeList1()
 	UpdateData(FALSE);
 }
 
-
 void CMapTool::OnDropFiles(HDROP hDropInfo)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	UpdateData(TRUE);
 	CDialog::OnDropFiles(hDropInfo);
-
 
 	TCHAR	szFilePath[MAX_PATH] = L"";
 
@@ -130,11 +122,9 @@ void CMapTool::OnDropFiles(HDROP hDropInfo)
 
 			m_MapPngImage.emplace(strFileName, pPngImage);
 			m_ListBox.AddString(strFileName);
-		}			
-		
+		}
 	}
 	HorizontalScroll();
-
 
 	UpdateData(FALSE);
 }
@@ -153,7 +143,7 @@ void CMapTool::HorizontalScroll(void)
 	for (int i = 0; i < m_ListBox.GetCount(); ++i)
 	{
 		m_ListBox.GetText(i, strName);
-		
+
 		// 현재 문자열의 길이를 픽셀단위로 변환
 		size = pDC->GetTextExtent(strName);
 
@@ -166,10 +156,7 @@ void CMapTool::HorizontalScroll(void)
 	// GetHorizontalExtent :리스트 박스 가로로 스크롤 할 수 있는 최대 범위를 얻어오는 함수
 	if (iCX > m_ListBox.GetHorizontalExtent())
 		m_ListBox.SetHorizontalExtent(iCX);
-
-
 }
-
 
 void CMapTool::OnSaveData()
 {
@@ -200,18 +187,16 @@ void CMapTool::OnSaveData()
 		if (INVALID_HANDLE_VALUE == hFile)
 			return;
 
-
 		CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 		CToolView*	pToolView = dynamic_cast<CToolView*>(pMain->m_MainSplitter.GetPane(0, 1));
 		CTerrain*	pTerrain = pToolView->m_pTerrain;
 		vector<TILE*>& vecTile = pTerrain->Get_Tile();
-	
+
 		DWORD	dwByte = 0;
 
 		for (auto& iter : vecTile)
 		{
 			WriteFile(hFile, iter, sizeof(TILE), &dwByte, nullptr);
-
 		}
 		CloseHandle(hFile);
 	}

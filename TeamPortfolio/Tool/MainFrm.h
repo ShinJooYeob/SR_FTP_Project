@@ -1,4 +1,3 @@
-
 // MainFrm.h : CMainFrame 클래스의 인터페이스
 //
 
@@ -8,22 +7,21 @@
 
 class CMainFrame : public CFrameWnd
 {
-	
 protected: // serialization에서만 만들어집니다.
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 
-// 특성입니다.
+	// 특성입니다.
 public:
 
-// 작업입니다.
+	// 작업입니다.
 public:
 
-// 재정의입니다.
+	// 재정의입니다.
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
-// 구현입니다.
+	// 구현입니다.
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG
@@ -39,12 +37,10 @@ public:
 	CSplitterWnd		m_MainSplitter;	// CSplitterWnd : 창 분할을 위한 클래스
 	CSplitterWnd		m_SecondSplitter;
 
-// 생성된 메시지 맵 함수
+	// 생성된 메시지 맵 함수
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 
 	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 };
-
-

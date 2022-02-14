@@ -1,11 +1,9 @@
 #include "stdafx.h"
 #include "FileInfo.h"
 
-
 CFileInfo::CFileInfo()
 {
 }
-
 
 CFileInfo::~CFileInfo()
 {
@@ -21,13 +19,12 @@ CString CFileInfo::ConvertRelativePath(CString strFullPath)
 
 	GetCurrentDirectory(MAX_PATH, szCurDirPath);
 
-
 	// 상대 경로로 만들어주는 함수
 	// 단, 두 경로가 반드시 같은 드라이브에 있어야 함.
-	PathRelativePathTo(szRelativePath, 
+	PathRelativePathTo(szRelativePath,
 		szCurDirPath,
 		FILE_ATTRIBUTE_DIRECTORY,
-		strFullPath.GetString(), 
+		strFullPath.GetString(),
 		FILE_ATTRIBUTE_DIRECTORY);
 
 	return CString(szRelativePath);
@@ -48,7 +45,7 @@ void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPat
 	{
 		bContinue = Find.FindNextFile();
 
-		if(Find.IsDots())
+		if (Find.IsDots())
 			continue;
 
 		else if (Find.IsDirectory())
@@ -106,16 +103,14 @@ void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPat
 			// ..\Texture\Stage\Player\
 
 			// PathFindFileName : 파일명을 찾거나 가장 마지막 경로를 찾아내는 함수
-			pImgPath->wstrObjKey = PathFindFileName(szBuf);		
+			pImgPath->wstrObjKey = PathFindFileName(szBuf);
 
 			rPathInfoList.push_back(pImgPath);
 
 			Find.FindFile(Find.GetFilePath());
 			Find.FindNextFile();
 		}
-		
 	}
-
 }
 
 int CFileInfo::DirFileCount(const wstring & wstrPath)
@@ -143,9 +138,9 @@ int CFileInfo::DirFileCount(const wstring & wstrPath)
 
 		if (Find.IsDots())
 			continue;
-		
+
 		// 찾은게 시스템 파일인 경우 건너뛴다.
-		if(Find.IsSystem())
+		if (Find.IsSystem())
 			continue;
 
 		++iFileCnt;

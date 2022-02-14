@@ -1,10 +1,7 @@
-
 // ToolDoc.h : CToolDoc 클래스의 인터페이스
 //
 
-
 #pragma once
-
 
 class CToolDoc : public CDocument
 {
@@ -12,13 +9,13 @@ protected: // serialization에서만 만들어집니다.
 	CToolDoc();
 	DECLARE_DYNCREATE(CToolDoc)
 
-// 특성입니다.
+	// 특성입니다.
 public:
 
-// 작업입니다.
+	// 작업입니다.
 public:
 
-// 재정의입니다.
+	// 재정의입니다.
 public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
@@ -27,7 +24,7 @@ public:
 	virtual void OnDrawThumbnail(CDC& dc, LPRECT lprcBounds);
 #endif // SHARED_HANDLERS
 
-// 구현입니다.
+	// 구현입니다.
 public:
 	virtual ~CToolDoc();
 #ifdef _DEBUG
@@ -37,7 +34,7 @@ public:
 
 protected:
 
-// 생성된 메시지 맵 함수
+	// 생성된 메시지 맵 함수
 protected:
 	DECLARE_MESSAGE_MAP()
 

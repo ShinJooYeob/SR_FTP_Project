@@ -5,7 +5,6 @@
 #include "Tool.h"
 #include "MySheet.h"
 
-
 // CMySheet
 
 IMPLEMENT_DYNAMIC(CMySheet, CPropertySheet)
@@ -28,14 +27,11 @@ CMySheet::~CMySheet()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CMySheet, CPropertySheet)
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
-
 // CMySheet 메시지 처리기입니다.
-
 
 void CMySheet::OnClose()
 {

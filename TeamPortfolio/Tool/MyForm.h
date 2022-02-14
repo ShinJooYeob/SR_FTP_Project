@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "UnitTool.h"
 #include "MapTool.h"
 #include "MySheet.h"
@@ -46,5 +45,3 @@ public:
 	afx_msg void OnProperty();
 	afx_msg void OnPathFind();
 };
-
-

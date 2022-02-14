@@ -7,7 +7,6 @@
 #include "afxdialogex.h"
 #include "FileInfo.h"
 
-
 // CPathFind 대화 상자입니다.
 
 IMPLEMENT_DYNAMIC(CPathFind, CDialog)
@@ -15,7 +14,6 @@ IMPLEMENT_DYNAMIC(CPathFind, CDialog)
 CPathFind::CPathFind(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_PATHFIND, pParent)
 {
-
 }
 
 CPathFind::~CPathFind()
@@ -30,7 +28,6 @@ void CPathFind::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST1, m_ListBox);
 }
 
-
 BEGIN_MESSAGE_MAP(CPathFind, CDialog)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CPathFind::OnListBox)
 	ON_BN_CLICKED(IDC_BUTTON1, &CPathFind::OnSaveData)
@@ -38,15 +35,12 @@ BEGIN_MESSAGE_MAP(CPathFind, CDialog)
 	ON_WM_DROPFILES()
 END_MESSAGE_MAP()
 
-
 // CPathFind 메시지 처리기입니다.
-
 
 void CPathFind::OnListBox()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
-
 
 void CPathFind::OnSaveData()
 {
@@ -68,9 +62,7 @@ void CPathFind::OnSaveData()
 
 	// 윈도우의 기본 프로그램을 실행시켜주는 함수
 	WinExec("notepad.exe ../Data/ImgPath.txt", SW_SHOW);
-
 }
-
 
 void CPathFind::OnLoadData()
 {
@@ -116,7 +108,6 @@ void CPathFind::OnLoadData()
 	WinExec("notepad.exe ../Data/ImgPath.txt", SW_SHOW);
 }
 
-
 void CPathFind::OnDropFiles(HDROP hDropInfo)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
@@ -155,5 +146,4 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 	}
 
 	UpdateData(FALSE);
-
 }

@@ -111,6 +111,29 @@ _int CGameInstance::Update_Engine(_float fDeltaTime)
 	return 0;
 }
 
+_int CGameInstance::Update_Engine_Tool(_float fDeltaTime)
+{
+	if (m_pSceneMgr == nullptr || m_pObjectMgr == nullptr)
+		return -1;
+
+
+//	if (m_pSceneMgr->Update(fDeltaTime) < 0)
+//		return -1;
+
+	if (m_pObjectMgr->Update(fDeltaTime) < 0)
+		return -1;
+
+
+
+
+	if (m_pObjectMgr->LateUpdate(fDeltaTime) < 0)
+		return -1;
+//	if (m_pSceneMgr->LateUpdate(fDeltaTime) < 0)
+//		return -1;
+
+	return 0;
+}
+
 HRESULT CGameInstance::Clear_Scene_Resource(_uint eSceneNum)
 {
 	if (m_pObjectMgr == nullptr || m_pComponenetMgr == nullptr)

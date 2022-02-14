@@ -1,6 +1,6 @@
 #pragma once
 #include "Texture_Tool.h"
-class CSingleTexture :	public CTexture_Tool
+class CSingleTexture : public CTexture_Tool
 {
 public:
 	CSingleTexture();
@@ -13,6 +13,4 @@ public:
 
 private:
 	TEXINFO*			m_pTexInfo;
-
 };
-

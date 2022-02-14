@@ -7,8 +7,6 @@ CTextureMgr::CTextureMgr()
 {
 }
 
-
-
 const TEXINFO * CTextureMgr::Get_Texture(const TCHAR* pObjKey, const TCHAR * pStateKey, const int & iCnt)
 {
 	auto	iter = find_if(m_mapTexture.begin(),
@@ -24,21 +22,20 @@ const TEXINFO * CTextureMgr::Get_Texture(const TCHAR* pObjKey, const TCHAR * pSt
 	if (iter == m_mapTexture.end())
 		return nullptr;
 
-
 	return iter->second->Get_Texture(pStateKey, iCnt);
 }
 
 HRESULT CTextureMgr::InsertTexture(TEXTYPE eType, const TCHAR * pFilePath, const TCHAR * pObjKey, const TCHAR * pStateKey, const int & iCnt)
 {
 	auto	iter = find_if(m_mapTexture.begin(),
-						   m_mapTexture.end(),
-							[&](auto& MyPair)->bool
-						{
-							if (pObjKey == MyPair.first)
-								return true;
+		m_mapTexture.end(),
+		[&](auto& MyPair)->bool
+	{
+		if (pObjKey == MyPair.first)
+			return true;
 
-							return false;
-						});
+		return false;
+	});
 
 	if (iter == m_mapTexture.end())
 	{

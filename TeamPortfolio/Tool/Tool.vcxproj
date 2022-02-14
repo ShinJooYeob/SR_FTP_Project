@@ -218,6 +218,7 @@
     <ClInclude Include="MyPage1.h" />
     <ClInclude Include="MyPage2.h" />
     <ClInclude Include="MySheet.h" />
+    <ClInclude Include="ObjectTool_Rect.h" />
     <ClInclude Include="PathFind.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SingleTexture.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="MyPage1.cpp" />
     <ClCompile Include="MyPage2.cpp" />
     <ClCompile Include="MySheet.cpp" />
+    <ClCompile Include="ObjectTool_Rect.cpp" />
     <ClCompile Include="PathFind.cpp" />
     <ClCompile Include="SingleTexture.cpp" />
     <ClCompile Include="stdafx.cpp">

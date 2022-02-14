@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Base.h"
-
+BEGIN(Tool)
 class CDevice : public CBase
 {
 	DECLARE_SINGLETON(CDevice)
@@ -34,3 +34,4 @@ private:
 	LPD3DXFONT				m_pFont;
 };
 
+END

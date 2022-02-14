@@ -20,9 +20,9 @@ public:
 
 	void	TileChange(const D3DXVECTOR3& vPos, const int& iTileIdx);
 
-	void	SetMainView(CToolView* pMainView) { m_pMainView = pMainView;  }
+	void	SetMainView(CToolView* pMainView) { m_pMainView = pMainView; }
 
- private:
+private:
 	int		GetTileIndex(const D3DXVECTOR3& vPos);
 	// bool	Picking(const D3DXVECTOR3& vPos, const int& iIndex); // 직선의 방정식
 	bool	Picking(const D3DXVECTOR3& vPos, const int& iIndex);
@@ -32,6 +32,4 @@ public:
 private:
 	vector<TILE*>		m_vecTile;
 	CToolView*			m_pMainView = nullptr;
-
 };
-

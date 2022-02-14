@@ -9,21 +9,17 @@
 #include "MainFrm.h"
 #include "ToolView.h"
 
-
 // CMiniView
-#ifdef _DEBUG 
+#ifdef _DEBUG
 
-#define new DEBUG_NEW 
+#define new DEBUG_NEW
 
-#endif 
-
-
+#endif
 
 IMPLEMENT_DYNCREATE(CMiniView, CView)
 
 CMiniView::CMiniView()
 {
-
 }
 
 CMiniView::~CMiniView()
@@ -33,9 +29,7 @@ CMiniView::~CMiniView()
 BEGIN_MESSAGE_MAP(CMiniView, CView)
 END_MESSAGE_MAP()
 
-
 // CMiniView 그리기입니다.
-
 
 void CMiniView::OnDraw(CDC* pDC)
 {
@@ -46,18 +40,17 @@ void CMiniView::OnDraw(CDC* pDC)
 
 	// AfxGetMainWnd : 현재 스레드로부터 wnd를 반환
 
+	// #Tag 창에있는 데이터 가져오는 방법
+	// CToolView에 있는 맵정보를 가져온다.
 	CMainFrame*		pMain = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
 	CToolView*		pMainView = dynamic_cast<CToolView*>(pMain->m_MainSplitter.GetPane(0, 1));
 
+	// 맵정보를 가져와서 미니맵 랜더링
 //	CTerrain*		pTerrain = pMainView->Get_Terrain();
 //	pTerrain->MiniRender();
 
-
 	CDevice::GetInstance()->Render_End(m_hWnd);
-
 }
-
-
 
 // CMiniView 진단입니다.
 
@@ -74,6 +67,5 @@ void CMiniView::Dump(CDumpContext& dc) const
 }
 #endif
 #endif //_DEBUG
-
 
 // CMiniView 메시지 처리기입니다.

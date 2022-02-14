@@ -40,12 +40,6 @@
     <Filter Include="00. Special\02. Document">
       <UniqueIdentifier>{cb351790-976d-418f-a84c-669a92443870}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Obj">
-      <UniqueIdentifier>{2744de1d-9ba8-4e5c-83a1-66f7b1500e05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Obj\Terrain">
-      <UniqueIdentifier>{43e204ab-2fb0-4c3d-abe2-1bc45cf68fea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Special\01. View\00. MyForm">
       <UniqueIdentifier>{fb6795ee-8b2a-421c-b6e8-342c7b26e625}</UniqueIdentifier>
     </Filter>
@@ -81,6 +75,15 @@
     </Filter>
     <Filter Include="99.Header">
       <UniqueIdentifier>{87b56aa3-1153-4e8e-8fea-c7ee7910b36d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Object">
+      <UniqueIdentifier>{bf1c59c5-8ce4-4a3c-864f-4023ec081e6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Object\02.Terrain">
+      <UniqueIdentifier>{43e204ab-2fb0-4c3d-abe2-1bc45cf68fea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Object\01.Rect">
+      <UniqueIdentifier>{1201a88a-e146-4927-8566-7bdc4bf2f444}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,7 +121,7 @@
       <Filter>02. Texture\01. MultiTexture</Filter>
     </ClInclude>
     <ClInclude Include="Terrain.h">
-      <Filter>Obj\Terrain</Filter>
+      <Filter>04.Object\02.Terrain</Filter>
     </ClInclude>
     <ClInclude Include="MyForm.h">
       <Filter>00. Special\01. View\00. MyForm</Filter>
@@ -165,6 +168,9 @@
     <ClInclude Include="Texture_Tool.h">
       <Filter>02. Texture</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectTool_Rect.h">
+      <Filter>04.Object\01.Rect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -195,7 +201,7 @@
       <Filter>02. Texture\01. MultiTexture</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
-      <Filter>Obj\Terrain</Filter>
+      <Filter>04.Object\02.Terrain</Filter>
     </ClCompile>
     <ClCompile Include="MyForm.cpp">
       <Filter>00. Special\01. View\00. MyForm</Filter>
@@ -226,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="Texture_Tool.cpp">
       <Filter>02. Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTool_Rect.cpp">
+      <Filter>04.Object\01.Rect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

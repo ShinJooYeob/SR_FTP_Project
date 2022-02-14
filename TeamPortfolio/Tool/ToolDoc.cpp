@@ -1,4 +1,3 @@
-
 // ToolDoc.cpp : CToolDoc 클래스의 구현
 //
 
@@ -24,13 +23,11 @@ IMPLEMENT_DYNCREATE(CToolDoc, CDocument)
 BEGIN_MESSAGE_MAP(CToolDoc, CDocument)
 END_MESSAGE_MAP()
 
-
 // CToolDoc 생성/소멸
 
 CToolDoc::CToolDoc()
 {
 	// TODO: 여기에 일회성 생성 코드를 추가합니다.
-
 }
 
 CToolDoc::~CToolDoc()
@@ -47,9 +44,6 @@ BOOL CToolDoc::OnNewDocument()
 
 	return TRUE;
 }
-
-
-
 
 // CToolDoc serialization
 
@@ -76,7 +70,7 @@ void CToolDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 	CString strText = _T("TODO: implement thumbnail drawing here");
 	LOGFONT lf;
 
-	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
+	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT)GetStockObject(DEFAULT_GUI_FONT));
 	pDefaultGUIFont->GetLogFont(&lf);
 	lf.lfHeight = 36;
 
@@ -132,6 +126,5 @@ void CToolDoc::Dump(CDumpContext& dc) const
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
-
 
 // CToolDoc 명령

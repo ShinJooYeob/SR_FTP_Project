@@ -15,6 +15,4 @@ public:
 
 private:
 	map<wstring, vector<TEXINFO*>>			m_mapMultiTex;
-
 };
-

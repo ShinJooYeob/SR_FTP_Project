@@ -5,21 +5,19 @@
 #include "Tool.h"
 #include "MyForm.h"
 
-
 // CMyForm
 
-#ifdef _DEBUG 
+#ifdef _DEBUG
 
-#define new DEBUG_NEW 
+#define new DEBUG_NEW
 
-#endif 
+#endif
 
 IMPLEMENT_DYNCREATE(CMyForm, CFormView)
 
 CMyForm::CMyForm()
 	: CFormView(IDD_MYFORM), m_PopUp(L"그냥")
 {
-
 }
 
 CMyForm::~CMyForm()
@@ -32,14 +30,13 @@ void CMyForm::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CMyForm, CFormView)
-	
+
 	// 각 버튼 추가
 	ON_BN_CLICKED(IDC_BUTTON1, &CMyForm::OnUnitTool)
 	ON_BN_CLICKED(IDC_BUTTON7, &CMyForm::OnMapTool)
 	ON_BN_CLICKED(IDC_BUTTON8, &CMyForm::OnProperty)
 	ON_BN_CLICKED(IDC_BUTTON9, &CMyForm::OnPathFind)
 END_MESSAGE_MAP()
-
 
 // CMyForm 진단입니다.
 
@@ -57,9 +54,7 @@ void CMyForm::Dump(CDumpContext& dc) const
 #endif
 #endif //_DEBUG
 
-
 // CMyForm 메시지 처리기입니다.
-
 
 void CMyForm::OnInitialUpdate()
 {
@@ -76,25 +71,18 @@ void CMyForm::OnInitialUpdate()
 
 	if (nullptr == m_PopUp.GetSafeHwnd())
 		m_PopUp.Create(0, WS_OVERLAPPEDWINDOW);
-
 }
 
-
+// 각 버튼 이벤트 함수
 void CMyForm::OnUnitTool()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	//MessageBox(L"Hello World");
-
-
 	// GetSafeHwnd : 현재 다이얼로그의 윈도우 핸들을 반환
 
-	if(nullptr == m_UnitTool.GetSafeHwnd())
+	if (nullptr == m_UnitTool.GetSafeHwnd())
 		m_UnitTool.Create(IDD_UNITTOOL);	// 해당 id 에 맞는 다이얼로그 생성
 
 	m_UnitTool.ShowWindow(SW_SHOW);  // 창 모양으로 출력
-
 }
-
 
 void CMyForm::OnMapTool()
 {
@@ -103,16 +91,13 @@ void CMyForm::OnMapTool()
 		m_MapTool.Create(IDD_MAPTOOL);	// 해당 id 에 맞는 다이얼로그 생성
 
 	m_MapTool.ShowWindow(SW_SHOW);  // 창 모양으로 출력
-
 }
-
 
 void CMyForm::OnProperty()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_PopUp.ShowWindow(SW_SHOW);  // 창 모양으로 출력
 }
-
 
 void CMyForm::OnPathFind()
 {

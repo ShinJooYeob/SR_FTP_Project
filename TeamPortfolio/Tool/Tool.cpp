@@ -1,4 +1,3 @@
-
 // Tool.cpp : 응용 프로그램에 대한 클래스 동작을 정의합니다.
 //
 
@@ -15,7 +14,6 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CToolApp
 
 BEGIN_MESSAGE_MAP(CToolApp, CWinAppEx)
@@ -26,7 +24,6 @@ BEGIN_MESSAGE_MAP(CToolApp, CWinAppEx)
 	// 표준 인쇄 설정 명령입니다.
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
-
 
 // CToolApp 생성
 
@@ -53,13 +50,12 @@ CToolApp::CToolApp()
 
 CToolApp theApp;
 
-
 // CToolApp 초기화
 
 BOOL CToolApp::InitInstance()
 {
 	// 응용 프로그램 매니페스트가 ComCtl32.dll 버전 6 이상을 사용하여 비주얼 스타일을
-	// 사용하도록 지정하는 경우, Windows XP 상에서 반드시 InitCommonControlsEx()가 필요합니다. 
+	// 사용하도록 지정하는 경우, Windows XP 상에서 반드시 InitCommonControlsEx()가 필요합니다.
 	// InitCommonControlsEx()를 사용하지 않으면 창을 만들 수 없습니다.
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);
@@ -69,7 +65,6 @@ BOOL CToolApp::InitInstance()
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinAppEx::InitInstance();
-
 
 	// OLE 라이브러리를 초기화합니다.
 	if (!AfxOleInit())
@@ -82,7 +77,7 @@ BOOL CToolApp::InitInstance()
 
 	EnableTaskbarInteraction(FALSE);
 
-	// RichEdit 컨트롤을 사용하려면  AfxInitRichEdit2()가 있어야 합니다.	
+	// RichEdit 컨트롤을 사용하려면  AfxInitRichEdit2()가 있어야 합니다.
 	// AfxInitRichEdit2();
 
 	// 표준 초기화
@@ -97,7 +92,6 @@ BOOL CToolApp::InitInstance()
 
 	CWinAppEx::CleanState(); // 현재 레지스트리에 저장된 정보를 초기화함
 
-
 	// 응용 프로그램의 문서 템플릿을 등록합니다.  문서 템플릿은
 	//  문서, 프레임 창 및 뷰 사이의 연결 역할을 합니다.
 	CSingleDocTemplate* pDocTemplate;
@@ -110,12 +104,9 @@ BOOL CToolApp::InitInstance()
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
 
-
 	// 표준 셸 명령, DDE, 파일 열기에 대한 명령줄을 구문 분석합니다.
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
-
-
 
 	// 명령줄에 지정된 명령을 디스패치합니다.
 	// 응용 프로그램이 /RegServer, /Register, /Unregserver 또는 /Unregister로 시작된 경우 FALSE를 반환합니다.
@@ -125,8 +116,6 @@ BOOL CToolApp::InitInstance()
 	// 창 하나만 초기화되었으므로 이를 표시하고 업데이트합니다.
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
-
-
 
 	return TRUE;
 }
@@ -141,7 +130,6 @@ int CToolApp::ExitInstance()
 
 // CToolApp 메시지 처리기
 
-
 // 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
 
 class CAboutDlg : public CDialogEx
@@ -149,7 +137,7 @@ class CAboutDlg : public CDialogEx
 public:
 	CAboutDlg();
 
-// 대화 상자 데이터입니다.
+	// 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ABOUTBOX };
 #endif
@@ -182,6 +170,3 @@ void CToolApp::OnAppAbout()
 }
 
 // CToolApp 메시지 처리기
-
-
-
