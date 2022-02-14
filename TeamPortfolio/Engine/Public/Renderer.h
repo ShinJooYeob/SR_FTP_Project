@@ -20,7 +20,7 @@ private:
 	virtual ~CRenderer() = default;
 
 private:
-	virtual HRESULT Initialize_Protoype(void * pArg)override;
+	virtual HRESULT Initialize_Prototype(void * pArg)override;
 	virtual HRESULT Initialize_Clone(void * pArg)override;
 
 

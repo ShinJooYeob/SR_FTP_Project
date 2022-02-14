@@ -12,7 +12,7 @@ protected:
 	virtual ~CComponent() = default;
 
 public:
-	virtual HRESULT Initialize_Protoype(void * pArg);
+	virtual HRESULT Initialize_Prototype(void * pArg);
 	virtual HRESULT Initialize_Clone(void * pArg);
 
 

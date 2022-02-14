@@ -2,6 +2,8 @@
 
 #include "Component.h"
 
+BEGIN(Engine)
+
 class ENGINE_DLL CTexture final : public CComponent
 {
 public:
@@ -25,7 +27,7 @@ private:
 	virtual ~CTexture() = default;
 
 public:
-	virtual HRESULT Initialize_Protoype(void * pArg) override;
+	virtual HRESULT Initialize_Prototype(void * pArg) override;
 	virtual HRESULT Initialize_Clone(void * pArg) override;
 
 
@@ -38,3 +40,4 @@ public:
 	virtual void  Free() override;
 };
 
+END

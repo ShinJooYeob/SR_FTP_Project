@@ -45,6 +45,26 @@ _int CGameObject::LateRender()
 	return _int();
 }
 
+void CGameObject::Set_Layer_Tag(const _tchar * _pLayer_Tag)
+{
+	m_Layer_Tag = _pLayer_Tag;
+}
+
+const _tchar * CGameObject::Get_Layer_Tag()
+{
+	return m_Layer_Tag;
+}
+
+_int CGameObject::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
+{
+	return _int();
+}
+
+CComponent* CGameObject::Get_Component(const _tchar * tagComponent)
+{
+	return Find_Components(tagComponent);
+}
+
 HRESULT CGameObject::Add_Component(_uint iScenenNum, const _tchar* tagPrototype, const _tchar* tagComponent, CComponent** ppOut, void* pArg)
 {
 	if (Find_Components(tagComponent) != nullptr)

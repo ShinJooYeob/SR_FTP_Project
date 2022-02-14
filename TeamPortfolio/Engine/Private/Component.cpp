@@ -14,7 +14,7 @@ CComponent::CComponent(const CComponent & rhs)
 	m_pGraphicDevice->AddRef();
 }
 
-HRESULT CComponent::Initialize_Protoype(void * pArg)
+HRESULT CComponent::Initialize_Prototype(void * pArg)
 {
 	return S_OK;
 }

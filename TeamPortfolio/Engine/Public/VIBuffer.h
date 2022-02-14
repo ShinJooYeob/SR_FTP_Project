@@ -14,9 +14,16 @@ protected:
 public:
 	virtual HRESULT Render();
 protected:
-	virtual HRESULT Initialize_Protoype(void * pArg);
+	virtual HRESULT Initialize_Prototype(void * pArg);
 	virtual HRESULT Initialize_Clone(void * pArg);
 
+
+public:
+	//버텍스 갯수 반환
+	_uint Get_NumVertices() { return m_iNumVertices; }
+
+	//버텍스 정보 반환
+	void* Get_Vtxtex();
 
 protected:
 	LPDIRECT3DVERTEXBUFFER9			m_pVB = nullptr;

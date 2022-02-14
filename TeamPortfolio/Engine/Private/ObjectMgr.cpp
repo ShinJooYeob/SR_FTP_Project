@@ -10,8 +10,6 @@ CObjectMgr::CObjectMgr()
 {
 }
 
-
-
 HRESULT CObjectMgr::Reserve_Container(_uint _eSceneNum)
 {
 	m_iMaxSceneNum = _eSceneNum;
@@ -46,6 +44,8 @@ HRESULT CObjectMgr::Add_GameObject_To_Layer(_uint eSceneNum, const _tchar * tagL
 
 	if (pInstance == nullptr)
 		return E_FAIL;
+
+	pInstance->Set_Layer_Tag(tagLayer);
 
 	CLayer* pLayer = Find_Layer(eSceneNum,tagLayer);
 

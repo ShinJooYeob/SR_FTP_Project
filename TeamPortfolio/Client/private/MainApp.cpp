@@ -56,9 +56,23 @@ _int CMainApp::Update(_float fDeltaTime)
 
 	// IMGUI 메뉴바 테스트
 	m_pGameInstance->GetIMGui()->Text("testbar");
-	return m_pGameInstance->Update_Engine(fDeltaTime);
 
+	if (FAILED(m_pGameInstance->Update_Engine(fDeltaTime)))
+	{
+		MSGBOX("Failed to Update_Engine ");
+		return E_FAIL;
+	}
 
+	//콜리전 내부 탐색중
+	m_pCollision->Collision_Obsever(fDeltaTime);
+
+	if (FAILED(m_pGameInstance->LateUpdate_Engine(fDeltaTime)))
+	{
+		MSGBOX("Failed to LateUpdate_Engine ");
+		return E_FAIL;
+	}
+
+	return 0;
 }
 
 HRESULT CMainApp::Render()
@@ -76,6 +90,9 @@ HRESULT CMainApp::Render()
 	HRESULT tResult = m_pGameInstance->Render_Scene();
 
 	m_pGameInstance->Render_End();
+
+	//콜리전 내부 비워주는중
+	m_pCollision->Collision_Obsever_Release(); 
 
 	return tResult;
 
@@ -145,7 +162,6 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 		return E_FAIL;
 	Safe_AddRef(m_pComRenderer);
 
-
 	//버퍼인덱스 프로토타입 생성
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pGraphicDevice))))
 		return E_FAIL;
@@ -161,6 +177,14 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), CTexture::Create(m_pGraphicDevice,&TextureDesc))))
 		return E_FAIL;
 
+	// 콜리전 프로토타입 생성
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Collision"), m_pCollision = CCollision::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	Safe_AddRef(m_pCollision);
+
+	//버퍼인덱스 큐브 프로토타입 생성
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), CVIBuffer_Cube::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -203,6 +227,7 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
+	Safe_Release(m_pCollision);
 	Safe_Release(m_pComRenderer);
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pGameInstance);

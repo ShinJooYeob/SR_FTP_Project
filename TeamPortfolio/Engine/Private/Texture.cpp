@@ -19,7 +19,7 @@ CTexture::CTexture(const CTexture & rhs)
 
 
 
-HRESULT CTexture::Initialize_Protoype(void * pArg)
+HRESULT CTexture::Initialize_Prototype(void * pArg)
 {
 	if (pArg == nullptr)
 		return E_FAIL;
@@ -72,7 +72,7 @@ CTexture * CTexture::Create(LPDIRECT3DDEVICE9 pGraphicDevice, TEXTUREDESC* pArg)
 {
 	CTexture*	pInstance = new CTexture(pGraphicDevice);
 
-	if (FAILED(pInstance->Initialize_Protoype(pArg)))
+	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
 		MSGBOX("Failed to Creating CTexture");
 		Safe_Release(pInstance);
