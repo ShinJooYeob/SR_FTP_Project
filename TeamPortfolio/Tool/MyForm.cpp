@@ -27,6 +27,7 @@ void CMyForm::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	
+	// 각 버튼 추가
 	ON_BN_CLICKED(IDC_BUTTON1, &CMyForm::OnUnitTool)
 	ON_BN_CLICKED(IDC_BUTTON7, &CMyForm::OnMapTool)
 	ON_BN_CLICKED(IDC_BUTTON8, &CMyForm::OnProperty)

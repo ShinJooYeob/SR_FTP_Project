@@ -44,6 +44,7 @@ CToolView::CToolView()
 
 CToolView::~CToolView()
 {
+	// #Tag Tool 소멸자
 	Safe_Delete(m_pTerrain);
 	
 	CTextureMgr::GetInstance()->DestroyInstance();
@@ -106,6 +107,8 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 		D3DCOLOR_ARGB(255, 255, 255, 255));*/
 #pragma endregion 복습용
 	
+	// #Tag Tool Renderer
+
 	CDevice::GetInstance()->Render_Begin();
 
 	m_pTerrain->Render();
@@ -169,6 +172,7 @@ void CToolView::OnInitialUpdate()
 	SetScrollSizes(MM_TEXT, CSize(TILECX * TILEX, (TILECY * TILEY / 2)));
 
 
+	// #Tag Tool 디바이스 초기화
 
 
 	g_hWnd = m_hWnd;
