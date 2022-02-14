@@ -58,6 +58,11 @@ _int CCamera_Main::Update(_float fDeltaTime)
 	{
 		m_pTransform->MovetoTarget(m_pTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
 	}
+	if (pInstance->Get_DIKeyState(DIK_Z) & DIS_Press)
+	{
+		m_pTransform->MovetoTarget(m_pTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), -fDeltaTime);
+	}
+
 
 
 
