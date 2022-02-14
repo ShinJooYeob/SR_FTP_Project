@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CRenderer;
 class CVIBuffer_Rect;
 class CTransform;
+class CInventory;
 END
 
 
@@ -34,7 +35,7 @@ private:
 	CTransform*				m_ComTransform = nullptr;
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
-
+	CInventory*				m_ComInventory = nullptr;
 	_bool					m_bIsJumped = false;
 	_float					m_fJumpPower = 5.f;
 	_float					m_fNowJumpPower = 0.f;

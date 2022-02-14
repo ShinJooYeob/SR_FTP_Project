@@ -162,6 +162,8 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 		return E_FAIL;
 
 
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Inventory"), CInventory::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 	return S_OK;
 }

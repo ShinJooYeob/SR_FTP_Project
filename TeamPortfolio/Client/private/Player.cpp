@@ -33,7 +33,6 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-
 	m_fJumpPower = 10.f;
 
 	return S_OK;
@@ -213,6 +212,7 @@ HRESULT CPlayer::SetUp_Components()
 	TransformDesc.fMovePerSec = 5.f;
 	TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 	TransformDesc.vPivot = _float3(0, -0.5f, 0);
+	
 
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))
 		return E_FAIL;
@@ -221,6 +221,11 @@ HRESULT CPlayer::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Player"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+		return E_FAIL;
+
+	_int iMaxSkillNum;
+	iMaxSkillNum = SKILL_END;
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Inventory"), TEXT("Com_Inventory"), (CComponent**)&m_ComInventory, &iMaxSkillNum)))
 		return E_FAIL;
 
 
@@ -350,7 +355,7 @@ void CPlayer::Free()
 {
 	__super::Free();
 
-
+	Safe_Release(m_ComInventory);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);

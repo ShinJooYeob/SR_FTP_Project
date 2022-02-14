@@ -103,8 +103,14 @@
     <Filter Include="01.Utility\06.EasingMgr">
       <UniqueIdentifier>{b3f2df39-b50b-4d0c-9307-a44f22a1638b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\05.ComponentMgr\01.Components\Inventory">
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI">
+      <UniqueIdentifier>{fc911220-cf11-44b4-b447-4f91312dbe78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Inventory">
       <UniqueIdentifier>{24564cf4-a693-4d56-ae2c-ed8ccd7c82cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Quest">
+      <UniqueIdentifier>{1355212b-e71e-4a2a-819a-4ecd458fbb9e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -199,7 +205,10 @@
       <Filter>01.Utility\06.ImguiMgr</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Inventory.cpp">
-      <Filter>01.Utility\05.ComponentMgr\01.Components\Inventory</Filter>
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Quest.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Quest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -312,7 +321,10 @@
       <Filter>01.Utility\06.ImguiMgr</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Inventory.h">
-      <Filter>01.Utility\05.ComponentMgr\01.Components\Inventory</Filter>
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Quest.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Quest</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

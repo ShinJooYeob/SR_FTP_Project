@@ -33,8 +33,9 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 	
-	if (FAILED(SetUP_Items()))
+	if (FAILED(SetUp_Skills()))
 		return E_FAIL;
+	
 	return S_OK;
 }
 
@@ -42,13 +43,6 @@ _int CShop::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-
-	/*
-
-	CGameInstance* pInstance = GetSingle(CGameInstance);
-*/
-	
-	
 
 
 	return _int();
@@ -81,7 +75,6 @@ _int CShop::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
 		return E_FAIL;
 	 
-	
 	 //if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		//return E_FAIL;
 	
@@ -124,21 +117,41 @@ HRESULT CShop::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Shop"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-
-
+	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
+	Safe_AddRef(m_Player_Inventory);
 
 
 	return S_OK;
 }
 
-HRESULT CShop::SetUP_Items()
+HRESULT CShop::SetUp_Skills()
 {
-	/*CItem::Create();*/
+	ZeroMemory(m_Skill, sizeof(_int)*SKILL_END);
+	m_Skill[SKILL_SPEEDUP].Move_Speed+= 1*(m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP));
+	m_Skill[SKILL_SPEEDUP].Price = 1000;
+	
+	m_Skill[SKILL_DUBBLEJUMP].Price = 3000;
+	
+	m_Skill[SKILL_DASH].Price = 3000;
+	
+	m_Skill[SKILL_POTION].Price = 500;
+
 
 	return S_OK;
 }
 
+HRESULT CShop::Buy_Skill(_int eSKILL)
+{
+	if (m_Skill[eSKILL].Price <= m_Player_Inventory->Get_Gold())
+	{
+		m_Player_Inventory->Set_Skill_Level(eSKILL, 1);
+		m_Player_Inventory->Set_Gold(-m_Skill[eSKILL].Price);
+	}
+	else
+		MSGBOX("소지금이 부족합니다")
 
+	return S_OK;
+}
 
 HRESULT CShop::SetUp_RenderState()
 {
@@ -201,7 +214,7 @@ void CShop::Free()
 {
 	__super::Free();
 
-
+	Safe_Release(m_Player_Inventory);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);

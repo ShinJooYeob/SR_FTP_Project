@@ -5,6 +5,7 @@
 #include "VIBuffer_Terrain.h"
 #include "Transform.h"
 #include "Texture.h"
+#include "Inventory.h"
 
 BEGIN(Engine)
 class CComponent;
