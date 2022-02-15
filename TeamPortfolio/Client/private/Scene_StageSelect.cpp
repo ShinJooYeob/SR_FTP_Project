@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\Scene_StageSelect.h"
+#include "Camera_Main.h"
 
 
 
@@ -22,11 +23,11 @@ HRESULT CScene_StageSelect::Initialize()
 	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Cube(TEXT("Layer_Cube"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Cube(TEXT("Layer_Cube"))))
+	//	return E_FAIL;
 
-	if (FAILED(Ready_Layer_FixCube(TEXT("Layer_FixCube"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_FixCube(TEXT("Layer_FixCube"))))
+	//	return E_FAIL;
 
 
 	//ZeroMemory(&m_Light, sizeof(m_Light));
@@ -94,36 +95,40 @@ _int CScene_StageSelect::LateRender()
 
 HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround),&_float3(0,0,0)))
-		return E_FAIL;
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(1, 0, 0)))
-		return E_FAIL;
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(2, 0, 0)))
-		return E_FAIL;
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(3, 0, 0)))
-		return E_FAIL;
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(4, 0, 0)))
-		return E_FAIL;
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(5, 0, 0)))
-		return E_FAIL;
+	for (_uint k = 0; k < 5; k++)
+	{
+		for (_uint i = k; i < 10 - k; i++)
+		{
+			for (_uint j = k; j < 10 - k; j++) {
 
+				if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)k, (_float)j)))
+					return E_FAIL;
+			}
+		}
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(0, 2, 5)))
-		return E_FAIL;
-
-
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(0, 1, 2)))
-		return E_FAIL;
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround), &_float3(0, 3, 8)))
-		return E_FAIL;
-
+	}
 
 	return S_OK;
 }
 
 HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Camera_Main)))
+	CCamera::CAMERADESC CameraDesc;
+
+	CameraDesc.vEye = _float3(5.f, 3.f, -10.f);
+	CameraDesc.vAt = CameraDesc.vWorldRotAxis =  _float3(5.f, 3.f, 5.f);
+
+	CameraDesc.vAxisY = _float3(0, 1, 0);
+
+	CameraDesc.fFovy = D3DXToRadian(60.0f);
+	CameraDesc.fAspect = _float(g_iWinCX) / g_iWinCY;
+	CameraDesc.fNear = 0.2f;
+	CameraDesc.fFar = 300.f;
+
+	CameraDesc.TransformDesc.fMovePerSec = 10.f;
+	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Camera_Main),&CameraDesc))
 		return E_FAIL;
 	return S_OK;
 }

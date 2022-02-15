@@ -48,8 +48,8 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 				CTransform* DestObject = (CTransform*)pDestObjects->Get_Component(TEXT("Com_Transform")); //Dest의 트랜스 폼
 
 
-				CVIBuffer_Cube* SourceCube = (CVIBuffer_Cube*)pFlexibleObjects->Get_Component(TEXT("Com_VIBuffer_Cube")); //Source큐브 컴포넌트 받는중
-				CVIBuffer_Cube* DestCube = (CVIBuffer_Cube*)pDestObjects->Get_Component(TEXT("Com_VIBuffer_Cube")); //Dest큐브 컴포넌트 받는중
+				CVIBuffer_Cube* SourceCube = (CVIBuffer_Cube*)pFlexibleObjects->Get_Component(TEXT("Com_CollisionBuffer")); //Source큐브 컴포넌트 받는중
+				CVIBuffer_Cube* DestCube = (CVIBuffer_Cube*)pDestObjects->Get_Component(TEXT("Com_CollisionBuffer")); //Dest큐브 컴포넌트 받는중
 
 				VTXTEX* pSourceVertices = (VTXTEX*)SourceCube->Get_Vtxtex(); //Source큐브 정점 받는중
 				VTXTEX* DestVertices = (VTXTEX*)DestCube->Get_Vtxtex(); //Dest큐브 정점 받는중

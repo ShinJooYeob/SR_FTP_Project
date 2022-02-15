@@ -234,6 +234,11 @@ _int CPlayer::LateRender()
 	return _int();
 }
 
+_int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
+{
+	return _int();
+}
+
 HRESULT CPlayer::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
@@ -248,6 +253,10 @@ HRESULT CPlayer::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
+
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), TAG_COM(Com_CollisionBuffer), (CComponent**)&m_ComColiisionBuffer)))
+		return E_FAIL;
+	
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), TAG_COM(Com_Transform), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_Player), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
@@ -255,7 +264,7 @@ HRESULT CPlayer::SetUp_Components()
 
 	_int iMaxSkillNum;
 	iMaxSkillNum = SKILL_END;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Inventory"), TEXT("Com_Inventory"), (CComponent**)&m_ComInventory, &iMaxSkillNum)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Inventory), TAG_COM(Com_Inventory), (CComponent**)&m_ComInventory, &iMaxSkillNum)))
 		return E_FAIL;
 
 
@@ -297,7 +306,7 @@ HRESULT CPlayer::Find_FootHold_Object()
 		 if (vTerrainObjectViewPos.x + 0.5f >= vPlayerViewPos.x && vTerrainObjectViewPos.x - 0.5f < vPlayerViewPos.x)
 		 {
 			 //¹Ù´Ú ¿ÀºêÁ§Æ® ÆÄ¾Ç
-			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y + 0.1f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 1.f)
+			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y + 0.1f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 0.5f)
 			 {
 				 if (vTerrainObjectViewPos.z < fNearYLenth)
 				 {
@@ -512,6 +521,7 @@ void CPlayer::Free()
 	__super::Free();
 
 
+	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_ComInventory);
 	Safe_Release(m_BackWardObject);
 	Safe_Release(m_FootHoldObject);

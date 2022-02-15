@@ -5,8 +5,7 @@
 #include "TerrainGround.h"
 #include "Player.h"
 #include "Shop.h"
-#include "TestCubeMove.h"
-#include "TestCubeFixObject.h"
+#include "TerrainCube.h"
 
 _uint CALLBACK LoadingThread(void* _Prameter)
 {
@@ -139,12 +138,12 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 
 	//////////////////////////////////////////////큐브로 충돌처리 테스트중입니다. -은혁
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TestCubeMove"), CTestCubeMove::Create(m_pGraphicDevice))))
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TestCubeFixObject"), CTestCubeFixObject::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	
+	//if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TestCubeFixObject"), CTestCubeFixObject::Create(m_pGraphicDevice))))
+	//	return E_FAIL;
+	//
 	
 #pragma endregion
 

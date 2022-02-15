@@ -79,6 +79,9 @@
     <Filter Include="02.Scene\05.Scene_IMGUI">
       <UniqueIdentifier>{90b323d6-6a89-43a9-9136-49e1cbede64e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\TerrainCube">
+      <UniqueIdentifier>{23d264ff-0d4d-411e-a05c-50412796704a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -144,6 +147,9 @@
     <ClInclude Include="..\public\Scene_IMGUI.h">
       <Filter>02.Scene\05.Scene_IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TerrainCube.h">
+      <Filter>01.GameObject\TerrainCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -196,6 +202,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Scene_IMGUI.cpp">
       <Filter>02.Scene\05.Scene_IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TerrainCube.cpp">
+      <Filter>01.GameObject\TerrainCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

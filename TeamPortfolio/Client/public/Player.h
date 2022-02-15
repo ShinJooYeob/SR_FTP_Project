@@ -28,22 +28,25 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
-
+	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)override;
 
 private:
 	CTexture*				m_ComTexture = nullptr;
 	CTransform*				m_ComTransform = nullptr;
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
+	CVIBuffer_Cube*			m_ComColiisionBuffer = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CInventory*				m_ComInventory = nullptr;
+
+
+private:
+	_float			m_fFrame = 0.f;
+
 	_bool					m_bIsJumped = false;
 	_float					m_fJumpPower = 5.f;
 	_float					m_fNowJumpPower = 0.f;
 	_bool					m_bIsCliming = false;
 
-private:
-
-	_float			m_fFrame = 0.f;
 	CGameObject*	m_FootHoldObject = nullptr;
 	CGameObject*	m_BackWardObject = nullptr;
 

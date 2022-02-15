@@ -20,6 +20,7 @@ enum OBJECTPROTOTYPEID
 	Prototype_Player,
 	Prototype_BackGround,
 	Prototype_TerrainGround,
+	Prototype_TerrainCube,
 	Prototype_Shop 
 };
 
@@ -38,6 +39,9 @@ static const _tchar* Tag_Object_Prototype(OBJECTPROTOTYPEID eTag)
 		break;
 	case Prototype_TerrainGround:
 		return TEXT("Prototype_GameObject_TerrainGround");
+		break;
+	case Prototype_TerrainCube:
+		return TEXT("Prototype_GameObject_TerrainCube");
 		break;
 	case Prototype_Shop:
 		return TEXT("Prototype_GameObject_Shop");
@@ -58,6 +62,7 @@ enum LAYERID
 	Layer_Camera_Main, 
 	Layer_Player, 
 	Layer_Terrain,
+	Layer_Terrain_Cube,
 	Layer_BackGround,
 	Layer_Shop
 
@@ -75,6 +80,9 @@ static const _tchar* Tag_Layer(LAYERID eTag)
 		break;
 	case Layer_Terrain:
 		return TEXT("Layer_Terrain");
+		break;
+	case Layer_Terrain_Cube:
+		return TEXT("Layer_Terrain_Cube");
 		break;
 	case Layer_BackGround:
 		return TEXT("Layer_BackGround");
@@ -98,9 +106,12 @@ enum COMPONENTPROTOTYPEID
 {
 	Prototype_Renderer,
 	Prototype_Transform,
+	Prototype_Inventory,
+	Prototype_Collision,
 	//////////////////////////////////////////////////////////////////////////
 	Prototype_VIBuffer_Rect,
 	Prototype_VIBuffer_Terrain128x128,
+	Prototype_VIBuffer_Cube,
 	//////////////////////////////////////////////////////////////////////////
 	Prototype_Texture_Default,
 	Prototype_Texture_Player, 
@@ -118,12 +129,23 @@ static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 	case Prototype_Transform:
 		return TEXT("Prototype_Component_Transform");
 		break;
+	case Prototype_Collision:
+		return TEXT("Prototype_Component_Collision");
+		break;
+	case Prototype_Inventory:
+		return TEXT("Prototype_Component_Inventory");
+		break;
+
 	case Prototype_VIBuffer_Rect:
 		return TEXT("Prototype_Component_VIBuffer_Rect");
 		break;
 	case Prototype_VIBuffer_Terrain128x128:
 		return TEXT("Prototype_Component_VIBuffer_Terrain128x128");
 		break;
+	case Prototype_VIBuffer_Cube:
+		return TEXT("Prototype_Component_VIBuffer_Cube");
+		break;
+
 	case Prototype_Texture_Default:
 		return TEXT("Prototype_Component_Texture_Default");
 		break;
@@ -154,7 +176,10 @@ enum COMPONENTID
 	Com_Renderer,
 	Com_VIBuffer,
 	Com_Transform,
-	Com_Texture
+	Com_Texture,
+	Com_CollisionBuffer,
+	Com_Collision,
+	Com_Inventory
 
 };
 static const _tchar* Tag_Component(COMPONENTID eTag)
@@ -167,11 +192,20 @@ static const _tchar* Tag_Component(COMPONENTID eTag)
 	case Com_VIBuffer:
 		return TEXT("Com_VIBuffer");
 		break;
+	case Com_CollisionBuffer:
+		return TEXT("Com_CollisionBuffer");
+		break;
 	case Com_Transform:
 		return TEXT("Com_Transform");
 		break;
 	case Com_Texture:
 		return TEXT("Com_Texture");
+		break;
+	case Com_Collision:
+		return TEXT("Com_Collision");
+		break;
+	case Com_Inventory:
+		return TEXT("Com_Inventory");
 		break;
 
 		//////////////////////////////////////////////////////////////////////////

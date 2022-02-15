@@ -23,7 +23,6 @@ public:
 	HRESULT Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDelta);
 
 private:
-	_float3			m_vWorldRotAxis = _float3(0, 0, 0);
 	_float			m_fPassedTime = 0;
 	_float			m_fStartAngle = 0;
 	_float			m_fTargetAngle = 0;

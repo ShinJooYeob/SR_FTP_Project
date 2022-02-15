@@ -27,7 +27,7 @@ HRESULT CCamera_Main::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
-	m_vWorldRotAxis = _float3(2.5f, 0, 2.5f);
+
 
 	return S_OK;
 }
@@ -48,12 +48,6 @@ _int CCamera_Main::Update(_float fDeltaTime)
 		m_pTransform->Move_Backward(fDeltaTime);
 
 	}
-
-	if (pInstance->Get_DIKeyState(DIK_A) & DIS_Press)
-	{
-		m_pTransform->Move_Left(fDeltaTime);
-	}
-
 	if (pInstance->Get_DIKeyState(DIK_X) & DIS_Press)
 	{
 		m_pTransform->MovetoTarget(m_pTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
@@ -66,15 +60,13 @@ _int CCamera_Main::Update(_float fDeltaTime)
 
 
 
-	if (pInstance->Get_DIKeyState(DIK_D) & DIS_Press)
-	{
-		m_pTransform->Move_Right(fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
+	if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
 	{
 
 		_float3 vOriginCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
-		_float3 vCameraPos = vOriginCameraPos - m_vWorldRotAxis;
+		_float3 vRotAxis = m_CameraDesc.vWorldRotAxis;
+		vRotAxis.y = 0;
+		_float3 vCameraPos = vOriginCameraPos - vRotAxis;
 		vCameraPos.y = 0;
 
 		_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1, 0, 0)));
@@ -89,10 +81,12 @@ _int CCamera_Main::Update(_float fDeltaTime)
 
 	}
 	
-	if (pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
+	if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
 	{
-		_float3 vOriginCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
-		_float3 vCameraPos = vOriginCameraPos - m_vWorldRotAxis;
+		_float3 vOriginCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);		
+		_float3 vRotAxis = m_CameraDesc.vWorldRotAxis;
+		vRotAxis.y = 0;
+		_float3 vCameraPos = vOriginCameraPos - vRotAxis;
 		vCameraPos.y = 0;
 
 		_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1, 0, 0)));
@@ -108,7 +102,7 @@ _int CCamera_Main::Update(_float fDeltaTime)
 	}
 	if (m_IsTurning) {
 
-		Revolution_Turn_AxisY_CW(m_vWorldRotAxis, fDeltaTime);
+		Revolution_Turn_AxisY_CW(m_CameraDesc.vWorldRotAxis, fDeltaTime);
 
 	}
 
@@ -159,22 +153,18 @@ HRESULT CCamera_Main::Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelt
 
 	m_fPassedTime += fTimeDelta;
 	_float3 vOriginCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
+	vRevPos.y = 0;
 	_float3 vCameraPos = vOriginCameraPos - vRevPos;
 	
 	vCameraPos.y = 0;
 
 	_float fRadianAngle = GetSingle(CGameInstance)->TargetQuadIn(m_fStartAngle, m_fTargetAngle, m_fPassedTime);
 
-	_float TempAngle = D3DXToDegree(m_fStartAngle);
-	_float TempAngle2 = D3DXToDegree(m_fTargetAngle);
-	_float TempAngle3 = D3DXToDegree(fRadianAngle);
-
-
-
 	if (m_fPassedTime >= 1.f) 
 	{
 		m_IsTurning = false;
 		m_fStartAngle = m_fTargetAngle;
+		fRadianAngle = m_fTargetAngle;
 	}
 
 	_float fDist = vCameraPos.Get_Distance(_float3(0,0,0));
