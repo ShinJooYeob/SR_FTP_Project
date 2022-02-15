@@ -10,6 +10,9 @@ class CTransform;
 class CInventory;
 END
 
+BEGIN(Client)
+
+class CCamera_Main;
 
 class CPlayer final :public CGameObject
 {
@@ -39,6 +42,9 @@ private:
 	CInventory*				m_ComInventory = nullptr;
 
 
+	/* 충돌처리 */
+	CCollision*		m_pCollisionCom = nullptr;
+
 private:
 	_float			m_fFrame = 0.f;
 
@@ -46,10 +52,12 @@ private:
 	_float					m_fJumpPower = 5.f;
 	_float					m_fNowJumpPower = 0.f;
 	_bool					m_bIsCliming = false;
+	_bool					m_bIsShdow = false;
+	CGameObject*			m_FootHoldObject = nullptr;
+	CGameObject*			m_BackWardObject = nullptr;
+	CGameObject*			m_ReturnFootHold = nullptr;
 
-	CGameObject*	m_FootHoldObject = nullptr;
-	CGameObject*	m_BackWardObject = nullptr;
-
+	CCamera_Main*			m_pCamera_Main = nullptr;
 
 private:
 	HRESULT			SetUp_Components();
@@ -70,3 +78,4 @@ public:
 
 };
 
+END	

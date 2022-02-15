@@ -140,11 +140,11 @@ _int CTestCubeMove::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fColli
 			{
 				if (vSourcePos.y > vDestPos.y)
 				{
-					m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, fCollision_Distance.y,0));
+					m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, fCollision_Distance.y, 0));
 				}
 				else
 				{
-					m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, -fCollision_Distance.y,0));
+					m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, -fCollision_Distance.y, 0));
 				}
 			}
 		}
@@ -165,15 +165,16 @@ _int CTestCubeMove::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fColli
 			{
 				if (vSourcePos.x > vDestPos.x)
 				{
-					m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(fCollision_Distance.x,0, 0));
+					m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(fCollision_Distance.x, 0, 0));
 				}
 				else
 				{
-					m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(-fCollision_Distance.x,0, 0));
+					m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(-fCollision_Distance.x, 0, 0));
 				}
 			}
 		}
 	}
+
 
 
 	return _int();

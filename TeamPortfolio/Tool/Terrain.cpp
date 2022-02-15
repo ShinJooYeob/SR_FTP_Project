@@ -150,9 +150,9 @@ int CTerrain::GetTileIndex(const D3DXVECTOR3 & vPos)
 {
 	for (size_t index = 0; index < m_vecTile.size(); ++index)
 	{
-		if (Picking(vPos, index))
+		if (Picking(vPos, (_int)index))
 		{
-			return index;
+			return (_int)index;
 		}
 	}
 

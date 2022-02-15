@@ -56,16 +56,6 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst,const CGraphic_Device::
 		return E_FAIL;
 
 
-	_float3 Temp;
-	_Matrix Temp2;
-
-	  
-	_float3 Temp3 = Temp.Get_Nomalize();
-
-	Temp.Get_Dot(Temp3);
-
-	Temp.Get_Cross(Temp).Get_Nomalize();
-
 	return S_OK;
 }
 

@@ -42,7 +42,6 @@ _int CCamera_Main::Update(_float fDeltaTime)
 	{
 		m_pTransform->Move_Forward(fDeltaTime);
 	}
-
 	if (pInstance->Get_DIKeyState(DIK_S) & DIS_Press)
 	{
 		m_pTransform->Move_Backward(fDeltaTime);

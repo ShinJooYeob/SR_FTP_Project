@@ -108,6 +108,9 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 
 	}
 
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)5, (_float)1, (_float)0)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

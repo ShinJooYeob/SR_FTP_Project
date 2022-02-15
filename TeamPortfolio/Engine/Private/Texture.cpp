@@ -24,19 +24,19 @@ HRESULT CTexture::Initialize_Prototype(void * pArg)
 	if (pArg == nullptr)
 		return E_FAIL;
 
-	TEXTUREDESC TextureDesc{};
-	memcpy(&TextureDesc, pArg, sizeof(TEXTUREDESC));
+	TEXTUREDESC tTextureDesc{};
+	memcpy(&tTextureDesc, pArg, sizeof(TEXTUREDESC));
 
 	_tchar	szFullPath[MAX_PATH] = L"";
 
-	for (_uint i = 0; i< TextureDesc.m_iNumTexture;i++)
+	for (_uint i = tTextureDesc.iStartIndex; i< tTextureDesc.iStartIndex + tTextureDesc.iNumTexture;i++)
 	{
-		wsprintf(szFullPath, TextureDesc.szFilePath, i);
+		wsprintf(szFullPath, tTextureDesc.szFilePath, i);
 
 		LPDIRECT3DBASETEXTURE9		pTexture = nullptr;
 		HRESULT		hr = 0;
 		
-		if(TextureDesc.eTextureType == TYPE_DEFAULT)
+		if(tTextureDesc.eTextureType == TYPE_DEFAULT)
 			hr = D3DXCreateTextureFromFile(m_pGraphicDevice, szFullPath, (LPDIRECT3DTEXTURE9*)&pTexture);
 		else
 			hr = D3DXCreateCubeTextureFromFile(m_pGraphicDevice, szFullPath, (LPDIRECT3DCUBETEXTURE9*)&pTexture);

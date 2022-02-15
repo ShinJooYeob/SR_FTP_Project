@@ -64,6 +64,7 @@ _int CMainApp::Update(_float fDeltaTime)
 
 	//콜리전 내부 탐색중
 	m_pCollision->Collision_Obsever(fDeltaTime);
+
 	if (FAILED(m_pGameInstance->LateUpdate_Engine(fDeltaTime)))
 	{
 		MSGBOX("Failed to LateUpdate_Engine ");

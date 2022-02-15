@@ -14,7 +14,8 @@ public:
 
 		TYPE			eTextureType = TYPE_DEFAULT;
 		const _tchar*	szFilePath = nullptr;
-		_uint			m_iNumTexture = 1;
+		_uint			iNumTexture = 1;
+		_uint			iStartIndex = 0;
 
 	}TEXTUREDESC;
 

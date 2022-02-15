@@ -38,12 +38,12 @@ private:
 private:
 
 	CVIBuffer_Cube*		m_ComVIBuffer = nullptr;
-	CVIBuffer_Cube*		m_ComColiisionBuffer = nullptr;
 	CTransform*			m_ComTransform = nullptr;
 	CRenderer*			m_ComRenderer = nullptr;
 
 	/* 충돌처리 */
 	CCollision*		m_pCollisionCom = nullptr;
+	CVIBuffer_Cube*		m_ComColiisionBuffer = nullptr;
 
 
 

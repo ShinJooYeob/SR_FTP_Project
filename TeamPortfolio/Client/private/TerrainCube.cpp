@@ -44,10 +44,11 @@ HRESULT CTerrainCube::Initialize_Clone(void * pArg)
 
 _int CTerrainCube::Update(_float fTimeDelta)
 {
+	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
+
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
-	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
 
 	return _int();
 }

@@ -2,6 +2,8 @@
 
 #include "Camera.h"
 
+BEGIN(Client)
+
 class CCamera_Main :public CCamera
 {
 private:
@@ -22,6 +24,9 @@ public:
 	HRESULT Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelta);
 	HRESULT Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDelta);
 
+public:
+	_bool	Get_bIsTuring() { return m_IsTurning; };
+
 private:
 	_float			m_fPassedTime = 0;
 	_float			m_fStartAngle = 0;
@@ -34,3 +39,4 @@ public:
 	virtual void Free()override;
 };
 
+END
