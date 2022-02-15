@@ -17,6 +17,9 @@ TeamPortfolio/Engine/Default/x86/**/*.*
 TeamPortfolio/Tool/x64/**/*.*
 TeamPortfolio/Tool/x86/**/*.*
 
+## Resource ignore
+TeamPortfolio/Resource/**/*.*
+
 \Engine
 
 ## Dear ImGui artifacts

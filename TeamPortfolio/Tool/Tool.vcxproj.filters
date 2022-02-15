@@ -85,6 +85,12 @@
     <Filter Include="04.Object\01.Rect">
       <UniqueIdentifier>{1201a88a-e146-4927-8566-7bdc4bf2f444}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Object\03 Camera_Tool">
+      <UniqueIdentifier>{00466184-5dfa-4c53-b7be-cb630035211d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Etc\01. Path">
+      <UniqueIdentifier>{f20911a9-2234-4574-942c-647aeac8fc05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -171,6 +177,9 @@
     <ClInclude Include="ObjectTool_Rect.h">
       <Filter>04.Object\01.Rect</Filter>
     </ClInclude>
+    <ClInclude Include="Camera_Tool.h">
+      <Filter>04.Object\03 Camera_Tool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -235,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="ObjectTool_Rect.cpp">
       <Filter>04.Object\01.Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera_Tool.cpp">
+      <Filter>04.Object\03 Camera_Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

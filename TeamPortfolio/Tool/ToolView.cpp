@@ -15,6 +15,7 @@
 #include "MyForm.h"
 
 #include "ObjectTool_Rect.h"
+#include "Camera_Tool.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -230,7 +231,8 @@ void CToolView::OnInitialUpdate()
 	// 1인자 : 배치할 윈도우의 z순서에 대한 포인터
 	// x좌표, y좌표, 가로 크기, 세로 크기
 	// SWP_NOZORDER : 현재 z순서를 유지하겠다는 플래그 값
-	pMainFrm->SetWindowPos(NULL, 0, 0, int(WINCX + fRowFrm), int(WINCY + fColFrm), SWP_NOZORDER);
+
+	pMainFrm->SetWindowPos(NULL, 0, 0, int(TOOL_WINCX + fRowFrm), int(TOOL_WINCY + fColFrm), SWP_NOZORDER);
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
@@ -315,9 +317,10 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	//}
 }
 
-// #Tag 툴 프로토 초기화
+
 HRESULT CToolView::Ready_Static_Component_Prototype()
 {
+	// #Tag 툴 프로토 컴포넌트 초기화
 	CGameInstance*		m_pGameInstance = GetSingle(CDevice)->Get_GameInstance();
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
@@ -348,14 +351,45 @@ HRESULT CToolView::Ready_Static_Component_Prototype()
 
 HRESULT CToolView::Ready_Static_GameObject_Prototype()
 {
+	// #Tag 툴 프로토 오브젝트 초기화
+	// 임의 객체 생성
 	if (GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BackGround"), CObjectTool_Rect::Create(m_pGraphicDevice)))
 		return E_FAIL;
+
+	// 카메라 생성
+	if (GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Camera"), CCamera_Tool::Create(m_pGraphicDevice)))
+		return E_FAIL;
+
 	return S_OK;
 }
 HRESULT CToolView::Ready_GameObject_Layer(const _tchar * layertag)
 {
+	// #Tag 툴 클론 오브젝트 생성
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TEXT("Prototype_GameObject_BackGround")))
 		return E_FAIL;
+
+	// 카메라
+
+	CCamera::CAMERADESC CameraDesc;
+	CameraDesc.vWorldRotAxis = _float3(0, 0, 0);
+	CameraDesc.vEye = _float3(0, 0, -5.f);
+	CameraDesc.vAt = _float3(0, 0, 0);
+	CameraDesc.vAxisY = _float3(0, 1, 0);
+
+	CameraDesc.fFovy = D3DXToRadian(90);
+	CameraDesc.fAspect = _float(TOOL_WINCX) / TOOL_WINCY;
+	CameraDesc.fNear = 1.0f;
+	CameraDesc.fFar = 100.0f;
+
+	CameraDesc.TransformDesc.fMovePerSec = 10.f;
+	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
+
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Main::Create(m_pGraphicDevice, &CameraDesc))))
+		
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TEXT("Prototype_GameObject_Camera"), &CameraDesc))
+		return E_FAIL;
+
 	return S_OK;
 }
 

@@ -108,7 +108,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 
 	m_MainSplitter.CreateStatic(this, 1, 2);
 
-	m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CToolView), CSize(WINCX, WINCY), pContext);
+	m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CToolView), CSize(TOOL_WINCX, TOOL_WINCY), pContext);
 
 	// WS_CHILD : 자식 창이라는 의미
 	// WS_VISIBLE : 생성 후 바로 화면에 표시하겠다는 의미

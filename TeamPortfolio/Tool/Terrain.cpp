@@ -91,8 +91,8 @@ void CTerrain::Render(void)
 
 	::GetClientRect(m_pMainView->m_hWnd, &rc);
 
-	float	fX = WINCX / float(rc.right - rc.left);
-	float	fY = WINCY / float(rc.bottom - rc.top);
+	float	fX = TOOL_WINCX / float(rc.right - rc.left);
+	float	fY = TOOL_WINCY / float(rc.bottom - rc.top);
 
 	D3DXMATRIX	matWorld, matScale, matTrans;
 	TCHAR		szBuf[64] = L"";

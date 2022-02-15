@@ -1,0 +1,2 @@
+TestTexture|Texture|2|..\Texture\TestTexture\Texture\anvil_bas%d.png
+Texture|PlayerTex|3|..\Texture\TestTexture\Texture\PlayerTex\anvil_top_damaged_%d.png

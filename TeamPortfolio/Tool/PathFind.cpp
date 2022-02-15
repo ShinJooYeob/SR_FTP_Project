@@ -44,16 +44,17 @@ void CPathFind::OnListBox()
 
 void CPathFind::OnSaveData()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
+	// 저장버튼을 누르면 해당 경로 txt 파일로 저장된다.
+	wstring strImgPath = L"../Data/ImgPath.txt";
 	wofstream		fout;
-	fout.open(L"../Data/ImgPath.txt");
+	fout.open(strImgPath);
 
 	// 파일 개방 성공
 	if (!fout.fail())
 	{
 		for (auto& iter : m_PathInfoList)
 		{
+			// |문자는 구분 기호
 			fout << iter->wstrObjKey << L"|" << iter->wstrStateKey << L"|" << iter->iCount << L"|" << iter->wstrPath << endl;
 		}
 
@@ -67,10 +68,13 @@ void CPathFind::OnSaveData()
 void CPathFind::OnLoadData()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	wstring strImgPath = L"../Data/ImgPath.txt";
+
 	UpdateData(TRUE);
 
+	// 해당 경로의 파일 탐색
 	wifstream		fin;
-	fin.open(L"../Data/ImgPath.txt");
+	fin.open(strImgPath);
 
 	if (!fin.fail())
 	{
@@ -95,6 +99,7 @@ void CPathFind::OnLoadData()
 			if (fin.eof())
 				break;
 
+			// 리스트 박스추가
 			wstrCombined = wstring(szObjKey) + L"|" + szStateKey + L"|" + szCount + L"|" + szPath;
 			m_ListBox.AddString(wstrCombined.c_str());
 		}
@@ -112,6 +117,12 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
+	// 폴더 드롭다운시 텍스쳐 이미지를 탐색한다.
+
+	// 세부적으로 파일 탐색 재설정해야될듯
+
+
+	// 드롭다운
 	UpdateData(TRUE);
 	CDialog::OnDropFiles(hDropInfo);
 

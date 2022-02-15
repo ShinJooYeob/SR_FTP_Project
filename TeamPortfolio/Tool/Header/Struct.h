@@ -45,10 +45,15 @@ typedef struct tagUnitData
 	BYTE		byItem;
 }UNITDATA;
 
+
+// 텍스처의 위치정보를 저장하는 구조체
 typedef struct tagTexturePath
 {
+	// 파일구분 1 
 	wstring			wstrObjKey = L"";
+	// 파일구분 2
 	wstring			wstrStateKey = L"";
+	// 전체 경로
 	wstring			wstrPath = L"";
 	int				iCount = 0;
 }IMGPATH;

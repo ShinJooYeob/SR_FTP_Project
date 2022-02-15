@@ -16,8 +16,8 @@ HRESULT CDevice::InitDevice(void)
 	CGraphic_Device::GRAPHICDESC desc;
 	desc.hWnd = g_hWnd;
 	desc.eScreenMode = CGraphic_Device::TYPE_SCREEN;
-	desc.iWinCX = WINCX;
-	desc.iWinCY = WINCY;
+	desc.iWinCX = TOOL_WINCX;
+	desc.iWinCY = TOOL_WINCY;
 
 	// 툴 Init으로 변경
 	m_GameInstance->Initialize_Engine_Tool(desc, SCENEID::SCENE_END, &m_pGraphicDevice);
