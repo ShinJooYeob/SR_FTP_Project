@@ -121,7 +121,6 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 
 	// 세부적으로 파일 탐색 재설정해야될듯
 
-
 	// 드롭다운
 	UpdateData(TRUE);
 	CDialog::OnDropFiles(hDropInfo);
