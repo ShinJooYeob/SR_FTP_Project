@@ -34,7 +34,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 		return E_FAIL;
 
 	m_fNowJumpPower = m_fJumpPower = 10.f;
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(3.f,1.f,10.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
 
 	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))));
 	if (m_pCamera_Main == nullptr)
@@ -69,6 +69,8 @@ _int CPlayer::Update(_float fDeltaTime)
 
 			m_bIsCliming = true;
 		}
+
+		
 	}
 
 	if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_Press)
@@ -98,14 +100,14 @@ _int CPlayer::Update(_float fDeltaTime)
 
 	}
 
-	if (pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
+	if (m_bCanMoveLeft && pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
 	{
 
 
 		m_ComTransform->Move_Left(fDeltaTime);
 	}
 
-	if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
+	if (m_bCanMoveRight && pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
 	{
 
 
@@ -113,21 +115,19 @@ _int CPlayer::Update(_float fDeltaTime)
 	}
 
 
-	if (pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
+	if (m_bIsJumped < 2 && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
 	{
 		m_fNowJumpPower = m_fJumpPower;
-		m_bIsJumped = true;
-
+		m_bIsJumped++;
+		m_bIsCliming = false;
 		m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
 	}
 
 	
-	if(!m_pCamera_Main->Get_bIsTuring())
-	{
-		if (FAILED(Find_FootHold_Object())) {
-			return E_FAIL;
-		}
+	if (FAILED(Find_FootHold_Object())) {
+		return E_FAIL;
 	}
+	
 
 
 
@@ -160,11 +160,6 @@ _int CPlayer::Render()
 		return E_FAIL; 
 	
 
-	//CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Camera_Main")));
-
-
-	//if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
-	//	return E_FAIL;
 	 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
@@ -196,37 +191,7 @@ _int CPlayer::LateRender()
 
 _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	//if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Terrain)))
-	//{
-	//	_float3 vDestPos = ((CTransform*)(pDestObjects->Get_Component(TEXT("Com_Transform"))))->Get_MatrixState(CTransform::STATE_POS);
-	//	_float3 vSourcePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 
-	//	if (fCollision_Distance.y > fCollision_Distance.x && fCollision_Distance.z > fCollision_Distance.x)
-	//	{
-	//		if (vSourcePos.x > vDestPos.x)
-	//		{
-	//			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(fCollision_Distance.x, 0, 0));
-	//		}
-	//		else
-	//		{
-	//			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(-fCollision_Distance.x, 0, 0));
-	//		}
-
-	//	}
-	//	//if (fCollision_Distance.x > fCollision_Distance.y && fCollision_Distance.z > fCollision_Distance.y)
-	//	//{
-	//	//	if (vSourcePos.y > vDestPos.y)
-	//	//	{
-	//	//		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, fCollision_Distance.y, 0));
-	//	//	}
-	//	//	else
-	//	//	{
-	//	//		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, -fCollision_Distance.y, 0));
-	//	//	}
-
-	//	//}
-
-	//}
 	return _int();
 }
 
@@ -269,13 +234,25 @@ HRESULT CPlayer::Find_FootHold_Object()
 {
 	CGameInstance* pGameInstance = GetSingle(CGameInstance);
 
-	if (m_pCamera_Main == nullptr)
-		return E_FAIL;
-
-	CTransform* pCameraTransform = m_pCamera_Main->Get_Camera_Transform();
-
 	//뷰스페이스 변환 행렬
-	_Matrix matVeiwSpace = pCameraTransform->Get_InverseWorldMatrix();
+	_Matrix matVeiwSpace;
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
+
+	_float3 vCamPos;
+	memcpy(&vCamPos, &(matVeiwSpace.InverseMatrix().m[3][0]), sizeof(_float3));
+
+	//카메라 바라보도록 설정
+
+	_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	_float3 vNewLook = (vPlayerPos - vCamPos).Get_Nomalize();
+
+	m_ComTransform->LookAt(vPlayerPos + vNewLook);
+
+
+	if (m_pCamera_Main->Get_bIsTuring())
+		return S_OK;
+
 	_float3 vPlayerViewPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
 
 	 list<CGameObject*>* pTerrainLayer= pGameInstance->Get_ObjectList_from_Layer(SCENEID::SCENE_STAGESELECT, TAG_LAY(Layer_Terrain));
@@ -289,24 +266,39 @@ HRESULT CPlayer::Find_FootHold_Object()
 	 
 	 _float		fNearZLenth = -(_float)0x0fffffff;
 	 _float		fFootZLenth	= (_float)0x0fffffff;
-	 _float		fFarZLenth = -(_float)0x0fffffff;
+	 _float		fFarZLenth = (_float)0x0fffffff;
 
-	 m_bIsShdow = false;
 
 	 auto ObjectListIter = pTerrainLayer->begin();
+
+	 m_bIsShdow = false;
+	 m_bCanMoveLeft = true;
+	 m_bCanMoveRight = true;
 
 	 for (; ObjectListIter != pTerrainLayer->end();)
 	 {
 		 _float3 vTerrainObjectViewPos = ((CTransform*)((*ObjectListIter)->Find_Components(TAG_COM(Com_Transform))))
 			 ->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
-		 if (vTerrainObjectViewPos.x + 0.5f >= vPlayerViewPos.x && vTerrainObjectViewPos.x - 0.5f < vPlayerViewPos.x)
+
+		 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y + 0.5f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 0.5f)
 		 {
-			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y + 0.5f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 0.5f)
+			 if (vTerrainObjectViewPos.x + 0.5f >= vPlayerViewPos.x && vTerrainObjectViewPos.x - 0.5f < vPlayerViewPos.x)
 			 {
 				 if (vTerrainObjectViewPos.z < vPlayerViewPos.z && vTerrainObjectViewPos.z > fNearZLenth)
 				 {
 					 fNearZLenth = vTerrainObjectViewPos.z;
 					 m_bIsShdow = true;
+				 }
+			 }
+			 else if (vTerrainObjectViewPos.z > vPlayerViewPos.z - 0.25f && vTerrainObjectViewPos.z < vPlayerViewPos.z + 0.25f) 
+			 {
+				 if (vTerrainObjectViewPos.x >= vPlayerViewPos.x + 0.6f  && vTerrainObjectViewPos.x  < vPlayerViewPos.x + 1.1f)
+				 {
+					 m_bCanMoveRight = false;
+				 }
+				 else if (vTerrainObjectViewPos.x <= vPlayerViewPos.x - 0.6f  && vTerrainObjectViewPos.x  > vPlayerViewPos.x - 1.1f)
+				 {
+					 m_bCanMoveLeft = false;
 				 }
 			 }
 		 }
@@ -323,7 +315,7 @@ HRESULT CPlayer::Find_FootHold_Object()
 		 if (vTerrainObjectViewPos.x + 0.5f >= vPlayerViewPos.x && vTerrainObjectViewPos.x - 0.5f < vPlayerViewPos.x)
 		 {
 			 //바닥 오브젝트 파악
-			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y - 0.6f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 1.4f)
+			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y - 0.75f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 1.4f)
 			 {
 				 if (vTerrainObjectViewPos.z < fFootZLenth && vTerrainObjectViewPos.z > fNearZLenth)
 				 {
@@ -331,10 +323,10 @@ HRESULT CPlayer::Find_FootHold_Object()
 					 fFootZLenth = vTerrainObjectViewPos.z;
 				 }
 			 }
-			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y + 0.4f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 0.4f)
+			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y + 0.5f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 0.5f)
 			 {
 				 //바로 뒤 오브젝트 파악(등반하기 위해서)
-				 if (vTerrainObjectViewPos.z >= vPlayerViewPos. z  && vTerrainObjectViewPos.z > fFarZLenth)
+				 if (vTerrainObjectViewPos.z >= vPlayerViewPos. z  && vTerrainObjectViewPos.z < fFarZLenth)
 				 {
 					 pZNearObject = (*ObjectListIter);
 					 fFarZLenth = vTerrainObjectViewPos.z;
@@ -363,14 +355,7 @@ HRESULT CPlayer::Find_FootHold_Object()
 	 if (m_BackWardObject == nullptr)
 		 m_bIsCliming = false;
 
-	 //카메라 바라보도록 설정
 
-	 _float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-	 _float3 vCamPos = pCameraTransform->Get_MatrixState(CTransform::STATE_POS);
-
-	 _float3 vNewLook = (vPlayerPos - vCamPos).Get_Nomalize();
-
-	 m_ComTransform->LookAt(vPlayerPos + vNewLook);
 
 
 	return S_OK;
@@ -379,10 +364,10 @@ HRESULT CPlayer::Find_FootHold_Object()
 HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 {
 
-	if (m_pCamera_Main == nullptr)
-		return E_FAIL;
 
-	CTransform* pCameraTransform = m_pCamera_Main->Get_Camera_Transform();
+	//CTransform* pCameraTransform = m_pCamera_Main->Get_Camera_Transform();
+	_Matrix matVeiwSpace;
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
 
 	_float3 vResultPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 
@@ -397,99 +382,56 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 			vResultPos.y = vResultPos.y + (m_fNowJumpPower - Time*Time * m_fJumpPower)*fDeltaTime;
 		}
 
-		vResultPos = vResultPos.PosVector_Matrix(pCameraTransform->Get_InverseWorldMatrix());
+		vResultPos = vResultPos.PosVector_Matrix(matVeiwSpace);
 
 
 		if (m_FootHoldObject != nullptr)
 		{
-			_float3		vFootHoldObjectViewPos = (((CTransform*)(m_FootHoldObject->Find_Components(TAG_COM(Com_Transform))))->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(pCameraTransform->Get_InverseWorldMatrix());
+			_float3		vFootHoldObjectViewPos = (((CTransform*)(m_FootHoldObject->Find_Components(TAG_COM(Com_Transform))))
+				->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(matVeiwSpace);
 			vResultPos.z = vFootHoldObjectViewPos.z;
 
 			if (vResultPos.y < vFootHoldObjectViewPos.y + 1.0f && m_fNowJumpPower < 0) //지형보다 플레이어가 위에 있다면
 			{
 				vResultPos.y = vFootHoldObjectViewPos.y + 1.f;
 				m_fNowJumpPower = 0;
-				m_bIsJumped = false;
+				m_bIsJumped = 0;
 
 			}
 		}
-		else if (Time > 4.f && m_ReturnFootHold !=nullptr)
+		else if (Time > 3.f && m_ReturnFootHold !=nullptr)
 		{
-			_float3		vFootHoldObjectViewPos = (((CTransform*)(m_ReturnFootHold->Find_Components(TAG_COM(Com_Transform))))->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(pCameraTransform->Get_InverseWorldMatrix());
+			_float3		vFootHoldObjectViewPos = (((CTransform*)(m_ReturnFootHold->Find_Components(TAG_COM(Com_Transform))))
+				->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(matVeiwSpace);
 
 			vResultPos = vFootHoldObjectViewPos;
-			vFootHoldObjectViewPos.y += 1.f;
+			vResultPos.y += 1.f;
 
 			m_fNowJumpPower = 0;
-			m_bIsJumped = false;
+			m_bIsJumped = 0;
 			//m_ReturnFootHold
 		}
 		else {
-			m_fNowJumpPower -= fDeltaTime * m_fJumpPower * 2.f;
+			m_fNowJumpPower -= fDeltaTime * m_fJumpPower;
 		}
 	}
 	else {
-		vResultPos = vResultPos.PosVector_Matrix(pCameraTransform->Get_InverseWorldMatrix());
+		vResultPos = vResultPos.PosVector_Matrix(matVeiwSpace);
+
+		if (m_BackWardObject != nullptr) {
+
+			_float3		vBackWardObjectViewPos = (((CTransform*)(m_BackWardObject->Find_Components(TAG_COM(Com_Transform))))
+				->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(matVeiwSpace);
+			vResultPos.z = vBackWardObjectViewPos.z - 1.1f;
+		}
+
 	}
 
 
 
 
-	vResultPos = vResultPos.PosVector_Matrix(pCameraTransform->Get_WorldMatrix());
+	vResultPos = vResultPos.PosVector_Matrix(matVeiwSpace.InverseMatrix());
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vResultPos);
-
-
-
-	return S_OK;
-}
-
-HRESULT CPlayer::Set_PosOnTerrain(_float fDeltaTime)
-{
-
-	CGameInstance* pGameInstance = GetSingle(CGameInstance);
-
-	
-	CGameObject* pTerrain= pGameInstance->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STAGESELECT, TEXT("Layer_Terrain"));
-
-	if (pTerrain == nullptr)
-		return E_FAIL;
-
-	CVIBuffer_Terrain* pTerrainBuffer =(CVIBuffer_Terrain*)(pTerrain->Find_Components(TEXT("Com_VIBuffer")));
-	CTransform*		pTerrainTransform = (CTransform*)(pTerrain->Find_Components(TEXT("Com_Transform")));
-
-	_float3 vResultPos;
-
-	_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-
-	if (!FAILED(pTerrainBuffer->PointInTerrain(&vResultPos, vPlayerPos, pTerrainTransform->Get_InverseWorldMatrix())))
-	{
-		if (vPlayerPos.y > vResultPos.y) //지형보다 플레이어가 위에 있다면
-		{
-
-			m_fNowJumpPower -= fDeltaTime * m_fJumpPower *2.f;
-
-			//경과 시간
-			//1 - (m_fNowJumpPower / m_fJumpPower);
-
-			_float Time = 1 - (m_fNowJumpPower / m_fJumpPower);
-			
-			_float Temp = vPlayerPos.y + (m_fNowJumpPower - Time*Time * m_fJumpPower)*fDeltaTime;
-
-			vResultPos.y = (Temp > vResultPos.y)? Temp : vResultPos.y;
-		}
-		else //지형에 닿았다면
-		{
-			m_fNowJumpPower = 0;
-			m_bIsJumped = false;
-		}
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vResultPos);
-
-	}
-	else //지형 밖으로 넘어갔을 경우
-	{
-		m_fNowJumpPower = 0;
-		m_bIsJumped = true;
-	}
 
 
 
@@ -512,9 +454,20 @@ HRESULT CPlayer::SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 100);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	
+
+
+	// 일반적인 텍스쳐 찍기로 되돌아 가려면..
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+
+
+
+
 	if (m_bIsShdow)
 	{
-		m_pGraphicDevice->SetRenderState(D3DRS_LIGHTING, true);
+		m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_XRGB(0, 0, 0));
+		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TFACTOR);
+		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG2);
 
 	}
 
@@ -529,7 +482,8 @@ HRESULT CPlayer::Release_RenderState()
 
 	if (m_bIsShdow)
 	{
-		m_pGraphicDevice->SetRenderState(D3DRS_LIGHTING, false);
+		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
+		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 	}
 
 	return S_OK;

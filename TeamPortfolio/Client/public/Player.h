@@ -46,13 +46,18 @@ private:
 	CCollision*		m_pCollisionCom = nullptr;
 
 private:
-	_float			m_fFrame = 0.f;
+	_float					m_fFrame = 0.f;
 
-	_bool					m_bIsJumped = false;
 	_float					m_fJumpPower = 5.f;
 	_float					m_fNowJumpPower = 0.f;
+	_uint					m_bIsJumped = 0;
+
 	_bool					m_bIsCliming = false;
 	_bool					m_bIsShdow = false;
+
+	_bool					m_bCanMoveLeft = false;
+	_bool					m_bCanMoveRight = false;
+
 	CGameObject*			m_FootHoldObject = nullptr;
 	CGameObject*			m_BackWardObject = nullptr;
 	CGameObject*			m_ReturnFootHold = nullptr;
@@ -63,9 +68,7 @@ private:
 	HRESULT			SetUp_Components();
 
 	HRESULT			Find_FootHold_Object();
-
 	HRESULT			Set_PosOnFootHoldObject(_float fDeltaTime);
-	HRESULT			Set_PosOnTerrain(_float fDeltaTime);
 
 
 	HRESULT SetUp_RenderState();
