@@ -1,2 +1,248 @@
-TestTexture|Texture|2|..\Texture\TestTexture\Texture\anvil_bas%d.png
-Texture|PlayerTex|3|..\Texture\TestTexture\Texture\PlayerTex\anvil_top_damaged_%d.png
+rips|..\Resource\TestFez\black_hole\rips.png
+rips|..\Resource\TestFez\black_hole\rips.png
+capsule|..\Resource\TestFez\capsule.png
+controls|..\Resource\TestFez\controls.png
+credits_logo_1080|..\Resource\TestFez\credits_logo_1080.png
+cursor_clicker_a|..\Resource\TestFez\cursor\cursor_clicker_a.png
+cursor_grabber|..\Resource\TestFez\cursor\cursor_grabber.png
+cursor_grabber|..\Resource\TestFez\cursor\cursor_grabber.png
+deal_with_3d|..\Resource\TestFez\deal_with_3d.png
+purple_gradient|..\Resource\TestFez\end_cutscene\purple_gradient.png
+ancient_walls (left)|..\Resource\TestFez\faraway_thumbs\ancient_walls (left).png
+arch (back)|..\Resource\TestFez\faraway_thumbs\arch (back).png
+arch (right)|..\Resource\TestFez\faraway_thumbs\arch (right).png
+bell_tower (front)|..\Resource\TestFez\faraway_thumbs\bell_tower (front).png
+clock (back)|..\Resource\TestFez\faraway_thumbs\clock (back).png
+extractor_a (right)|..\Resource\TestFez\faraway_thumbs\extractor_a (right).png
+graveyard_a (front)|..\Resource\TestFez\faraway_thumbs\graveyard_a (front).png
+graveyard_a (right)|..\Resource\TestFez\faraway_thumbs\graveyard_a (right).png
+graveyard_gate (left)|..\Resource\TestFez\faraway_thumbs\graveyard_gate (left).png
+grave_ghost (right)|..\Resource\TestFez\faraway_thumbs\grave_ghost (right).png
+grave_treasure_a (front)|..\Resource\TestFez\faraway_thumbs\grave_treasure_a (front).png
+industrial_hub (left)|..\Resource\TestFez\faraway_thumbs\industrial_hub (left).png
+industrial_superspin (right)|..\Resource\TestFez\faraway_thumbs\industrial_superspin (right).png
+lighthouse (left)|..\Resource\TestFez\faraway_thumbs\lighthouse (left).png
+mausoleum (left)|..\Resource\TestFez\faraway_thumbs\mausoleum (left).png
+nature_hub (back)|..\Resource\TestFez\faraway_thumbs\nature_hub (back).png
+nature_hub (left)|..\Resource\TestFez\faraway_thumbs\nature_hub (left).png
+observatory (front)|..\Resource\TestFez\faraway_thumbs\observatory (front).png
+owl (front)|..\Resource\TestFez\faraway_thumbs\owl (front).png
+pivot_one (right)|..\Resource\TestFez\faraway_thumbs\pivot_one (right).png
+pivot_two (back)|..\Resource\TestFez\faraway_thumbs\pivot_two (back).png
+pivot_two (left)|..\Resource\TestFez\faraway_thumbs\pivot_two (left).png
+rails (right)|..\Resource\TestFez\faraway_thumbs\rails (right).png
+throne (left)|..\Resource\TestFez\faraway_thumbs\throne (left).png
+tree_sky (right)|..\Resource\TestFez\faraway_thumbs\tree_sky (right).png
+visitor (front)|..\Resource\TestFez\faraway_thumbs\visitor (front).png
+wall_hole (right)|..\Resource\TestFez\faraway_thumbs\wall_hole (right).png
+water_pyramid (front)|..\Resource\TestFez\faraway_thumbs\water_pyramid (front).png
+weightswitch_temple (right)|..\Resource\TestFez\faraway_thumbs\weightswitch_temple (right).png
+zu_city_ruins (back)|..\Resource\TestFez\faraway_thumbs\zu_city_ruins (back).png
+zu_city_ruins (left)|..\Resource\TestFez\faraway_thumbs\zu_city_ruins (left).png
+zu_city_ruins (left)|..\Resource\TestFez\faraway_thumbs\zu_city_ruins (left).png
+final_caustics.ani|..\Resource\TestFez\final_caustics.ani.png
+flare_alpha|..\Resource\TestFez\flare_alpha.png
+fullwhite|..\Resource\TestFez\fullwhite.png
+code_machine_glowbit|..\Resource\TestFez\glow\code_machine_glowbit.png
+glowbit|..\Resource\TestFez\glow\glowbit.png
+secret_passage|..\Resource\TestFez\glow\secret_passage.png
+small_glowbit_anti|..\Resource\TestFez\glow\small_glowbit_anti.png
+abutton|..\Resource\TestFez\glyphs\abutton.png
+bbutton|..\Resource\TestFez\glyphs\bbutton.png
+dpadleft|..\Resource\TestFez\glyphs\dpadleft.png
+dpadup|..\Resource\TestFez\glyphs\dpadup.png
+leftbumper|..\Resource\TestFez\glyphs\leftbumper.png
+lefttrigger|..\Resource\TestFez\glyphs\lefttrigger.png
+rightbumper|..\Resource\TestFez\glyphs\rightbumper.png
+righttrigger|..\Resource\TestFez\glyphs\righttrigger.png
+xbutton|..\Resource\TestFez\glyphs\xbutton.png
+xbutton|..\Resource\TestFez\glyphs\xbutton.png
+horizontalgradient|..\Resource\TestFez\horizontalgradient.png
+anti_cube|..\Resource\TestFez\hud\anti_cube.png
+normal_cube|..\Resource\TestFez\hud\normal_cube.png
+tiny_key|..\Resource\TestFez\hud\tiny_key.png
+p_0|..\Resource\TestFez\keyboard_glyphs\p_0.png
+p_2|..\Resource\TestFez\keyboard_glyphs\p_2.png
+p_4|..\Resource\TestFez\keyboard_glyphs\p_4.png
+p_6|..\Resource\TestFez\keyboard_glyphs\p_6.png
+p_8|..\Resource\TestFez\keyboard_glyphs\p_8.png
+p_a|..\Resource\TestFez\keyboard_glyphs\p_a.png
+p_arrow_down|..\Resource\TestFez\keyboard_glyphs\p_arrow_down.png
+p_arrow_right|..\Resource\TestFez\keyboard_glyphs\p_arrow_right.png
+p_b|..\Resource\TestFez\keyboard_glyphs\p_b.png
+p_c|..\Resource\TestFez\keyboard_glyphs\p_c.png
+p_comma|..\Resource\TestFez\keyboard_glyphs\p_comma.png
+p_delete|..\Resource\TestFez\keyboard_glyphs\p_delete.png
+p_e|..\Resource\TestFez\keyboard_glyphs\p_e.png
+p_enter|..\Resource\TestFez\keyboard_glyphs\p_enter.png
+p_esc|..\Resource\TestFez\keyboard_glyphs\p_esc.png
+p_esdf|..\Resource\TestFez\keyboard_glyphs\p_esdf.png
+p_f0|..\Resource\TestFez\keyboard_glyphs\p_f0.png
+p_f10|..\Resource\TestFez\keyboard_glyphs\p_f10.png
+p_f12|..\Resource\TestFez\keyboard_glyphs\p_f12.png
+p_f3|..\Resource\TestFez\keyboard_glyphs\p_f3.png
+p_f5|..\Resource\TestFez\keyboard_glyphs\p_f5.png
+p_f7|..\Resource\TestFez\keyboard_glyphs\p_f7.png
+p_f9|..\Resource\TestFez\keyboard_glyphs\p_f9.png
+p_h|..\Resource\TestFez\keyboard_glyphs\p_h.png
+p_i|..\Resource\TestFez\keyboard_glyphs\p_i.png
+p_insert|..\Resource\TestFez\keyboard_glyphs\p_insert.png
+p_k|..\Resource\TestFez\keyboard_glyphs\p_k.png
+p_l_alt|..\Resource\TestFez\keyboard_glyphs\p_l_alt.png
+p_l_control|..\Resource\TestFez\keyboard_glyphs\p_l_control.png
+p_l_windows|..\Resource\TestFez\keyboard_glyphs\p_l_windows.png
+p_minus|..\Resource\TestFez\keyboard_glyphs\p_minus.png
+p_n|..\Resource\TestFez\keyboard_glyphs\p_n.png
+p_num_0|..\Resource\TestFez\keyboard_glyphs\p_num_0.png
+p_num_2|..\Resource\TestFez\keyboard_glyphs\p_num_2.png
+p_num_4|..\Resource\TestFez\keyboard_glyphs\p_num_4.png
+p_num_6|..\Resource\TestFez\keyboard_glyphs\p_num_6.png
+p_num_8|..\Resource\TestFez\keyboard_glyphs\p_num_8.png
+p_num_lock|..\Resource\TestFez\keyboard_glyphs\p_num_lock.png
+p_p|..\Resource\TestFez\keyboard_glyphs\p_p.png
+p_page_up|..\Resource\TestFez\keyboard_glyphs\p_page_up.png
+p_pipe|..\Resource\TestFez\keyboard_glyphs\p_pipe.png
+p_q|..\Resource\TestFez\keyboard_glyphs\p_q.png
+p_quotes|..\Resource\TestFez\keyboard_glyphs\p_quotes.png
+p_r_alt|..\Resource\TestFez\keyboard_glyphs\p_r_alt.png
+p_r_control|..\Resource\TestFez\keyboard_glyphs\p_r_control.png
+p_r_windows|..\Resource\TestFez\keyboard_glyphs\p_r_windows.png
+p_scroll|..\Resource\TestFez\keyboard_glyphs\p_scroll.png
+p_space|..\Resource\TestFez\keyboard_glyphs\p_space.png
+p_tab|..\Resource\TestFez\keyboard_glyphs\p_tab.png
+p_u|..\Resource\TestFez\keyboard_glyphs\p_u.png
+p_w|..\Resource\TestFez\keyboard_glyphs\p_w.png
+p_x|..\Resource\TestFez\keyboard_glyphs\p_x.png
+p_z|..\Resource\TestFez\keyboard_glyphs\p_z.png
+p_z|..\Resource\TestFez\keyboard_glyphs\p_z.png
+geezer_letter_1|..\Resource\TestFez\mail\geezer_letter_1.png
+map_arch_1|..\Resource\TestFez\maps\map_arch_1.png
+map_crypt_a_1|..\Resource\TestFez\maps\map_crypt_a_1.png
+map_crypt_b_1|..\Resource\TestFez\maps\map_crypt_b_1.png
+map_crypt_c_1|..\Resource\TestFez\maps\map_crypt_c_1.png
+map_crypt_d_1|..\Resource\TestFez\maps\map_crypt_d_1.png
+map_mystery_1|..\Resource\TestFez\maps\map_mystery_1.png
+map_pivot_1|..\Resource\TestFez\maps\map_pivot_1.png
+map_ritual_1|..\Resource\TestFez\maps\map_ritual_1.png
+map_tree_sky_1|..\Resource\TestFez\maps\map_tree_sky_1.png
+map_tree_sky_1|..\Resource\TestFez\maps\map_tree_sky_1.png
+b.ani|..\Resource\TestFez\map_controls\b.ani.png
+bumpers.ani|..\Resource\TestFez\map_controls\bumpers.ani.png
+cube_outline|..\Resource\TestFez\map_controls\cube_outline.png
+icons_legend|..\Resource\TestFez\map_controls\icons_legend.png
+right_stick.ani|..\Resource\TestFez\map_controls\right_stick.ani.png
+triggers.ani|..\Resource\TestFez\map_controls\triggers.ani.png
+triggers.ani|..\Resource\TestFez\map_controls\triggers.ani.png
+abandoned_a|..\Resource\TestFez\map_screens\abandoned_a.png
+abandoned_c|..\Resource\TestFez\map_screens\abandoned_c.png
+arch|..\Resource\TestFez\map_screens\arch.png
+big_owl|..\Resource\TestFez\map_screens\big_owl.png
+boileroom|..\Resource\TestFez\map_screens\boileroom.png
+cabin_nature|..\Resource\TestFez\map_screens\cabin_nature.png
+cmy|..\Resource\TestFez\map_screens\cmy.png
+cmy_fork|..\Resource\TestFez\map_screens\cmy_fork.png
+crypt|..\Resource\TestFez\map_screens\crypt.png
+five_towers|..\Resource\TestFez\map_screens\five_towers.png
+fox|..\Resource\TestFez\map_screens\fox.png
+geezer_house|..\Resource\TestFez\map_screens\geezer_house.png
+globe_int|..\Resource\TestFez\map_screens\globe_int.png
+graveyard_a|..\Resource\TestFez\map_screens\graveyard_a.png
+graveyard_treasure_a|..\Resource\TestFez\map_screens\graveyard_treasure_a.png
+grave_ghost|..\Resource\TestFez\map_screens\grave_ghost.png
+grave_treasure_a|..\Resource\TestFez\map_screens\grave_treasure_a.png
+industrial_hub|..\Resource\TestFez\map_screens\industrial_hub.png
+indust_abandoned_a|..\Resource\TestFez\map_screens\indust_abandoned_a.png
+lava|..\Resource\TestFez\map_screens\lava.png
+lava_skull|..\Resource\TestFez\map_screens\lava_skull.png
+lighthouse|..\Resource\TestFez\map_screens\lighthouse.png
+lighthouse_spin|..\Resource\TestFez\map_screens\lighthouse_spin.png
+memory_core|..\Resource\TestFez\map_screens\memory_core.png
+mine_bomb_pillar|..\Resource\TestFez\map_screens\mine_bomb_pillar.png
+nature_hub|..\Resource\TestFez\map_screens\nature_hub.png
+nuzu_abandoned_b|..\Resource\TestFez\map_screens\nuzu_abandoned_b.png
+nuzu_dorm|..\Resource\TestFez\map_screens\nuzu_dorm.png
+observatory|..\Resource\TestFez\map_screens\observatory.png
+oldschool_ruins|..\Resource\TestFez\map_screens\oldschool_ruins.png
+orrery|..\Resource\TestFez\map_screens\orrery.png
+owl|..\Resource\TestFez\map_screens\owl.png
+pivot_one|..\Resource\TestFez\map_screens\pivot_one.png
+pivot_three_cave|..\Resource\TestFez\map_screens\pivot_three_cave.png
+pivot_watertower|..\Resource\TestFez\map_screens\pivot_watertower.png
+purple_lodge_ruin|..\Resource\TestFez\map_screens\purple_lodge_ruin.png
+rails|..\Resource\TestFez\map_screens\rails.png
+school|..\Resource\TestFez\map_screens\school.png
+sewer_geyser|..\Resource\TestFez\map_screens\sewer_geyser.png
+sewer_lesser_gate_b|..\Resource\TestFez\map_screens\sewer_lesser_gate_b.png
+sewer_pivot|..\Resource\TestFez\map_screens\sewer_pivot.png
+sewer_start|..\Resource\TestFez\map_screens\sewer_start.png
+sewer_treasure_one|..\Resource\TestFez\map_screens\sewer_treasure_one.png
+shine_rays|..\Resource\TestFez\map_screens\shine_rays.png
+skull|..\Resource\TestFez\map_screens\skull.png
+spinning_plates|..\Resource\TestFez\map_screens\spinning_plates.png
+stargate|..\Resource\TestFez\map_screens\stargate.png
+superspin_cave|..\Resource\TestFez\map_screens\superspin_cave.png
+temple_of_love|..\Resource\TestFez\map_screens\temple_of_love.png
+towers_a|..\Resource\TestFez\map_screens\towers_a.png
+towers_c|..\Resource\TestFez\map_screens\towers_c.png
+tree_crumble|..\Resource\TestFez\map_screens\tree_crumble.png
+tree_roots|..\Resource\TestFez\map_screens\tree_roots.png
+triple_pivot_cave|..\Resource\TestFez\map_screens\triple_pivot_cave.png
+villageville_3d|..\Resource\TestFez\map_screens\villageville_3d.png
+visitor|..\Resource\TestFez\map_screens\visitor.png
+wall_b|..\Resource\TestFez\map_screens\wall_b.png
+wall_interior_a|..\Resource\TestFez\map_screens\wall_interior_a.png
+wall_interior_hole|..\Resource\TestFez\map_screens\wall_interior_hole.png
+wall_school|..\Resource\TestFez\map_screens\wall_school.png
+waterfall|..\Resource\TestFez\map_screens\waterfall.png
+water_pyramid|..\Resource\TestFez\map_screens\water_pyramid.png
+water_wheel|..\Resource\TestFez\map_screens\water_wheel.png
+weightswitch_temple|..\Resource\TestFez\map_screens\weightswitch_temple.png
+windmill_cave|..\Resource\TestFez\map_screens\windmill_cave.png
+zu_4_side|..\Resource\TestFez\map_screens\zu_4_side.png
+zu_city|..\Resource\TestFez\map_screens\zu_city.png
+zu_code_loop|..\Resource\TestFez\map_screens\zu_code_loop.png
+zu_heads|..\Resource\TestFez\map_screens\zu_heads.png
+zu_house_empty_b|..\Resource\TestFez\map_screens\zu_house_empty_b.png
+zu_house_ruin_gate|..\Resource\TestFez\map_screens\zu_house_ruin_gate.png
+zu_house_scaffolding|..\Resource\TestFez\map_screens\zu_house_scaffolding.png
+zu_switch|..\Resource\TestFez\map_screens\zu_switch.png
+zu_tetris|..\Resource\TestFez\map_screens\zu_tetris.png
+zu_unfold|..\Resource\TestFez\map_screens\zu_unfold.png
+zu_unfold|..\Resource\TestFez\map_screens\zu_unfold.png
+menu_cube_cover|..\Resource\TestFez\menu_cube_cover.png
+menu_cube_cover_gb|..\Resource\TestFez\menu_cube_cover_gb.png
+noise|..\Resource\TestFez\noise.png
+lightning_a|..\Resource\TestFez\rain\lightning_a.png
+lightning_a|..\Resource\TestFez\rain\lightning_a.png
+rainbow_flare|..\Resource\TestFez\rainbow_flare.png
+rgb_gradient|..\Resource\TestFez\rgb_gradient.png
+sc_1|..\Resource\TestFez\smallcubes\sc_1.png
+sc_3|..\Resource\TestFez\smallcubes\sc_3.png
+sc_5|..\Resource\TestFez\smallcubes\sc_5.png
+sc_7|..\Resource\TestFez\smallcubes\sc_7.png
+sc_7|..\Resource\TestFez\smallcubes\sc_7.png
+smooth_ray|..\Resource\TestFez\smooth_ray.png
+polytron|..\Resource\TestFez\splash\polytron.png
+trapdoor|..\Resource\TestFez\splash\trapdoor.png
+trixels_1440|..\Resource\TestFez\splash\trixels_1440.png
+four_highlight_a|..\Resource\TestFez\suck_blocks\four_highlight_a.png
+four_highlight_c|..\Resource\TestFez\suck_blocks\four_highlight_c.png
+four_highlight_c|..\Resource\TestFez\suck_blocks\four_highlight_c.png
+telescope_mask|..\Resource\TestFez\telescope\telescope_mask.png
+telescope_stars_b|..\Resource\TestFez\telescope\telescope_stars_b.png
+telescope_stars_d_0|..\Resource\TestFez\telescope\telescope_stars_d_0.png
+telescope_stars_d_pause|..\Resource\TestFez\telescope\telescope_stars_d_pause.png
+telescope_stars_d_pause|..\Resource\TestFez\telescope\telescope_stars_d_pause.png
+b.ani|..\Resource\TestFez\thought_glyphs\b.ani.png
+up.ani|..\Resource\TestFez\thought_glyphs\up.ani.png
+up.ani|..\Resource\TestFez\thought_glyphs\up.ani.png
+transparentwhite|..\Resource\TestFez\transparentwhite.png
+back|..\Resource\TestFez\warp\graveyard\back.png
+back|..\Resource\TestFez\warp\graveyard\back.png
+background|..\Resource\TestFez\warp\industrial\background.png
+indust_cloud_f|..\Resource\TestFez\warp\industrial\indust_cloud_f.png
+background|..\Resource\TestFez\warp\nature\background.png
+pyramid|..\Resource\TestFez\warp\pyramid.png
+back|..\Resource\TestFez\warp\zu\back.png
+waterhorizgradient|..\Resource\TestFez\waterhorizgradient.png
+waterhorizgradient|..\Resource\TestFez\waterhorizgradient.png

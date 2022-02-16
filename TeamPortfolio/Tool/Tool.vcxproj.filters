@@ -91,6 +91,9 @@
     <Filter Include="03. Etc\01. Path">
       <UniqueIdentifier>{f20911a9-2234-4574-942c-647aeac8fc05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. Special\01. View\00. MyForm\04.TextureTool">
+      <UniqueIdentifier>{5c49c64e-0ae7-4028-a54d-36d6666cdffb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

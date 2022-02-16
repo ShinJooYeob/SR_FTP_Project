@@ -113,6 +113,89 @@ void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPat
 	}
 }
 
+void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<MYFILEPATH*>& rPathInfoList,E_FILETYPE type)
+{
+
+	// #Tag 파일 경로 받아오는 것 리소스 데이터대로 다시 제작
+
+	// wstrPath 파일 폴더의 경로가 들어온다. / 이 다음 모든 파일을 확인
+	wstring	wstrFilePath;
+	wstrFilePath = wstrPath + L"\\*.*";
+	//switch (type)
+	//{
+	//case FILETYPE_PNG:
+	//	wstrFilePath = wstrPath + L"\\*.png";
+	//	break;
+	//case FILETYPE_XML:
+	//	wstrFilePath = wstrPath + L"\\*.xml";
+	//	break;
+	//case FILETYPE_ALL:
+	//	wstrFilePath = wstrPath + L"\\*.*";
+	//	break;
+	//}
+
+	// mfc에서 제공하는 파일 및 경로 제어 관련 클래스
+	CFileFind		Find;
+
+	// rPathInfoList : 파일 경로 정보 저장 리스트 
+
+	// 주어진 경로에 파일의 유무를 확인하는 함수
+	// 존재하지 않으면 false 리턴, 존재하면 true리턴
+	BOOL	bContinue = Find.FindFile(wstrFilePath.c_str());
+
+
+	// 파일 탐색
+	while (bContinue)
+	{
+		bContinue = Find.FindNextFile();
+
+		if (Find.IsDots())
+			continue;
+		if (Find.IsHidden())
+			continue;
+
+		else if (Find.IsDirectory())
+		{
+			// GetFilePath : 현재 찾은 경로를 얻어오는 함수
+			DirInfoExtraction_Custom(wstring(Find.GetFilePath()), rPathInfoList, type);
+		}
+
+		else // 파일을 찾은 상황
+		{
+			// 찾은게 시스템 파일인 경우 건너뛴다.
+			if (Find.IsSystem())
+				continue;
+
+			// 파일 경로
+			MYFILEPATH*		pImgPath = new MYFILEPATH;
+			TCHAR			szPath[MAX_PATH] = L"";
+
+			if (false == FindType(Find, type))
+				continue;
+
+
+			lstrcpy(szPath, Find.GetFilePath().GetString());
+
+			// 상대 경로 저장
+			pImgPath->wstrFullPath = ConvertRelativePath(szPath);
+
+			// 파일 이름과 확장자 저장			
+			pImgPath->wFolderName1 = Find.GetFileTitle().GetString();
+			PathRemoveFileSpec(szPath);
+
+			// 확장자가 png가 아니면 제외
+
+			// pImgPath->wstrFullPath = szPath;
+			// PathFindFileName(szPath);			
+			rPathInfoList.push_back(pImgPath);
+			Find.FindNextFile();
+		}
+	}
+
+
+
+}
+
 int CFileInfo::DirFileCount(const wstring & wstrPath)
 {
 	wstring	wstrFilePath = wstrPath + L"\\*.*";
@@ -147,4 +230,26 @@ int CFileInfo::DirFileCount(const wstring & wstrPath)
 	}
 
 	return iFileCnt;
+}
+
+bool CFileInfo::FindType(CFileFind& Find, E_FILETYPE type)
+{
+	wstring StrCompare;
+	wstring StrFiletype = Find.GetFileName().Right(3);
+	// 특정 확장자만 찾음
+	switch (type)
+	{
+	case FILETYPE_PNG:
+		StrCompare = L"png";
+		break;
+	case FILETYPE_XML:
+		StrCompare = L"xml";
+		break;
+	case FILETYPE_ALL:
+		break;
+	}
+
+	if (StrFiletype != StrCompare)
+		return  false;
+	return true;
 }

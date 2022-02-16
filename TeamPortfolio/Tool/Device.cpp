@@ -29,7 +29,7 @@ HRESULT CDevice::InitDevice(void)
 	// 랜더링 설정
 
 	//와이어 프레임
-	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+//	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	//잠시 조명연산을 꺼놓자
 	m_pGraphicDevice->SetRenderState(D3DRS_LIGHTING, false);
 

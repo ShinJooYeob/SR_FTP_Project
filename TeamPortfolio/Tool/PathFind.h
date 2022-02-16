@@ -21,14 +21,21 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+	void 	HorizontalScroll();
 public:
-	afx_msg void OnListBox();
+	afx_msg void OnLbnSelchangeList1();
 	afx_msg void OnSaveData();
 	afx_msg void OnLoadData();
 	afx_msg void OnDropFiles(HDROP hDropInfo);
-
 	// control
 	CListBox m_ListBox;
 
-	list<IMGPATH*>			m_PathInfoList;
+//	list<IMGPATH*>			m_PathInfoList;
+	list<MYFILEPATH*>		m_MyPathInfoList;
+
+	
+	map<wstring, CImage*>		m_MapPngImage;
+
+private:
+	CStatic m_Picture;
 };

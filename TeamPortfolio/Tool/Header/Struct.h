@@ -58,6 +58,37 @@ typedef struct tagTexturePath
 	int				iCount = 0;
 }IMGPATH;
 
+// 텍스처의 위치정보를 저장하는 구조체
+typedef struct tagMyTexturePath
+{
+	// 파일구분 1 
+	wstring			wFolderName1 = L"";
+	// 파일구분 2
+	wstring			wFolderName2 = L"";
+	// 파일구분 3 
+	wstring			wFolderName3 = L"";
+	// 파일구분 4
+	wstring			wFolderName4 = L"";
+	// 파일구분 5 
+	wstring			wFolderName5 = L"";
+	
+	// 전체 상대 경로
+	wstring			wstrFullPath = L"";
+	
+	// 텍스처 개수
+	int				iCount = 0;
+
+}MYFILEPATH;
+
+enum E_FILETYPE
+{
+	FILETYPE_PNG,
+	FILETYPE_XML,
+	FILETYPE_ALL,
+	FILETYPE_END,
+
+};
+
 typedef struct tagFrame
 {
 	tagFrame() {}
