@@ -33,6 +33,8 @@ public:
 	void Move_Backward(_float fDeltaTime);
 	void Move_Right(_float fDeltaTime);
 	void Move_Left(_float fDeltaTime);
+	void Move_Up(_float fDeltaTime);
+	void Move_Down(_float fDeltaTime);
 
 	void MovetoTarget(_float3 vTarget, _float fDeltaTime);
 

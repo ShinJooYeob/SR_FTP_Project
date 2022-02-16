@@ -5,8 +5,8 @@ CObjectTool_Rect::CObjectTool_Rect(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CGameObject(pGraphicDevice),
 	m_ComRenderer(nullptr),
 	m_ComVIBuffer(nullptr),
-	m_ComTransform(nullptr)
-	//	m_ComTexture(nullptr)
+	m_ComTransform(nullptr),
+	m_ComTexture(nullptr)
 {
 }
 
@@ -30,6 +30,10 @@ HRESULT CObjectTool_Rect::Initialize_Clone(void * pArg)
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
+
+	// 텍스처 여러개 갈아 끼울 수 있게 하자.
+
+	m_ComTexture->Bind_Texture();
 
 	return S_OK;
 }
@@ -61,8 +65,8 @@ _int CObjectTool_Rect::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	//	if (FAILED(m_ComTexture->Bind_Texture()))
-	//	return E_FAIL;
+	if (FAILED(m_ComTexture->Bind_Texture()))
+		return E_FAIL;
 
 	//렌더링 그룹에 들어가면 순서에 맞게 이 랜더가 호출되고 호출이 됬으면 버텍스 버퍼를 그려줘라
 	if (FAILED(m_ComVIBuffer->Render()))
@@ -100,6 +104,20 @@ HRESULT CObjectTool_Rect::Set_Position(_float3 Position)
 	return S_OK;
 }
 
+HRESULT CObjectTool_Rect::Set_Texture(wstring filepath)
+{
+	// 기존에 있던 텍스쳐 날림
+	m_ComTexture->ClearTexture();
+
+	CTexture::tagTextureDesc desc = {};
+	desc.szFilePath = filepath.c_str();
+
+	if (FAILED(m_ComTexture->Initialize_Prototype(&desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CObjectTool_Rect::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
@@ -113,8 +131,8 @@ HRESULT CObjectTool_Rect::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	//if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
-	//	return E_FAIL;
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -149,8 +167,9 @@ void CObjectTool_Rect::Free()
 {
 	__super::Free();
 
-	//	Safe_Release(m_ComTexture);
+	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComRenderer);
+
 }

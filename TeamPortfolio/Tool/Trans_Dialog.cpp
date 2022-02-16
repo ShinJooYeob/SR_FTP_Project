@@ -92,13 +92,13 @@ HRESULT CTrans_Dialog::ChnageToTargetGameObject()
 	switch (m_eTransType)
 	{
 	case E_TRANSTYPE::TRANSTYPE_POS:
-		m_GameObject_Rect_Tool->Set_Position(xyz);
+		m_GameObject_Rect_Tool->Set_Position(_float3(xyz[0], xyz[1], xyz[2]));
 		break;
 	case E_TRANSTYPE::TRANSTYPE_ROT:
 		//	m_TargetTransForm->Set_MatrixState(CTransform::STATE_POS, xyz);
 		break;
 	case E_TRANSTYPE::TRANSTYPE_SCALE:
-		m_GameObject_Rect_Tool->Set_Scaled(xyz);
+		m_GameObject_Rect_Tool->Set_Scaled(_float3(xyz[0], xyz[1], xyz[2]));
 		break;
 
 	}

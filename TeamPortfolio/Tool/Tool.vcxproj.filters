@@ -76,9 +76,6 @@
     <Filter Include="04.Object\03 Camera_Tool">
       <UniqueIdentifier>{00466184-5dfa-4c53-b7be-cb630035211d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Etc\01. Path">
-      <UniqueIdentifier>{f20911a9-2234-4574-942c-647aeac8fc05}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Component">
       <UniqueIdentifier>{14747c3c-807a-4bd8-af8d-d5ca45e39775}</UniqueIdentifier>
     </Filter>
@@ -192,6 +189,9 @@
     <ClInclude Include="Trans_Dialog.h">
       <Filter>00. Special\01. View\00. MyForm\04. TransTool</Filter>
     </ClInclude>
+    <ClInclude Include="SuperToolSIngleton.h">
+      <Filter>01. Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -205,9 +205,6 @@
     </ClCompile>
     <ClCompile Include="SingleTexture.cpp">
       <Filter>02. Component\00. SingleTexture</Filter>
-    </ClCompile>
-    <ClCompile Include="MainFrm.cpp">
-      <Filter>00. Special\00. MainFrm</Filter>
     </ClCompile>
     <ClCompile Include="ToolDoc.cpp">
       <Filter>00. Special\02. Document</Filter>
@@ -262,6 +259,12 @@
     </ClCompile>
     <ClCompile Include="ToolView.cpp">
       <Filter>00. Special\01. View</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>00. Special\00. MainFrm</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperToolSIngleton.cpp">
+      <Filter>01. Device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

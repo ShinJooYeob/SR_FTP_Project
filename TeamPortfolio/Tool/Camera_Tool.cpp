@@ -28,6 +28,7 @@ HRESULT CCamera_Tool::Initialize_Clone(void * pArg)
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
 
+	m_StartPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
 
 	return S_OK;
 }
@@ -36,15 +37,29 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 {
 
 
+	// 나중에 맵에서 사용
+	//if (GetKeyState(VK_UP) & 0x8000)
+	//{		
+	//	m_pTransform->Move_Up(fDeltaTime);
+	//}
+	//if (GetKeyState(VK_DOWN) & 0x8000)
+	//{
+	//	m_pTransform->Move_Down(fDeltaTime);
+	//}
 
-	if (GetKeyState(VK_UP) & 0x8000)
-	{
-		m_pTransform->Move_Forward(fDeltaTime);
-	}
-	if (GetKeyState(VK_DOWN) & 0x8000)
-	{
-		m_pTransform->Move_Backward(fDeltaTime);
-	}
+	//if (GetKeyState(VK_LEFT) & 0x8000)
+	//{
+	//	m_pTransform->Move_Left(fDeltaTime);
+	//}
+	//if (GetKeyState(VK_RIGHT) & 0x8000)
+	//{
+	//	m_pTransform->Move_Right(fDeltaTime);
+	//}
+
+	//if (GetKeyState('R') & 0x8000)
+	//{
+	//	m_pTransform->Set_MatrixState(CTransform::STATE_POS, m_StartPos);
+	//}
 
 	if(FAILED(__super::Update(fDeltaTime)))
 		return -1;

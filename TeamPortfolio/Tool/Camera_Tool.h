@@ -28,6 +28,7 @@ private:
 	_float			m_fStartAngle = 0;
 	_float			m_fTargetAngle = 0;
 	_bool			m_IsTurning = false;
+	_float3			m_StartPos;
 
 public:
 	static CCamera_Tool* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

@@ -35,8 +35,7 @@ private:
 	E_TRANSTYPE m_eTransType;
 
 public:
-	class CToolView*	mToolView;
-
+	   
 	CObjectTool_Rect* m_GameObject_Rect_Tool;
 
 

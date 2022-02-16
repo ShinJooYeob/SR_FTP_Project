@@ -342,11 +342,11 @@ HRESULT CToolView::Ready_Static_Component_Prototype()
 		return E_FAIL;
 
 	/* 디폴트 텍스처 프로토타입 생성 */
-//	CTexture::TEXTUREDESC TextureDesc{};
-//	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Default.jpg");
+	CTexture::TEXTUREDESC TextureDesc{};
+	TextureDesc.szFilePath = TEXT("../Resource/Default.png");
 
-//	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-//		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -361,6 +361,7 @@ HRESULT CToolView::Ready_Static_GameObject_Prototype()
 	// 카메라 생성
 	if (GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Camera"), CCamera_Tool::Create(m_pGraphicDevice)))
 		return E_FAIL;
+
 
 	return S_OK;
 }

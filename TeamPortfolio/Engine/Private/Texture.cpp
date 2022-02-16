@@ -57,6 +57,15 @@ HRESULT CTexture::Initialize_Clone(void * pArg)
 	return S_OK;
 }
 
+HRESULT CTexture::ClearTexture()
+{
+	// 툴에서 텍스처 날리는데 사용
+	for (auto& pTexture : m_vecTexture)
+		Safe_Release(pTexture);
+	m_vecTexture.clear(); 
+	return S_OK;
+}
+
 
 HRESULT CTexture::Bind_Texture(_uint iTextureIndex)
 {

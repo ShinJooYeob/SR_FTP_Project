@@ -44,6 +44,21 @@ void CTransform::Move_Left(_float fDeltaTime)
 	Set_MatrixState(STATE_POS, vPos);
 }
 
+void CTransform::Move_Up(_float fDeltaTime)
+{
+	_float3 vPos = Get_MatrixState(STATE_POS);
+	vPos += Get_MatrixState(STATE_UP).Get_Nomalize()* m_TransforDesc.fMovePerSec *fDeltaTime;
+	Set_MatrixState(STATE_POS, vPos);
+
+}
+
+void CTransform::Move_Down(_float fDeltaTime)
+{
+	_float3 vPos = Get_MatrixState(STATE_POS);
+	vPos -= Get_MatrixState(STATE_UP).Get_Nomalize()* m_TransforDesc.fMovePerSec *fDeltaTime;
+	Set_MatrixState(STATE_POS, vPos);
+}
+
 void CTransform::MovetoTarget(_float3 vTarget, _float fDeltaTime)
 {
 

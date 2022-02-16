@@ -6,6 +6,9 @@
 #include "PathFind.h"
 #include "afxdialogex.h"
 #include "FileInfo.h"
+#include "MainFrm.h"
+#include "ToolView.h"
+#include "ObjectTool_Rect.h"
 
 // CPathFind 대화 상자입니다.
 
@@ -20,7 +23,7 @@ CPathFind::~CPathFind()
 {
 //	for_each(m_PathInfoList.begin(), m_PathInfoList.end(), Safe_Delete<IMGPATH*>);
 //	m_PathInfoList.clear();
-
+	Safe_Release(m_GameObject_Rect_Tool);
 	for_each(m_MyPathInfoList.begin(), m_MyPathInfoList.end(), Safe_Delete<MYFILEPATH*>);
 	m_MyPathInfoList.clear();
 
@@ -32,6 +35,8 @@ CPathFind::~CPathFind()
 	m_MapPngImage.clear();
 	
 }
+
+
 
 void CPathFind::DoDataExchange(CDataExchange* pDX)
 {
@@ -51,6 +56,8 @@ END_MESSAGE_MAP()
 
 void CPathFind::OnLbnSelchangeList1()
 {
+	if (m_GameObject_Rect_Tool == nullptr)
+		return;
 
 	// 텍스처 파일 선택시 보여지게 하기
 
@@ -64,6 +71,7 @@ void CPathFind::OnLbnSelchangeList1()
 	// GetText 인덱스 값에 해당하는 문자열을 얻어와서 2인자에게 넣어준다.
 	m_ListBox.GetText(iSelect, strFindName);
 	wstring wStrFilename = strFindName.GetString();
+	wstring fullpath = FindPath(wStrFilename);
 
 
 	auto		iter = m_MapPngImage.find(wStrFilename);
@@ -72,7 +80,7 @@ void CPathFind::OnLbnSelchangeList1()
 		return;
 
 	m_Picture.SetBitmap(*(iter->second));
-
+	m_GameObject_Rect_Tool->Set_Texture(fullpath);
 	//int i = 0;
 
 	//for (; i < strFindName.GetLength(); ++i)
@@ -261,6 +269,16 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 	UpdateData(FALSE);
 }
 
+wstring CPathFind::FindPath(wstring strname)
+{
+	for (auto pathname : m_MyPathInfoList)
+	{
+		if (pathname->wFolderName1 == strname)
+			return pathname->wstrFullPath;
+	}
+	return L"";
+}
+
 void CPathFind::HorizontalScroll(void)
 {
 	CString		strName;
@@ -292,3 +310,29 @@ void CPathFind::HorizontalScroll(void)
 
 }
 
+
+
+BOOL CPathFind::DestroyWindow()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	
+	return CDialog::DestroyWindow();
+}
+
+
+BOOL CPathFind::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	m_GameObject_Rect_Tool = nullptr;
+	CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	CToolView*	pToolView = dynamic_cast<CToolView*>(pMain->m_MainSplitter.GetPane(0, 1));
+	if (m_GameObject_Rect_Tool == nullptr)
+	{
+		m_GameObject_Rect_Tool = pToolView->GetTargetObject();
+		m_GameObject_Rect_Tool->AddRef();
+	}
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}

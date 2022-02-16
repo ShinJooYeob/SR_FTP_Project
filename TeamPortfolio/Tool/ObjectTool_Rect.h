@@ -30,13 +30,15 @@ public:
 
 	HRESULT Set_Scaled(_float3 scale);
 	HRESULT Set_Position(_float3 Position);
+	HRESULT Set_Texture(wstring filename);
+
 
 private:
 
 	CTransform*				m_ComTransform = nullptr;
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
-//	CTexture*				m_ComTexture = nullptr;
+	CTexture*				m_ComTexture = nullptr;
 
 private:
 	HRESULT			SetUp_Components();

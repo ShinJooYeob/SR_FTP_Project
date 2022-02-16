@@ -30,7 +30,7 @@ public:
 	virtual HRESULT Initialize_Prototype(void * pArg) override;
 	virtual HRESULT Initialize_Clone(void * pArg) override;
 
-
+	HRESULT ClearTexture();
 
 	vector<LPDIRECT3DBASETEXTURE9>			m_vecTexture;
 
