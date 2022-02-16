@@ -97,7 +97,7 @@ HRESULT CCamera_Tool::Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelt
 	
 	vCameraPos.y = 0;
 
-	_float fRadianAngle = GetSingle(CGameInstance)->TargetQuadIn(m_fStartAngle, m_fTargetAngle, m_fPassedTime);
+	_float fRadianAngle = GetSingle(CGameInstance)->Easing(0,m_fStartAngle, m_fTargetAngle, m_fPassedTime);
 
 	if (m_fPassedTime >= 1.f) 
 	{
