@@ -1,8 +1,5 @@
 #pragma once
 
-#include "UnitTool.h"
-#include "MapTool.h"
-#include "MySheet.h"
 #include "PathFind.h"
 #include "Trans_Dialog.h"
 
@@ -29,9 +26,6 @@ public:
 
 public:
 	CFont			m_Font;
-	CUnitTool		m_UnitTool;
-	CMapTool		m_MapTool;
-	CMySheet		m_PopUp;
 	CPathFind		m_PathFind;
 	CTrans_Dialog	m_TransformDialog;
 
@@ -42,9 +36,8 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 
-	afx_msg void OnUnitTool();
-	afx_msg void OnMapTool();
-	afx_msg void OnProperty();
 	afx_msg void OnPathFind();
-	afx_msg void OnBnClickedButton_Transform();
+	afx_msg void OnTransform();
+	afx_msg void OnObjectSave();
+	afx_msg void OnMapSave();
 };

@@ -9,8 +9,6 @@
 #define IDD_MYFORM                      310
 #define IDD_UNITTOOL                    311
 #define IDD_MAPTOOL                     312
-#define IDD_MYPAGE1                     313
-#define IDD_MYPAGE2                     314
 #define IDD_PATHFIND                    315
 #define IDD_CTrans_Dialog               316
 #define IDC_BUTTON1                     1000
@@ -21,7 +19,9 @@
 #define IDC_EDIT3                       1003
 #define IDC_BUTTON9                     1003
 #define IDC_EDIT4                       1004
+#define IDC_BUTTON10                    1004
 #define IDC_EDIT5                       1005
+#define IDC_BUTTON11                    1005
 #define IDC_LIST1                       1006
 #define IDC_BUTTON2                     1007
 #define IDC_RADIO1                      1008
