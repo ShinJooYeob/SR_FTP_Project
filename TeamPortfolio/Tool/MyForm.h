@@ -1,9 +1,7 @@
 #pragma once
 
-#include "UnitTool.h"
-#include "MapTool.h"
-#include "MySheet.h"
 #include "PathFind.h"
+#include "Trans_Dialog.h"
 
 // CMyForm 폼 뷰입니다.
 
@@ -27,11 +25,9 @@ public:
 #endif
 
 public:
-	CFont		m_Font;
-	CUnitTool	m_UnitTool;
-	CMapTool	m_MapTool;
-	CMySheet	m_PopUp;
-	CPathFind	m_PathFind;
+	CFont			m_Font;
+	CPathFind		m_PathFind;
+	CTrans_Dialog	m_TransformDialog;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -40,8 +36,8 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 
-	afx_msg void OnUnitTool();
-	afx_msg void OnMapTool();
-	afx_msg void OnProperty();
 	afx_msg void OnPathFind();
+	afx_msg void OnTransform();
+	afx_msg void OnObjectSave();
+	afx_msg void OnMapSave();
 };
