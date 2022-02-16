@@ -39,6 +39,18 @@ HRESULT CQuest::Initialize_Quest(_int eQuest)
 	return S_OK;
 }
 
+HRESULT CQuest::Set_QuestResult(_int eQuest, _int iResult)
+{
+	if (iResult > 1 || iResult < 0)
+	{
+		MSGBOX("iResult는 0,1만 가능");
+		return E_FAIL;
+	}
+	m_pQuestIndex[eQuest] = iResult;
+}
+
+
+
 bool CQuest::Get_QuestResult(_int eQuest)
 {
 	if (m_pQuestIndex[eQuest] = 1)
@@ -62,6 +74,7 @@ CQuest * CQuest::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 void CQuest::Free()
 {
 	__super::Free();
+	Safe_Delete_Array(m_pQuestIndex);
 }
 
 CQuest * CQuest::Clone(void * pArg)
