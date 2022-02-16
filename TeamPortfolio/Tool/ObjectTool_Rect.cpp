@@ -79,6 +79,27 @@ _int CObjectTool_Rect::LateRender()
 	return 0;
 }
 
+HRESULT CObjectTool_Rect::Set_Scaled(_float3 scale)
+{
+	if (scale.x == 0)
+		scale.x = 1.f;
+
+	if (scale.y == 0)
+		scale.y = 1.f;
+
+	if (scale.z == 0)
+		scale.z = 1.f;
+
+	m_ComTransform->Scaled(scale);
+	return S_OK;
+}
+
+HRESULT CObjectTool_Rect::Set_Position(_float3 Position)
+{
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, Position);
+	return S_OK;
+}
+
 HRESULT CObjectTool_Rect::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;

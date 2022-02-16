@@ -4,10 +4,14 @@
 #pragma once
 
 #include "Device.h"
-#include "TextureMgr.h"
-#include "Terrain.h"
+
+#define TIMER_UPDATE 1
+
 
 class CToolDoc;
+BEGIN(Tool)
+class CObjectTool_Rect;
+END
 class CToolView : public CScrollView
 {
 protected: // serialization에서만 만들어집니다.
@@ -46,13 +50,13 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 
-	CTerrain*			Get_Terrain(void) { return m_pTerrain; }
+	
 
 public:
-	LPDIRECT3DDEVICE9	m_pGraphicDevice = nullptr;
-
-	CTerrain*			m_pTerrain = nullptr;
-	CRenderer*			m_pComRenderer = nullptr;
+	CObjectTool_Rect* GetTargetObject()
+	{
+		return m_GameObject_Rect_Tool;
+	}
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -65,6 +69,14 @@ private:
 	HRESULT Ready_GameObject_Layer(const _tchar* layertag);
 
 	HRESULT Scene_Change(SCENEID id);
+
+private:
+	LPDIRECT3DDEVICE9			m_pGraphicDevice = nullptr;
+	CObjectTool_Rect*			m_GameObject_Rect_Tool = nullptr;
+	CRenderer*					m_pComRenderer = nullptr;
+public:
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	virtual BOOL DestroyWindow();
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전

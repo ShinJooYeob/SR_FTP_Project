@@ -41,7 +41,10 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 	{
 		m_pTransform->Move_Forward(fDeltaTime);
 	}
-
+	if (GetKeyState(VK_DOWN) & 0x8000)
+	{
+		m_pTransform->Move_Backward(fDeltaTime);
+	}
 
 	if(FAILED(__super::Update(fDeltaTime)))
 		return -1;

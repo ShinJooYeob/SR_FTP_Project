@@ -230,6 +230,7 @@
     <ClInclude Include="Tool.h" />
     <ClInclude Include="ToolDoc.h" />
     <ClInclude Include="ToolView.h" />
+    <ClInclude Include="Trans_Dialog.h" />
     <ClInclude Include="UnitTool.h" />
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +260,7 @@
     <ClCompile Include="Tool.cpp" />
     <ClCompile Include="ToolDoc.cpp" />
     <ClCompile Include="ToolView.cpp" />
+    <ClCompile Include="Trans_Dialog.cpp" />
     <ClCompile Include="UnitTool.cpp" />
   </ItemGroup>
   <ItemGroup>

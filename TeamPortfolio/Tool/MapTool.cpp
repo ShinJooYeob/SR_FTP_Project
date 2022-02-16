@@ -179,25 +179,25 @@ void CMapTool::OnSaveData()
 	if (IDOK == Dlg.DoModal())
 	{
 		// GetPathName : 선택된 경로를 반환하는 함수
-		CString				str = Dlg.GetPathName().GetString();
-		const TCHAR*		pGetPath = str.GetString();
+		//CString				str = Dlg.GetPathName().GetString();
+		//const TCHAR*		pGetPath = str.GetString();
 
-		HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+		//HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
-		if (INVALID_HANDLE_VALUE == hFile)
-			return;
+		//if (INVALID_HANDLE_VALUE == hFile)
+		//	return;
 
-		CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-		CToolView*	pToolView = dynamic_cast<CToolView*>(pMain->m_MainSplitter.GetPane(0, 1));
-		CTerrain*	pTerrain = pToolView->m_pTerrain;
-		vector<TILE*>& vecTile = pTerrain->Get_Tile();
+		//CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+		//CToolView*	pToolView = dynamic_cast<CToolView*>(pMain->m_MainSplitter.GetPane(0, 1));
+		//CTerrain*	pTerrain = pToolView->m_pTerrain;
+		//vector<TILE*>& vecTile = pTerrain->Get_Tile();
 
-		DWORD	dwByte = 0;
+		//DWORD	dwByte = 0;
 
-		for (auto& iter : vecTile)
-		{
-			WriteFile(hFile, iter, sizeof(TILE), &dwByte, nullptr);
-		}
-		CloseHandle(hFile);
+		//for (auto& iter : vecTile)
+		//{
+		//	WriteFile(hFile, iter, sizeof(TILE), &dwByte, nullptr);
+		//}
+		//CloseHandle(hFile);
 	}
 }

@@ -89,6 +89,16 @@ enum E_FILETYPE
 
 };
 
+enum E_TRANSTYPE
+{
+	TRANSTYPE_POS,
+	TRANSTYPE_ROT,
+	TRANSTYPE_SCALE,
+	TRANSTYPE_END,
+
+};
+
+
 typedef struct tagFrame
 {
 	tagFrame() {}

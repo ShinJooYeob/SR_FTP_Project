@@ -80,6 +80,7 @@ namespace Engine
 		_float3(const D3DXVECTOR3& _Param) { x = _Param.x; y = _Param.y; z = _Param.z; };
 		_float3(float _X, float _Y, float _Z) { x = _X; y = _Y; z = _Z; };
 
+		_float3(_float f[3]) { x = f[0]; y = f[1]; z = f[2]; };
 
 		//////////////////////연산자 오버로딩/////////////////
 		/////////////////왜 안해도 잘 되는거지...;;;/////////////

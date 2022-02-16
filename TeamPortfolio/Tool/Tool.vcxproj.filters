@@ -16,18 +16,6 @@
     <Filter Include="01. Device">
       <UniqueIdentifier>{2c0ef978-c5c8-4b96-b1e0-48e824951e94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Texture">
-      <UniqueIdentifier>{14747c3c-807a-4bd8-af8d-d5ca45e39775}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Texture\00. SingleTexture">
-      <UniqueIdentifier>{bfc424df-6d61-4d9c-a723-4d58015c418b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Texture\01. MultiTexture">
-      <UniqueIdentifier>{bc6cd2f7-54f1-4e98-9f2e-87bcdea64f68}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Texture\02. Manager">
-      <UniqueIdentifier>{b419c433-d2c6-4ecb-b526-3753a929ef3b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Special">
       <UniqueIdentifier>{36848ca4-e1ca-4e39-803a-19e0c67361fb}</UniqueIdentifier>
     </Filter>
@@ -91,7 +79,25 @@
     <Filter Include="03. Etc\01. Path">
       <UniqueIdentifier>{f20911a9-2234-4574-942c-647aeac8fc05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Special\01. View\00. MyForm\04.TextureTool">
+    <Filter Include="02. Component">
+      <UniqueIdentifier>{14747c3c-807a-4bd8-af8d-d5ca45e39775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Component\00. SingleTexture">
+      <UniqueIdentifier>{bfc424df-6d61-4d9c-a723-4d58015c418b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Component\01. MultiTexture">
+      <UniqueIdentifier>{bc6cd2f7-54f1-4e98-9f2e-87bcdea64f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Component\02. Manager">
+      <UniqueIdentifier>{b419c433-d2c6-4ecb-b526-3753a929ef3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Component\Transform_Tool">
+      <UniqueIdentifier>{c505c064-8823-44fb-990c-15a6e13a8633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Component\Texture_Tool">
+      <UniqueIdentifier>{032a1dd4-a799-44fd-89d9-22fb114292cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Special\01. View\00. MyForm\04. TransTool">
       <UniqueIdentifier>{5c49c64e-0ae7-4028-a54d-36d6666cdffb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -112,7 +118,7 @@
       <Filter>01. Device</Filter>
     </ClInclude>
     <ClInclude Include="SingleTexture.h">
-      <Filter>02. Texture\00. SingleTexture</Filter>
+      <Filter>02. Component\00. SingleTexture</Filter>
     </ClInclude>
     <ClInclude Include="ToolView.h">
       <Filter>00. Special\01. View</Filter>
@@ -124,10 +130,10 @@
       <Filter>00. Special\02. Document</Filter>
     </ClInclude>
     <ClInclude Include="TextureMgr.h">
-      <Filter>02. Texture\02. Manager</Filter>
+      <Filter>02. Component\02. Manager</Filter>
     </ClInclude>
     <ClInclude Include="MultiTexture.h">
-      <Filter>02. Texture\01. MultiTexture</Filter>
+      <Filter>02. Component\01. MultiTexture</Filter>
     </ClInclude>
     <ClInclude Include="Terrain.h">
       <Filter>04.Object\02.Terrain</Filter>
@@ -175,13 +181,16 @@
       <Filter>99.Header</Filter>
     </ClInclude>
     <ClInclude Include="Texture_Tool.h">
-      <Filter>02. Texture</Filter>
+      <Filter>02. Component</Filter>
     </ClInclude>
     <ClInclude Include="ObjectTool_Rect.h">
       <Filter>04.Object\01.Rect</Filter>
     </ClInclude>
     <ClInclude Include="Camera_Tool.h">
       <Filter>04.Object\03 Camera_Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Trans_Dialog.h">
+      <Filter>00. Special\01. View\00. MyForm\04. TransTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -195,10 +204,7 @@
       <Filter>01. Device</Filter>
     </ClCompile>
     <ClCompile Include="SingleTexture.cpp">
-      <Filter>02. Texture\00. SingleTexture</Filter>
-    </ClCompile>
-    <ClCompile Include="ToolView.cpp">
-      <Filter>00. Special\01. View</Filter>
+      <Filter>02. Component\00. SingleTexture</Filter>
     </ClCompile>
     <ClCompile Include="MainFrm.cpp">
       <Filter>00. Special\00. MainFrm</Filter>
@@ -207,10 +213,10 @@
       <Filter>00. Special\02. Document</Filter>
     </ClCompile>
     <ClCompile Include="TextureMgr.cpp">
-      <Filter>02. Texture\02. Manager</Filter>
+      <Filter>02. Component\02. Manager</Filter>
     </ClCompile>
     <ClCompile Include="MultiTexture.cpp">
-      <Filter>02. Texture\01. MultiTexture</Filter>
+      <Filter>02. Component\01. MultiTexture</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
       <Filter>04.Object\02.Terrain</Filter>
@@ -243,13 +249,19 @@
       <Filter>00. Special\01. View\00. MyForm\03. PathFind</Filter>
     </ClCompile>
     <ClCompile Include="Texture_Tool.cpp">
-      <Filter>02. Texture</Filter>
+      <Filter>02. Component</Filter>
     </ClCompile>
     <ClCompile Include="ObjectTool_Rect.cpp">
       <Filter>04.Object\01.Rect</Filter>
     </ClCompile>
     <ClCompile Include="Camera_Tool.cpp">
       <Filter>04.Object\03 Camera_Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Trans_Dialog.cpp">
+      <Filter>00. Special\01. View\00. MyForm\04. TransTool</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolView.cpp">
+      <Filter>00. Special\01. View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
