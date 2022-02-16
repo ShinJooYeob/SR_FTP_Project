@@ -5,7 +5,7 @@
 
 _uint CALLBACK ShakeThread(void* _Prameter)
 {
-
+	 
 	THREADARG tThreadArg{};
 	memcpy(&tThreadArg, _Prameter, sizeof(THREADARG));
 	delete _Prameter;

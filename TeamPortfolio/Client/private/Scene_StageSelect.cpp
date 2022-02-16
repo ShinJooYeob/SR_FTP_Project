@@ -95,20 +95,27 @@ _int CScene_StageSelect::LateRender()
 
 HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 {
-	for (_uint k = 0; k < 5; k++)
+	for (_uint i = 0; i < 6; i++)
 	{
-		for (_uint i = k; i < 10 - k; i++)
+		for (_uint j = 0; j < 6; j++) {
+
+			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)0, (_float)j)))
+				return E_FAIL;
+		}
+	}
+	for (_uint k = 1; k < 3; k++)
+	{
+		for (_uint i = 1; i < 5; i++)
 		{
-			for (_uint j = k; j < 10 - k; j++) {
+			for (_uint j = 1; j < 5; j++) {
 
 				if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)k, (_float)j)))
 					return E_FAIL;
 			}
 		}
-
 	}
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)5, (_float)1, (_float)0)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)6, (_float)1, (_float)0)))
 		return E_FAIL;
 
 	return S_OK;
@@ -118,6 +125,7 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {
 	CCamera::CAMERADESC CameraDesc;
 
+	CameraDesc.bIsOrtho = true;
 	CameraDesc.vEye = _float3(5.f, 3.f, -10.f);
 	CameraDesc.vAt = CameraDesc.vWorldRotAxis =  _float3(5.f, 3.f, 5.f);
 

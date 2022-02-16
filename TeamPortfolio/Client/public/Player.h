@@ -57,10 +57,12 @@ private:
 
 	_bool					m_bCanMoveLeft = false;
 	_bool					m_bCanMoveRight = false;
+//	_bool					m_bCanMoveUp = false;
 
-	CGameObject*			m_FootHoldObject = nullptr;
-	CGameObject*			m_BackWardObject = nullptr;
-	CGameObject*			m_ReturnFootHold = nullptr;
+	_float3					m_vDownstairsNear;
+	_float3					m_vClimingBlock;
+	_float3					m_vReturnStair = _float3(0,0,0);
+
 
 	CCamera_Main*			m_pCamera_Main = nullptr;
 

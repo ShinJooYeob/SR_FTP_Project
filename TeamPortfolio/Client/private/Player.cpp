@@ -62,7 +62,7 @@ _int CPlayer::Update(_float fDeltaTime)
 
 	if (pInstance->Get_DIKeyState(DIK_UP) & DIS_Press)
 	{
-		if (m_BackWardObject != nullptr)
+		if (m_vClimingBlock != _float3())
 		{
 			m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
 			m_fNowJumpPower = 0;
@@ -75,28 +75,24 @@ _int CPlayer::Update(_float fDeltaTime)
 
 	if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_Press)
 	{
-		if (m_bIsCliming) 
-		{
-			if (m_BackWardObject != nullptr)
+	
+			if (m_vClimingBlock != _float3(-100.f, -100.f, -100.f))
 			{
 				m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), -fDeltaTime);
 				m_fNowJumpPower = 0;
 
 				m_bIsCliming = true;
 			}
-
-		}
-		else 
-		{
-			if (m_FootHoldObject != nullptr)
+			else if (m_vDownstairsNear != _float3(-100.f, -100.f, -100.f))
 			{
+	
 				m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), -fDeltaTime);
 				m_fNowJumpPower = 0;
 
 				m_bIsCliming = true;
 			}
 
-		}
+		
 
 	}
 
@@ -123,11 +119,12 @@ _int CPlayer::Update(_float fDeltaTime)
 		m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
 	}
 
-	
+
 	if (FAILED(Find_FootHold_Object())) {
 		return E_FAIL;
 	}
-	
+	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
+		return E_FAIL;
 
 
 
@@ -142,8 +139,7 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 		return E_FAIL;
 
 
-	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
-		return E_FAIL;
+
 
 
 
@@ -244,9 +240,7 @@ HRESULT CPlayer::Find_FootHold_Object()
 	//카메라 바라보도록 설정
 
 	_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-
 	_float3 vNewLook = (vPlayerPos - vCamPos).Get_Nomalize();
-
 	m_ComTransform->LookAt(vPlayerPos + vNewLook);
 
 
@@ -261,99 +255,98 @@ HRESULT CPlayer::Find_FootHold_Object()
 		 return E_FAIL;
 
 
-	 CGameObject* pYNearObject = nullptr;
-	 CGameObject* pZNearObject = nullptr;
+	 m_vDownstairsNear = _float3(-100.f, -100.f, -100.f);
+	 m_vClimingBlock = _float3(-100.f, -100.f, -100.f);
 	 
-	 _float		fNearZLenth = -(_float)0x0fffffff;
-	 _float		fFootZLenth	= (_float)0x0fffffff;
-	 _float		fFarZLenth = (_float)0x0fffffff;
+	 _float		fPlayerFrontZ	= -(_float)0x0fffffff;
+	 _float		fFootNearZ		= (_float)0x0fffffff;
+	 _float		fPlayerBackZ	= (_float)0x0fffffff;
 
+
+	 list<_float3> TerrainViewPos; 
+	 TerrainViewPos.clear();
 
 	 auto ObjectListIter = pTerrainLayer->begin();
 
 	 m_bIsShdow = false;
 	 m_bCanMoveLeft = true;
 	 m_bCanMoveRight = true;
+	// m_bCanMoveUp = false;
 
 	 for (; ObjectListIter != pTerrainLayer->end();)
 	 {
 		 _float3 vTerrainObjectViewPos = ((CTransform*)((*ObjectListIter)->Find_Components(TAG_COM(Com_Transform))))
 			 ->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
 
-		 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y + 0.5f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 0.5f)
+		 if (vTerrainObjectViewPos.y < vPlayerViewPos.y + 0.25f && vTerrainObjectViewPos.y >= vPlayerViewPos.y - 0.25f) 
 		 {
-			 if (vTerrainObjectViewPos.x + 0.5f >= vPlayerViewPos.x && vTerrainObjectViewPos.x - 0.5f < vPlayerViewPos.x)
+			 //같은 높이의
+			 if (vPlayerViewPos.x + 0.5f >= vTerrainObjectViewPos.x && vPlayerViewPos.x - 0.5f < vTerrainObjectViewPos.x) 
 			 {
-				 if (vTerrainObjectViewPos.z < vPlayerViewPos.z && vTerrainObjectViewPos.z > fNearZLenth)
+				 // 같은 x축의
+				 TerrainViewPos.push_back(vTerrainObjectViewPos);
+				 if (vTerrainObjectViewPos.z < vPlayerViewPos.z - 0.25f && vTerrainObjectViewPos.z > fPlayerFrontZ)
 				 {
-					 fNearZLenth = vTerrainObjectViewPos.z;
+					 fPlayerFrontZ = vTerrainObjectViewPos.z;
 					 m_bIsShdow = true;
 				 }
+				 if(vTerrainObjectViewPos.z > vPlayerViewPos.z + 0.25f && vTerrainObjectViewPos.z < fPlayerBackZ)
+					 fPlayerBackZ = vTerrainObjectViewPos.z;
 			 }
-			 else if (vTerrainObjectViewPos.z > vPlayerViewPos.z - 0.25f && vTerrainObjectViewPos.z < vPlayerViewPos.z + 0.25f) 
+
+			 if (vTerrainObjectViewPos.z > vPlayerViewPos.z - 0.25f && vTerrainObjectViewPos.z < vPlayerViewPos.z + 0.25f)
 			 {
-				 if (vTerrainObjectViewPos.x >= vPlayerViewPos.x + 0.6f  && vTerrainObjectViewPos.x  < vPlayerViewPos.x + 1.1f)
+				 if (vTerrainObjectViewPos.x > vPlayerViewPos.x + 0.55f  && vTerrainObjectViewPos.x < vPlayerViewPos.x + 1.1f)
 				 {
 					 m_bCanMoveRight = false;
 				 }
-				 else if (vTerrainObjectViewPos.x <= vPlayerViewPos.x - 0.6f  && vTerrainObjectViewPos.x  > vPlayerViewPos.x - 1.1f)
+				 else if (vTerrainObjectViewPos.x < vPlayerViewPos.x - 0.55f  && vTerrainObjectViewPos.x  > vPlayerViewPos.x - 1.1f)
 				 {
 					 m_bCanMoveLeft = false;
 				 }
 			 }
 		 }
-		 ObjectListIter++;
-	 }
-	 
-	 ObjectListIter = pTerrainLayer->begin();
+		 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y - 0.75f && vTerrainObjectViewPos.y >= vPlayerViewPos.y - 1.25f)
+		 {//아래층의
+			 if (vPlayerViewPos.x + 0.5f >= vTerrainObjectViewPos.x && vPlayerViewPos.x - 0.5f < vTerrainObjectViewPos.x)
+			 {//같은 x축
 
-	 for (; ObjectListIter != pTerrainLayer->end();)
-	 {
-		 _float3 vTerrainObjectViewPos = ((CTransform*)((*ObjectListIter)->Find_Components(TAG_COM(Com_Transform))))
-											->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
-
-		 if (vTerrainObjectViewPos.x + 0.5f >= vPlayerViewPos.x && vTerrainObjectViewPos.x - 0.5f < vPlayerViewPos.x)
-		 {
-			 //바닥 오브젝트 파악
-			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y - 0.75f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 1.4f)
-			 {
-				 if (vTerrainObjectViewPos.z < fFootZLenth && vTerrainObjectViewPos.z > fNearZLenth)
-				 {
-					 pYNearObject = (*ObjectListIter);
-					 fFootZLenth = vTerrainObjectViewPos.z;
-				 }
-			 }
-			 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y + 0.5f && vTerrainObjectViewPos.y > vPlayerViewPos.y - 0.5f)
-			 {
-				 //바로 뒤 오브젝트 파악(등반하기 위해서)
-				 if (vTerrainObjectViewPos.z >= vPlayerViewPos. z  && vTerrainObjectViewPos.z < fFarZLenth)
-				 {
-					 pZNearObject = (*ObjectListIter);
-					 fFarZLenth = vTerrainObjectViewPos.z;
-				 }
-
-
+					 TerrainViewPos.push_back(vTerrainObjectViewPos);
+				 
 			 }
 		 }
-		 
 		 ObjectListIter++;
 	 }
 
 
+	 auto SelectedListiter = TerrainViewPos.begin();
 
-	 if (m_FootHoldObject != nullptr)
-		 m_ReturnFootHold = m_FootHoldObject;
+	 for (; SelectedListiter != TerrainViewPos.end();)
+	 {
+		 if ((*SelectedListiter).y < vPlayerViewPos.y - 0.5f && (*SelectedListiter).y >= vPlayerViewPos.y - 1.5f)
+		 {//아래층의
+			 if ((*SelectedListiter).z < fFootNearZ  && (*SelectedListiter).z > fPlayerFrontZ && (*SelectedListiter).z < fPlayerBackZ)
+			 {
+				 m_vDownstairsNear = (*SelectedListiter);
+				 fFootNearZ = (*SelectedListiter).z;
+			 }
+		 }
+		 if(m_vClimingBlock == _float3(-100.f, -100.f, -100.f) && (*SelectedListiter).y < vPlayerViewPos.y + 0.5f && (*SelectedListiter).y >= vPlayerViewPos.y - 0.5f)
+		 {
+			 //같은 층에
+			 if ((*SelectedListiter).z > fPlayerFrontZ)
+			 {
+				 m_vClimingBlock = (*SelectedListiter);
+				// m_bCanMoveUp = true;
+			 }
+		 }
+		 SelectedListiter++;
+	 }
 
-	 Safe_Release(m_FootHoldObject);
-	 m_FootHoldObject = pYNearObject;
-	 Safe_AddRef(m_FootHoldObject);
 
-	 Safe_Release(m_BackWardObject);
-	 m_BackWardObject = pZNearObject;
-	 Safe_AddRef(m_BackWardObject);
-	 
-	 if (m_BackWardObject == nullptr)
-		 m_bIsCliming = false;
+
+	 if (m_vDownstairsNear != _float3(-100.f, -100.f, -100.f))
+		 m_vReturnStair = m_vDownstairsNear;
 
 
 
@@ -364,8 +357,9 @@ HRESULT CPlayer::Find_FootHold_Object()
 HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 {
 
+	if (m_pCamera_Main->Get_bIsTuring())
+		return S_OK;
 
-	//CTransform* pCameraTransform = m_pCamera_Main->Get_Camera_Transform();
 	_Matrix matVeiwSpace;
 	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
 
@@ -385,31 +379,29 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 		vResultPos = vResultPos.PosVector_Matrix(matVeiwSpace);
 
 
-		if (m_FootHoldObject != nullptr)
+		if (m_vDownstairsNear != _float3(-100.f, -100.f, -100.f))
 		{
-			_float3		vFootHoldObjectViewPos = (((CTransform*)(m_FootHoldObject->Find_Components(TAG_COM(Com_Transform))))
-				->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(matVeiwSpace);
-			vResultPos.z = vFootHoldObjectViewPos.z;
 
-			if (vResultPos.y < vFootHoldObjectViewPos.y + 1.0f && m_fNowJumpPower < 0) //지형보다 플레이어가 위에 있다면
+			vResultPos.z = m_vDownstairsNear.z;
+			if (vResultPos.y < m_vDownstairsNear.y + 1.0f && m_fNowJumpPower < 0) //지형보다 플레이어가 위에 있다면
 			{
-				vResultPos.y = vFootHoldObjectViewPos.y + 1.f;
+				vResultPos.y = m_vDownstairsNear.y + 1.f;
 				m_fNowJumpPower = 0;
 				m_bIsJumped = 0;
 
 			}
-		}
-		else if (Time > 3.f && m_ReturnFootHold !=nullptr)
-		{
-			_float3		vFootHoldObjectViewPos = (((CTransform*)(m_ReturnFootHold->Find_Components(TAG_COM(Com_Transform))))
-				->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(matVeiwSpace);
 
-			vResultPos = vFootHoldObjectViewPos;
+
+		}
+		else if (Time > 3.f && m_vReturnStair != _float3(0, 0, 0))
+		{
+
+
+			vResultPos = m_vReturnStair;
 			vResultPos.y += 1.f;
 
 			m_fNowJumpPower = 0;
 			m_bIsJumped = 0;
-			//m_ReturnFootHold
 		}
 		else {
 			m_fNowJumpPower -= fDeltaTime * m_fJumpPower;
@@ -417,14 +409,12 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 	}
 	else {
 		vResultPos = vResultPos.PosVector_Matrix(matVeiwSpace);
-
-		if (m_BackWardObject != nullptr) {
-
-			_float3		vBackWardObjectViewPos = (((CTransform*)(m_BackWardObject->Find_Components(TAG_COM(Com_Transform))))
-				->Get_MatrixState(CTransform::STATE_POS)).PosVector_Matrix(matVeiwSpace);
-			vResultPos.z = vBackWardObjectViewPos.z - 1.1f;
+		if (m_vClimingBlock != _float3(-100.f, -100.f, -100.f))
+		{
+			vResultPos.z = m_vClimingBlock.z - 1.0f;
 		}
-
+		
+		
 	}
 
 
@@ -528,8 +518,8 @@ void CPlayer::Free()
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_ComInventory);
-	Safe_Release(m_BackWardObject);
-	Safe_Release(m_FootHoldObject);
+	//Safe_Release(m_BackWardObject);
+	//Safe_Release(m_FootHoldObject);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);
