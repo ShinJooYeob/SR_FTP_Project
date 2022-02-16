@@ -15,6 +15,7 @@ public:
 	virtual HRESULT Initialize_Clone(void * pArg)override;
 public:
 	HRESULT Initialize_Quest(_int eQuest);
+	HRESULT Set_QuestResult(_int eQuest, _int iResult);
 	bool	Get_QuestResult (_int eQuest);
 private:
 	_int*		m_pQuestIndex;

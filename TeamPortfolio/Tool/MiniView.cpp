@@ -5,7 +5,6 @@
 #include "Tool.h"
 #include "MiniView.h"
 #include "Device.h"
-#include "TextureMgr.h"
 #include "MainFrm.h"
 #include "ToolView.h"
 

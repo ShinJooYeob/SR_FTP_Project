@@ -1,7 +1,7 @@
 #pragma once
 
-#define WINCX		1280
-#define WINCY		800
+#define TOOL_WINCX		1280
+#define TOOL_WINCY		800
 
 #define		TILECX	130
 #define		TILECY	68
