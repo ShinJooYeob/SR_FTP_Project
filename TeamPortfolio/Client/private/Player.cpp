@@ -144,7 +144,7 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 
 
 	//렌더링 그룹에 넣어주는 역활
-	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this)))
+	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this)))
 		return E_FAIL;
 
 	return _int();
@@ -441,39 +441,22 @@ HRESULT CPlayer::SetUp_RenderState()
 	//Dest => 직전까지 화면에 그려진 색
 
 	
-
-	//////////////////////////////////////////////////////////////////////////
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	//m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	//m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	//m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
-
-	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);			//
-	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);			↕	알파값 섞을때 설정해줘야하는 코드
-	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);			//
-
-	//																						//
-	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TFACTOR);			↕	색상 섞을때값 섞을때 설정해줘야하는 코드
-	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG2);			//
-	//m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 0, 0, 0));	//==>원하는 색상 설정
-	////////////////////텍스쳐 색상 변경할 때 쓰는 코드////////////////////////////////////////////////////
-
-
-
-	////////////////////////////사용후 기본값으로 돌릴떄 쓰는 코드//////////////////////////////////////////////
-	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
-	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
-	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
-	//////////////////////////////////////////////////////////////////////////
-	////
+	//
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	//m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(120, 255, 255, 255));
+	//
 	//
 	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 
-	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 100);
-	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 100);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	if (m_bIsShdow)
 	{
@@ -488,7 +471,7 @@ HRESULT CPlayer::SetUp_RenderState()
 
 HRESULT CPlayer::Release_RenderState()
 {
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 
