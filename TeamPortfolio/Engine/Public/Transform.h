@@ -34,6 +34,7 @@ public:
 	void Move_Right(_float fDeltaTime);
 	void Move_Left(_float fDeltaTime);
 
+	void MovetoDir(_float3 vDir, _float fDeltaTime);
 	void MovetoTarget(_float3 vTarget, _float fDeltaTime);
 
 

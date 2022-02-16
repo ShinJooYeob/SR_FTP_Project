@@ -2,6 +2,7 @@
 
 #include "Base.h"
 #include "Graphic_Device.h"
+#include "EasingMgr.h"
 #include "ComponentMgr.h"
 #include "Input_Device.h"
 #include "ImguiMgr.h"
@@ -16,7 +17,6 @@ class CObjectMgr;
 class CGameObject;
 class CLayer;
 class CImguiMgr;
-class CEasingMgr;
 
 class ENGINE_DLL CGameInstance final :public CBase
 {
@@ -75,8 +75,7 @@ public: /* For.Input_Device */
 	_byte Get_DIMouseButtonState(CInput_Device::MOUSEBUTTONSTATE eMouseButtonState);
 
 public:
-	_float TargetLinear(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime = 1.0f);
-	_float TargetQuadIn(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime = 1.0f);
+	_float Easing(_uint eEasingType,_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime = 1.0f);
 	
 public: /* For. IMGUI Interface */
 	CImguiMgr* GetIMGui();

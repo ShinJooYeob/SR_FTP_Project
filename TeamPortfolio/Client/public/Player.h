@@ -45,6 +45,7 @@ private:
 	/* 충돌처리 */
 	CCollision*		m_pCollisionCom = nullptr;
 
+
 private:
 	_float					m_fFrame = 0.f;
 

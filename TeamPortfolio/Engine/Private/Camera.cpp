@@ -130,16 +130,27 @@ HRESULT CCamera::Camera_Shaking(_float fDeltaTime)
 void CCamera::ShakeFunction(_bool * IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
 
-	_uint RandInt = rand() % 2;
+	_float3 vShakeDir;
 
-	for (_uint i = RandInt; i < RandInt+6;i++)
+	for (_uint i = 0; i < 16;i++)
 	{
 		EnterCriticalSection(_CriSec);
 
-		if (i % 2)
-			m_pTransform->Move_Left(m_fTempDeltaTime);
-		else
-			m_pTransform->Move_Right(m_fTempDeltaTime);
+		switch (i%2)
+		{
+		case 0:
+			vShakeDir = _float3(rand() % 100 - 50.f, rand() % 100 - 50.f, 0).Get_Nomalize();
+			m_pTransform->MovetoDir(vShakeDir, m_fTempDeltaTime);
+			break;
+
+		case 1:
+			m_pTransform->MovetoDir(vShakeDir.Get_Inverse(), m_fTempDeltaTime);
+			break;
+
+		default:
+			break;
+		}
+
 
 		LeaveCriticalSection(_CriSec);
 

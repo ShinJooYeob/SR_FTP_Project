@@ -396,7 +396,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 		else if (Time > 3.f && m_vReturnStair != _float3(0, 0, 0))
 		{
 
-
+			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT,fDeltaTime);
 			vResultPos = m_vReturnStair;
 			vResultPos.y += 1.f;
 
@@ -440,18 +440,23 @@ HRESULT CPlayer::SetUp_RenderState()
 	//Sour => 현재 그리려고하는 그림의 색
 	//Dest => 직전까지 화면에 그려진 색
 
+	
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	//m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	//m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	//m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	//
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	//m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(120, 255, 255, 255));
+	//
+	//
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 100);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-	
-
-
-	// 일반적인 텍스쳐 찍기로 되돌아 가려면..
-	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
-	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
-
-
-
 
 	if (m_bIsShdow)
 	{
@@ -518,8 +523,6 @@ void CPlayer::Free()
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_ComInventory);
-	//Safe_Release(m_BackWardObject);
-	//Safe_Release(m_FootHoldObject);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);

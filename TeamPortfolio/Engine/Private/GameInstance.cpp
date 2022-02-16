@@ -313,25 +313,20 @@ _byte CGameInstance::Get_DIMouseButtonState(CInput_Device::MOUSEBUTTONSTATE eMou
 	return m_pInputDevice->Get_DIMouseButtonState(eMouseButtonState);
 }
 
-
-_float CGameInstance::TargetLinear(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime)
+_float CGameInstance::Easing(_uint eEasingType, _float fStartPoint, _float fTargetPoint, _float fPassedTime, _float fTotalTime)
 {
 	if (m_pEasingMgr == nullptr)
 		return 0;
-	return m_pEasingMgr->TargetLinear(fStartPoint, fTargetPoint,  fPassedTime, fTotalTime);
+
+	return m_pEasingMgr->Easing(eEasingType, fStartPoint, fTargetPoint, fPassedTime, fTotalTime);
 }
+
+
+
 
 CImguiMgr * CGameInstance::GetIMGui()
 {
 	return m_pImguiMgr->GetInstance();
-}
-
-_float CGameInstance::TargetQuadIn(_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime)
-{
-	if (m_pEasingMgr == nullptr)
-		return 0;
-
-	return m_pEasingMgr->TargetQuadIn(fStartPoint, fTargetPoint,  fPassedTime, fTotalTime);
 }
 
 

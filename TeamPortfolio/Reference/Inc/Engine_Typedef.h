@@ -26,6 +26,7 @@ namespace Engine
 	typedef struct tagMyMatrix  _Matrix;
 	typedef struct tagMyVector3  _float3;
 	typedef struct tagMyVector2  _float2;
+	typedef struct tagMyVector4  _float4;
 
 	struct tagMyMatrix : public D3DXMATRIX
 	{
@@ -171,6 +172,18 @@ namespace Engine
 		_float2() { };
 		_float2(const D3DXVECTOR2& _Param) { x = _Param.x; y = _Param.y;  };
 		_float2(float _X, float _Y) { x = _X; y = _Y;};
+
+		/////////////뭘 넣으면 좋을지 모르겟네..
+
+	};
+
+	struct tagMyVector4 : public D3DXVECTOR4
+	{
+		_float4() { };
+		_float4(const D3DXVECTOR4& _Param) 
+		{	x = _Param.x; y = _Param.y; z = _Param.z; w = _Param.w; 	};
+		_float4(float _X, float _Y, float _Z, float _W)
+		{		x = _X; y = _Y;  z = _Z; w = _W;		};
 
 		/////////////뭘 넣으면 좋을지 모르겟네..
 

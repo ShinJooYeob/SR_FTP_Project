@@ -79,14 +79,14 @@ _int CBackGround::Render()
 		return E_FAIL;
 
 
-	CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, TAG_LAY(Layer_Camera_Main)));
+	//CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, TAG_LAY(Layer_Camera_Main)));
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
+	//if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
+	//	return E_FAIL;
+
+
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
-
-
-	/*if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		return E_FAIL;*/
 
 	if (FAILED(m_ComTexture->Bind_Texture()))
 		return E_FAIL;

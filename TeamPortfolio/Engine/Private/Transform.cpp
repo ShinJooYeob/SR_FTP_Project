@@ -44,6 +44,15 @@ void CTransform::Move_Left(_float fDeltaTime)
 	Set_MatrixState(STATE_POS, vPos);
 }
 
+void CTransform::MovetoDir(_float3 vDir, _float fDeltaTime)
+{
+	_float3 vPos = Get_MatrixState(STATE_POS);
+
+	vPos += (vDir).Get_Nomalize() * m_TransforDesc.fMovePerSec * fDeltaTime;
+
+	Set_MatrixState(STATE_POS, vPos);
+}
+
 void CTransform::MovetoTarget(_float3 vTarget, _float fDeltaTime)
 {
 
