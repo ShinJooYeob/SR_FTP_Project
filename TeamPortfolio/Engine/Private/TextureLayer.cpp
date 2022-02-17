@@ -18,11 +18,11 @@ HRESULT CTextureLayer::Initialize_Prototype(void * pArg)
 	TEXTURELAYERDESC tTextureLayerDesc{};
 	memcpy(&tTextureLayerDesc, pArg, sizeof(TEXTURELAYERDESC));
 
-	_tchar	szFullPath[MAX_PATH] = L"";
 	m_vecTexture.reserve(tTextureLayerDesc.iNumTexture + 1);
 
 	for (_uint i = 0; i < tTextureLayerDesc.iNumTexture; i++)
 	{
+		_tchar	szFullPath[MAX_PATH] = L"";
 		wsprintf(szFullPath, tTextureLayerDesc.szFilePath, i);
 
 		LPDIRECT3DBASETEXTURE9		pTexture = nullptr;

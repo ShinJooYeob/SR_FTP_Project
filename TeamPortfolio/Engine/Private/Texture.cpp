@@ -1,4 +1,5 @@
 #include "..\Public\Texture.h"
+#include "TextureLayer.h"
 
 
 
@@ -20,6 +21,10 @@ CTexture::CTexture(const CTexture & rhs)
 
 	m_pBindedTextureLayer = iter->second;
 	Safe_AddRef(m_pBindedTextureLayer);
+
+	m_fFrameTime = 0;
+	m_iNumMaxTexture = m_pBindedTextureLayer->Get_TextureNum();
+
 }
 
 
@@ -49,8 +54,10 @@ HRESULT CTexture::ClearTexture()
 {
 	// 툴에서 텍스처 날리는데 사용
 
-	for (auto& pTextureLayer : m_mapTextureLayers)
-		Safe_Release(pTextureLayer.second);
+	for (auto& Pair : m_mapTextureLayers)
+		Safe_Release(Pair.second);
+
+	
 
 	Safe_Release(m_pBindedTextureLayer);
 
@@ -62,19 +69,26 @@ HRESULT CTexture::ClearTexture()
 HRESULT CTexture::Read_TextFile(TYPE eTextureType, const _tchar * szFilePath)
 {
 	wifstream		fin;
-	fin.open(szFilePath);
+
+	_tchar FullFilePath[MAX_PATH]= L"../Bin/Resources/Textures/TexturePathData/";
+
+	lstrcat(FullFilePath, szFilePath);
+
+	fin.open(FullFilePath);
 
 	if (!fin.fail())
 	{
+		_tchar	szPadding[10] = L"";
 		_tchar	szPath[MAX_PATH] = L"";
 		_tchar	szStateKey[MAX_PATH] = L"";
 		_tchar	szCount[MAX_PATH] = L"";
 
 		while (true)
 		{
+
 			// '|' 단위로 끊어서 문자열 입력 처리
 
-			fin.getline(szPath, MAX_PATH,'|');
+			fin.getline(szPath, MAX_PATH, '|');
 			fin.getline(szStateKey, MAX_PATH, '|');
 			fin.getline(szCount, MAX_PATH, '|');
 
@@ -90,6 +104,9 @@ HRESULT CTexture::Read_TextFile(TYPE eTextureType, const _tchar * szFilePath)
 				return E_FAIL;
 			}
 
+			fin.getline(szPadding, MAX_PATH, '\n');
+			if (fin.eof())
+				break;
 		}
 
 		fin.close();		// close 함수는 생략 가능(객체 타입이어서 소멸 시점에 알아서 개방한 파일 또한 소멸 가능)
@@ -101,13 +118,16 @@ HRESULT CTexture::Read_TextFile(TYPE eTextureType, const _tchar * szFilePath)
 	m_pBindedTextureLayer = iter->second;
 	Safe_AddRef(m_pBindedTextureLayer);
 
+	m_fFrameTime = 0;
+	m_iNumMaxTexture = m_pBindedTextureLayer->Get_TextureNum();
+
 	return S_OK;
 }
 
 HRESULT CTexture::Insert_TextureLayer(TYPE eType, _tchar * szFilePath, _tchar * szStateKey, _int iNumTextureCount)
 {
 
-	auto iter = find_if(m_mapTextureLayers.begin(), m_mapTextureLayers.end(), CTagFinder(szStateKey));
+	auto iter = find_if(m_mapTextureLayers.begin(), m_mapTextureLayers.end(), CTagStringFinder(szStateKey));
 
 	if (iter != m_mapTextureLayers.end())
 		return E_FAIL;
@@ -126,9 +146,8 @@ HRESULT CTexture::Insert_TextureLayer(TYPE eType, _tchar * szFilePath, _tchar * 
 	if (pTextureLayer == nullptr)
 		return E_FAIL;
 
-	///////////////////이거 수정해야함////////////////////////////////////////////////////
+
 	m_mapTextureLayers.emplace(szStateKey, pTextureLayer);
-	////////////////////////////////////////////////////////////////////
 
 
 	return S_OK;
@@ -136,18 +155,36 @@ HRESULT CTexture::Insert_TextureLayer(TYPE eType, _tchar * szFilePath, _tchar * 
 
 HRESULT CTexture::Change_TextureLayer(const _tchar * tagTexureLayer)
 {
-	Safe_Release(m_pBindedTextureLayer);
 
-	auto iter = find_if(m_mapTextureLayers.begin(), m_mapTextureLayers.end(), CTagFinder(tagTexureLayer));
+	auto iter = find_if(m_mapTextureLayers.begin(), m_mapTextureLayers.end(), CTagStringFinder(tagTexureLayer));
 	
 	if (iter == m_mapTextureLayers.end())
 		return E_FAIL;
 
+
+	Safe_Release(m_pBindedTextureLayer);
 	m_pBindedTextureLayer = iter->second;
 	Safe_AddRef(m_pBindedTextureLayer);
 
+	m_fFrameTime = 0;
+	m_iNumMaxTexture = m_pBindedTextureLayer->Get_TextureNum();
 
 	return S_OK;
+}
+
+HRESULT CTexture::Bind_Texture_AutoFrame(_float fTimeDelta)
+{
+	if (m_pBindedTextureLayer == nullptr)
+		return E_FAIL;
+
+	m_fFrameTime += m_iNumMaxTexture * fTimeDelta;
+
+	if (m_fFrameTime >= (_float)m_iNumMaxTexture)
+		m_fFrameTime = 0.f;
+
+
+	return m_pBindedTextureLayer->Bind_Texture((_uint)m_fFrameTime);
+
 }
 
 HRESULT CTexture::Bind_Texture(_uint iTextureIndex)
@@ -191,8 +228,10 @@ void CTexture::Free()
 {
 	__super::Free();
 
-	for (auto& pTextureLayer : m_mapTextureLayers)
-		Safe_Release(pTextureLayer.second);
+	for (auto& Pair : m_mapTextureLayers)
+		Safe_Release(Pair.second);
+
+	
 
 	Safe_Release(m_pBindedTextureLayer);
 

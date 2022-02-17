@@ -22,6 +22,25 @@ namespace Engine
 		const _tchar*			m_pTag = nullptr;
 	};
 
+	class CTagStringFinder
+	{
+	public:
+		CTagStringFinder(const _tchar * pTag) : m_pTag(wstring(pTag)) { }
+		~CTagStringFinder() = default;
+
+	public:
+		template <typename T>
+		bool operator () (T& Pair)
+		{
+			if (Pair.first == m_pTag)
+				return true;
+			return false;
+		}
+
+	private:
+		const wstring			m_pTag = nullptr;
+	};
+
 	template <typename T>
 	void Safe_Delete(T& pPointer)
 	{

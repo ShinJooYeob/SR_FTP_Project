@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Component.h"
-#include "TextureLayer.h"
 
 BEGIN(Engine)
 
+class CTextureLayer;
 
 class ENGINE_DLL CTexture final : public CComponent
 {
@@ -30,6 +30,7 @@ private:
 
 public:
 	HRESULT Change_TextureLayer(const _tchar* tagTexureLayer);
+	HRESULT Bind_Texture_AutoFrame(_float fTimeDelta);
 	HRESULT Bind_Texture(_uint iTextureIndex = 0);
 	HRESULT ClearTexture();
 
@@ -38,9 +39,12 @@ private:
 	CTextureLayer*								m_pBindedTextureLayer = nullptr;
 
 	//얘는 다른 클론들과 공유 0
-	map<const _tchar*, CTextureLayer*>			m_mapTextureLayers;
-	typedef	map<const _tchar*, CTextureLayer*>  TEXTURELAYERS;
+	map<wstring, CTextureLayer*>			m_mapTextureLayers;
+	typedef	map<wstring, CTextureLayer*>  TEXTURELAYERS;
 
+
+	_float										m_fFrameTime = 0;
+	_uint										m_iNumMaxTexture = 0;
 
 private:
 	HRESULT Read_TextFile(TYPE eTextureType, const _tchar* szFilePath);

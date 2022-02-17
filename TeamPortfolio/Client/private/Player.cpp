@@ -37,9 +37,13 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
 
 	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))));
+	
 	if (m_pCamera_Main == nullptr)
 		return E_FAIL;
 	Safe_AddRef(m_pCamera_Main);
+
+	m_ComTexture->Change_TextureLayer(TEXT("panic"));
+
 	return S_OK;
 }
 
@@ -53,10 +57,8 @@ _int CPlayer::Update(_float fDeltaTime)
 		return E_FAIL;
 
 
-	m_fFrame += 6.0f * fDeltaTime;
 
-	if (m_fFrame >= 6.0f)
-		m_fFrame = 0.f;
+
 
 	if (FAILED(Input_Keyboard(fDeltaTime)))
 		return E_FAIL;
@@ -97,8 +99,12 @@ _int CPlayer::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 	
-	if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
+	//if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
+	//	return E_FAIL;
+
+	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(0.16f)))
 		return E_FAIL;
+
 
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
@@ -166,6 +172,24 @@ HRESULT CPlayer::SetUp_Components()
 HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 {
 	CGameInstance* pInstance = GetSingle(CGameInstance);
+
+
+	if (pInstance->Get_DIKeyState(DIK_M) & DIS_Down)
+	{
+		m_ComTexture->Change_TextureLayer(TEXT("Idle"));
+	}
+	if (pInstance->Get_DIKeyState(DIK_J) & DIS_Down)
+	{
+		m_ComTexture->Change_TextureLayer(TEXT("panic"));
+	}
+	if (pInstance->Get_DIKeyState(DIK_N) & DIS_Down)
+	{
+		m_ComTexture->Change_TextureLayer(TEXT("walk"));
+	}
+	if (pInstance->Get_DIKeyState(DIK_K) & DIS_Down)
+	{
+		m_ComTexture->Change_TextureLayer(TEXT("talk"));
+	}
 
 
 	//µî¹Ý
