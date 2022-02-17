@@ -33,7 +33,7 @@ CPathFind::~CPathFind()
 		Safe_Delete(iter.second);
 	}
 	m_MapPngImage.clear();
-	
+
 }
 
 
@@ -80,7 +80,12 @@ void CPathFind::OnLbnSelchangeList1()
 		return;
 
 	m_Picture.SetBitmap(*(iter->second));
-	m_GameObject_Rect_Tool->Set_Texture(fullpath);
+
+	MYFILEPATH path;
+	path.wFileName = wStrFilename;
+	path.wstrFullPath = fullpath;
+	m_GameObject_Rect_Tool->Set_Texture(path);
+
 	//int i = 0;
 
 	//for (; i < strFindName.GetLength(); ++i)
@@ -229,21 +234,21 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 	}
 	m_ListBox.ResetContent();
 
-//	wstring	wstrCombined = L"";
-//	TCHAR	szBuf[MIN_STR] = L"";
+	//	wstring	wstrCombined = L"";
+	//	TCHAR	szBuf[MIN_STR] = L"";
 
-	// /, \, |, \\, || : 구분자(token)
+		// /, \, |, \\, || : 구분자(token)
 
-	//for (auto& iter : m_MyPathInfoList)
-	//{
-	//	// 정수를 wstr로 변환
-	//	// 현재 10진수 문자열로 변환하겠다는 의미
-	//	_itow_s(iter->iCount, szBuf, 10);
+		//for (auto& iter : m_MyPathInfoList)
+		//{
+		//	// 정수를 wstr로 변환
+		//	// 현재 10진수 문자열로 변환하겠다는 의미
+		//	_itow_s(iter->iCount, szBuf, 10);
 
-	//	wstrCombined = iter->wstrObjKey + L"|" + iter->wstrStateKey + L"|" + szBuf + L"|" + iter->wstrPath;
-	//	m_ListBox.AddString(wstrCombined.c_str());
-	//}
-	
+		//	wstrCombined = iter->wstrObjKey + L"|" + iter->wstrStateKey + L"|" + szBuf + L"|" + iter->wstrPath;
+		//	m_ListBox.AddString(wstrCombined.c_str());
+		//}
+
 	for (auto& iter : m_MyPathInfoList)
 	{
 		m_ListBox.AddString(iter->wFileName.c_str());
@@ -255,7 +260,7 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 	int cnt = m_MyPathInfoList.size();
 
 	// #Bug CImage 메모리릭
-	for (auto filename: m_MyPathInfoList)
+	for (auto filename : m_MyPathInfoList)
 	{
 		filename->wstrFullPath;
 
@@ -336,7 +341,7 @@ void CPathFind::HorizontalScroll(void)
 BOOL CPathFind::DestroyWindow()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	
+
 	return CDialog::DestroyWindow();
 }
 

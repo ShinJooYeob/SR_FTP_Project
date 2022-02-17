@@ -24,7 +24,7 @@ HRESULT CSuperToolSIngleton::InitDevice(void)
 	desc.eScreenMode = CGraphic_Device::TYPE_SCREEN;
 	desc.iWinCX = TOOL_WINCX;
 	desc.iWinCY = TOOL_WINCY;
-	
+
 	// 툴 초기화
 	m_pGameInstance->Initialize_Engine_Tool(desc, SCENEID::SCENE_END, &m_pGraphicDevice);
 
@@ -65,9 +65,9 @@ HRESULT CSuperToolSIngleton::Update_Tool(_float ftimer)
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
 
-	int i=m_pGameInstance->Update_Engine_Tool(ftimer);
+	int i = m_pGameInstance->Update_Engine_Tool(ftimer);
 
-		return S_OK;
+	return S_OK;
 }
 
 HRESULT CSuperToolSIngleton::Render_Begin(void)
@@ -75,7 +75,7 @@ HRESULT CSuperToolSIngleton::Render_Begin(void)
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
 	m_pGameInstance->Render_Begin();
-	return S_OK;	
+	return S_OK;
 }
 
 HRESULT CSuperToolSIngleton::Render_End(HWND hWnd)
@@ -83,7 +83,7 @@ HRESULT CSuperToolSIngleton::Render_End(HWND hWnd)
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
 	m_pGraphicDevice->EndScene();
-	m_pGraphicDevice->Present(nullptr, nullptr, hWnd, nullptr);	
+	m_pGraphicDevice->Present(nullptr, nullptr, hWnd, nullptr);
 }
 
 HRESULT CSuperToolSIngleton::Ready_Initalize_Object()
@@ -175,7 +175,7 @@ HRESULT CSuperToolSIngleton::Ready_Object_Camera(const _tchar* layertag)
 HRESULT CSuperToolSIngleton::Initialize_ToolView()
 {
 	m_pMainFrame = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	m_pToolView  = static_cast<CToolView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 1));
+	m_pToolView = static_cast<CToolView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 1));
 	m_pMiniView = static_cast<CMiniView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 0));
 	m_pMyButtomView = static_cast<CMyForm*>(m_pMainFrame->m_SecondSplitter.GetPane(1, 0));
 
@@ -184,6 +184,109 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView()
 
 	return S_OK;
 }
+
+
+HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_Rect* obj, CWnd* cwnd)
+{
+	// 저장 클릭시 하는 것
+
+	// 1. 클릭시 다이얼 로그 생성.
+	CFileDialog		Dlg(FALSE,
+		L"dat", // .dat파일로 저장
+		L"*.dat",
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		L"Data Files(*.dat)|*.dat||",
+		cwnd);
+
+	TCHAR	szPath[MAX_PATH] = L"";
+	GetCurrentDirectory(MAX_PATH, szPath);
+
+	PathRemoveFileSpec(szPath);
+	lstrcat(szPath, L"\\Data");
+
+	Dlg.m_ofn.lpstrInitialDir = szPath;
+
+	if (IDOK == Dlg.DoModal())
+	{
+		// 이름
+		CString				str = Dlg.GetPathName().GetString();
+		CString				Filename = PathFindFileName(str);
+
+		const TCHAR*		pGetPath = str.GetString();
+
+
+
+		HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
+		if (INVALID_HANDLE_VALUE == hFile)
+			return E_FAIL;
+
+		// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.
+		MYFILEPATH path = obj->Get_PathData();
+		OUTPUT_OBJECTINFO infoObj;
+		infoObj.fScale = obj->Get_Scale();
+		infoObj.fPos = obj->Get_Pos();
+		lstrcpy(infoObj.strObjectName, Filename);
+		lstrcpy(infoObj.strTextureName, path.wFileName.c_str());
+		lstrcpy(infoObj.strTexturePath, path.wstrFullPath.c_str());
+
+
+		//infoObj.strFileName = path.wFileName.c_str();
+		//infoObj.strFullPath = path.wstrFullPath.c_str();
+
+		DWORD	dwByte = 0;
+
+		// 저장
+		WriteFile(hFile, &infoObj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+
+		CloseHandle(hFile);
+
+	}
+	return S_OK;
+}
+
+HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
+{
+
+	//	static TCHAR BASED_CODE szFilter[] = _T("이미지 파일(*.BMP, *.GIF, *.JPG) | *.BMP;*.GIF;*.JPG;*.bmp;*.jpg;*.gif |모든파일(*.*)|*.*||");
+
+
+	static TCHAR BASED_CODE szFilter[] = _T("데이터 파일(*.dat) | *.dat; | 모든파일(*.*)|*.*||");
+
+	CFileDialog dlg(TRUE, _T("*.dat"), _T(""), OFN_HIDEREADONLY, szFilter);
+
+	OUTPUT_OBJECTINFO infoobj = {};
+
+	if (IDOK == dlg.DoModal())
+	{
+
+		CString pathName = dlg.GetPathName();
+
+		// 해석 코드
+
+
+		// 이름
+		CString				str = dlg.GetPathName().GetString();
+		const TCHAR*		pGetPath = str.GetString();
+
+		HANDLE hFile = CreateFile(pGetPath, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+		if (INVALID_HANDLE_VALUE == hFile)
+			return E_FAIL;
+
+		// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.		
+		DWORD	dwByte = 0;
+
+		// 로드
+		ReadFile(hFile, &infoobj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+		m_Object_Rect->Set_Data(infoobj);
+		CloseHandle(hFile);
+	}
+
+	return S_OK;
+}
+
+
 
 void CSuperToolSIngleton::Free()
 {

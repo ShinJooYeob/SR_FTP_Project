@@ -41,4 +41,6 @@ public:
 	afx_msg void OnObjectSave();
 	afx_msg void OnMapSave();
 	CComboBox m_ComboBox;
+	afx_msg void OnBnClickedButtonLoad();
+	afx_msg void OnCbnSelchangeCombo2();
 };

@@ -37,6 +37,8 @@ BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMyForm::OnTransform)
 	ON_BN_CLICKED(IDC_BUTTON10, &CMyForm::OnObjectSave)
 	ON_BN_CLICKED(IDC_BUTTON11, &CMyForm::OnMapSave)
+	ON_BN_CLICKED(IDC_BUTTON12, &CMyForm::OnBnClickedButtonLoad)
+	ON_CBN_SELCHANGE(IDC_COMBO2, &CMyForm::OnCbnSelchangeCombo2)
 END_MESSAGE_MAP()
 
 // CMyForm 진단입니다.
@@ -69,6 +71,7 @@ void CMyForm::OnInitialUpdate()
 	GetDlgItem(IDC_BUTTON2)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON10)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON11)->SetFont(&m_Font);
+	GetDlgItem(IDC_BUTTON12)->SetFont(&m_Font);
 
 }
 
@@ -97,11 +100,42 @@ void CMyForm::OnTransform()
 
 void CMyForm::OnObjectSave()
 {
-
-
+	GetSingle(CSuperToolSIngleton)->SaveData_Object(GetSingle(CSuperToolSIngleton)->GetObjectRect(), this);
 }
 
 void CMyForm::OnMapSave()
 {
 
 }
+
+
+void CMyForm::OnBnClickedButtonLoad()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	GetSingle(CSuperToolSIngleton)->LoadData_Object(this);
+}
+
+void CMyForm::OnCbnSelchangeCombo2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int a = m_ComboBox.GetCurSel();
+	int b = 0;
+	switch (a)
+	{
+	case 0:
+		b = 0;
+		break;
+
+	case 1:
+		b = 1;
+		break;
+
+	case 2:
+		b = 2;
+		break;
+
+	}
+}
+
+
+

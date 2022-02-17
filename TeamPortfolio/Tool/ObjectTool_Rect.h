@@ -31,7 +31,14 @@ public:
 
 	HRESULT Set_Scaled(_float3 scale);
 	HRESULT Set_Position(_float3 Position);
-	HRESULT Set_Texture(wstring filename);
+	HRESULT Set_Texture(MYFILEPATH pathdata);
+	HRESULT Set_Data(OUTPUT_OBJECTINFO data);
+
+	const MYFILEPATH& Get_PathData()const { return m_tImgPath; }
+	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS);  }
+	_float3 Get_Scale() { return m_ComTransform->Get_MatrixScale(); }
+
+
 
 
 private:
@@ -41,6 +48,7 @@ private:
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;
 
+	MYFILEPATH m_tImgPath;
 private:
 	HRESULT			SetUp_Components();
 

@@ -104,16 +104,29 @@ HRESULT CObjectTool_Rect::Set_Position(_float3 Position)
 	return S_OK;
 }
 
-HRESULT CObjectTool_Rect::Set_Texture(wstring filepath)
+HRESULT CObjectTool_Rect::Set_Texture(MYFILEPATH pathdata)
 {
 	// 기존에 있던 텍스쳐 날림
 	m_ComTexture->ClearTexture();
+	m_tImgPath = pathdata;
 
 	CTexture::tagTextureDesc desc = {};
-	desc.szFilePath = filepath.c_str();
+	desc.szFilePath = m_tImgPath.wstrFullPath.c_str();
 
 	if (FAILED(m_ComTexture->Initialize_Prototype(&desc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CObjectTool_Rect::Set_Data(OUTPUT_OBJECTINFO data)
+{
+	Set_Position(data.fPos);
+	Set_Scaled(data.fScale);
+	MYFILEPATH mypath = {};
+	mypath.wFileName = data.strTextureName;
+	mypath.wstrFullPath = data.strTexturePath;
+	Set_Texture(mypath);
 
 	return S_OK;
 }

@@ -69,6 +69,10 @@ public:
 	CTrans_Dialog* GetTransTool() { return m_pTransDialog; }
 
 	CObjectTool_Rect* GetObjectRect() { return m_Object_Rect; }
+public:
+	HRESULT SaveData_Object(CObjectTool_Rect* obj, CWnd* cwnd);
+	HRESULT LoadData_Object(CWnd * cwnd);
+
 
 private:
 

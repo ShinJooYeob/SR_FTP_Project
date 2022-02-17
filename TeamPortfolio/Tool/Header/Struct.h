@@ -67,15 +67,25 @@ typedef struct tagTexturePath
 typedef struct tagMyTexturePath
 {
 	// 파일구분 1 
-	wstring			wFileName = L"";
-	
+	wstring			wFileName = L"";	
 	// 전체 상대 경로
-	wstring			wstrFullPath = L"";
-	
+	wstring			wstrFullPath = L"";	
 	// 텍스처 개수
 	int				iCount = 0;
 
 }MYFILEPATH;
+
+typedef struct tagOutputObject
+{
+	D3DXVECTOR3 fScale;
+	D3DXVECTOR3 fPos;
+	TCHAR strObjectName[MAX_PATH];
+	TCHAR strTextureName[MAX_PATH];
+	TCHAR strTexturePath[MAX_PATH];
+
+}OUTPUT_OBJECTINFO;
+
+
 
 enum E_FILETYPE
 {
