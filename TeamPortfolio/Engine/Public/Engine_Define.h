@@ -17,12 +17,17 @@
 #include <process.h>
 #include <time.h>
 
+#include <string>
+#include <fstream>
+#include <tchar.h>
+
 #include <math.h>
 #include <vector>
 #include <list>
 #include <map>
 #include <queue>
 #include <algorithm>
+
 
 using namespace std;
 

@@ -1,0 +1,4 @@
+../bin/Resources/Textures/Player/Idle/idle_%d.png|Idle|2|
+../bin/Resources/Textures/Player/panic/panic_%d.png|panic|8|
+../bin/Resources/Textures/Player/talk/talk_%d.png|talk|24|
+../bin/Resources/Textures/Player/walk/walk_%d.png|walk|6|

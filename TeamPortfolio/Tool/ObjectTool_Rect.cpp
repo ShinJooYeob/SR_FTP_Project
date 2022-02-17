@@ -110,7 +110,7 @@ HRESULT CObjectTool_Rect::Set_Texture(wstring filepath)
 	m_ComTexture->ClearTexture();
 
 	CTexture::tagTextureDesc desc = {};
-	desc.szFilePath = filepath.c_str();
+	desc.szTextFilePath= filepath.c_str();
 
 	if (FAILED(m_ComTexture->Initialize_Prototype(&desc)))
 		return E_FAIL;

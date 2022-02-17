@@ -115,6 +115,9 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Quest">
       <UniqueIdentifier>{1355212b-e71e-4a2a-819a-4ecd458fbb9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\Texture\TextureLayer">
+      <UniqueIdentifier>{92e03bd4-7e89-4a3c-862a-af7dc4ac6cdc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -218,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Quest.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TextureLayer.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Texture\TextureLayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Quest.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Quest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TextureLayer.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Texture\TextureLayer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

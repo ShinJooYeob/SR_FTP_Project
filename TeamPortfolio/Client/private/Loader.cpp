@@ -94,31 +94,27 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	//Player Texture
 	CTexture::TEXTUREDESC TextureDesc;
-	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Player/walk/walk_%d.png");
-	TextureDesc.iNumTexture = 6;
-	TextureDesc.iStartIndex = 1;
+	TextureDesc.szTextFilePath = TEXT("../Bin/Resources/Textures/TexturePathData/Player.txt");
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Player), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 	
 	//Terrain Texture
-	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.tga");
-	TextureDesc.iNumTexture = 2;
-	TextureDesc.iStartIndex = 0;
+	TextureDesc.szTextFilePath = TEXT("../Bin/Resources/Textures/TexturePathData/Player.txt");
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Terrain), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 	//Shop Texture
-	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/UI/drapes_ground.png");
-	TextureDesc.iNumTexture = 1;
+
+	TextureDesc.szTextFilePath = TEXT("../Bin/Resources/Textures/TexturePathData/Player.txt");
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Shop), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 	//TestCubeFixObject
-	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.tga");
-	TextureDesc.iNumTexture = 1;
+
+	TextureDesc.szTextFilePath = TEXT("../Bin/Resources/Textures/TexturePathData/Player.txt");
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_FixObject_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;

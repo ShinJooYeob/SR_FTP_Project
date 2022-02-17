@@ -343,7 +343,7 @@ HRESULT CToolView::Ready_Static_Component_Prototype()
 
 	/* 디폴트 텍스처 프로토타입 생성 */
 	CTexture::TEXTUREDESC TextureDesc{};
-	TextureDesc.szFilePath = TEXT("../Resource/Default.png");
+	TextureDesc.szTextFilePath = TEXT("../Bin/Resources/Textures/TexturePathData/Player.txt");
 
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
