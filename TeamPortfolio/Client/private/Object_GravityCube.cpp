@@ -69,7 +69,7 @@ _int CObject_GravityCube::LateUpdate(_float fTimeDelta)
 
 _int CObject_GravityCube::Render()
 {
-	if (nullptr == m_ComVIBuffer)
+	if (nullptr == m_ComColiisionBuffer)
 		return E_FAIL;
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
@@ -82,7 +82,7 @@ _int CObject_GravityCube::Render()
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
-	m_ComVIBuffer->Render();
+	m_ComColiisionBuffer->Render();
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
@@ -138,7 +138,7 @@ HRESULT CObject_GravityCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_VIBuffer_Cube */
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_VIBuffer_Cube"), (CComponent**)&m_ComVIBuffer)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_CollisionBuffer"), (CComponent**)&m_ComColiisionBuffer)))
 		return E_FAIL;
 
 	///////////////////////////////////////////////////////
@@ -215,6 +215,6 @@ void CObject_GravityCube::Free()
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComTransform);
-	Safe_Release(m_ComVIBuffer);
+	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_ComRenderer);
 }

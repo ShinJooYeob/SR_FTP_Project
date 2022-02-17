@@ -50,6 +50,11 @@ void * CVIBuffer::Get_Vtxtex()
 	return (VTXTEX*)m_pVertices;
 }
 
+void * CVIBuffer::Get_CubeVtxtex()
+{
+	return (VTXCUBETEX*)m_pVertices;
+}
+
 HRESULT CVIBuffer::Render()
 {
 
@@ -121,7 +126,10 @@ void CVIBuffer::Free()
 	__super::Free();
 
 	if (!m_bIsClone)
+	{
 		Safe_Delete_Array(m_pVertices);
+		Safe_Delete_Array(m_pIndices);
+	}
 
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);

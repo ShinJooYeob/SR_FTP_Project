@@ -26,6 +26,12 @@ namespace Engine {
 		D3DXVECTOR2			vTexUV;
 	}VTXNORMTEX;
 
+	typedef struct tagVertex_CubeTexture
+	{
+		D3DXVECTOR3			vPosition;
+		D3DXVECTOR3			vTexUV;
+	}VTXCUBETEX;
+
 
 	typedef struct tagLineIndices32
 	{

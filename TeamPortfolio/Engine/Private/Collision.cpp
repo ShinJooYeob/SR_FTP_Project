@@ -56,22 +56,22 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 				_float3&		DestPosition = DestObject->Get_MatrixState(CTransform::STATE_POS); //DestPosition의 포지션
 
 
-				CVIBuffer_Cube* SourceCube = (CVIBuffer_Cube*)pFlexibleObjects->Get_Component(TEXT("Com_VIBuffer_Cube")); //Source큐브 컴포넌트 받는중
-				CVIBuffer_Cube* DestCube = (CVIBuffer_Cube*)pDestObjects->Get_Component(TEXT("Com_VIBuffer_Cube")); //Dest큐브 컴포넌트 받는중
+				CVIBuffer_Cube* SourceCube = (CVIBuffer_Cube*)pFlexibleObjects->Get_Component(TEXT("Com_CollisionBuffer")); //Source큐브 컴포넌트 받는중
+				CVIBuffer_Cube* DestCube = (CVIBuffer_Cube*)pDestObjects->Get_Component(TEXT("Com_CollisionBuffer")); //Dest큐브 컴포넌트 받는중
 
-				VTXTEX* pSourceVertices = (VTXTEX*)SourceCube->Get_Vtxtex(); //Source큐브 정점 받는중
-				VTXTEX* pDestVertices = (VTXTEX*)DestCube->Get_Vtxtex(); //Dest큐브 정점 받는중
+				VTXCUBETEX* pSourceVertices = (VTXCUBETEX*)SourceCube->Get_Vtxtex(); //Source큐브 정점 받는중
+				VTXCUBETEX* pDestVertices = (VTXCUBETEX*)DestCube->Get_Vtxtex(); //Dest큐브 정점 받는중
 
 				_uint SourceVertices_Number = SourceCube->Get_NumVertices(); //정점 갯수 받는중
 				_uint DestVertices_Number = DestCube->Get_NumVertices();
 
-				m_CCollision_SourceVertices = new VTXTEX[SourceVertices_Number]; //Source 정점 갯수를 받아서 동적배열로 만듬
-				ZeroMemory(m_CCollision_SourceVertices, sizeof(VTXTEX) * SourceVertices_Number);
-				memcpy(m_CCollision_SourceVertices, pSourceVertices, sizeof(VTXTEX)*SourceVertices_Number);
+				m_CCollision_SourceVertices = new VTXCUBETEX[SourceVertices_Number]; //Source 정점 갯수를 받아서 동적배열로 만듬
+				ZeroMemory(m_CCollision_SourceVertices, sizeof(VTXCUBETEX) * SourceVertices_Number);
+				memcpy(m_CCollision_SourceVertices, pSourceVertices, sizeof(VTXCUBETEX)*SourceVertices_Number);
 
-				m_CCollision_DestVertices = new VTXTEX[DestVertices_Number]; //Dest 정점 갯수를 받아서 동적배열로 만듬
-				ZeroMemory(m_CCollision_DestVertices, sizeof(VTXTEX) * DestVertices_Number);
-				memcpy(m_CCollision_DestVertices, pDestVertices, sizeof(VTXTEX)*DestVertices_Number);
+				m_CCollision_DestVertices = new VTXCUBETEX[DestVertices_Number]; //Dest 정점 갯수를 받아서 동적배열로 만듬
+				ZeroMemory(m_CCollision_DestVertices, sizeof(VTXCUBETEX) * DestVertices_Number);
+				memcpy(m_CCollision_DestVertices, pDestVertices, sizeof(VTXCUBETEX)*DestVertices_Number);
 
 
 				///////////////////////////////////////////////////////////////////////월드행렬이 달라야함!!!

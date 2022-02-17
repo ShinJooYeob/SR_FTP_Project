@@ -42,7 +42,7 @@ private:
 	CTexture*				m_ComTexture = nullptr;
 	//CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
 
-	CVIBuffer_Cube*			m_ComVIBuffer = nullptr;
+	CVIBuffer_Cube*			m_ComColiisionBuffer = nullptr;
 	CCollision*				m_pCollisionCom = nullptr;
 
 
