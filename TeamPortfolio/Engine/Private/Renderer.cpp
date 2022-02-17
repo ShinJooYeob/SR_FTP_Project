@@ -9,6 +9,11 @@ CRenderer::CRenderer(LPDIRECT3DDEVICE9 pGraphicDevice)
 
 HRESULT CRenderer::Initialize_Prototype(void * pArg)
 {
+	D3DVIEWPORT9		ViewPortDesc;
+	m_pGraphicDevice->GetViewport(&ViewPortDesc);
+	_int iWinCX = ViewPortDesc.Width;
+	_int iWinCY = ViewPortDesc.Height;
+	D3DXMatrixOrthoLH(&m_ProjMatrix, iWinCX, iWinCY, 0.0f, 1.f);
 	return S_OK;
 }
 
@@ -36,6 +41,13 @@ HRESULT CRenderer::Render_RenderGroup()
 
 	for (_uint i =0 ; i<RENDER_END ; ++i)
 	{
+		if (i == RENDER_UI)
+		{
+			_Matrix ViewMatrix;
+			D3DXMatrixIdentity(&ViewMatrix);
+			m_pGraphicDevice->SetTransform(D3DTS_VIEW, &ViewMatrix);
+			m_pGraphicDevice->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
+		}
 		for (auto& RenderObject : m_RenderObjectList[i])
 		{
 			

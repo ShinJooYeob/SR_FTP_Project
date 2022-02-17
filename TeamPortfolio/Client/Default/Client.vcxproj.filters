@@ -129,9 +129,6 @@
     <ClInclude Include="..\public\Player.h">
       <Filter>01.GameObject\Player</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Shop.h">
-      <Filter>01.GameObject\UI\Shop</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\TestCubeMove.h">
       <Filter>01.GameObject\TestObject</Filter>
     </ClInclude>
@@ -149,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="..\public\TerrainCube.h">
       <Filter>01.GameObject\TerrainCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Shop.h">
+      <Filter>01.GameObject\UI\Shop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -182,9 +182,6 @@
     <ClCompile Include="..\private\Player.cpp">
       <Filter>01.GameObject\Player</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Shop.cpp">
-      <Filter>01.GameObject\UI\Shop</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Camera_Main.cpp">
       <Filter>01.GameObject\Camera_Main</Filter>
     </ClCompile>
@@ -205,6 +202,9 @@
     </ClCompile>
     <ClCompile Include="..\private\TerrainCube.cpp">
       <Filter>01.GameObject\TerrainCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Shop.cpp">
+      <Filter>01.GameObject\UI\Shop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

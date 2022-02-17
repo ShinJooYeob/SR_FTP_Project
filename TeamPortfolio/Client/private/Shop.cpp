@@ -7,12 +7,12 @@
 
 
 CShop::CShop(LPDIRECT3DDEVICE9 pGraphicDevice)
-	:CGameObject(pGraphicDevice)
+	:CUI(pGraphicDevice)
 {
 }
 
 CShop::CShop(const CShop & rhs)
-	: CGameObject(rhs)
+	: CUI(rhs)
 {
 }
 
@@ -33,8 +33,12 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 	
+	if (FAILED(Set_UI_Transform(m_ComTransform, _float4(600.f, 300.0f, g_iWinCX >> 1, g_iWinCY >> 1))))
+		return E_FAIL;
+
 	if (FAILED(SetUp_Skills()))
 		return E_FAIL;
+	
 	
 	return S_OK;
 }
@@ -44,7 +48,7 @@ _int CShop::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 
-
+	
 	return _int();
 }
 
@@ -58,9 +62,17 @@ _int CShop::LateUpdate(_float fDeltaTime)
 	
 
 	//렌더링 그룹에 넣어주는 역활
-	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
-		return E_FAIL;
+	CGameInstance* pInstance = GetSingle(CGameInstance);
 
+	if (pInstance->Get_DIKeyState(DIK_F11) & DIS_Down)
+		m_bIsPress = !m_bIsPress;
+	if(m_bIsPress == true)
+	{
+		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
+			return E_FAIL;
+
+		Set_Skill_Rect();
+	}
 	return _int();
 }
 
@@ -68,27 +80,21 @@ _int CShop::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL; 
-
-
-	CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Camera_Main")));
 	
-	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
-	 
-	 //if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		//return E_FAIL;
 	
 	if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
 		return E_FAIL;
 
-	if (FAILED(SetUp_RenderState()))
-		return E_FAIL;
+	/*if (FAILED(SetUp_RenderState()))
+		return E_FAIL;*/
 
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
 
-	if (FAILED(Release_RenderState()))
-		return E_FAIL;
+	//if (FAILED(Release_RenderState()))
+	//	return E_FAIL;
 
 
 
@@ -136,6 +142,24 @@ HRESULT CShop::SetUp_Skills()
 	
 	m_Skill[SKILL_POTION].Price = 500;
 
+
+	return S_OK;
+}
+HRESULT CShop::Set_Skill_Rect()
+{
+	
+		RECT rcRect;
+		rcRect.top = m_fY - 95;
+		rcRect.right = m_fX -28;
+		rcRect.left = m_fX - 55;
+		rcRect.bottom = m_fY - 45;
+
+		POINT ptMouse;
+		GetCursorPos(&ptMouse);
+		ScreenToClient(g_hWnd, &ptMouse);
+
+		if (PtInRect(&rcRect, ptMouse))
+			MSGBOX("렉충")
 
 	return S_OK;
 }

@@ -31,6 +31,8 @@ public:
 private:
 	list<CGameObject*>			m_RenderObjectList[RENDER_END];
 	typedef list<CGameObject*>		RENDEROBJECTS;
+private:
+	_Matrix						m_ProjMatrix;
 
 public:
 	static CRenderer* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

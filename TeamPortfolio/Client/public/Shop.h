@@ -1,7 +1,8 @@
 #pragma once
 
-#include "GameObject.h"
-#include "Item.h"
+
+#include "UI.h"
+
 
 BEGIN(Engine)
 //class CTexture;
@@ -12,7 +13,7 @@ class CInventory;
 END
 
 
-class CShop final :public CGameObject
+class CShop final :public CUI
 {
 	typedef struct SKILL_INFO
 	{
@@ -47,14 +48,17 @@ private:
 	
 	
 
-private:
-	_float			m_fFrame = 0.f;
+private:	_float			m_fFrame = 0.f;
 	SKILL			m_Skill[SKILL_END];//스킬 정보를 담아놓는 배열
+
+	bool			m_bIsPress=false;
 public:
 	
 private:
 	HRESULT			SetUp_Components();
 	HRESULT			SetUp_Skills();
+
+	HRESULT Set_Skill_Rect();
 
 	HRESULT			Buy_Skill(_int eSKILL);
 	

@@ -1,90 +1,70 @@
 #include "..\Public\Quest.h"
 
+IMPLEMENT_SINGLETON(CQuest)
 
-
-
-
-CQuest::CQuest(LPDIRECT3DDEVICE9 pGraphicDevice)
-	:CComponent(pGraphicDevice)
+CQuest::CQuest()
 {
 }
 
-CQuest::CQuest(const CQuest & rhs)
-	:CComponent(rhs)
+HRESULT CQuest::Initialize_Quest(_int eQuest_END)
 {
-}
-
-HRESULT CQuest::Initialize_Prototype(void * pArg)
-{
-	return S_OK;
-}
-
-HRESULT CQuest::Initialize_Clone(void * pArg)
-{
-	if (FAILED(Initialize_Quest(*(_int*)pArg)))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CQuest::Initialize_Quest(_int eQuest)
-{
-	m_pQuestIndex = new _int[eQuest];
-	for (int i = 0; i < eQuest; ++i)
+	m_iQuestIndex = new _int[eQuest_END];
+	m_iQuestGoalIndex = new _int[eQuest_END];
+	for (int i = 0; i < eQuest_END; ++i)
 	{
-		m_pQuestIndex[i] = 0;
+		m_iQuestIndex[i] = 0;
+		
 	}
-	m_MaxQuestIndex = eQuest;
+	m_iMaxQuest = eQuest_END;
 
 
 	return S_OK;
 }
 
-HRESULT CQuest::Set_QuestResult(_int eQuest, _int iResult)
+HRESULT CQuest::Set_QuestGoal(_int eQuest, _int iQuestGoal)
 {
-	if (iResult > 1 || iResult < 0)
+	if (iQuestGoal < 1)
 	{
-		MSGBOX("iResult는 0,1만 가능");
+		MSGBOX("iQuestGoal은 1이상만 가능");
 		return E_FAIL;
 	}
-	m_pQuestIndex[eQuest] = iResult;
+	
+	m_iQuestGoalIndex[eQuest] = iQuestGoal;
+	return S_OK;
+}
+
+HRESULT CQuest::Set_QuestIndexIncrease(_int eQuest, _int iCount)
+{
+	if (eQuest > m_iMaxQuest)
+		return E_FAIL;
+	m_iQuestIndex[eQuest] += iCount;
+
+	return S_OK;
 }
 
 
 
-bool CQuest::Get_QuestResult(_int eQuest)
+_int CQuest::Get_QuestNeed(_int eQuest)
 {
-	if (m_pQuestIndex[eQuest] = 1)
-		return true;
+	if (eQuest > m_iMaxQuest)
+		return -1;
 
-	if (m_pQuestIndex[eQuest] = 0)
-		return false;
-}
+	else if (m_iQuestIndex[eQuest] >= m_iQuestGoalIndex[eQuest])
+		return 0;
 
-CQuest * CQuest::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
-{
-	CQuest* pInstance = new CQuest(pGraphicDevice);
-	if (FAILED(pInstance->Initialize_Prototype(pArg)))
+	else if (m_iQuestIndex[eQuest] < m_iQuestGoalIndex[eQuest])
 	{
-		MSGBOX("Failed to Create Quest Prototype");
-		Safe_Release(pInstance);
+		_int iCountNeed;
+		iCountNeed = m_iQuestGoalIndex[eQuest] - m_iQuestIndex[eQuest];
+		return iCountNeed;
 	}
-	return pInstance;
+		
 }
+
 
 void CQuest::Free()
 {
-	__super::Free();
-	Safe_Delete_Array(m_pQuestIndex);
+	Safe_Delete_Array(m_iQuestIndex);
+	Safe_Delete_Array(m_iQuestGoalIndex);
 }
 
-CQuest * CQuest::Clone(void * pArg)
-{
-	CQuest* pInstance = new CQuest(*this);
-	if (FAILED(pInstance->Initialize_Clone(pArg)))
-	{
-		MSGBOX("Failed to Create Quest");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
