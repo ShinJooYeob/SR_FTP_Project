@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include "Device.h"
-
 #define TIMER_UPDATE 1
 
 
@@ -50,30 +48,13 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 
-	
 
-public:
-	CObjectTool_Rect* GetTargetObject()
-	{
-		return m_GameObject_Rect_Tool;
-	}
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 
-private:
 
-	HRESULT Ready_Static_Component_Prototype();
-	HRESULT Ready_Static_GameObject_Prototype();
-	HRESULT Ready_GameObject_Layer(const _tchar* layertag);
-
-	HRESULT Scene_Change(SCENEID id);
-
-private:
-	LPDIRECT3DDEVICE9			m_pGraphicDevice = nullptr;
-	CObjectTool_Rect*			m_GameObject_Rect_Tool = nullptr;
-	CRenderer*					m_pComRenderer = nullptr;
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	virtual BOOL DestroyWindow();

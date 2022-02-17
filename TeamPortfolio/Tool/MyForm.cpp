@@ -27,6 +27,7 @@ CMyForm::~CMyForm()
 void CMyForm::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_COMBO2, m_ComboBox);
 }
 
 BEGIN_MESSAGE_MAP(CMyForm, CFormView)

@@ -138,11 +138,10 @@ BOOL CTrans_Dialog::OnInitDialog()
 	}
 
 	// 랜더링 뷰와 트랜스폼을 넣어준다.
-	CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	CToolView*	pToolView = dynamic_cast<CToolView*>(pMain->m_MainSplitter.GetPane(0, 1));
 	if (m_GameObject_Rect_Tool == nullptr)
 	{
-		m_GameObject_Rect_Tool = pToolView->GetTargetObject();
+		m_GameObject_Rect_Tool = GetSingle(CSuperToolSIngleton)->GetObjectRect();
+
 		m_GameObject_Rect_Tool->AddRef();
 	}
 

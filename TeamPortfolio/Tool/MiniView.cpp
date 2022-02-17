@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "Tool.h"
 #include "MiniView.h"
-#include "Device.h"
 #include "MainFrm.h"
 #include "ToolView.h"
 
@@ -35,7 +34,7 @@ void CMiniView::OnDraw(CDC* pDC)
 	CDocument* pDoc = GetDocument();
 	// TODO: 여기에 그리기 코드를 추가합니다.
 
-	CDevice::GetInstance()->Render_Begin();
+	GetSingle(CSuperToolSIngleton)->Render_Begin();
 
 	// AfxGetMainWnd : 현재 스레드로부터 wnd를 반환
 
@@ -47,8 +46,8 @@ void CMiniView::OnDraw(CDC* pDC)
 	// 맵정보를 가져와서 미니맵 랜더링
 //	CTerrain*		pTerrain = pMainView->Get_Terrain();
 //	pTerrain->MiniRender();
+	GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
 
-	CDevice::GetInstance()->Render_End(m_hWnd);
 }
 
 // CMiniView 진단입니다.

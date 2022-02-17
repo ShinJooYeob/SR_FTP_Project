@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CRenderer;
 class CVIBuffer_Rect;
 class CTransform;
+class CTexture;
 END
 
 BEGIN(Tool)

@@ -1,5 +1,8 @@
 #pragma once
 
+#pragma region 예제데이터
+
+
 typedef struct tagInfo
 {
 	D3DXVECTOR3	vPos;
@@ -57,20 +60,14 @@ typedef struct tagTexturePath
 	wstring			wstrPath = L"";
 	int				iCount = 0;
 }IMGPATH;
+#pragma endregion
+
 
 // 텍스처의 위치정보를 저장하는 구조체
 typedef struct tagMyTexturePath
 {
 	// 파일구분 1 
-	wstring			wFolderName1 = L"";
-	// 파일구분 2
-	wstring			wFolderName2 = L"";
-	// 파일구분 3 
-	wstring			wFolderName3 = L"";
-	// 파일구분 4
-	wstring			wFolderName4 = L"";
-	// 파일구분 5 
-	wstring			wFolderName5 = L"";
+	wstring			wFileName = L"";
 	
 	// 전체 상대 경로
 	wstring			wstrFullPath = L"";
@@ -97,16 +94,3 @@ enum E_TRANSTYPE
 	TRANSTYPE_END,
 
 };
-
-
-typedef struct tagFrame
-{
-	tagFrame() {}
-	tagFrame(float _fFrame, float _fMax)
-		: fFrame(_fFrame), fMax(_fMax)
-	{
-	}
-
-	float   fFrame;	// 현재 출력되는 이미지 인덱스
-	float	fMax;	// 최대 이미지 장수
-}FRAME;

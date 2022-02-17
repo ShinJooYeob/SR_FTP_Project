@@ -180,7 +180,7 @@ void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<MYFILEPA
 			pImgPath->wstrFullPath = ConvertRelativePath(szPath);
 
 			// 파일 이름과 확장자 저장			
-			pImgPath->wFolderName1 = Find.GetFileTitle().GetString();
+			pImgPath->wFileName = Find.GetFileTitle().GetString();
 			PathRemoveFileSpec(szPath);
 
 			// 확장자가 png가 아니면 제외

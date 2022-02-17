@@ -20,8 +20,8 @@ public:
 	virtual _int LateRender()override;
 
 public:
-	HRESULT Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelta);
-	HRESULT Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDelta);
+//	HRESULT Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelta);
+//	HRESULT Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDelta);
 
 private:
 	_float			m_fPassedTime = 0;

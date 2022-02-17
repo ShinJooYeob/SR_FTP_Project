@@ -204,7 +204,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera_Tool.h" />
-    <ClInclude Include="Device.h" />
     <ClInclude Include="FileInfo.h" />
     <ClInclude Include="Header\Tool_Define.h" />
     <ClInclude Include="Header\Enum.h" />
@@ -226,7 +225,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera_Tool.cpp" />
-    <ClCompile Include="Device.cpp" />
     <ClCompile Include="FileInfo.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MiniView.cpp" />

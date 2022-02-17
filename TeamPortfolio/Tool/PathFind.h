@@ -35,6 +35,7 @@ public:
 
 private:
 	wstring FindPath(wstring strname);
+	HRESULT	ClearData();
 public:
 
 	// control
@@ -45,7 +46,6 @@ public:
 	map<wstring, CImage*>		m_MapPngImage;
 
 private:
-	class CToolView*			mToolView;
 	CObjectTool_Rect*			m_GameObject_Rect_Tool = nullptr;
 
 private:

@@ -180,3 +180,4 @@ wool_colored_orange|..\Resource\assets\minecraft\textures\blocks\wool_colored_or
 wool_colored_purple|..\Resource\assets\minecraft\textures\blocks\wool_colored_purple.png
 wool_colored_silver|..\Resource\assets\minecraft\textures\blocks\wool_colored_silver.png
 wool_colored_yellow|..\Resource\assets\minecraft\textures\blocks\wool_colored_yellow.png
+Default|..\Resource\Default.png

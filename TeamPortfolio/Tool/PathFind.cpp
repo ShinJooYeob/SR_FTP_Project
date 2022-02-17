@@ -21,9 +21,9 @@ CPathFind::CPathFind(CWnd* pParent /*=NULL*/)
 
 CPathFind::~CPathFind()
 {
-//	for_each(m_PathInfoList.begin(), m_PathInfoList.end(), Safe_Delete<IMGPATH*>);
-//	m_PathInfoList.clear();
+
 	Safe_Release(m_GameObject_Rect_Tool);
+
 	for_each(m_MyPathInfoList.begin(), m_MyPathInfoList.end(), Safe_Delete<MYFILEPATH*>);
 	m_MyPathInfoList.clear();
 
@@ -115,7 +115,7 @@ void CPathFind::OnSaveData()
 		for (auto& iter : m_MyPathInfoList)
 		{
 			// |문자는 구분 기호
-			fout << iter->wFolderName1 << L"|" << iter->wstrFullPath << endl;
+			fout << iter->wFileName << L"|" << iter->wstrFullPath << endl;
 		}
 
 		fout.close();		// close 함수는 생략 가능(객체 타입이어서 소멸 시점에 알아서 개방한 파일 또한 소멸 가능)
@@ -127,6 +127,8 @@ void CPathFind::OnSaveData()
 
 void CPathFind::OnLoadData()
 {
+	ClearData();
+
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	wstring strImgPath = L"../Data/ImgPath.txt";
 
@@ -163,7 +165,7 @@ void CPathFind::OnLoadData()
 			MYFILEPATH*		pImgPath = new MYFILEPATH;
 			TCHAR			szPath[MAX_PATH] = L"";
 			pImgPath->wstrFullPath = wFullpath;
-			pImgPath->wFolderName1 = wFolderName1;
+			pImgPath->wFileName = wFolderName1;
 
 			m_MyPathInfoList.push_back(pImgPath);
 
@@ -185,7 +187,7 @@ void CPathFind::OnLoadData()
 		CImage*		pPngImage = new  CImage;
 		pPngImage->Load(filename->wstrFullPath.c_str()); // 해당 경로 이미지를 로드
 
-		m_MapPngImage.emplace(filename->wFolderName1, pPngImage);
+		m_MapPngImage.emplace(filename->wFileName, pPngImage);
 	}
 
 
@@ -199,6 +201,7 @@ void CPathFind::OnLoadData()
 void CPathFind::OnDropFiles(HDROP hDropInfo)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	ClearData();
 #pragma region 경로저장
 
 
@@ -243,7 +246,7 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 	
 	for (auto& iter : m_MyPathInfoList)
 	{
-		m_ListBox.AddString(iter->wFolderName1.c_str());
+		m_ListBox.AddString(iter->wFileName.c_str());
 	}
 #pragma endregion
 
@@ -259,7 +262,7 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 		CImage*		pPngImage = new  CImage;
 		pPngImage->Load(filename->wstrFullPath.c_str()); // 해당 경로 이미지를 로드
 
-		m_MapPngImage.emplace(filename->wFolderName1, pPngImage);
+		m_MapPngImage.emplace(filename->wFileName, pPngImage);
 	}
 
 #pragma endregion
@@ -273,10 +276,28 @@ wstring CPathFind::FindPath(wstring strname)
 {
 	for (auto pathname : m_MyPathInfoList)
 	{
-		if (pathname->wFolderName1 == strname)
+		if (pathname->wFileName == strname)
 			return pathname->wstrFullPath;
 	}
 	return L"";
+}
+
+HRESULT CPathFind::ClearData()
+{
+	if (m_MyPathInfoList.empty() == false)
+	{
+		for_each(m_MyPathInfoList.begin(), m_MyPathInfoList.end(), Safe_Delete<MYFILEPATH*>);
+		m_MyPathInfoList.clear();
+	}
+
+	for (auto& iter : m_MapPngImage)
+	{
+		iter.second->Destroy();
+		Safe_Delete(iter.second);
+	}
+	m_MapPngImage.clear();
+
+	return S_OK;
 }
 
 void CPathFind::HorizontalScroll(void)
@@ -326,13 +347,9 @@ BOOL CPathFind::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	m_GameObject_Rect_Tool = nullptr;
-	CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	CToolView*	pToolView = dynamic_cast<CToolView*>(pMain->m_MainSplitter.GetPane(0, 1));
-	if (m_GameObject_Rect_Tool == nullptr)
-	{
-		m_GameObject_Rect_Tool = pToolView->GetTargetObject();
-		m_GameObject_Rect_Tool->AddRef();
-	}
+	m_GameObject_Rect_Tool = GetSingle(CSuperToolSIngleton)->GetObjectRect();
+	m_GameObject_Rect_Tool->AddRef();
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
