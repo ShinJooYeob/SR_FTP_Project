@@ -41,6 +41,14 @@ _int CScene_Loby::Update(_float fDeltaTime)
 
 	}
 
+	if (GetKeyState(VK_F1) & 0x8000)
+	{
+
+		if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING)))
+			return E_FAIL;
+
+	}
+
 	// IMGUI 테스트씬으로 이동 나중에 사용
 	//if (GetKeyState(VK_SPACE) & 0x8000)
 	//{

@@ -33,7 +33,7 @@ HRESULT CObject_FixCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(50.f, 10.f, 50.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0.f, -6.f, 0.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0.f, -6.f, 20.f));
 
 	return S_OK;
 }

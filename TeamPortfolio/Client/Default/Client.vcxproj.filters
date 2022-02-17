@@ -70,17 +70,23 @@
     <Filter Include="01.GameObject\UI\Inventory_Main">
       <UniqueIdentifier>{1322d80a-c865-458d-8105-9fef1d791317}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\TestObject">
-      <UniqueIdentifier>{5266ee06-8b31-4753-adfb-8b8aa3eb5575}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\TestObject\FixObject">
-      <UniqueIdentifier>{ddaed1a3-f81e-4c77-ba58-1eb309196797}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.Scene\05.Scene_IMGUI">
       <UniqueIdentifier>{90b323d6-6a89-43a9-9136-49e1cbede64e}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\TerrainCube">
       <UniqueIdentifier>{23d264ff-0d4d-411e-a05c-50412796704a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject">
+      <UniqueIdentifier>{9181df69-093f-4c74-b9ff-f2eebccb480d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_FixCube">
+      <UniqueIdentifier>{2a6b2c79-70bf-4f3a-b30a-410ce0479f5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_PushCube">
+      <UniqueIdentifier>{d80a98c1-7c43-492a-b254-1e816e5255af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_GravityCube">
+      <UniqueIdentifier>{eb68ca81-7983-4efe-9cd4-c5b5eb31855b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -132,12 +138,6 @@
     <ClInclude Include="..\public\Shop.h">
       <Filter>01.GameObject\UI\Shop</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\TestCubeMove.h">
-      <Filter>01.GameObject\TestObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\TestCubeFixObject.h">
-      <Filter>01.GameObject\TestObject\FixObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Item.h">
       <Filter>01.GameObject\UI\ITem</Filter>
     </ClInclude>
@@ -149,6 +149,21 @@
     </ClInclude>
     <ClInclude Include="..\public\TerrainCube.h">
       <Filter>01.GameObject\TerrainCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_PushCube.h">
+      <Filter>01.GameObject\SubObject\Object_PushCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_GravityCube.h">
+      <Filter>01.GameObject\SubObject\Object_GravityCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_MoveCube.h">
+      <Filter>01.GameObject\SubObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_FixCube.h">
+      <Filter>01.GameObject\SubObject\Object_FixCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Scene_Stage2.h">
+      <Filter>02.Scene\04.Scene_GamePlay\02.Scene_Stage2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,12 +203,6 @@
     <ClCompile Include="..\private\Camera_Main.cpp">
       <Filter>01.GameObject\Camera_Main</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\TestCubeMove.cpp">
-      <Filter>01.GameObject\TestObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\TestCubeFixObject.cpp">
-      <Filter>01.GameObject\TestObject\FixObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Item.cpp">
       <Filter>01.GameObject\UI\ITem</Filter>
     </ClCompile>
@@ -205,6 +214,21 @@
     </ClCompile>
     <ClCompile Include="..\private\TerrainCube.cpp">
       <Filter>01.GameObject\TerrainCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_PushCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_PushCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_GravityCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_GravityCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_FixCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_FixCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_MoveCube.cpp">
+      <Filter>01.GameObject\SubObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scene_Stage2.cpp">
+      <Filter>02.Scene\04.Scene_GamePlay\02.Scene_Stage2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

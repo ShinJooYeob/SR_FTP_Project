@@ -6,6 +6,10 @@
 #include "Player.h"
 #include "Shop.h"
 #include "TerrainCube.h"
+#include "Object_MoveCube.h"
+#include "Object_FixCube.h"
+#include "Object_PushCube.h"
+#include "Object_GravityCube.h"
 
 _uint CALLBACK LoadingThread(void* _Prameter)
 {
@@ -116,13 +120,6 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Shop), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-	//TestCubeFixObject
-	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.tga");
-	TextureDesc.iNumTexture = 1;
-
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_FixObject_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
 	
 
 #pragma endregion
@@ -138,14 +135,9 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Shop), CShop::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-
-	//////////////////////////////////////////////큐브로 충돌처리 테스트중입니다. -은혁
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	//if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TestCubeFixObject"), CTestCubeFixObject::Create(m_pGraphicDevice))))
-	//	return E_FAIL;
-	//
 	
 #pragma endregion
 
@@ -165,8 +157,56 @@ HRESULT CLoader::Load_Scene_Stage1(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
-	m_bIsLoadingFinished = true;
 
+	///////////////////////////////////박은혁 테스트 장소
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+
+#pragma region PROTOTYPE_COMPONENT
+
+	CTexture::TEXTUREDESC TextureDesc;
+
+	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.tga");
+	TextureDesc.iNumTexture = 1;
+	TextureDesc.iStartIndex = 0;
+
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_FixCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/UI/drapes_ground.png");
+	TextureDesc.iNumTexture = 1;
+	TextureDesc.iStartIndex = 1;
+
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_PushCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Terrain/Brush.png");
+	TextureDesc.iNumTexture = 1;
+	TextureDesc.iStartIndex = 1;
+
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_GravityCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+#pragma endregion
+
+
+
+#pragma  region PROTOTYPE_GAMEOBJECT
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_MoveCube"), CObject_MoveCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_FixCube"), CObject_FixCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_PushCube"), CObject_PushCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_GravityCube"), CObject_GravityCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+#pragma endregion
+
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	m_bIsLoadingFinished = true;
 	return S_OK;
 }
 

@@ -4,6 +4,7 @@
 #include "Loader.h"
 #include "Scene_Loby.h"
 #include "Scene_StageSelect.h"
+#include "Scene_Stage2.h"
 #include "Scene_IMGUI.h"
 
 
@@ -62,6 +63,7 @@ _int CScene_Loading::LateUpdate(_float fDeltaTime)
 			break;
 
 		case SCENEID::SCENE_STAGE2:
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Stage2::Create(m_pGraphicDevice), m_eNextSceneIndex)))
 				return E_FAIL;
 			break;
 

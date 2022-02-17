@@ -33,7 +33,7 @@ HRESULT CObject_PushCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(5.f, -1.f, 0.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(5.f, -1.f, 5.f));
 
 	return S_OK;
 }
