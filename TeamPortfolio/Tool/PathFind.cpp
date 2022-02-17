@@ -43,6 +43,9 @@ void CPathFind::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_ListBox);
 	DDX_Control(pDX, IDC_PICTURE, m_Picture);
+
+	DDX_Control(pDX, IDC_COMBO1, mCombo1);
+	DDX_Control(pDX, IDC_EDIT2, mEdit2);
 }
 
 BEGIN_MESSAGE_MAP(CPathFind, CDialog)
@@ -50,6 +53,7 @@ BEGIN_MESSAGE_MAP(CPathFind, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &CPathFind::OnSaveData)
 	ON_BN_CLICKED(IDC_BUTTON7, &CPathFind::OnLoadData)
 	ON_WM_DROPFILES()
+	ON_CBN_SELCHANGE(IDC_COMBO1, &CPathFind::OnCbnSelchangeCombo1)
 END_MESSAGE_MAP()
 
 // CPathFind 메시지 처리기입니다.
@@ -127,7 +131,7 @@ void CPathFind::OnSaveData()
 	}
 
 	// 윈도우의 기본 프로그램을 실행시켜주는 함수
-	WinExec("notepad.exe ../Data/ImgPath.txt", SW_SHOW);
+//	WinExec("notepad.exe ../Data/ImgPath.txt", SW_SHOW);
 }
 
 void CPathFind::OnLoadData()
@@ -135,7 +139,9 @@ void CPathFind::OnLoadData()
 	ClearData();
 
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	wstring strImgPath = L"../Data/ImgPath.txt";
+	
+
+ 	wstring strImgPath = L"../Data/ImgPath.txt";
 
 	UpdateData(TRUE);
 
@@ -200,16 +206,16 @@ void CPathFind::OnLoadData()
 	UpdateData(FALSE);
 
 	// 윈도우의 기본 프로그램을 실행시켜주는 함수
-	WinExec("notepad.exe ../Data/ImgPath.txt", SW_SHOW);
+//	WinExec("notepad.exe ../Data/ImgPath.txt", SW_SHOW);
 }
 
 void CPathFind::OnDropFiles(HDROP hDropInfo)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	ClearData();
+
+
 #pragma region 경로저장
-
-
 	// 폴더 드롭다운시 텍스쳐 이미지를 탐색한다.
 	// 세부적으로 파일 탐색 재설정해야될듯
 
@@ -233,21 +239,6 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 		CFileInfo::DirInfoExtraction_Custom(szFilePath, m_MyPathInfoList, FILETYPE_PNG);
 	}
 	m_ListBox.ResetContent();
-
-	//	wstring	wstrCombined = L"";
-	//	TCHAR	szBuf[MIN_STR] = L"";
-
-		// /, \, |, \\, || : 구분자(token)
-
-		//for (auto& iter : m_MyPathInfoList)
-		//{
-		//	// 정수를 wstr로 변환
-		//	// 현재 10진수 문자열로 변환하겠다는 의미
-		//	_itow_s(iter->iCount, szBuf, 10);
-
-		//	wstrCombined = iter->wstrObjKey + L"|" + iter->wstrStateKey + L"|" + szBuf + L"|" + iter->wstrPath;
-		//	m_ListBox.AddString(wstrCombined.c_str());
-		//}
 
 	for (auto& iter : m_MyPathInfoList)
 	{
@@ -355,6 +346,22 @@ BOOL CPathFind::OnInitDialog()
 	m_GameObject_Rect_Tool = GetSingle(CSuperToolSIngleton)->GetObjectRect();
 	m_GameObject_Rect_Tool->AddRef();
 
+	mCombo1.SetCurSel(0);
+	m_ePathMode = (E_PathMODE)mCombo1.GetCurSel();
+
+	mEdit2.SetWindowTextW(L"Image");
+	mEdit2.GetWindowText(mStrTxtName);
+	
+
+	
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+
+void CPathFind::OnCbnSelchangeCombo1()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	m_ePathMode = (E_PathMODE)mCombo1.GetCurSel();
 }
