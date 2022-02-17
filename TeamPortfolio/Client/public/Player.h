@@ -37,13 +37,13 @@ private:
 	CTexture*				m_ComTexture = nullptr;
 	CTransform*				m_ComTransform = nullptr;
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
-	CVIBuffer_Cube*			m_ComColiisionBuffer = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CInventory*				m_ComInventory = nullptr;
 
 
 	/* 충돌처리 */
 	CCollision*		m_pCollisionCom = nullptr;
+	CVIBuffer_Cube*			m_ComColiisionBuffer = nullptr;
 
 
 private:
@@ -70,7 +70,9 @@ private:
 private:
 	HRESULT			SetUp_Components();
 
-	HRESULT			Find_FootHold_Object();
+	HRESULT			Input_Keyboard(_float fDeltaTime);
+
+	HRESULT			Find_FootHold_Object(_float fDeltaTime);
 	HRESULT			Set_PosOnFootHoldObject(_float fDeltaTime);
 
 

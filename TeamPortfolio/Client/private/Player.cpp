@@ -58,71 +58,12 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (m_fFrame >= 6.0f)
 		m_fFrame = 0.f;
 
-	CGameInstance* pInstance = GetSingle(CGameInstance);
-
-	if (pInstance->Get_DIKeyState(DIK_UP) & DIS_Press)
-	{
-		if (m_vClimingBlock != _float3())
-		{
-			m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
-			m_fNowJumpPower = 0;
-
-			m_bIsCliming = true;
-		}
-
-		
-	}
-
-	if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_Press)
-	{
-	
-			if (m_vClimingBlock != _float3(-100.f, -100.f, -100.f))
-			{
-				m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), -fDeltaTime);
-				m_fNowJumpPower = 0;
-
-				m_bIsCliming = true;
-			}
-			else if (m_vDownstairsNear != _float3(-100.f, -100.f, -100.f))
-			{
-	
-				m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), -fDeltaTime);
-				m_fNowJumpPower = 0;
-
-				m_bIsCliming = true;
-			}
-
-		
-
-	}
-
-	if (m_bCanMoveLeft && pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
-	{
-
-
-		m_ComTransform->Move_Left(fDeltaTime);
-	}
-
-	if (m_bCanMoveRight && pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
-	{
-
-
-		m_ComTransform->Move_Right(fDeltaTime);
-	}
-
-
-	if (m_bIsJumped < 2 && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
-	{
-		m_fNowJumpPower = m_fJumpPower;
-		m_bIsJumped++;
-		m_bIsCliming = false;
-		m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
-	}
-
-
-	if (FAILED(Find_FootHold_Object())) {
+	if (FAILED(Input_Keyboard(fDeltaTime)))
 		return E_FAIL;
-	}
+
+	if (FAILED(Find_FootHold_Object(fDeltaTime))) 
+		return E_FAIL;
+	
 	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
 		return E_FAIL;
 
@@ -140,9 +81,6 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 
 
 
-
-
-
 	//렌더링 그룹에 넣어주는 역활
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this)))
 		return E_FAIL;
@@ -155,7 +93,6 @@ _int CPlayer::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL; 
 	
-
 	 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
@@ -226,7 +163,89 @@ HRESULT CPlayer::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CPlayer::Find_FootHold_Object()
+HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
+{
+	CGameInstance* pInstance = GetSingle(CGameInstance);
+
+
+	//등반
+	if (pInstance->Get_DIKeyState(DIK_UP) & DIS_Press)
+	{
+		if (m_vClimingBlock != NOT_EXIST_BLOCK)
+		{
+			m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
+			m_fNowJumpPower = 0;
+
+			m_bIsCliming = true;
+		}
+	}
+
+	if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_Press)
+	{
+		if (m_bIsCliming)
+		{
+			if (m_vClimingBlock != NOT_EXIST_BLOCK)
+			{
+				m_fNowJumpPower = 0;
+				if (m_vDownstairsNear != NOT_EXIST_BLOCK)
+				{
+					_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+					vPlayerPos.y = m_vDownstairsNear.y + 0.5f;
+					m_bIsCliming = false;
+				}
+				else
+				{
+					m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
+					m_bIsCliming = true;
+				}
+			}
+		}
+		else
+		{
+			if (m_vDownstairsNear != NOT_EXIST_BLOCK)
+			{
+				m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
+
+				_Matrix matVeiwSpace;
+				m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
+
+				_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
+
+				vPlayerPos.z = m_vDownstairsNear.z - 1.f;
+
+				vPlayerPos = vPlayerPos.PosVector_Matrix(matVeiwSpace.InverseMatrix());
+				m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vPlayerPos);
+
+				m_fNowJumpPower = 0;
+				m_bIsCliming = true;
+			}
+		}
+	}
+
+	//좌우 이동
+	if (m_bCanMoveLeft && pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
+	{
+		m_ComTransform->Move_Left(fDeltaTime);
+	}
+
+	if (m_bCanMoveRight && pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
+	{
+		m_ComTransform->Move_Right(fDeltaTime);
+	}
+
+	//점프
+	if (m_bIsJumped < 2 && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
+	{
+		m_fNowJumpPower = m_fJumpPower;
+		m_bIsJumped++;
+		m_bIsCliming = false;
+		m_ComTransform->MovetoDir(_float3(0, 1.f, 0), fDeltaTime);
+	}
+
+	return S_OK;
+}
+
+HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 {
 	CGameInstance* pGameInstance = GetSingle(CGameInstance);
 
@@ -234,29 +253,34 @@ HRESULT CPlayer::Find_FootHold_Object()
 	_Matrix matVeiwSpace;
 	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
 
-	_float3 vCamPos;
-	memcpy(&vCamPos, &(matVeiwSpace.InverseMatrix().m[3][0]), sizeof(_float3));
-
 	//카메라 바라보도록 설정
 
+	_float3 vCamLook;
+	memcpy(&vCamLook, &(matVeiwSpace.InverseMatrix().m[2][0]), sizeof(_float3));
+
 	_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-	_float3 vNewLook = (vPlayerPos - vCamPos).Get_Nomalize();
-	m_ComTransform->LookAt(vPlayerPos + vNewLook);
+
+	m_ComTransform->LookAt(vPlayerPos + vCamLook);
 
 
 	if (m_pCamera_Main->Get_bIsTuring())
 		return S_OK;
 
-	_float3 vPlayerViewPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
+	_float3 vPlayerViewPos = vPlayerPos.PosVector_Matrix(matVeiwSpace);
 
+	_float Time = 1 - (m_fNowJumpPower / m_fJumpPower);
+	_float fGravity = 0;
+
+	if (Time < 0)
+		fGravity = (m_fNowJumpPower - Time * Time * m_fJumpPower) * fDeltaTime;
+	
 	 list<CGameObject*>* pTerrainLayer= pGameInstance->Get_ObjectList_from_Layer(SCENEID::SCENE_STAGESELECT, TAG_LAY(Layer_Terrain));
 
 	 if (pTerrainLayer == nullptr)
 		 return E_FAIL;
 
-
-	 m_vDownstairsNear = _float3(-100.f, -100.f, -100.f);
-	 m_vClimingBlock = _float3(-100.f, -100.f, -100.f);
+	 m_vDownstairsNear = NOT_EXIST_BLOCK;
+	 m_vClimingBlock = NOT_EXIST_BLOCK;
 	 
 	 _float		fPlayerFrontZ	= -(_float)0x0fffffff;
 	 _float		fFootNearZ		= (_float)0x0fffffff;
@@ -273,13 +297,17 @@ HRESULT CPlayer::Find_FootHold_Object()
 	 m_bCanMoveRight = true;
 	// m_bCanMoveUp = false;
 
+	 _float3 vTerrainWorldPos;
+	 _float3 vTerrainObjectViewPos;
+
 	 for (; ObjectListIter != pTerrainLayer->end();)
 	 {
-		 _float3 vTerrainObjectViewPos = ((CTransform*)((*ObjectListIter)->Find_Components(TAG_COM(Com_Transform))))
-			 ->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
+		 vTerrainWorldPos = ((CTransform*)((*ObjectListIter)->Find_Components(TAG_COM(Com_Transform))))
+			 ->Get_MatrixState(CTransform::STATE_POS);
 
-		 if (vTerrainObjectViewPos.y < vPlayerViewPos.y + 0.25f && vTerrainObjectViewPos.y >= vPlayerViewPos.y - 0.25f) 
+		 if (vTerrainWorldPos.y < vPlayerPos.y + 0.5f  && vTerrainWorldPos.y >= vPlayerPos.y - 0.5f)
 		 {
+			 vTerrainObjectViewPos = vTerrainWorldPos.PosVector_Matrix(matVeiwSpace);
 			 //같은 높이의
 			 if (vPlayerViewPos.x + 0.5f >= vTerrainObjectViewPos.x && vPlayerViewPos.x - 0.5f < vTerrainObjectViewPos.x) 
 			 {
@@ -306,8 +334,9 @@ HRESULT CPlayer::Find_FootHold_Object()
 				 }
 			 }
 		 }
-		 if (vTerrainObjectViewPos.y <= vPlayerViewPos.y - 0.75f && vTerrainObjectViewPos.y >= vPlayerViewPos.y - 1.25f)
+		 if (vTerrainWorldPos.y <= vPlayerPos.y - 0.5f && vTerrainWorldPos.y >= vPlayerPos.y - 1.5f + fGravity)
 		 {//아래층의
+			 vTerrainObjectViewPos = vTerrainWorldPos.PosVector_Matrix(matVeiwSpace);
 			 if (vPlayerViewPos.x + 0.5f >= vTerrainObjectViewPos.x && vPlayerViewPos.x - 0.5f < vTerrainObjectViewPos.x)
 			 {//같은 x축
 
@@ -323,7 +352,7 @@ HRESULT CPlayer::Find_FootHold_Object()
 
 	 for (; SelectedListiter != TerrainViewPos.end();)
 	 {
-		 if ((*SelectedListiter).y < vPlayerViewPos.y - 0.5f && (*SelectedListiter).y >= vPlayerViewPos.y - 1.5f)
+		 if ((*SelectedListiter).y < vPlayerViewPos.y - 0.5f  && (*SelectedListiter).y >= vPlayerViewPos.y - 1.5f + fGravity)
 		 {//아래층의
 			 if ((*SelectedListiter).z < fFootNearZ  && (*SelectedListiter).z > fPlayerFrontZ && (*SelectedListiter).z < fPlayerBackZ)
 			 {
@@ -331,7 +360,7 @@ HRESULT CPlayer::Find_FootHold_Object()
 				 fFootNearZ = (*SelectedListiter).z;
 			 }
 		 }
-		 if(m_vClimingBlock == _float3(-100.f, -100.f, -100.f) && (*SelectedListiter).y < vPlayerViewPos.y + 0.5f && (*SelectedListiter).y >= vPlayerViewPos.y - 0.5f)
+		 if(m_vClimingBlock == NOT_EXIST_BLOCK && (*SelectedListiter).y < vPlayerViewPos.y + 0.5f && (*SelectedListiter).y >= vPlayerViewPos.y - 0.5f)
 		 {
 			 //같은 층에
 			 if ((*SelectedListiter).z > fPlayerFrontZ)
@@ -345,7 +374,7 @@ HRESULT CPlayer::Find_FootHold_Object()
 
 
 
-	 if (m_vDownstairsNear != _float3(-100.f, -100.f, -100.f))
+	 if (m_vDownstairsNear != NOT_EXIST_BLOCK)
 		 m_vReturnStair = m_vDownstairsNear;
 
 
@@ -360,30 +389,36 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 	if (m_pCamera_Main->Get_bIsTuring())
 		return S_OK;
 
+
 	_Matrix matVeiwSpace;
 	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
 
 	_float3 vResultPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 
 
+	/////////중력 계산
+	_float Time = 1 - (m_fNowJumpPower / m_fJumpPower);
+	_float fGravity = 0;
+
+	if (m_fNowJumpPower != 0)
+	{
+		m_fNowJumpPower -= fDeltaTime * m_fJumpPower * 2.f;
+		fGravity = (m_fNowJumpPower - Time*Time * m_fJumpPower) * fDeltaTime;
+	}
+
 	if (!m_bIsCliming)
 	{
-		/////////중력 적용
-		_float Time = 1 - (m_fNowJumpPower / m_fJumpPower);
-		if (m_fNowJumpPower != 0) {
 
-			m_fNowJumpPower -= fDeltaTime * m_fJumpPower * 2.f;
-			vResultPos.y = vResultPos.y + (m_fNowJumpPower - Time*Time * m_fJumpPower)*fDeltaTime;
-		}
-
+		//중력 적용
+		vResultPos.y += fGravity;
 		vResultPos = vResultPos.PosVector_Matrix(matVeiwSpace);
 
 
-		if (m_vDownstairsNear != _float3(-100.f, -100.f, -100.f))
+		if (m_vDownstairsNear != NOT_EXIST_BLOCK)
 		{
 
 			vResultPos.z = m_vDownstairsNear.z;
-			if (vResultPos.y < m_vDownstairsNear.y + 1.0f && m_fNowJumpPower < 0) //지형보다 플레이어가 위에 있다면
+			if (vResultPos.y + fGravity < m_vDownstairsNear.y + 1.0f && m_fNowJumpPower < 0) //지형보다 플레이어가 위에 있다면
 			{
 				vResultPos.y = m_vDownstairsNear.y + 1.f;
 				m_fNowJumpPower = 0;
@@ -408,15 +443,19 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 		}
 	}
 	else {
-		vResultPos = vResultPos.PosVector_Matrix(matVeiwSpace);
-		if (m_vClimingBlock != _float3(-100.f, -100.f, -100.f))
+		if (m_vClimingBlock != NOT_EXIST_BLOCK)
 		{
+			vResultPos = vResultPos.PosVector_Matrix(matVeiwSpace);
 			vResultPos.z = m_vClimingBlock.z - 1.0f;
+		}
+		else {
+			m_bIsCliming = false;
+			m_fNowJumpPower -= fDeltaTime * m_fJumpPower * 2.f;
+			vResultPos = vResultPos.PosVector_Matrix(matVeiwSpace);
 		}
 		
 		
 	}
-
 
 
 

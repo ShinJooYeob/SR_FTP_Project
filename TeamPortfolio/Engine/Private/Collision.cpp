@@ -35,6 +35,22 @@ HRESULT CCollision::Add_CollisionGroup(COLLISIONGROUP eCollisionGroup, CGameObje
 
 HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 {
+
+	_uint VertexNumber = 0;
+	_float3 DefaultCubeVerties[8];
+
+	for (int Z = 0; Z < 2; ++Z)
+	{
+		for (int Y = 0; Y < 2; ++Y)
+		{
+			for (int X = 0; X < 2; ++X)
+			{
+				DefaultCubeVerties[VertexNumber] = _float3(X - 0.5f, Y - 0.5f, Z - 0.5f);
+				++VertexNumber;
+			}
+		}
+	}
+
 	for (auto& pFlexibleObjects : m_CollisionObjects[COLLISION_FLEXIBLE])
 	{
 		CTransform* SourceObject = (CTransform*)pFlexibleObjects->Get_Component(TEXT("Com_Transform")); //Source의 트랜스 폼
@@ -42,41 +58,58 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 
 		for (int Collsion_enum = 1; Collsion_enum < COLLISION_END; ++Collsion_enum)
 		{
+
+			//소스의 큐브 정점을 구함 -> 굳이 안쪽에서 같은 연산을 여러번 할 필요없어서 올렸음
+			_Matrix& SourceWorldMatrix = SourceObject->Get_WorldMatrix(); //Source의 월드행렬
+			_float3 SourceCubeVerties[8];
+			memcpy(SourceCubeVerties, DefaultCubeVerties, sizeof(_float3) * 8);
+
 			for (auto& pDestObjects : m_CollisionObjects[Collsion_enum])
 			{
 
 				CTransform* DestObject = (CTransform*)pDestObjects->Get_Component(TEXT("Com_Transform")); //Dest의 트랜스 폼
 
+				//COLLISION_FLEXIBLE 오브젝트와 일정거리(루트 2) 이상라면 굳이 충돌연산을 하지 않음
+				_float3&	DestPos = DestObject->Get_MatrixState(CTransform::STATE_POS);
+				if(SourcePosition.Get_Distance(DestPos) > 1.5f)
+					continue;
 
-				CVIBuffer_Cube* SourceCube = (CVIBuffer_Cube*)pFlexibleObjects->Get_Component(TEXT("Com_CollisionBuffer")); //Source큐브 컴포넌트 받는중
-				CVIBuffer_Cube* DestCube = (CVIBuffer_Cube*)pDestObjects->Get_Component(TEXT("Com_CollisionBuffer")); //Dest큐브 컴포넌트 받는중
+				//디폴트 큐브 버텍스를 사용할 것이기 때문에 이부분을 사용하지 않아도 됨
+				//////////////////////////////////////////////////////////////////////////
+				//CVIBuffer_Cube* SourceCube = (CVIBuffer_Cube*)pFlexibleObjects->Get_Component(TEXT("Com_CollisionBuffer")); //Source큐브 컴포넌트 받는중
+				//CVIBuffer_Cube* DestCube = (CVIBuffer_Cube*)pDestObjects->Get_Component(TEXT("Com_CollisionBuffer")); //Dest큐브 컴포넌트 받는중
 
-				VTXTEX* pSourceVertices = (VTXTEX*)SourceCube->Get_Vtxtex(); //Source큐브 정점 받는중
-				VTXTEX* DestVertices = (VTXTEX*)DestCube->Get_Vtxtex(); //Dest큐브 정점 받는중
+				//VTXTEX* pSourceVertices = (VTXTEX*)SourceCube->Get_Vtxtex(); //Source큐브 정점 받는중
+				//VTXTEX* DestVertices = (VTXTEX*)DestCube->Get_Vtxtex(); //Dest큐브 정점 받는중
 
-				_uint SourceVertices_Number = SourceCube->Get_NumVertices(); //정점 갯수 받는중
-				_uint DestVertices_Number = DestCube->Get_NumVertices();
+				//_uint SourceVertices_Number = SourceCube->Get_NumVertices(); //정점 갯수 받는중
+				//_uint DestVertices_Number = DestCube->Get_NumVertices();
 
-				m_CCollision_SourceVertices = new VTXTEX[SourceVertices_Number]; //Source 정점 갯수를 받아서 동적배열로 만듬
-				ZeroMemory(m_CCollision_SourceVertices, sizeof(VTXTEX) * SourceVertices_Number);
-				memcpy(m_CCollision_SourceVertices, pSourceVertices, sizeof(VTXTEX)*SourceVertices_Number);
+				//m_CCollision_SourceVertices = new VTXTEX[SourceVertices_Number]; //Source 정점 갯수를 받아서 동적배열로 만듬
+				//ZeroMemory(m_CCollision_SourceVertices, sizeof(VTXTEX) * SourceVertices_Number);
+				//memcpy(m_CCollision_SourceVertices, pSourceVertices, sizeof(VTXTEX)*SourceVertices_Number);
 
-				m_CCollision_DestVertices = new VTXTEX[DestVertices_Number]; //Dest 정점 갯수를 받아서 동적배열로 만듬
-				ZeroMemory(m_CCollision_DestVertices, sizeof(VTXTEX) * DestVertices_Number);
-				memcpy(m_CCollision_DestVertices, pSourceVertices, sizeof(VTXTEX)*DestVertices_Number);
+				//m_CCollision_DestVertices = new VTXTEX[DestVertices_Number]; //Dest 정점 갯수를 받아서 동적배열로 만듬
+				//ZeroMemory(m_CCollision_DestVertices, sizeof(VTXTEX) * DestVertices_Number);
+				//memcpy(m_CCollision_DestVertices, pSourceVertices, sizeof(VTXTEX)*DestVertices_Number);
 
 				///////////////////////////////////////////////////////////////////////월드행렬 달라야함!!!
-				_Matrix& SourceWorldMatrix = SourceObject->Get_WorldMatrix(); //Source의 월드행렬
-				_Matrix& DesteWorldMatrix = DestObject->Get_WorldMatrix(); //Dest의 월드행렬
 
-				for (_uint i = 0; i < SourceVertices_Number; ++i)
+
+				_Matrix& DesteWorldMatrix = DestObject->Get_WorldMatrix(); //Dest의 월드행렬
+				_float3 DestCubeVerties[8];
+				memcpy(DestCubeVerties, DefaultCubeVerties, sizeof(_float3) * 8);
+
+				for (_uint i = 0; i < 8; ++i)
 				{
-					D3DXVec3TransformCoord(&m_CCollision_SourceVertices[i].vPosition, &m_CCollision_SourceVertices[i].vPosition, &SourceWorldMatrix);
+					SourceCubeVerties[i] = SourceCubeVerties[i].PosVector_Matrix(SourceWorldMatrix);
+					DestCubeVerties[i] = DestCubeVerties[i].PosVector_Matrix(DesteWorldMatrix);
+					//D3DXVec3TransformCoord(&SourceCubeVerties[i], &m_CCollision_SourceVertices[i].vPosition, &SourceWorldMatrix);
 				}
-				for (_uint i = 0; i < DestVertices_Number; ++i)
-				{
-					D3DXVec3TransformCoord(&m_CCollision_DestVertices[i].vPosition, &m_CCollision_DestVertices[i].vPosition, &DesteWorldMatrix);
-				}
+				//for (_uint i = 0; i < 8; ++i)
+				//{
+				//	D3DXVec3TransformCoord(&m_CCollision_DestVertices[i].vPosition, &m_CCollision_DestVertices[i].vPosition, &DesteWorldMatrix);
+				//}
 
 				//					min <= max,															max >= min
 
@@ -85,32 +118,32 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 				list<_float> fBubbleSortZ;
 
 
-				if (m_CCollision_SourceVertices[0].vPosition.x <= m_CCollision_DestVertices[7].vPosition.x &&
-					m_CCollision_DestVertices[0].vPosition.x <= m_CCollision_SourceVertices[7].vPosition.x &&
+				if (SourceCubeVerties[0].x <= DestCubeVerties[7].x &&
+					DestCubeVerties[0].x <= SourceCubeVerties[7].x &&
 
-					m_CCollision_SourceVertices[0].vPosition.y <= m_CCollision_DestVertices[7].vPosition.y &&
-					m_CCollision_DestVertices[0].vPosition.y <= m_CCollision_SourceVertices[7].vPosition.y &&
+					SourceCubeVerties[0].y <= DestCubeVerties[7].y &&
+					DestCubeVerties[0].y <= SourceCubeVerties[7].y &&
 
-					m_CCollision_SourceVertices[0].vPosition.z <= m_CCollision_DestVertices[7].vPosition.z &&
-					m_CCollision_DestVertices[0].vPosition.z <= m_CCollision_SourceVertices[7].vPosition.z)
+					SourceCubeVerties[0].z <= DestCubeVerties[7].z &&
+					DestCubeVerties[0].z <= SourceCubeVerties[7].z)
 				{
 
-					fBubbleSortX.push_back(m_CCollision_SourceVertices[0].vPosition.x);
-					fBubbleSortX.push_back(m_CCollision_SourceVertices[7].vPosition.x);
-					fBubbleSortX.push_back(m_CCollision_DestVertices[0].vPosition.x);
-					fBubbleSortX.push_back(m_CCollision_DestVertices[7].vPosition.x);
+					fBubbleSortX.push_back(SourceCubeVerties[0].x);
+					fBubbleSortX.push_back(SourceCubeVerties[7].x);
+					fBubbleSortX.push_back(DestCubeVerties[0].x);
+					fBubbleSortX.push_back(DestCubeVerties[7].x);
 					fBubbleSortX.sort();
 
-					fBubbleSortY.push_back(m_CCollision_SourceVertices[0].vPosition.y);
-					fBubbleSortY.push_back(m_CCollision_SourceVertices[7].vPosition.y);
-					fBubbleSortY.push_back(m_CCollision_DestVertices[0].vPosition.y);
-					fBubbleSortY.push_back(m_CCollision_DestVertices[7].vPosition.y);
+					fBubbleSortY.push_back(SourceCubeVerties[0].y);
+					fBubbleSortY.push_back(SourceCubeVerties[7].y);
+					fBubbleSortY.push_back(DestCubeVerties[0].y);
+					fBubbleSortY.push_back(DestCubeVerties[7].y);
 					fBubbleSortY.sort();
 
-					fBubbleSortZ.push_back(m_CCollision_SourceVertices[0].vPosition.z);
-					fBubbleSortZ.push_back(m_CCollision_SourceVertices[7].vPosition.z);
-					fBubbleSortZ.push_back(m_CCollision_DestVertices[0].vPosition.z);
-					fBubbleSortZ.push_back(m_CCollision_DestVertices[7].vPosition.z);
+					fBubbleSortZ.push_back(SourceCubeVerties[0].z);
+					fBubbleSortZ.push_back(SourceCubeVerties[7].z);
+					fBubbleSortZ.push_back(DestCubeVerties[0].z);
+					fBubbleSortZ.push_back(DestCubeVerties[7].z);
 					fBubbleSortZ.sort();
 
 					////정렬 후 계산
@@ -143,11 +176,11 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 
 
 
-				Safe_Delete_Array(m_CCollision_SourceVertices);
-				m_CCollision_SourceVertices = nullptr;
+				//Safe_Delete_Array(m_CCollision_SourceVertices);
+				//m_CCollision_SourceVertices = nullptr;
 
-				Safe_Delete_Array(m_CCollision_DestVertices);
-				m_CCollision_DestVertices = nullptr;
+				//Safe_Delete_Array(m_CCollision_DestVertices);
+				//m_CCollision_DestVertices = nullptr;
 			}
 		}
 		

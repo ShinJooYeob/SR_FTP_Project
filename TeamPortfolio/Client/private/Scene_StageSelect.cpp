@@ -23,30 +23,6 @@ HRESULT CScene_StageSelect::Initialize()
 	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Cube(TEXT("Layer_Cube"))))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Layer_FixCube(TEXT("Layer_FixCube"))))
-	//	return E_FAIL;
-
-
-	//ZeroMemory(&m_Light, sizeof(m_Light));
-	//m_Light.Type = D3DLIGHT_DIRECTIONAL;
-
-	//m_Light.Diffuse.r = m_Light.Diffuse.g = m_Light.Diffuse.b = 1;
-	//m_Light.Specular = m_Light.Diffuse;
-
-	//m_Light.Ambient.g = m_Light.Ambient.b = m_Light.Ambient.r = 0;
-	//m_Light.Ambient.a = 1;
-	//m_Light.Direction = _float3(-0.1f, 0.4f, 0.4f).Get_Nomalize();
-
-	//m_pGraphicDevice->SetLight(0, &m_Light);
-	//m_pGraphicDevice->LightEnable(0, TRUE);
-
-
-	//m_pGraphicDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-	//m_pGraphicDevice->SetRenderState(D3DRS_AMBIENT, 0xffffff);
-	//m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 
 	return S_OK;
 }
@@ -103,11 +79,11 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 				return E_FAIL;
 		}
 	}
-	for (_uint k = 0; k < 5; k++)
+	for (_uint k = 0; k < 30; k++)
 	{
-		for (_uint i = k; i < 10 - k; i++)
+		for (_uint i = 1; i < 10 ; i++)
 		{
-			for (_uint j = k; j < 10 - k; j++) {
+			for (_uint j = 1; j < 10 ; j++) {
 
 				if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)k, (_float)j)))
 					return E_FAIL;
