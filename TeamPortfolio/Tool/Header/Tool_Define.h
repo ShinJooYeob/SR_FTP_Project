@@ -18,6 +18,7 @@
 
 #define	MSG_BOX(message)			MessageBoxW(g_hWnd, message, L"System Message", MB_OK)
 #define FAILED_TOOL {AfxMessageBox(L"Fail", MB_OK);__debugbreak();}
+#define FAILED_TOOL_MSG(message) {AfxMessageBox(message, MB_OK);__debugbreak();}
 
 enum SCENEID
 {

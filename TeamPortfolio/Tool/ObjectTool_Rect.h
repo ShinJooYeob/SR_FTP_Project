@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CRenderer;
 class CVIBuffer_Rect;
 class CTransform;
+class CTexture;
 END
 
 BEGIN(Tool)
@@ -29,17 +30,30 @@ public:
 public:
 
 	HRESULT Set_Scaled(_float3 scale);
+//	HRESULT Set_Rotation(_float3 rot);
 	HRESULT Set_Position(_float3 Position);
-	HRESULT Set_Texture(wstring filename);
+	HRESULT Set_Texture(MYFILEPATH pathdata);
+	HRESULT Set_Data(OUTPUT_OBJECTINFO data);
+
+	HRESULT Set_ViBuffer_Change();
+
+
+	const MYFILEPATH& Get_PathData()const { return m_tImgPath; }
+	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS);  }
+	_float3 Get_Scale() { return m_ComTransform->Get_MatrixScale(); }
+
+
 
 
 private:
-
+	bool					m_isRect = true;
 	CTransform*				m_ComTransform = nullptr;
-	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
+	CVIBuffer*				m_ComVIBuffer = nullptr;
+
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;
 
+	MYFILEPATH m_tImgPath;
 private:
 	HRESULT			SetUp_Components();
 

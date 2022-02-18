@@ -29,15 +29,24 @@ public:
 	CPathFind		m_PathFind;
 	CTrans_Dialog	m_TransformDialog;
 
+	CButton m_CheckCameraEnable;
+	CButton m_CheckWirframeEnable;
+
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
 public:
+
 	virtual void OnInitialUpdate();
 
 	afx_msg void OnPathFind();
 	afx_msg void OnTransform();
 	afx_msg void OnObjectSave();
 	afx_msg void OnMapSave();
+	CComboBox m_ComboBox;
+	afx_msg void OnBnClickedButtonLoad();
+	afx_msg void OnCbnSelchangeCombo2();
+	afx_msg void OnBnClickedButtonCube();
 };

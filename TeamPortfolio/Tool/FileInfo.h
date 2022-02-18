@@ -12,7 +12,7 @@ public:
 	static CString			ConvertRelativePath(CString strFullPath);
 
 	// 폴더의 경로 정보를 추출하는 함수
-	static void				DirInfoExtraction(const wstring& wstrPath, list<IMGPATH*>& rPathInfoList);
+	static void				DirInfoExtraction(const wstring& wstrPath, list<IMGPATH*>& rPathInfoList, E_FILETYPE type = FILETYPE_PNG);
 	// 폴더의 경로 정보를 추출하는 함수2
 	static void				DirInfoExtraction_Custom(const wstring& wstrPath, list<MYFILEPATH*>& rPathInfoList, E_FILETYPE type);
 

@@ -1,5 +1,8 @@
 #pragma once
 
+#pragma region 예제데이터
+
+
 typedef struct tagInfo
 {
 	D3DXVECTOR3	vPos;
@@ -46,39 +49,42 @@ typedef struct tagUnitData
 }UNITDATA;
 
 
-// 텍스처의 위치정보를 저장하는 구조체
+
+#pragma endregion
+
+// 텍스처 오브젝트 / 스테이트 / 경로를 저장하는 구조체
 typedef struct tagTexturePath
 {
-	// 파일구분 1 
 	wstring			wstrObjKey = L"";
-	// 파일구분 2
 	wstring			wstrStateKey = L"";
-	// 전체 경로
 	wstring			wstrPath = L"";
 	int				iCount = 0;
+
 }IMGPATH;
 
 // 텍스처의 위치정보를 저장하는 구조체
 typedef struct tagMyTexturePath
 {
 	// 파일구분 1 
-	wstring			wFolderName1 = L"";
-	// 파일구분 2
-	wstring			wFolderName2 = L"";
-	// 파일구분 3 
-	wstring			wFolderName3 = L"";
-	// 파일구분 4
-	wstring			wFolderName4 = L"";
-	// 파일구분 5 
-	wstring			wFolderName5 = L"";
-	
+	wstring			wFileName = L"";	
 	// 전체 상대 경로
-	wstring			wstrFullPath = L"";
-	
+	wstring			wstrFullPath = L"";	
 	// 텍스처 개수
 	int				iCount = 0;
 
 }MYFILEPATH;
+
+typedef struct tagOutputObject
+{
+	D3DXVECTOR3 fScale;
+	D3DXVECTOR3 fPos;
+	TCHAR strObjectName[MAX_PATH];
+	TCHAR strTextureName[MAX_PATH];
+	TCHAR strTexturePath[MAX_PATH];
+
+}OUTPUT_OBJECTINFO;
+
+
 
 enum E_FILETYPE
 {
@@ -88,25 +94,3 @@ enum E_FILETYPE
 	FILETYPE_END,
 
 };
-
-enum E_TRANSTYPE
-{
-	TRANSTYPE_POS,
-	TRANSTYPE_ROT,
-	TRANSTYPE_SCALE,
-	TRANSTYPE_END,
-
-};
-
-
-typedef struct tagFrame
-{
-	tagFrame() {}
-	tagFrame(float _fFrame, float _fMax)
-		: fFrame(_fFrame), fMax(_fMax)
-	{
-	}
-
-	float   fFrame;	// 현재 출력되는 이미지 인덱스
-	float	fMax;	// 최대 이미지 장수
-}FRAME;

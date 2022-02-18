@@ -13,8 +13,8 @@
 #include "MainFrm.h"
 #include "MiniView.h"
 #include "MyForm.h"
-#include "ObjectTool_Rect.h"
-#include "Camera_Tool.h"
+
+#include "Renderer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -43,19 +43,14 @@ CToolView::CToolView()
 
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-	m_GameObject_Rect_Tool = nullptr;
-	m_pComRenderer = nullptr;
+
 }
 
 CToolView::~CToolView()
 {
 	// #Tag Tool 소멸자
-	Safe_Release(m_GameObject_Rect_Tool);
-	Safe_Release(m_pComRenderer);
-	Safe_Release(m_pGraphicDevice);
 
-	CDevice::GetInstance()->DestroyInstance();
-	CGameInstance::Release_Engine();
+	GetSingle(CSuperToolSIngleton)->DestroyInstance();
 }
 
 BOOL CToolView::PreCreateWindow(CREATESTRUCT& cs)
@@ -120,16 +115,16 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	*/
 
 	// #Bug 정적으로 그리기 때문에 업데이트가 필요없고 데이터만 있으면 될듯.
-	CDevice::GetInstance()->Get_GameInstance()->Update_Engine_Tool(0.03f);
+
+	GetSingle(CSuperToolSIngleton)->Update_Tool(0.03f);
 
 
 	// #Tag Tool Renderer
-	CDevice::GetInstance()->Render_Begin();
-
-	// 랜더링
-	m_pComRenderer->Render_RenderGroup();
-
-	CDevice::GetInstance()->Render_End();
+	GetSingle(CSuperToolSIngleton)->Render_Begin();
+	
+	//랜더링
+	GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
+	GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
 }
 
 // CToolView 인쇄
@@ -184,26 +179,13 @@ void CToolView::OnInitialUpdate()
 	// #Tag Tool 디바이스 초기화
 	g_hWnd = m_hWnd;
 
-	if (FAILED(CDevice::GetInstance()->InitDevice()))
+	if (FAILED(GetSingle(CSuperToolSIngleton)->InitDevice()))
 	{
 		AfxMessageBox(L"Device Init Failed");
 		return;
 	}
-	if (m_pGraphicDevice == nullptr)
-	{
-		m_pGraphicDevice = CDevice::GetInstance()->Get_Device();
-		Safe_AddRef(m_pGraphicDevice);
-	}
 
-	//if (FAILED(CTextureMgr::GetInstance()->InsertTexture(TEX_SINGLE, L"../Texture/Cube.png", L"CUBE")))
-	//{
-	//	AfxMessageBox(L"Cube Texture Insert Failed");
-	//	return;
-	//}
 
-	//m_pTerrain = new CTerrain;
-	//m_pTerrain->Initialize();
-	//m_pTerrain->SetMainView(this);
 
 	// #Tag 창 크기 재설정
 		// AfxGetMainWnd : 현재 메인 윈도우를 반환하는 전역 함수
@@ -238,25 +220,6 @@ void CToolView::OnInitialUpdate()
 
 	// 오브젝트 / 컴포넌트 프로토타입
 
-	if (FAILED(Ready_Static_Component_Prototype()))
-	{
-		FAILED_TOOL
-	}
-
-	if (FAILED(Ready_Static_GameObject_Prototype()))
-	{
-		FAILED_TOOL
-	}
-
-	if (FAILED(Ready_GameObject_Layer(TEXT("OBJECTLAYER"))))
-	{
-		FAILED_TOOL
-	}
-
-	if (FAILED(Scene_Change(SCENEID::SCENE_LOBY)))
-	{
-		FAILED_TOOL
-	}
 	SetTimer(TIMER_UPDATE, 50, NULL);
 
 	return;
@@ -278,7 +241,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	Invalidate(FALSE);
 
-	CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	// CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 	//CMainFrame*	pMain = dynamic_cast<CMainFrame*>(GetParentFrame());
 
 	//CMiniView*	pMiniView = dynamic_cast<CMiniView*>(pMain->m_SecondSplitter.GetPane(0, 0));
@@ -301,119 +264,6 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 
 	CScrollView::OnMouseMove(nFlags, point);
 
-	// #Tag 툴창에서 마우스 MOVE
-
-	//if (GetAsyncKeyState(VK_LBUTTON))
-	//{
-	//
-	//	Invalidate(FALSE);
-
-	//	CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	//	CMiniView*	pMiniView = dynamic_cast<CMiniView*>(pMain->m_SecondSplitter.GetPane(0, 0));
-	//	CMyForm*	pMyForm = dynamic_cast<CMyForm*>(pMain->m_SecondSplitter.GetPane(1, 0));
-	//	CMapTool*	pMapTool = &pMyForm->m_MapTool;
-
-	//	m_pTerrain->TileChange(D3DXVECTOR3(point.x + GetScrollPos(0), point.y + GetScrollPos(1), 0.f), pMapTool->m_iDrawID);
-
-	//	pMiniView->Invalidate(FALSE);
-	//}
-}
-
-
-HRESULT CToolView::Ready_Static_Component_Prototype()
-{
-	// #Tag 툴 프로토 컴포넌트 초기화
-	CGameInstance*		m_pGameInstance = GetSingle(CDevice)->Get_GameInstance();
-	if (m_pGameInstance == nullptr)
-		return E_FAIL;
-
-	//렌더러 컴객체 프로토타입 생성
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), m_pComRenderer = CRenderer::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	Safe_AddRef(m_pComRenderer);
-
-	//버퍼인덱스 프로토타입 생성
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	//Transform 프로토타입 생성
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"),  CTransform::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	/* 디폴트 텍스처 프로토타입 생성 */
-	CTexture::TEXTUREDESC TextureDesc{};
-	TextureDesc.szTextFilePath = TEXT("../Bin/Resources/Textures/TexturePathData/Player.txt");
-
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CToolView::Ready_Static_GameObject_Prototype()
-{
-	// #Tag 툴 프로토 오브젝트 초기화
-	// 임의 객체 생성
-	if (GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BackGround"), CObjectTool_Rect::Create(m_pGraphicDevice)))
-		return E_FAIL;
-
-	// 카메라 생성
-	if (GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Camera"), CCamera_Tool::Create(m_pGraphicDevice)))
-		return E_FAIL;
-
-
-	return S_OK;
-}
-HRESULT CToolView::Ready_GameObject_Layer(const _tchar * layertag)
-{
-	// #Tag 툴 클론 오브젝트 생성
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TEXT("Prototype_GameObject_BackGround")))
-		return E_FAIL;
-
-
-	m_GameObject_Rect_Tool = (CObjectTool_Rect*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, layertag,0);
-	m_GameObject_Rect_Tool->AddRef();
-
-	m_GameObject_Rect_Tool->Set_Scaled(_float3(1, 1, 1));
-
-
-	// 카메라
-	CCamera::CAMERADESC CameraDesc;
-	CameraDesc.vWorldRotAxis = _float3(0, 0, 0);
-	CameraDesc.vEye = _float3(0, 0, -5.f);
-	CameraDesc.vAt = _float3(0, 0, 0);
-	CameraDesc.vAxisY = _float3(0, 1, 0);
-
-	CameraDesc.fFovy = D3DXToRadian(90);
-	CameraDesc.fAspect = _float(TOOL_WINCX) / TOOL_WINCY;
-	CameraDesc.fNear = 1.0f;
-	CameraDesc.fFar = 100.0f;
-
-	CameraDesc.TransformDesc.fMovePerSec = 10.f;
-	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
-
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Main::Create(m_pGraphicDevice, &CameraDesc))))
-		
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TEXT("Prototype_GameObject_Camera"), &CameraDesc))
-		return E_FAIL;
-
-	;
-	return S_OK;
-}
-
-HRESULT CToolView::Scene_Change(SCENEID eSceneID)
-{
-
-	// 씬체인지
-
-	CGameInstance*		m_pGameInstance = GetSingle(CDevice)->Get_GameInstance();
-
-	if (m_pGameInstance == nullptr)
-		return E_FAIL;
-
-	return S_OK;
 }
 
 void CToolView::OnTimer(UINT_PTR nIDEvent)

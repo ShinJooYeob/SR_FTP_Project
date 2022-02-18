@@ -30,8 +30,10 @@ CString CFileInfo::ConvertRelativePath(CString strFullPath)
 	return CString(szRelativePath);
 }
 
-void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPathInfoList)
+void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPathInfoList, E_FILETYPE type)
 {
+	// %d를 붙이는 연속된 이미지파일 저장시 사용
+
 	wstring	wstrFilePath = wstrPath + L"\\*.*";
 
 	// mfc에서 제공하는 파일 및 경로 제어 관련 클래스
@@ -59,6 +61,11 @@ void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPat
 			// 찾은게 시스템 파일인 경우 건너뛴다.
 			if (Find.IsSystem())
 				continue;
+
+			// 확장자 검사 type
+			if (false == FindType(Find, type))
+				continue;
+
 
 			IMGPATH*		pImgPath = new IMGPATH;
 			TCHAR			szPath[MAX_PATH] = L"";
@@ -121,19 +128,7 @@ void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<MYFILEPA
 	// wstrPath 파일 폴더의 경로가 들어온다. / 이 다음 모든 파일을 확인
 	wstring	wstrFilePath;
 	wstrFilePath = wstrPath + L"\\*.*";
-	//switch (type)
-	//{
-	//case FILETYPE_PNG:
-	//	wstrFilePath = wstrPath + L"\\*.png";
-	//	break;
-	//case FILETYPE_XML:
-	//	wstrFilePath = wstrPath + L"\\*.xml";
-	//	break;
-	//case FILETYPE_ALL:
-	//	wstrFilePath = wstrPath + L"\\*.*";
-	//	break;
-	//}
-
+	
 	// mfc에서 제공하는 파일 및 경로 제어 관련 클래스
 	CFileFind		Find;
 
@@ -170,6 +165,7 @@ void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<MYFILEPA
 			MYFILEPATH*		pImgPath = new MYFILEPATH;
 			TCHAR			szPath[MAX_PATH] = L"";
 
+			// 확장자 검사 type
 			if (false == FindType(Find, type))
 				continue;
 
@@ -180,10 +176,10 @@ void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<MYFILEPA
 			pImgPath->wstrFullPath = ConvertRelativePath(szPath);
 
 			// 파일 이름과 확장자 저장			
-			pImgPath->wFolderName1 = Find.GetFileTitle().GetString();
+			pImgPath->wFileName = Find.GetFileTitle().GetString();
 			PathRemoveFileSpec(szPath);
 
-			// 확장자가 png가 아니면 제외
+		
 
 			// pImgPath->wstrFullPath = szPath;
 			// PathFindFileName(szPath);			

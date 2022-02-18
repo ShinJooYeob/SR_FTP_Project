@@ -3,11 +3,19 @@
 #include "Include.h"
 
 // CPathFind 대화 상자입니다.
+// 패스 정보 툴
+
 BEGIN(Tool)
 class CObjectTool_Rect;
 END
 class CPathFind : public CDialog
 {
+public:
+	enum E_PathMODE
+	{
+		PATHMODE_PATH, PATHMODE_SELECT, PATHMODE_END
+	};
+
 	DECLARE_DYNAMIC(CPathFind)
 
 public:
@@ -32,28 +40,36 @@ public:
 	afx_msg void OnLoadData();
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 
-
+	
 private:
 	wstring FindPath(wstring strname);
+	wstring GetSaveFilePath();
+	HRESULT	ClearPathData();
+	HRESULT Update_PathListData();
+
+
+private:
+	// 경로와 확장자 저장
+	const wstring FilePath = L"../Data/";
+	const wstring Extension = L".txt";
+	CEdit mEditBox; // 파일이름 박스
+
 public:
 
 	// control
 	CListBox m_ListBox;
 
-//	list<IMGPATH*>			m_PathInfoList;
-	list<MYFILEPATH*>		m_MyPathInfoList;	
-	map<wstring, CImage*>		m_MapPngImage;
+	list<IMGPATH*>			m_PathInfoList;
+//	list<MYFILEPATH*>		m_MyPathInfoList;
+//	map<wstring, CImage*>		m_MapPngImage;
 
 private:
-	class CToolView*			mToolView;
-	CObjectTool_Rect*			m_GameObject_Rect_Tool = nullptr;
-
-private:
-	CStatic m_Picture;
-
+//	CObjectTool_Rect*			m_GameObject_Rect_Tool = nullptr;
+//	CStatic m_Picture;
 
 
 public:
 	virtual BOOL DestroyWindow();
 	virtual BOOL OnInitDialog();
 };
+	
