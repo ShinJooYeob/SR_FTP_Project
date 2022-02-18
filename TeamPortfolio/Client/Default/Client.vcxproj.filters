@@ -82,6 +82,9 @@
     <Filter Include="01.GameObject\TerrainCube">
       <UniqueIdentifier>{23d264ff-0d4d-411e-a05c-50412796704a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\Button">
+      <UniqueIdentifier>{52f3b991-5a7d-4daa-9e54-5ebd3090e34d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -150,6 +153,9 @@
     <ClInclude Include="..\public\Shop.h">
       <Filter>01.GameObject\UI\Shop</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MyButton.h">
+      <Filter>01.GameObject\UI\Button</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -205,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Shop.cpp">
       <Filter>01.GameObject\UI\Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MyButton.cpp">
+      <Filter>01.GameObject\UI\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

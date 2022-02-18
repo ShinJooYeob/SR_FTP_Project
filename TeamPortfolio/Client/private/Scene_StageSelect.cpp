@@ -22,7 +22,7 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
 		return E_FAIL;
-
+	
 	//if (FAILED(Ready_Layer_Cube(TEXT("Layer_Cube"))))
 	//	return E_FAIL;
 
@@ -161,6 +161,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 
 	return S_OK;
 }
+
 
 HRESULT CScene_StageSelect::Ready_Layer_Cube(const _tchar * pLayerTag)
 {

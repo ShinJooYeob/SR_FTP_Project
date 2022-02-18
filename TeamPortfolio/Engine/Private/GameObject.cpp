@@ -65,6 +65,24 @@ CComponent* CGameObject::Get_Component(const _tchar * tagComponent)
 	return Find_Components(tagComponent);
 }
 
+HRESULT CGameObject::Compute_CamDistance(CTransform * pTransform)
+{
+	if (nullptr == m_pGraphicDevice)
+		return E_FAIL;
+	_Matrix ViewMatrix;
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &ViewMatrix);
+	D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
+	_float3 vCamPosition = *(_float3*)&ViewMatrix.m[3][0];
+	
+	_float3 vPosition = pTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	_float3 vDir = vPosition - vCamPosition;
+
+	m_fCamDistance = D3DXVec3Length(&vDir);
+
+	return S_OK;
+}
+
 HRESULT CGameObject::Add_Component(_uint iScenenNum, const _tchar* tagPrototype, const _tchar* tagComponent, CComponent** ppOut, void* pArg)
 {
 	if (Find_Components(tagComponent) != nullptr)

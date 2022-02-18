@@ -170,6 +170,7 @@
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\ComponentMgr.cpp" />
     <ClCompile Include="..\Private\EasingMgr.cpp" />
+    <ClCompile Include="..\private\Effect.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
     <ClCompile Include="..\Private\GameObject.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\ComponentMgr.h" />
     <ClInclude Include="..\Public\EasingMgr.h" />
+    <ClInclude Include="..\public\Effect.h" />
     <ClInclude Include="..\Public\Engine_Define.h" />
     <ClInclude Include="..\Public\Engine_Easing.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />

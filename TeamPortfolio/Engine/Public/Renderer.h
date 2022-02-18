@@ -33,6 +33,11 @@ private:
 	typedef list<CGameObject*>		RENDEROBJECTS;
 private:
 	_Matrix						m_ProjMatrix;
+private:
+	HRESULT Render_Priority();
+	HRESULT Render_NonAlpha();
+	HRESULT Render_Alpha();
+	HRESULT Render_UI();
 
 public:
 	static CRenderer* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

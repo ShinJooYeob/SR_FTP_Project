@@ -121,6 +121,9 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Mouse\Picking">
       <UniqueIdentifier>{37183fe8-bad2-44c0-8817-6ce381ae4546}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Effect">
+      <UniqueIdentifier>{c3a92765-f683-4802-8710-d0b4b0fad03f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -230,6 +233,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Picking.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Mouse\Picking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Picking.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Mouse\Picking</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

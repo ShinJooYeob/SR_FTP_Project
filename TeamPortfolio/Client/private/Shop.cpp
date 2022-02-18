@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "..\public\Shop.h"
-#include "Camera_Main.h"
-#include "Camera.h"
 
 
 
@@ -20,7 +18,7 @@ HRESULT CShop::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
-
+	
 
 	return S_OK;
 }
@@ -34,6 +32,9 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 		return E_FAIL;
 	
 	if (FAILED(Set_UI_Transform(m_ComTransform, _float4(600.f, 300.0f, g_iWinCX >> 1, g_iWinCY >> 1))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Button(TEXT("Prototype_Component_Texture_Shop"))))
 		return E_FAIL;
 
 	if (FAILED(SetUp_Skills()))
@@ -107,6 +108,15 @@ _int CShop::LateRender()
 		return E_FAIL;
 
 	return _int();
+}
+
+HRESULT CShop::Ready_Layer_Button(const _tchar * pLayerTag)
+{
+	_float4 UIDesc=_float4(550.f, 280.f, 100.f, 100.f);
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Button"),UIDesc))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CShop::SetUp_Components()

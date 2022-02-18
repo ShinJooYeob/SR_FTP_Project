@@ -38,31 +38,87 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderID, CGameObject * pGameObj
 
 HRESULT CRenderer::Render_RenderGroup()
 {
+	if (FAILED(Render_Priority()))
+		return E_FAIL;
 
-	for (_uint i =0 ; i<RENDER_END ; ++i)
+	if (FAILED(Render_NonAlpha()))
+		return E_FAIL;
+
+	if (FAILED(Render_Alpha()))
+		return E_FAIL;
+
+	if (FAILED(Render_UI()))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CRenderer::Render_Priority()
+{
+	for (auto& RenderObject : m_RenderObjectList[RENDER_PRIORITY])
 	{
-		if (i == RENDER_UI)
+		if (RenderObject != nullptr)
 		{
-			_Matrix ViewMatrix;
-			D3DXMatrixIdentity(&ViewMatrix);
-			m_pGraphicDevice->SetTransform(D3DTS_VIEW, &ViewMatrix);
-			m_pGraphicDevice->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
+			if (FAILED(RenderObject->Render()))
+				return E_FAIL;
 		}
-		for (auto& RenderObject : m_RenderObjectList[i])
-		{
-			
-				if (RenderObject != nullptr)
-				{
-		
-					if (FAILED(RenderObject->Render()))
-						return E_FAIL;
-					Safe_Release(RenderObject);
-				}
-
-		}
-	
-		m_RenderObjectList[i].clear();
+		Safe_Release(RenderObject);
 	}
+	m_RenderObjectList[RENDER_PRIORITY].clear();
+	return S_OK;
+}
+
+HRESULT CRenderer::Render_NonAlpha()
+{
+	for (auto& RenderObject : m_RenderObjectList[RENDER_NONALPHA])
+	{
+		if (RenderObject != nullptr)
+		{
+			if (FAILED(RenderObject->Render()))
+				return E_FAIL;
+		}
+		Safe_Release(RenderObject);
+	}
+	m_RenderObjectList[RENDER_NONALPHA].clear();
+	return S_OK;
+}
+
+HRESULT CRenderer::Render_Alpha()
+{
+	m_RenderObjectList[RENDER_ALPHA].sort([](CGameObject* pSour, CGameObject* pDest)->_bool
+	{
+		return pSour->Get_CamDistance() > pDest->Get_CamDistance();
+	});
+
+		for (auto& RenderObject : m_RenderObjectList[RENDER_ALPHA])
+	{
+		if (RenderObject != nullptr)
+		{
+			if (FAILED(RenderObject->Render()))
+				return E_FAIL;
+		}
+		Safe_Release(RenderObject);
+	}
+	m_RenderObjectList[RENDER_ALPHA].clear();
+	return S_OK;
+}
+
+HRESULT CRenderer::Render_UI()
+{
+	_Matrix ViewMatrix;
+	D3DXMatrixIdentity(&ViewMatrix);
+	m_pGraphicDevice->SetTransform(D3DTS_VIEW, &ViewMatrix);
+	m_pGraphicDevice->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
+
+	for (auto& RenderObject : m_RenderObjectList[RENDER_UI])
+	{
+		if (RenderObject != nullptr)
+		{
+			if (FAILED(RenderObject->Render()))
+				return E_FAIL;
+		}
+		Safe_Release(RenderObject);
+	}
+	m_RenderObjectList[RENDER_UI].clear();
 	return S_OK;
 }
 

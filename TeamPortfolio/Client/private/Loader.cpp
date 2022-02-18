@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Shop.h"
 #include "TerrainCube.h"
+#include "MyButton.h"
 
 _uint CALLBACK LoadingThread(void* _Prameter)
 {
@@ -115,7 +116,13 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Shop), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+	//Button Texture
+	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/UI/run.png");
+	TextureDesc.iNumTexture = 1;
 
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Run"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+	
 	//TestCubeFixObject
 	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.tga");
 	TextureDesc.iNumTexture = 1;
@@ -137,8 +144,9 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Shop), CShop::Create(m_pGraphicDevice))))
 		return E_FAIL;
-
-
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Button") , CMyButton::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	
 	//////////////////////////////////////////////큐브로 충돌처리 테스트중입니다. -은혁
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
 		return E_FAIL;

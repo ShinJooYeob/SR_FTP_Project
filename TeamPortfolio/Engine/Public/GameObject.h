@@ -30,6 +30,8 @@ public:
 
 	class CComponent* Get_Component(const _tchar* tagComponent);
 
+	HRESULT	Compute_CamDistance(class CTransform* pTransform);
+	_float Get_CamDistance() const { return m_fCamDistance; }
 
 	class CComponent* Find_Components(const _tchar* tagComponent);
 
@@ -42,6 +44,7 @@ protected:
 	_uint						m_eNowSceneNum = 0;
 	_bool						m_bIsClone = false;
 	const _tchar*				m_Layer_Tag = nullptr;;
+	_float						m_fCamDistance;
 
 protected:
 	HRESULT Add_Component(_uint iScenenNum, const _tchar* tagPrototype,const _tchar* tagComponent, CComponent** ppOut , void* pArg =nullptr);
