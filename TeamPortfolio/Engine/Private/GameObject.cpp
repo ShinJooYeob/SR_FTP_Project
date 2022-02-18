@@ -83,6 +83,26 @@ HRESULT CGameObject::Add_Component(_uint iScenenNum, const _tchar* tagPrototype,
 	return S_OK;
 }
 
+HRESULT CGameObject::Change_Component(_uint iScenenNum, const _tchar * tagPrototype, const _tchar * tagComponent, CComponent ** ppOut, void * pArg)
+{
+	// 같은 이름의 컴포넌트를 다른 자식의 컴포넌트로 교체
+	// EX) Rect -> Cube
+	if (Find_Components(tagComponent) != nullptr)
+	{
+		CComponent* pCloneComponent = GetSingle(CGameInstance)->Clone_Component(iScenenNum, tagPrototype, pArg);
+
+		if (pCloneComponent == nullptr)
+			return E_FAIL;
+
+		// 키로 접근해 해당 컴포넌트 삭제 후에 다시 넣는다.
+		Safe_Release(m_mapComponets[tagComponent]);
+		m_mapComponets[tagComponent] = pCloneComponent;
+		(*ppOut) = pCloneComponent;
+		Safe_AddRef(pCloneComponent);
+	}
+	return S_OK;
+}
+
 CComponent * CGameObject::Find_Components(const _tchar * tagComponent)
 {
 	auto iter = find_if(m_mapComponets.begin(), m_mapComponets.end(), CTagFinder(tagComponent));

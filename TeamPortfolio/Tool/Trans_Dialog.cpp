@@ -17,8 +17,7 @@ IMPLEMENT_DYNAMIC(CTrans_Dialog, CDialog)
 CTrans_Dialog::CTrans_Dialog(CWnd* pParent /*=nullptr*/)
 	: CDialog(IDD_CTrans_Dialog, pParent)
 {
-	m_bStart = false;
-	m_MaxSilderSize = 100;
+
 	m_GameObject_Rect_Tool = nullptr;
 }
 
@@ -30,169 +29,86 @@ CTrans_Dialog::~CTrans_Dialog()
 
 void CTrans_Dialog::DoDataExchange(CDataExchange* pDX)
 {
+	// 창 체인지 될떄만 업데이트 된다.
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_SLIDER1, m_SilderNumber[0]);
-	DDX_Control(pDX, IDC_SLIDER2, m_SilderNumber[1]);
-	DDX_Control(pDX, IDC_SLIDER3, m_SilderNumber[2]);
 
 	DDX_Control(pDX, IDC_EDIT1, m_InputNumber[0]);
 	DDX_Control(pDX, IDC_EDIT2, m_InputNumber[1]);
 	DDX_Control(pDX, IDC_EDIT3, m_InputNumber[2]);
-
-	DDX_Control(pDX, IDC_RADIO1, m_Radio[0]);
-	DDX_Control(pDX, IDC_RADIO2, m_Radio[1]);
-	DDX_Control(pDX, IDC_RADIO3, m_Radio[2]);
-
+	DDX_Control(pDX, IDC_EDIT4, m_InputNumber[3]);
+	DDX_Control(pDX, IDC_EDIT5, m_InputNumber[4]);
+	DDX_Control(pDX, IDC_EDIT6, m_InputNumber[5]);
+	DDX_Control(pDX, IDC_EDIT7, m_InputNumber[6]);
+	DDX_Control(pDX, IDC_EDIT8, m_InputNumber[7]);
+	DDX_Control(pDX, IDC_EDIT9, m_InputNumber[8]);
 	
-	if (!m_bStart)
-	{
-		m_Radio[0].SetCheck(TRUE);
-		m_eTransType = TRANSTYPE_POS;
-		m_bStart = true;
 
+}
+
+HRESULT CTrans_Dialog::EditToObjectUpdate(CEdit* edit,_uint editCount)
+{
+	// 1.소수점 검사
+	CString strfloat;
+	_float* newfloat = new _float[editCount];
+
+	for (int i=0; i<editCount; i++)
+	{
+		GetDlgItemText(edit[i].GetDlgCtrlID(), strfloat);
+		newfloat[i] = _wtof(strfloat);
 	}
 
-}
+	// 2.Edit 값을 현재 오브젝트와 동기화.
 
-HRESULT CTrans_Dialog::GetSilderNumber(_uint index)
-{
-
-	CString strNum;
-	m_InputNumber[index].GetWindowText(strNum);
-	m_SilderNumber[index].SetPos(_ttoi(strNum));
-	ChnageToTargetGameObject();
-
-	return S_OK;
-}
-
-HRESULT CTrans_Dialog::ChnageToTargetGameObject()
-{
 	// 실제 게임 오브젝트의 크기를 변경.
 	if (m_GameObject_Rect_Tool == nullptr)
 		return E_FAIL;
 
-	for (int i = 0; i < TRANSTYPE_END; i++)
-	{
-		if (m_Radio[i].GetCheck())
-		{
-			m_eTransType = (E_TRANSTYPE)i;
-			break;
-		}
-	}
+	m_GameObject_Rect_Tool->Set_Position(_float3(newfloat[0], newfloat[1], newfloat[2]));
+	m_GameObject_Rect_Tool->Set_Scaled(_float3(newfloat[6], newfloat[7], newfloat[8]));
 
-	// 현재 값 데이터 받아오기
-	_float xyz[3] = {};
-	for (int i =0; i<3; i++)
-	{
-		CString str;
-		m_InputNumber[i].GetWindowText(str);
-		xyz[i] = _ttoi(str);
-	}
-	
-	switch (m_eTransType)
-	{
-	case E_TRANSTYPE::TRANSTYPE_POS:
-		m_GameObject_Rect_Tool->Set_Position(_float3(xyz[0], xyz[1], xyz[2]));
-		break;
-	case E_TRANSTYPE::TRANSTYPE_ROT:
-		//	m_TargetTransForm->Set_MatrixState(CTransform::STATE_POS, xyz);
-		break;
-	case E_TRANSTYPE::TRANSTYPE_SCALE:
-		m_GameObject_Rect_Tool->Set_Scaled(_float3(xyz[0], xyz[1], xyz[2]));
-		break;
-
-	}
 	return S_OK;
 }
 
 
+
+
+
 BEGIN_MESSAGE_MAP(CTrans_Dialog, CDialog)
-	ON_WM_HSCROLL()
-	ON_EN_CHANGE(IDC_EDIT1, &CTrans_Dialog::OnEnChangeEdit1)
-	ON_EN_CHANGE(IDC_EDIT2, &CTrans_Dialog::OnEnChangeEdit2)
-	ON_EN_CHANGE(IDC_EDIT3, &CTrans_Dialog::OnEnChangeEdit3)
+	ON_BN_CLICKED(IDC_BUTTON1, &CTrans_Dialog::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
 // CTrans_Dialog 메시지 처리기
-
-
-
-
 BOOL CTrans_Dialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	for (_uint i=0;i<3;i++)
-	{
-		m_SilderNumber[i].SetRange(0, m_MaxSilderSize);
-		m_SilderNumber[i].SetPos(0);
-		m_SilderNumber[i].SetLineSize(m_MaxSilderSize/100);
-		m_SilderNumber[i].SetPageSize(m_MaxSilderSize/10);
 
-		int pos = m_SilderNumber[i].GetPos();
-		CString str;
-		str.Format(TEXT("%d"), pos);
-		m_InputNumber[i].SetWindowText(str);
-	}
 
 	// 랜더링 뷰와 트랜스폼을 넣어준다.
 	if (m_GameObject_Rect_Tool == nullptr)
 	{
 		m_GameObject_Rect_Tool = GetSingle(CSuperToolSIngleton)->GetObjectRect();
-
 		m_GameObject_Rect_Tool->AddRef();
 	}
+
+	// 값 초기화
+	_tchar buf[5] = L"";
+	for (auto&input : m_InputNumber)
+	{
+		_itot_s(0, buf, 10);
+		input.SetWindowText(buf);
+	}
+	_itot_s(1, buf, 10);
+	m_InputNumber[6].SetWindowText(buf);
+	m_InputNumber[7].SetWindowText(buf);
+	m_InputNumber[8].SetWindowText(buf);
+
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
-
-
-void CTrans_Dialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	// ID 확인 후에 3개의 슬라이더 값을 업데이트한다.
-
-	
-
-	for (_uint i = 0; i < 3; i++)
-	{
-		if (pScrollBar->GetDlgCtrlID() == m_SilderNumber[i].GetDlgCtrlID())
-		{			
-			int pos = m_SilderNumber[i].GetPos();
-			CString str;
-			str.Format(TEXT("%d"), pos);
-			m_InputNumber[i].SetWindowText(str);
-		}
-	}
-
-	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
-
-}
-
-
-void CTrans_Dialog::OnEnChangeEdit1()
-{
-	GetSilderNumber(0);
-}
-
-
-void CTrans_Dialog::OnEnChangeEdit2()
-{
-	GetSilderNumber(1);
-
-}
-
-
-void CTrans_Dialog::OnEnChangeEdit3()
-{
-	GetSilderNumber(2);
-}
-
-
 
 BOOL CTrans_Dialog::DestroyWindow()
 {
@@ -201,4 +117,11 @@ BOOL CTrans_Dialog::DestroyWindow()
 
 
 	return CDialog::DestroyWindow();
+}
+
+
+void CTrans_Dialog::OnBnClickedButton1()
+{
+	// 현재 정보가 오브젝트에 적용된다.
+	EditToObjectUpdate(m_InputNumber,9);
 }

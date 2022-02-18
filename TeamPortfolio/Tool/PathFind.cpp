@@ -22,17 +22,9 @@ CPathFind::CPathFind(CWnd* pParent /*=NULL*/)
 CPathFind::~CPathFind()
 {
 
-	Safe_Release(m_GameObject_Rect_Tool);
+//	Safe_Release(m_GameObject_Rect_Tool);
 
-	for_each(m_MyPathInfoList.begin(), m_MyPathInfoList.end(), Safe_Delete<MYFILEPATH*>);
-	m_MyPathInfoList.clear();
-
-	for (auto& iter : m_MapPngImage)
-	{
-		iter.second->Destroy();
-		Safe_Delete(iter.second);
-	}
-	m_MapPngImage.clear();
+	ClearPathData();
 
 }
 
@@ -42,10 +34,8 @@ void CPathFind::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_ListBox);
-	DDX_Control(pDX, IDC_PICTURE, m_Picture);
-
-	DDX_Control(pDX, IDC_COMBO1, mCombo1);
-	DDX_Control(pDX, IDC_EDIT2, mEdit2);
+	DDX_Control(pDX, IDC_EDIT2, mEditBox);
+//	DDX_Control(pDX, IDC_PICTURE, m_Picture);
 }
 
 BEGIN_MESSAGE_MAP(CPathFind, CDialog)
@@ -53,15 +43,14 @@ BEGIN_MESSAGE_MAP(CPathFind, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &CPathFind::OnSaveData)
 	ON_BN_CLICKED(IDC_BUTTON7, &CPathFind::OnLoadData)
 	ON_WM_DROPFILES()
-	ON_CBN_SELCHANGE(IDC_COMBO1, &CPathFind::OnCbnSelchangeCombo1)
 END_MESSAGE_MAP()
 
 // CPathFind 메시지 처리기입니다.
 
 void CPathFind::OnLbnSelchangeList1()
 {
-	if (m_GameObject_Rect_Tool == nullptr)
-		return;
+//	if (m_GameObject_Rect_Tool == nullptr)
+	//	return;
 
 	// 텍스처 파일 선택시 보여지게 하기
 
@@ -78,17 +67,8 @@ void CPathFind::OnLbnSelchangeList1()
 	wstring fullpath = FindPath(wStrFilename);
 
 
-	auto		iter = m_MapPngImage.find(wStrFilename);
+	
 
-	if (iter == m_MapPngImage.end())
-		return;
-
-	m_Picture.SetBitmap(*(iter->second));
-
-	MYFILEPATH path;
-	path.wFileName = wStrFilename;
-	path.wstrFullPath = fullpath;
-	m_GameObject_Rect_Tool->Set_Texture(path);
 
 	//int i = 0;
 
@@ -113,107 +93,96 @@ void CPathFind::OnLbnSelchangeList1()
 
 void CPathFind::OnSaveData()
 {
-	// 저장버튼을 누르면 해당 경로 txt 파일로 저장된다.
-	wstring strImgPath = L"../Data/ImgPath.txt";
+	// 저장버튼을 누르면 해당 경로 txt 파일로 저장된다.	
+	
+	wstring SaveFileFullPath = GetSaveFilePath();
+
 	wofstream		fout;
-	fout.open(strImgPath);
+	fout.open(SaveFileFullPath);
 
 	// 파일 개방 성공
 	if (!fout.fail())
 	{
-		for (auto& iter : m_MyPathInfoList)
+		for (auto& iter : m_PathInfoList)
 		{
 			// |문자는 구분 기호
-			fout << iter->wFileName << L"|" << iter->wstrFullPath << endl;
+			fout << iter->wstrObjKey << L"|" << iter->wstrStateKey <<L"|"<<
+				iter->iCount<<L"|"<<iter->wstrPath <<  endl;
 		}
 
 		fout.close();		// close 함수는 생략 가능(객체 타입이어서 소멸 시점에 알아서 개방한 파일 또한 소멸 가능)
 	}
 
 	// 윈도우의 기본 프로그램을 실행시켜주는 함수
-//	WinExec("notepad.exe ../Data/ImgPath.txt", SW_SHOW);
+	CString pathstr = L"notepad.exe";
+	pathstr = pathstr + SaveFileFullPath.c_str();
+
+	WinExec(CT2CA(pathstr.operator LPCWSTR()),SW_SHOW);
 }
 
 void CPathFind::OnLoadData()
 {
-	ClearData();
+	ClearPathData();
 
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	
-
- 	wstring strImgPath = L"../Data/ImgPath.txt";
+	wstring LoadFileFullPath = GetSaveFilePath();
 
 	UpdateData(TRUE);
 
 	// 해당 경로의 파일 탐색
 	wifstream		fin;
-	fin.open(strImgPath);
+	fin.open(LoadFileFullPath);
 
 	if (!fin.fail())
 	{
-		TCHAR	wFolderName1[MAX_STR] = L"";
-		//TCHAR	wFolderName2[MAX_STR] = L"";
-		//TCHAR	wFolderName3[MAX_STR] = L"";
-		//TCHAR	wFolderName4[MAX_PATH] = L"";
-		//TCHAR	wFolderName5[MAX_PATH] = L"";
-		TCHAR	wFullpath[MAX_PATH] = L"";
+		// 오브젝트키 | 스테이트키 | 개수 | FULLPATH
 
+		TCHAR	wObjKey[MAX_STR] = L"";
+		TCHAR	wStateKey[MAX_STR] = L"";
+		TCHAR	wCount[MAX_STR] = L"";
+		TCHAR	wFullpath[MAX_PATH] = L"";
 		wstring	wstrCombined = L"";
 
+		// 초기화
 		m_ListBox.ResetContent();
 
 		while (true)
 		{
 			// '|' 단위로 끊어서 문자열 입력 처리
-
-			fin.getline(wFolderName1, MAX_STR, '|');
+			fin.getline(wObjKey, MAX_STR, '|');
+			fin.getline(wStateKey, MAX_STR, '|');
+			fin.getline(wCount, MAX_STR, '|');
 			fin.getline(wFullpath, MAX_PATH);
 
 			if (fin.eof())
 				break;
 
 			// 패스 리스트 추가
-			MYFILEPATH*		pImgPath = new MYFILEPATH;
+			IMGPATH*		pImgPath = new IMGPATH;
 			TCHAR			szPath[MAX_PATH] = L"";
-			pImgPath->wstrFullPath = wFullpath;
-			pImgPath->wFileName = wFolderName1;
+			pImgPath->wstrObjKey = wObjKey;
+			pImgPath->wstrStateKey = wStateKey;
+			pImgPath->iCount = _tstoi(wCount);
+			pImgPath->wstrPath = wFullpath;
+			m_PathInfoList.push_back(pImgPath);
 
-			m_MyPathInfoList.push_back(pImgPath);
-
-
-
-			// 리스트 박스추가
-		//	wstrCombined = wstring(wFolderName1) + L"|" + wFullpath;
-			m_ListBox.AddString(wFolderName1);
+			// 패스 정보 추가
+			wstrCombined = wstring(wObjKey) + L"|" + wstring(wStateKey) + L"|" + wstring(wCount) + L"|" + wstring(wFullpath);
 		}
 
 		fin.close();		// close 함수는 생략 가능(객체 타입이어서 소멸 시점에 알아서 개방한 파일 또한 소멸 가능)
 	}
-
-	int cnt = m_MyPathInfoList.size();
-	for (auto filename : m_MyPathInfoList)
-	{
-		filename->wstrFullPath;
-
-		CImage*		pPngImage = new  CImage;
-		pPngImage->Load(filename->wstrFullPath.c_str()); // 해당 경로 이미지를 로드
-
-		m_MapPngImage.emplace(filename->wFileName, pPngImage);
-	}
-
-
-
 	UpdateData(FALSE);
 
 	// 윈도우의 기본 프로그램을 실행시켜주는 함수
-//	WinExec("notepad.exe ../Data/ImgPath.txt", SW_SHOW);
+	CString pathstr = L"notepad.exe";
+	pathstr = pathstr + LoadFileFullPath.c_str();
+	WinExec(CT2CA(pathstr.operator LPCWSTR()), SW_SHOW);
 }
 
 void CPathFind::OnDropFiles(HDROP hDropInfo)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	ClearData();
-
+	// 파일 드롭시 처리
+	ClearPathData();
 
 #pragma region 경로저장
 	// 폴더 드롭다운시 텍스쳐 이미지를 탐색한다.
@@ -224,42 +193,42 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 	CDialog::OnDropFiles(hDropInfo);
 
 	// 전체 경로
-	TCHAR	szFilePath[MAX_PATH] = L"";
+	//TCHAR	szFilePath[MAX_PATH] = L"";
 
-	// DragQueryFile : 드롭된 파일을 정보를 얻어오는 함수
-	// 0xffffffff(-1) : 두 번째 인자값을 -1로 지정하면 드롭된 파일 개수를 반환하는 옵션
-	int iFileCnt = DragQueryFile(hDropInfo, -1, nullptr, 0);
+	//// DragQueryFile : 드롭된 파일을 정보를 얻어오는 함수
+	//// 0xffffffff(-1) : 두 번째 인자값을 -1로 지정하면 드롭된 파일 개수를 반환하는 옵션
+	//int iFileCnt = DragQueryFile(hDropInfo, -1, nullptr, 0);
 
-	TCHAR szFileName[64] = L"";
+	//TCHAR szFileName[64] = L"";
 
-	for (int i = 0; i < iFileCnt; ++i)
-	{
-		DragQueryFile(hDropInfo, i, szFilePath, MAX_PATH);
-		// 이거 수정
-		CFileInfo::DirInfoExtraction_Custom(szFilePath, m_MyPathInfoList, FILETYPE_PNG);
-	}
-	m_ListBox.ResetContent();
+	//for (int i = 0; i < iFileCnt; ++i)
+	//{
+	//	DragQueryFile(hDropInfo, i, szFilePath, MAX_PATH);
+	//	// 이거 수정
+	//	CFileInfo::DirInfoExtraction_Custom(szFilePath, m_MyPathInfoList, FILETYPE_PNG);
+	//}
+	//m_ListBox.ResetContent();
 
-	for (auto& iter : m_MyPathInfoList)
-	{
-		m_ListBox.AddString(iter->wFileName.c_str());
-	}
+	//for (auto& iter : m_PathInfoList)
+	//{
+	//	m_ListBox.AddString(iter->wFileName.c_str());
+	//}
+
 #pragma endregion
 
-
 #pragma region 맵에 이미지파일 저장
-	int cnt = m_MyPathInfoList.size();
+	//int cnt = m_MyPathInfoList.size();
 
-	// #Bug CImage 메모리릭
-	for (auto filename : m_MyPathInfoList)
-	{
-		filename->wstrFullPath;
+	//// #Bug CImage 메모리릭
+	//for (auto filename : m_MyPathInfoList)
+	//{
+	//	filename->wstrFullPath;
 
-		CImage*		pPngImage = new  CImage;
-		pPngImage->Load(filename->wstrFullPath.c_str()); // 해당 경로 이미지를 로드
+	//	CImage*		pPngImage = new  CImage;
+	//	pPngImage->Load(filename->wstrFullPath.c_str()); // 해당 경로 이미지를 로드
 
-		m_MapPngImage.emplace(filename->wFileName, pPngImage);
-	}
+	//	m_MapPngImage.emplace(filename->wFileName, pPngImage);
+	//}
 
 #pragma endregion
 	HorizontalScroll();
@@ -270,17 +239,33 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 
 wstring CPathFind::FindPath(wstring strname)
 {
-	for (auto pathname : m_MyPathInfoList)
+	for (auto pathname : m_PathInfoList)
 	{
-		if (pathname->wFileName == strname)
-			return pathname->wstrFullPath;
+		/*if (pathname->wFileName == strname)
+			return pathname->wstrFullPath;*/
 	}
 	return L"";
 }
 
-HRESULT CPathFind::ClearData()
+wstring CPathFind::GetSaveFilePath()
 {
-	if (m_MyPathInfoList.empty() == false)
+	CString cstrFIleName = {};
+	GetDlgItemText(mEditBox.GetDlgCtrlID(), cstrFIleName);
+	wstring wstrFilename;
+	wstrFilename = cstrFIleName.operator LPCWSTR();
+	wstring SaveFileFullPath = FilePath + wstrFilename + Extension;
+	return SaveFileFullPath;
+}
+
+HRESULT CPathFind::ClearPathData()
+{
+	if (!m_PathInfoList.empty())
+	{
+		for_each(m_PathInfoList.begin(), m_PathInfoList.end(), Safe_Delete<IMGPATH*>);
+		m_PathInfoList.clear();
+	}
+
+	/*if (m_MyPathInfoList.empty() == false)
 	{
 		for_each(m_MyPathInfoList.begin(), m_MyPathInfoList.end(), Safe_Delete<MYFILEPATH*>);
 		m_MyPathInfoList.clear();
@@ -291,7 +276,7 @@ HRESULT CPathFind::ClearData()
 		iter.second->Destroy();
 		Safe_Delete(iter.second);
 	}
-	m_MapPngImage.clear();
+	m_MapPngImage.clear();*/
 
 	return S_OK;
 }
@@ -342,26 +327,18 @@ BOOL CPathFind::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	m_GameObject_Rect_Tool = nullptr;
-	m_GameObject_Rect_Tool = GetSingle(CSuperToolSIngleton)->GetObjectRect();
-	m_GameObject_Rect_Tool->AddRef();
+	//m_GameObject_Rect_Tool = nullptr;
+	//m_GameObject_Rect_Tool = GetSingle(CSuperToolSIngleton)->GetObjectRect();
+	//m_GameObject_Rect_Tool->AddRef();
 
-	mCombo1.SetCurSel(0);
-	m_ePathMode = (E_PathMODE)mCombo1.GetCurSel();
+	//mCombo1.SetCurSel(0);
+	//m_ePathMode = (E_PathMODE)mCombo1.GetCurSel();
 
-	mEdit2.SetWindowTextW(L"Image");
-	mEdit2.GetWindowText(mStrTxtName);
-	
+	//mEdit2.SetWindowTextW(L"Image");
+	//mEdit2.GetWindowText(mStrTxtName);
+	//
 
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
-}
-
-
-void CPathFind::OnCbnSelchangeCombo1()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	m_ePathMode = (E_PathMODE)mCombo1.GetCurSel();
 }

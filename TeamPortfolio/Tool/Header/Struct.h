@@ -49,19 +49,18 @@ typedef struct tagUnitData
 }UNITDATA;
 
 
-// 텍스처의 위치정보를 저장하는 구조체
-typedef struct tagTexturePath
-{
-	// 파일구분 1 
-	wstring			wstrObjKey = L"";
-	// 파일구분 2
-	wstring			wstrStateKey = L"";
-	// 전체 경로
-	wstring			wstrPath = L"";
-	int				iCount = 0;
-}IMGPATH;
+
 #pragma endregion
 
+// 텍스처 오브젝트 / 스테이트 / 경로를 저장하는 구조체
+typedef struct tagTexturePath
+{
+	wstring			wstrObjKey = L"";
+	wstring			wstrStateKey = L"";
+	wstring			wstrPath = L"";
+	int				iCount = 0;
+
+}IMGPATH;
 
 // 텍스처의 위치정보를 저장하는 구조체
 typedef struct tagMyTexturePath
@@ -93,14 +92,5 @@ enum E_FILETYPE
 	FILETYPE_XML,
 	FILETYPE_ALL,
 	FILETYPE_END,
-
-};
-
-enum E_TRANSTYPE
-{
-	TRANSTYPE_POS,
-	TRANSTYPE_ROT,
-	TRANSTYPE_SCALE,
-	TRANSTYPE_END,
 
 };

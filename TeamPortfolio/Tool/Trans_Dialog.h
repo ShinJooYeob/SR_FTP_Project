@@ -3,6 +3,8 @@
 #include "Include.h"
 
 // CTrans_Dialog 대화 상자
+// 위치조정 툴
+
 BEGIN(Tool)
 class CObjectTool_Rect;
 END
@@ -25,34 +27,17 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	HRESULT GetSilderNumber(_uint index);
-	HRESULT ChnageToTargetGameObject();
-
-
-private:
-	bool	m_bStart;
-	_uint	m_MaxSilderSize;
-	E_TRANSTYPE m_eTransType;
+	// Edit에 값에 따라 
+	HRESULT EditToObjectUpdate(CEdit* edit,_uint count=9);
 
 public:
 	   
 	CObjectTool_Rect* m_GameObject_Rect_Tool;
 
-
 	// 위치 / 크기정보 Set 
-	CSliderCtrl m_SilderNumber[3];
-	CEdit m_InputNumber[3];
-
-	// 위치 크기 회전 선택
-	CButton m_Radio[3];
-
-
+	CEdit m_InputNumber[9];
 
 	virtual BOOL OnInitDialog();
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnEnChangeEdit1();
-	afx_msg void OnEnChangeEdit2();
-	afx_msg void OnEnChangeEdit3();
-
 	virtual BOOL DestroyWindow();
+	afx_msg void OnBnClickedButton1();
 };

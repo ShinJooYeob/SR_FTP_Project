@@ -5,6 +5,9 @@
 #include "Tool.h"
 #include "MyForm.h"
 
+#include "ObjectTool_Rect.h"
+
+
 // CMyForm
 
 #ifdef _DEBUG
@@ -28,6 +31,7 @@ void CMyForm::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COMBO2, m_ComboBox);
+	DDX_Control(pDX, IDC_CHECK1, m_CheckCameraEnable);
 }
 
 BEGIN_MESSAGE_MAP(CMyForm, CFormView)
@@ -39,6 +43,7 @@ BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON11, &CMyForm::OnMapSave)
 	ON_BN_CLICKED(IDC_BUTTON12, &CMyForm::OnBnClickedButtonLoad)
 	ON_CBN_SELCHANGE(IDC_COMBO2, &CMyForm::OnCbnSelchangeCombo2)
+	ON_BN_CLICKED(IDC_BUTTON13, &CMyForm::OnBnClickedButtonCube)
 END_MESSAGE_MAP()
 
 // CMyForm 진단입니다.
@@ -139,3 +144,11 @@ void CMyForm::OnCbnSelchangeCombo2()
 
 
 
+
+
+void CMyForm::OnBnClickedButtonCube()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// 큐브 컴포넌트로 바꾸기
+	GetSingle(CSuperToolSIngleton)->GetObjectRect()->Set_ViBuffer_Change();
+}

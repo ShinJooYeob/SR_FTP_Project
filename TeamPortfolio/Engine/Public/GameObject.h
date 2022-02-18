@@ -45,7 +45,8 @@ protected:
 
 protected:
 	HRESULT Add_Component(_uint iScenenNum, const _tchar* tagPrototype,const _tchar* tagComponent, CComponent** ppOut , void* pArg =nullptr);
-	
+	HRESULT Change_Component(_uint iScenenNum, const _tchar* tagPrototype, const _tchar* tagComponent, CComponent** ppOut, void* pArg = nullptr);
+
 
 public:
 	virtual CGameObject* Clone(void* pArg = nullptr)PURE;

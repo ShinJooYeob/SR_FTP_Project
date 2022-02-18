@@ -3,8 +3,7 @@
 #include "Include.h"
 
 // CPathFind 대화 상자입니다.
-// 기능을 한번에 하나만 만들자..
-// 이건 경로만 찾아주는 툴이다.
+// 패스 정보 툴
 
 BEGIN(Tool)
 class CObjectTool_Rect;
@@ -41,35 +40,35 @@ public:
 	afx_msg void OnLoadData();
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 
-
+	
 private:
 	wstring FindPath(wstring strname);
-	HRESULT	ClearData();
+	wstring GetSaveFilePath();
+	HRESULT	ClearPathData();
+
+
+private:
+	// 경로와 확장자 저장
+	const wstring FilePath = L"../Data/";
+	const wstring Extension = L".txt";
+	CEdit mEditBox; // 파일이름 박스
+
 public:
 
 	// control
 	CListBox m_ListBox;
 
-	//	list<IMGPATH*>			m_PathInfoList;
-	list<MYFILEPATH*>		m_MyPathInfoList;
-	map<wstring, CImage*>		m_MapPngImage;
+	list<IMGPATH*>			m_PathInfoList;
+//	list<MYFILEPATH*>		m_MyPathInfoList;
+//	map<wstring, CImage*>		m_MapPngImage;
 
 private:
-	CObjectTool_Rect*			m_GameObject_Rect_Tool = nullptr;
-
-private:
-	E_PathMODE m_ePathMode;
-
-	CStatic m_Picture;
-
-	CString mStrTxtName;
-	CComboBox mCombo1;
-	CEdit mEdit2;
+//	CObjectTool_Rect*			m_GameObject_Rect_Tool = nullptr;
+//	CStatic m_Picture;
 
 
 public:
 	virtual BOOL DestroyWindow();
 	virtual BOOL OnInitDialog();
-	afx_msg void OnCbnSelchangeCombo1();
 };
 	

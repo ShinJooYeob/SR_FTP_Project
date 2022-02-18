@@ -118,6 +118,10 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
 	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pGraphicDevice)));
 
+	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
+	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), CVIBuffer_Cube::Create(m_pGraphicDevice)));
+
+
 	//Transform 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
 	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), CTransform::Create(m_pGraphicDevice)));

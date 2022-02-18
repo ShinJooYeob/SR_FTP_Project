@@ -62,6 +62,10 @@ _int CObjectTool_Rect::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
+	NULL_CHECK_BREAK(m_ComTransform);
+	NULL_CHECK_BREAK(m_ComTexture);
+	NULL_CHECK_BREAK(m_ComVIBuffer);
+
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
@@ -131,12 +135,31 @@ HRESULT CObjectTool_Rect::Set_Data(OUTPUT_OBJECTINFO data)
 	return S_OK;
 }
 
+HRESULT CObjectTool_Rect::Set_ViBuffer_Change()
+{
+	m_isRect = !m_isRect;
+	Safe_Release(m_ComVIBuffer);
+
+	if (m_isRect)
+	{
+		if (FAILED(__super::Change_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_ComVIBuffer)))
+			return E_FAIL;
+	}
+	else
+	{
+		if (FAILED(__super::Change_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_VIBuffer"), (CComponent**)&m_ComVIBuffer)))
+			return E_FAIL;
+	}
+	return S_OK;
+}
+
 HRESULT CObjectTool_Rect::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
 	TransformDesc.fMovePerSec = 5.f;
 	TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
+	m_isRect = true;
 
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))
 		return E_FAIL;
