@@ -1,0 +1,1 @@
+SkyBox|none|3|../Bin/Resources/Textures/SkyBox/Sky_%d.dds

@@ -115,7 +115,7 @@ HRESULT CObjectTool_Rect::Set_Texture(MYFILEPATH pathdata)
 	m_tImgPath = pathdata;
 
 	CTexture::tagTextureDesc desc = {};
-	desc.szFilePath = m_tImgPath.wstrFullPath.c_str();
+	desc.szTextFilePath = m_tImgPath.wstrFullPath.c_str();
 
 	if (FAILED(m_ComTexture->Initialize_Prototype(&desc)))
 		return E_FAIL;

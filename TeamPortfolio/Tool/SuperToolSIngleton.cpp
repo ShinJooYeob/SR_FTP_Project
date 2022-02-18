@@ -145,7 +145,7 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 
 	/* 디폴트 텍스처 프로토타입 생성 */
 	CTexture::TEXTUREDESC TextureDesc{};
-	TextureDesc.szFilePath = TEXT("../Resource/Default.png");
+	TextureDesc.szTextFilePath = TEXT("Default.txt");
 
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
 	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc)));
