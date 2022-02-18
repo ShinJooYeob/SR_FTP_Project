@@ -132,11 +132,12 @@ HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 {
 
-	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Shop")))
-	//	return E_FAIL;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Shop")))
+		return E_FAIL;
 
 	return S_OK;
 }
+
 
 HRESULT CScene_StageSelect::Ready_Layer_Cube(const _tchar * pLayerTag)
 {

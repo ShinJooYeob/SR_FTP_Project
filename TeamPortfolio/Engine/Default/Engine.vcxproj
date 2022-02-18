@@ -170,6 +170,7 @@
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\ComponentMgr.cpp" />
     <ClCompile Include="..\Private\EasingMgr.cpp" />
+    <ClCompile Include="..\private\Effect.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
     <ClCompile Include="..\Private\GameObject.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
@@ -185,7 +186,8 @@
     <ClCompile Include="..\private\Inventory.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
     <ClCompile Include="..\Private\ObjectMgr.cpp" />
-    <ClCompile Include="..\private\Quest.cpp" />
+    <ClCompile Include="..\Private\Picking.cpp" />
+    <ClCompile Include="..\Private\Quest.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
     <ClCompile Include="..\Private\Scene.cpp" />
     <ClCompile Include="..\Private\SceneMgr.cpp" />
@@ -195,6 +197,7 @@
     <ClCompile Include="..\Private\TimeMgr.cpp" />
     <ClCompile Include="..\Private\Timer.cpp" />
     <ClCompile Include="..\Private\Transform.cpp" />
+    <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cube.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp" />
@@ -207,6 +210,7 @@
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\ComponentMgr.h" />
     <ClInclude Include="..\Public\EasingMgr.h" />
+    <ClInclude Include="..\public\Effect.h" />
     <ClInclude Include="..\Public\Engine_Define.h" />
     <ClInclude Include="..\Public\Engine_Easing.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
@@ -229,7 +233,8 @@
     <ClInclude Include="..\public\Inventory.h" />
     <ClInclude Include="..\Public\Layer.h" />
     <ClInclude Include="..\Public\ObjectMgr.h" />
-    <ClInclude Include="..\public\Quest.h" />
+    <ClInclude Include="..\Public\Picking.h" />
+    <ClInclude Include="..\Public\Quest.h" />
     <ClInclude Include="..\Public\Renderer.h" />
     <ClInclude Include="..\Public\Scene.h" />
     <ClInclude Include="..\Public\SceneMgr.h" />
@@ -239,6 +244,7 @@
     <ClInclude Include="..\Public\TimeMgr.h" />
     <ClInclude Include="..\Public\Timer.h" />
     <ClInclude Include="..\Public\Transform.h" />
+    <ClInclude Include="..\Public\UI.h" />
     <ClInclude Include="..\Public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Cube.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect.h" />

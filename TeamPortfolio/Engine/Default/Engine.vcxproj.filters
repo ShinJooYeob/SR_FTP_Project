@@ -118,6 +118,15 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\Texture\TextureLayer">
       <UniqueIdentifier>{92e03bd4-7e89-4a3c-862a-af7dc4ac6cdc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Mouse">
+      <UniqueIdentifier>{d00dc49f-e418-4fc0-b2f4-2bad15e9c901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Mouse\Picking">
+      <UniqueIdentifier>{37183fe8-bad2-44c0-8817-6ce381ae4546}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Effect">
+      <UniqueIdentifier>{c3a92765-f683-4802-8710-d0b4b0fad03f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -219,8 +228,17 @@
     <ClCompile Include="..\private\Inventory.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Quest.cpp">
+    <ClCompile Include="..\Private\Quest.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Picking.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Mouse\Picking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\TextureLayer.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Texture\TextureLayer</Filter>
@@ -347,11 +365,20 @@
     <ClInclude Include="..\public\Inventory.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Quest.h">
+    <ClInclude Include="..\Public\Quest.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Quest</Filter>
     </ClInclude>
     <ClInclude Include="..\public\TextureLayer.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Texture\TextureLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Picking.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Mouse\Picking</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

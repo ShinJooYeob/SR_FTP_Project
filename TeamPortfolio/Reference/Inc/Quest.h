@@ -4,26 +4,29 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CQuest final: public CComponent
+class CQuest final: public CBase
 {
+	DECLARE_SINGLETON(CQuest)
 private:
-	explicit CQuest(LPDIRECT3DDEVICE9 pGraphicDevice );
-	explicit CQuest(const CQuest &rhs);
+	explicit CQuest();
 	virtual ~CQuest() = default;
+
 public:
-	virtual HRESULT Initialize_Prototype(void * pArg)override;
-	virtual HRESULT Initialize_Clone(void * pArg)override;
-public:
-	HRESULT Initialize_Quest(_int eQuest);
-	HRESULT Set_QuestResult(_int eQuest, _int iResult);
-	bool	Get_QuestResult (_int eQuest);
+	HRESULT Initialize_Quest(_int eQuest_END);
+	
+	HRESULT Set_QuestGoal(_int eQuest, _int iQuestGoal);
+	HRESULT Set_QuestIndexIncrease(_int eQuest, _int iCount);
+
+	_int	Get_QuestGoal(_int eQuest) { return m_iQuestGoalIndex[eQuest]; }
+	_int	Get_QuestCurrent(_int eQuest) { return m_iQuestIndex[eQuest]; }
+	_int	Get_QuestNeed (_int eQuest);
 private:
-	_int*		m_pQuestIndex;
-	_int		m_MaxQuestIndex;
+	_int*		m_iQuestGoalIndex;
+
+	_int*		m_iQuestIndex;
+	_int		m_iMaxQuest;
 private:
-	static CQuest* Create(LPDIRECT3DDEVICE9 pGraphicDevice,void* pArg=nullptr);
 	virtual void	Free() override;
-	virtual CQuest* Clone(void* pArg) override;
 };
 
 END

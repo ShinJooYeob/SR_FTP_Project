@@ -10,6 +10,7 @@
 #include "Object_FixCube.h"
 #include "Object_PushCube.h"
 #include "Object_GravityCube.h"
+#include "MyButton.h"
 
 _uint CALLBACK LoadingThread(void* _Prameter)
 {
@@ -90,7 +91,7 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 #pragma region PROTOTYPE_COMPONENT
 
-	//¹öÆÛÀÎµ¦½º ÇÁ·ÎÅäÅ¸ÀÔ »ý¼º
+	//Â¹Ã¶Ã†Ã›Ã€ÃŽÂµÂ¦Â½Âº Ã‡ÃÂ·ÃŽÃ…Ã¤Ã…Â¸Ã€Ã” Â»Ã½Â¼Âº
 	CVIBuffer_Terrain::TERRAINDESC TerrainDesc;
 	TerrainDesc.szHeightFilePath = TEXT("../Bin/Resources/Textures/Terrain/Height.bmp");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_VIBuffer_Terrain128x128), CVIBuffer_Terrain::Create(m_pGraphicDevice, &TerrainDesc))))
@@ -115,6 +116,13 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Shop), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+	//Button Texture
+	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/UI/run.png");
+	TextureDesc.iNumTexture = 1;
+
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Run"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 
 	//TestCubeFixObject
 
@@ -137,6 +145,10 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Shop), CShop::Create(m_pGraphicDevice))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Button") , CMyButton::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	
+	//////////////////////////////////////////////íë¸Œë¡œ ì¶©ëŒì²˜ë¦¬ í…ŒìŠ¤íŠ¸ì¤‘ìž…ë‹ˆë‹¤. -ì€í˜
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
@@ -161,7 +173,7 @@ HRESULT CLoader::Load_Scene_Stage1(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
 
-	///////////////////////////////////¹ÚÀºÇõ Å×½ºÆ® Àå¼Ò
+	///////////////////////////////////Â¹ÃšÃ€ÂºÃ‡Ãµ Ã…Ã—Â½ÂºÃ†Â® Ã€Ã¥Â¼Ã’
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 

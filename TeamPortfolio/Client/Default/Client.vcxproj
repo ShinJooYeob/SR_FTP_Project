@@ -165,6 +165,7 @@
     <ClInclude Include="..\public\Object_GravityCube.h" />
     <ClInclude Include="..\public\Object_MoveCube.h" />
     <ClInclude Include="..\public\Object_PushCube.h" />
+    <ClInclude Include="..\public\MyButton.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\Scene_IMGUI.h" />
     <ClInclude Include="..\public\Scene_Stage2.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="..\private\Object_GravityCube.cpp" />
     <ClCompile Include="..\private\Object_MoveCube.cpp" />
     <ClCompile Include="..\private\Object_PushCube.cpp" />
+    <ClCompile Include="..\private\MyButton.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\Scene_IMGUI.cpp" />
     <ClCompile Include="..\private\Scene_Stage2.cpp" />
