@@ -117,8 +117,7 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Shop), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 	//Button Texture
-	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/UI/run.png");
-	TextureDesc.iNumTexture = 1;
+	TextureDesc.szTextFilePath = TEXT("Player.txt");
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Run"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;

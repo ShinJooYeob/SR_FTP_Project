@@ -104,6 +104,14 @@ HRESULT CRenderer::Render_Alpha()
 
 HRESULT CRenderer::Render_UI()
 {
+	if (m_pGraphicDevice == nullptr)
+		return E_FAIL;
+
+	_Matrix BeforeViewMatrix, BeforeProjectmat;
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &BeforeViewMatrix);
+	m_pGraphicDevice->GetTransform(D3DTS_PROJECTION, &BeforeProjectmat);
+
+
 	_Matrix ViewMatrix;
 	D3DXMatrixIdentity(&ViewMatrix);
 	m_pGraphicDevice->SetTransform(D3DTS_VIEW, &ViewMatrix);
@@ -119,6 +127,10 @@ HRESULT CRenderer::Render_UI()
 		Safe_Release(RenderObject);
 	}
 	m_RenderObjectList[RENDER_UI].clear();
+
+
+	m_pGraphicDevice->SetTransform(D3DTS_VIEW, &BeforeViewMatrix);
+	m_pGraphicDevice->SetTransform(D3DTS_PROJECTION, &BeforeProjectmat);
 	return S_OK;
 }
 

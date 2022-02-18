@@ -66,6 +66,9 @@ HRESULT CCamera_Main::Initialize_Clone(void * pArg)
 
 _int CCamera_Main::Update(_float fDeltaTime)
 {
+
+
+
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 
 
