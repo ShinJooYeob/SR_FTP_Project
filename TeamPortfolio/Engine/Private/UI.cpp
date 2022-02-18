@@ -19,7 +19,7 @@ HRESULT CUI::Initialize_Prototype(void * pArg)
 
 	return S_OK;
 }
-
+//юс╫ц
 HRESULT CUI::Initialize_Clone(void * pArg)
 {	
 	if (FAILED(__super::Initialize_Clone(pArg)))
