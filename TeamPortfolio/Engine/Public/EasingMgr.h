@@ -5,7 +5,7 @@ BEGIN(Engine)
 
 class CEasingMgr :public CBase
 {
-public:
+private:
 	enum EasingTypeID
 	{
 		TYPE_Linear = 0,

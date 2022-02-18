@@ -20,6 +20,7 @@ CTexture::CTexture(const CTexture & rhs)
 	auto iter =  m_mapTextureLayers.begin();
 
 	m_pBindedTextureLayer = iter->second;
+	m_TagNowTexture = iter->first.c_str();
 	Safe_AddRef(m_pBindedTextureLayer);
 
 	m_fFrameTime = 0;
@@ -88,9 +89,10 @@ HRESULT CTexture::Read_TextFile(TYPE eTextureType, const _tchar * szFilePath)
 
 			// '|' 단위로 끊어서 문자열 입력 처리
 
-			fin.getline(szPath, MAX_PATH, '|');
+			fin.getline(szPadding, MAX_PATH, '|');
 			fin.getline(szStateKey, MAX_PATH, '|');
 			fin.getline(szCount, MAX_PATH, '|');
+			fin.getline(szPath, MAX_PATH);
 
 			if (fin.eof())
 				break;
@@ -104,7 +106,6 @@ HRESULT CTexture::Read_TextFile(TYPE eTextureType, const _tchar * szFilePath)
 				return E_FAIL;
 			}
 
-			fin.getline(szPadding, MAX_PATH, '\n');
 			if (fin.eof())
 				break;
 		}
@@ -116,6 +117,7 @@ HRESULT CTexture::Read_TextFile(TYPE eTextureType, const _tchar * szFilePath)
 	auto iter = m_mapTextureLayers.begin();
 
 	m_pBindedTextureLayer = iter->second;
+	m_TagNowTexture = iter->first.c_str();
 	Safe_AddRef(m_pBindedTextureLayer);
 
 	m_fFrameTime = 0;
@@ -127,10 +129,6 @@ HRESULT CTexture::Read_TextFile(TYPE eTextureType, const _tchar * szFilePath)
 HRESULT CTexture::Insert_TextureLayer(TYPE eType, _tchar * szFilePath, _tchar * szStateKey, _int iNumTextureCount)
 {
 
-	auto iter = find_if(m_mapTextureLayers.begin(), m_mapTextureLayers.end(), CTagStringFinder(szStateKey));
-
-	if (iter != m_mapTextureLayers.end())
-		return E_FAIL;
 
 
 	CTextureLayer::TEXTURELAYERDESC tagLayerDesc = {};
@@ -139,22 +137,36 @@ HRESULT CTexture::Insert_TextureLayer(TYPE eType, _tchar * szFilePath, _tchar * 
 	tagLayerDesc.szFilePath = szFilePath;
 	tagLayerDesc.iNumTexture = iNumTextureCount;
 
+	auto iter = find_if(m_mapTextureLayers.begin(), m_mapTextureLayers.end(), CTagStringFinder(szStateKey));
+
+	if (iter != m_mapTextureLayers.end()) {
+
+		if (FAILED((iter)->second->Add_Another_Texture(&tagLayerDesc)))
+			return E_FAIL;
+	}
+	else 
+	{
+
+		CTextureLayer* pTextureLayer = CTextureLayer::Create(m_pGraphicDevice, &tagLayerDesc);
+
+		if (pTextureLayer == nullptr)
+			return E_FAIL;
 
 
-	CTextureLayer* pTextureLayer = CTextureLayer::Create(m_pGraphicDevice, &tagLayerDesc);
+		m_mapTextureLayers.emplace(szStateKey, pTextureLayer);
 
-	if (pTextureLayer == nullptr)
-		return E_FAIL;
+	}
 
 
-	m_mapTextureLayers.emplace(szStateKey, pTextureLayer);
 
 
 	return S_OK;
 }
 
-HRESULT CTexture::Change_TextureLayer(const _tchar * tagTexureLayer)
+HRESULT CTexture::Change_TextureLayer(const _tchar * tagTexureLayer, _float fFramePerSec)
 {
+	if (!lstrcmp(m_TagNowTexture, tagTexureLayer))
+		return S_FALSE;
 
 	auto iter = find_if(m_mapTextureLayers.begin(), m_mapTextureLayers.end(), CTagStringFinder(tagTexureLayer));
 	
@@ -167,7 +179,72 @@ HRESULT CTexture::Change_TextureLayer(const _tchar * tagTexureLayer)
 	Safe_AddRef(m_pBindedTextureLayer);
 
 	m_fFrameTime = 0;
+	m_fFramePerSec = fFramePerSec;
+	m_TagNowTexture = tagTexureLayer;
 	m_iNumMaxTexture = m_pBindedTextureLayer->Get_TextureNum();
+
+	m_bIsWaitTexture = false;
+	m_bIsReturnTexture = false;
+	m_szReturnTag = nullptr;
+	return S_OK;
+}
+
+HRESULT CTexture::Change_TextureLayer_ReturnTo(const _tchar * tagTexureLayer, const _tchar * szReturnTag, _float fFramePerSec, _float fResturnFps)
+{
+	if (tagTexureLayer == nullptr || szReturnTag == nullptr)
+		return E_FAIL;
+
+
+	if (lstrcmp(m_TagNowTexture, tagTexureLayer)) 
+	{
+		auto iter = find_if(m_mapTextureLayers.begin(), m_mapTextureLayers.end(), CTagStringFinder(tagTexureLayer));
+
+		if (iter == m_mapTextureLayers.end())
+			return E_FAIL;
+
+
+		Safe_Release(m_pBindedTextureLayer);
+		m_pBindedTextureLayer = iter->second;
+		Safe_AddRef(m_pBindedTextureLayer);
+
+		m_fFrameTime = 0;
+		m_iNumMaxTexture = m_pBindedTextureLayer->Get_TextureNum();
+		m_TagNowTexture = tagTexureLayer;
+	}
+
+	m_bIsWaitTexture = false;
+	m_bIsReturnTexture = true;
+	m_fFramePerSec = fFramePerSec;
+	m_iReturnFps = fResturnFps;
+	m_szReturnTag = szReturnTag;
+	return S_OK;
+}
+
+HRESULT CTexture::Change_TextureLayer_Wait(const _tchar * tagTexureLayer, _float fFramePerSec)
+{
+
+	if (!lstrcmp(m_TagNowTexture, tagTexureLayer))
+		return S_FALSE;
+
+
+	auto iter = find_if(m_mapTextureLayers.begin(), m_mapTextureLayers.end(), CTagStringFinder(tagTexureLayer));
+
+	if (iter == m_mapTextureLayers.end())
+		return E_FAIL;
+
+
+	Safe_Release(m_pBindedTextureLayer);
+	m_pBindedTextureLayer = iter->second;
+	Safe_AddRef(m_pBindedTextureLayer);
+
+	m_fFrameTime = 0;
+	m_fFramePerSec = fFramePerSec;
+	m_TagNowTexture = tagTexureLayer;
+	m_iNumMaxTexture = m_pBindedTextureLayer->Get_TextureNum();
+
+	m_bIsWaitTexture = true;
+	m_bIsReturnTexture = false;
+	m_szReturnTag = nullptr;
 
 	return S_OK;
 }
@@ -177,10 +254,24 @@ HRESULT CTexture::Bind_Texture_AutoFrame(_float fTimeDelta)
 	if (m_pBindedTextureLayer == nullptr)
 		return E_FAIL;
 
-	m_fFrameTime += m_iNumMaxTexture * fTimeDelta;
+	m_fFrameTime += m_fFramePerSec * fTimeDelta;
 
-	if (m_fFrameTime >= (_float)m_iNumMaxTexture)
-		m_fFrameTime = 0.f;
+	if (m_fFrameTime >= (_float)(m_iNumMaxTexture + 1))
+	{
+		if (m_bIsWaitTexture)
+		{
+			m_fFrameTime = (_float)m_iNumMaxTexture;
+			m_TagNowTexture = nullptr;
+		}
+		else if (m_bIsReturnTexture)
+		{
+			Change_TextureLayer(m_szReturnTag, m_iReturnFps);
+		}
+		else
+		{
+			m_fFrameTime = 0.f;
+		}
+	}
 
 
 	return m_pBindedTextureLayer->Bind_Texture((_uint)m_fFrameTime);

@@ -29,6 +29,8 @@ public:
 private:
 	list<class CGameObject*>		m_CollisionObjects[COLLISION_END];
 
+	_float3 DefaultCubeVerties[8] = {};
+
 	//VTXTEX*	m_CCollision_SourceVertices;
 	//VTXTEX*	m_CCollision_DestVertices;
 

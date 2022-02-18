@@ -64,6 +64,44 @@ HRESULT CTextureLayer::ClearTexture()
 	return S_OK;
 }
 
+HRESULT CTextureLayer::Add_Another_Texture(TEXTURELAYERDESC * pArg)
+{
+
+
+	if (pArg == nullptr)
+		return E_FAIL;
+
+	TEXTURELAYERDESC tTextureLayerDesc{};
+	memcpy(&tTextureLayerDesc, pArg, sizeof(TEXTURELAYERDESC));
+
+
+	for (_uint i = 0; i < tTextureLayerDesc.iNumTexture; i++)
+	{
+		_tchar	szFullPath[MAX_PATH] = L"";
+		wsprintf(szFullPath, tTextureLayerDesc.szFilePath, i);
+
+		LPDIRECT3DBASETEXTURE9		pTexture = nullptr;
+		HRESULT		hr = 0;
+
+		if (tTextureLayerDesc.eTextureType == 0)
+			hr = D3DXCreateTextureFromFile(m_pGraphicDevice, szFullPath, (LPDIRECT3DTEXTURE9*)&pTexture);
+		else
+			hr = D3DXCreateCubeTextureFromFile(m_pGraphicDevice, szFullPath, (LPDIRECT3DCUBETEXTURE9*)&pTexture);
+
+		if (FAILED(hr))
+			return E_FAIL;
+
+
+		m_vecTexture.emplace_back(pTexture);
+	}
+
+
+
+
+
+	return S_OK;
+}
+
 
 
 CTextureLayer * CTextureLayer::Create(LPDIRECT3DDEVICE9 pGraphicDevice, TEXTURELAYERDESC * pArg)

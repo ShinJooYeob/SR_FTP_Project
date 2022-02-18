@@ -28,7 +28,8 @@ public:
 	HRESULT Bind_Texture(_uint iTextureIndex = 0);
 	HRESULT ClearTexture();
 
-	_uint Get_TextureNum() {return (_uint)m_vecTexture.size();	}
+	_uint Get_TextureNum() {return (_uint)(m_vecTexture.size() - 1);	}
+	HRESULT Add_Another_Texture(TEXTURELAYERDESC* pArg);
 
 private:
 	vector<LPDIRECT3DBASETEXTURE9>			m_vecTexture;

@@ -29,7 +29,10 @@ private:
 	virtual ~CTexture() = default;
 
 public:
-	HRESULT Change_TextureLayer(const _tchar* tagTexureLayer);
+	HRESULT Change_TextureLayer(const _tchar* tagTexureLayer , _float fFramePerSec = 6.f);
+	HRESULT Change_TextureLayer_ReturnTo(const _tchar* tagTexureLayer, const _tchar* szReturnTag, _float fFramePerSec = 6.f , _float fResturnFps = 6.f);
+	HRESULT Change_TextureLayer_Wait(const _tchar* tagTexureLayer, _float fFramePerSec = 6.f);
+
 	HRESULT Bind_Texture_AutoFrame(_float fTimeDelta);
 	HRESULT Bind_Texture(_uint iTextureIndex = 0);
 	HRESULT ClearTexture();
@@ -43,8 +46,14 @@ private:
 	typedef	map<wstring, CTextureLayer*>  TEXTURELAYERS;
 
 
+	_float										m_fFramePerSec = 6.0f;
+	_bool										m_bIsWaitTexture = false;
+	_bool										m_bIsReturnTexture = false;
+	_float										m_iReturnFps = 6.f;
 	_float										m_fFrameTime = 0;
 	_uint										m_iNumMaxTexture = 0;
+	const _tchar*								m_TagNowTexture = nullptr;
+	const _tchar*								m_szReturnTag = nullptr;
 
 private:
 	HRESULT Read_TextFile(TYPE eTextureType, const _tchar* szFilePath);

@@ -179,39 +179,31 @@ HRESULT CTransform::Bind_WorldMatrix()
 	return S_OK;
 }
 
-HRESULT CTransform::Bind_WorldMatrix_Look_Camera(_float3 vCameraPos)
+HRESULT CTransform::Bind_WorldMatrix_Look_Camera()
 {
 	if (m_pGraphicDevice == nullptr)
 		return E_FAIL;
 
-	_float3 vPos = Get_MatrixState(STATE_POS);
+	//뷰스페이스 변환 행렬
+	_Matrix matVeiwSpace;
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
+
+
+	_Matrix vCamMatirx = matVeiwSpace.InverseMatrix();
+	_Matrix TempWorldMat;
+	memcpy(&TempWorldMat, &m_WorldMatrix, sizeof(_Matrix));
+
 	_float3 vScale = Get_MatrixScale();
 
-	_float3 vLook, vRight, vUp;
-
-	vLook = (vPos - vCameraPos).Get_Nomalize() * vScale.z;
-
-	if (vLook.Get_Nomalize() == _float3(0, 1, 0))
-	{
-		MSGBOX("정규화 된 벡터가 _float3(0,1,0)일 경우 외적이 불가능합니다.");
-	}
-	else
-		vRight = _float3(0, 1, 0).Get_Cross(vLook).Get_Nomalize() * vScale.x;
-
-	vUp = vLook.Get_Cross(vRight).Get_Nomalize() * vScale.y;
 
 
-	_Matrix LookCameraStateMatrix
-	{
-		vRight.x,	vRight.y,	vRight.z,	0,
-		vUp.x,		vUp.y,		vUp.z,		0,
-		vLook.x,	vLook.y,	vLook.z,	0,
-		vPos.x- m_TransforDesc.vPivot.x,		vPos.y - m_TransforDesc.vPivot.y,		vPos.z - m_TransforDesc.vPivot.z,		1
-	};
+	memcpy(&(TempWorldMat.m[0][0]), &((*((_float3*)(&vCamMatirx.m[0][0])))*vScale.x), sizeof(_float3));
+	memcpy(&(TempWorldMat.m[1][0]), &((*((_float3*)(&vCamMatirx.m[1][0])))*vScale.y), sizeof(_float3));
+	memcpy(&(TempWorldMat.m[2][0]), &((*((_float3*)(&vCamMatirx.m[2][0])))*vScale.z), sizeof(_float3));
 
 
 
-	m_pGraphicDevice->SetTransform(D3DTS_WORLD, &LookCameraStateMatrix);
+	m_pGraphicDevice->SetTransform(D3DTS_WORLD, &TempWorldMat);
 
 	return S_OK;
 }

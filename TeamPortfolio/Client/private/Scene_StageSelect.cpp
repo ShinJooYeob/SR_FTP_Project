@@ -79,7 +79,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 				return E_FAIL;
 		}
 	}
-	for (_uint k = 0; k < 30; k++)
+	for (_uint k = 0; k < 10; k++)
 	{
 		for (_uint i = 1; i < 10 ; i++)
 		{

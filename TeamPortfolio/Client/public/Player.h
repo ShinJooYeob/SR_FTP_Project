@@ -45,7 +45,6 @@ private:
 	CCollision*		m_pCollisionCom = nullptr;
 	CVIBuffer_Cube*			m_ComColiisionBuffer = nullptr;
 
-
 private:
 	_float					m_fFrame = 0.f;
 
@@ -58,7 +57,7 @@ private:
 
 	_bool					m_bCanMoveLeft = false;
 	_bool					m_bCanMoveRight = false;
-//	_bool					m_bCanMoveUp = false;
+	_bool					m_bTextureReverse = false;
 
 	_float3					m_vDownstairsNear;
 	_float3					m_vClimingBlock;
@@ -71,6 +70,7 @@ private:
 	HRESULT			SetUp_Components();
 
 	HRESULT			Input_Keyboard(_float fDeltaTime);
+	HRESULT			Animation_Change(_float fDeltaTime);
 
 	HRESULT			Find_FootHold_Object(_float fDeltaTime);
 	HRESULT			Set_PosOnFootHoldObject(_float fDeltaTime);

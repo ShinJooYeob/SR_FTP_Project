@@ -75,9 +75,8 @@ _int CItem::Render()
 		return E_FAIL; 
 
 
-	CCamera_Main* pCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Camera_Main")));
-	
-	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera(pCamera->Get_Camera_Position())))
+		
+	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera()))
 		return E_FAIL;
 	 
 	
