@@ -161,8 +161,13 @@
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\Inventory_Main.h" />
     <ClInclude Include="..\public\Item.h" />
+    <ClInclude Include="..\public\Object_FixCube.h" />
+    <ClInclude Include="..\public\Object_GravityCube.h" />
+    <ClInclude Include="..\public\Object_MoveCube.h" />
+    <ClInclude Include="..\public\Object_PushCube.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\Scene_IMGUI.h" />
+    <ClInclude Include="..\public\Scene_Stage2.h" />
     <ClInclude Include="..\public\Scene_StageSelect.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\Scene_Loading.h" />
@@ -171,8 +176,6 @@
     <ClInclude Include="..\public\Shop.h" />
     <ClInclude Include="..\public\TerrainCube.h" />
     <ClInclude Include="..\public\TerrainGround.h" />
-    <ClInclude Include="..\public\TestCubeFixObject.h" />
-    <ClInclude Include="..\public\TestCubeMove.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -183,8 +186,13 @@
     <ClCompile Include="..\private\Camera_Main.cpp" />
     <ClCompile Include="..\private\Inventory_Main.cpp" />
     <ClCompile Include="..\private\Item.cpp" />
+    <ClCompile Include="..\private\Object_FixCube.cpp" />
+    <ClCompile Include="..\private\Object_GravityCube.cpp" />
+    <ClCompile Include="..\private\Object_MoveCube.cpp" />
+    <ClCompile Include="..\private\Object_PushCube.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\Scene_IMGUI.cpp" />
+    <ClCompile Include="..\private\Scene_Stage2.cpp" />
     <ClCompile Include="..\private\Scene_StageSelect.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\Scene_Loading.cpp" />
@@ -193,8 +201,6 @@
     <ClCompile Include="..\private\Shop.cpp" />
     <ClCompile Include="..\private\TerrainCube.cpp" />
     <ClCompile Include="..\private\TerrainGround.cpp" />
-    <ClCompile Include="..\private\TestCubeFixObject.cpp" />
-    <ClCompile Include="..\private\TestCubeMove.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

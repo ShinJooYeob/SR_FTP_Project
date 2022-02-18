@@ -33,7 +33,7 @@ HRESULT CObject_FixCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(50.f, 10.f, 50.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0.f, -6.f, 0.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0.f, -6.f, 20.f));
 
 	return S_OK;
 }
@@ -69,7 +69,7 @@ _int CObject_FixCube::LateUpdate(_float fTimeDelta)
 
 _int CObject_FixCube::Render()
 {
-	if (nullptr == m_ComVIBuffer)
+	if (nullptr == m_ComColiisionBuffer)
 		return E_FAIL;
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
@@ -82,7 +82,7 @@ _int CObject_FixCube::Render()
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
-	m_ComVIBuffer->Render();
+	m_ComColiisionBuffer->Render();
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
@@ -132,7 +132,7 @@ HRESULT CObject_FixCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For.버텍스 큐브 */
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_VIBuffer_Cube"), (CComponent**)&m_ComVIBuffer)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_CollisionBuffer"), (CComponent**)&m_ComColiisionBuffer)))
 		return E_FAIL;
 
 	///////////////////////////////////////////////////////
@@ -233,7 +233,7 @@ CObject_FixCube * CObject_FixCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, voi
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CPlayer_ProtoType");
+		MSGBOX("Fail to Create CObject_FixCube");
 		Safe_Release(pInstance);
 
 	}
@@ -248,7 +248,7 @@ CGameObject * CObject_FixCube::Clone(void * pArg)
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CTestCubeMove_Clone");
+		MSGBOX("Fail to Create CObject_FixCube");
 		Safe_Release(pInstance);
 
 	}
@@ -263,7 +263,7 @@ void CObject_FixCube::Free()
 
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComTransform);
-	Safe_Release(m_ComVIBuffer);
+	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_ComRenderer);
 	Safe_Release(m_ComTexture);
 }

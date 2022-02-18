@@ -52,8 +52,6 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 
 	for (auto& pFlexibleObjects : m_CollisionObjects[COLLISION_FLEXIBLE])
 	{
-		CTransform* SourceObject = (CTransform*)pFlexibleObjects->Get_Component(TEXT("Com_Transform")); //Source의 트랜스 폼
-		_float3&		SourcePosition = SourceObject->Get_MatrixState(CTransform::STATE_POS);
 
 		//소스의 큐브 정점을 구함 -> 굳이 안쪽에서 같은 연산을 여러번 할 필요없어서 올렸음
 		//_Matrix& SourceWorldMatrix = SourceObject->Get_WorldMatrix(); //Source의 월드행렬
@@ -65,11 +63,15 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 			SourceCubeVerties[i] = SourceCubeVerties[i] + SourcePosition;
 		}
 
-		for (int Collsion_enum = 1; Collsion_enum < COLLISION_END; ++Collsion_enum)
+		for (int Collsion_enum = 0; Collsion_enum < COLLISION_END; ++Collsion_enum)
 		{
 
 			for (auto& pDestObjects : m_CollisionObjects[Collsion_enum])
 			{
+				if (&pFlexibleObjects == &pDestObjects)
+					continue;
+	
+				
 
 				CTransform* DestObject = (CTransform*)pDestObjects->Get_Component(TEXT("Com_Transform")); //Dest의 트랜스 폼
 
@@ -78,26 +80,30 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 				if(SourcePosition.Get_Distance(DestPos) > 1.5f)
 					continue;
 
-				//디폴트 큐브 버텍스를 사용할 것이기 때문에 이부분을 사용하지 않아도 됨
-				//////////////////////////////////////////////////////////////////////////
+				//_float3&		SourcePosition = SourceObject->Get_MatrixState(CTransform::STATE_POS); //SourceObject의 포지션
+				//_float3&		DestPosition = DestObject->Get_MatrixState(CTransform::STATE_POS); //DestPosition의 포지션
+
+
 				//CVIBuffer_Cube* SourceCube = (CVIBuffer_Cube*)pFlexibleObjects->Get_Component(TEXT("Com_CollisionBuffer")); //Source큐브 컴포넌트 받는중
 				//CVIBuffer_Cube* DestCube = (CVIBuffer_Cube*)pDestObjects->Get_Component(TEXT("Com_CollisionBuffer")); //Dest큐브 컴포넌트 받는중
 
-				//VTXTEX* pSourceVertices = (VTXTEX*)SourceCube->Get_Vtxtex(); //Source큐브 정점 받는중
-				//VTXTEX* DestVertices = (VTXTEX*)DestCube->Get_Vtxtex(); //Dest큐브 정점 받는중
+			//	VTXTEX* pSourceVertices = (VTXTEX*)SourceCube->Get_Vtxtex(); //Source큐브 정점 받는중
+			//	VTXTEX* DestVertices = (VTXTEX*)DestCube->Get_Vtxtex(); //Dest큐브 정점 받는중
 
 				//_uint SourceVertices_Number = SourceCube->Get_NumVertices(); //정점 갯수 받는중
 				//_uint DestVertices_Number = DestCube->Get_NumVertices();
 
 				//m_CCollision_SourceVertices = new VTXTEX[SourceVertices_Number]; //Source 정점 갯수를 받아서 동적배열로 만듬
 				//ZeroMemory(m_CCollision_SourceVertices, sizeof(VTXTEX) * SourceVertices_Number);
-				//memcpy(m_CCollision_SourceVertices, pSourceVertices, sizeof(VTXTEX)*SourceVertices_Number);
+			//	memcpy(m_CCollision_SourceVertices, pSourceVertices, sizeof(VTXTEX)*SourceVertices_Number);
 
-				//m_CCollision_DestVertices = new VTXTEX[DestVertices_Number]; //Dest 정점 갯수를 받아서 동적배열로 만듬
-				//ZeroMemory(m_CCollision_DestVertices, sizeof(VTXTEX) * DestVertices_Number);
-				//memcpy(m_CCollision_DestVertices, pSourceVertices, sizeof(VTXTEX)*DestVertices_Number);
+			//	m_CCollision_DestVertices = new VTXTEX[DestVertices_Number]; //Dest 정점 갯수를 받아서 동적배열로 만듬
+			//	ZeroMemory(m_CCollision_DestVertices, sizeof(VTXTEX) * DestVertices_Number);
+			//	memcpy(m_CCollision_DestVertices, pSourceVertices, sizeof(VTXTEX)*DestVertices_Number);
 
-				///////////////////////////////////////////////////////////////////////월드행렬 달라야함!!!
+
+				///////////////////////////////////////////////////////////////////////월드행렬이 달라야함!!!
+
 
 
 				//_Matrix& DesteWorldMatrix = DestObject->Get_WorldMatrix(); //Dest의 월드행렬
@@ -114,13 +120,11 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 				//{
 				//	D3DXVec3TransformCoord(&m_CCollision_DestVertices[i].vPosition, &m_CCollision_DestVertices[i].vPosition, &DesteWorldMatrix);
 				//}
-
 				//					min <= max,															max >= min
 
 				list<_float> fBubbleSortX;
 				list<_float> fBubbleSortY;
 				list<_float> fBubbleSortZ;
-
 
 				if (SourceCubeVerties[0].x <= DestCubeVerties[7].x &&
 					DestCubeVerties[0].x <= SourceCubeVerties[7].x &&
@@ -169,16 +173,123 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 					++tempZ;
 					fDistanceZ = (*tempZ) - fDistanceZ;
 
+					//SourcePosition
+					//DestPosition
 
-					_float3 fCollision_Distance(fDistanceX, fDistanceY, fDistanceZ);
+					_float3 fCollision_Distance;
 
-					pFlexibleObjects->Obsever_On_Trigger(pDestObjects ,fCollision_Distance, fDeltaTime);
-					pDestObjects->Obsever_On_Trigger(pFlexibleObjects,fCollision_Distance, fDeltaTime);
+					if (fDistanceX > fDistanceY)
+					{
+						if (fDistanceY > fDistanceZ)
+						{
+							if (SourcePosition.z > DestPosition.z)
+							{
+								fCollision_Distance.x = fDistanceX;
+								fCollision_Distance.y = fDistanceY;
+								fCollision_Distance.z = fDistanceZ;
+
+								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+								fCollision_Distance.z = -fDistanceZ;
+								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+							}
+							else
+							{
+								fCollision_Distance.x = fDistanceX;
+								fCollision_Distance.y = fDistanceY;
+								fCollision_Distance.z = -fDistanceZ;
+
+								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+								fCollision_Distance.z = fDistanceZ;
+								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+
+							}
+						}
+						else
+						{
+							if (SourcePosition.y > DestPosition.y)
+							{
+								fCollision_Distance.x = fDistanceX;
+								fCollision_Distance.y = fDistanceY;
+								fCollision_Distance.z = fDistanceZ;
+
+								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+								fCollision_Distance.y = -fDistanceY;
+								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+							}
+							else
+							{
+								fCollision_Distance.x = fDistanceX;
+								fCollision_Distance.y = -fDistanceY;
+								fCollision_Distance.z = fDistanceZ;
+
+								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+								fCollision_Distance.y = fDistanceY;
+								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+							}
+						}
+					}
+					else
+					{
+						if (fDistanceX > fDistanceZ)
+						{
+							if (SourcePosition.z > DestPosition.z)
+							{
+								fCollision_Distance.x = fDistanceX;
+								fCollision_Distance.y = fDistanceY;
+								fCollision_Distance.z = fDistanceZ;
+
+								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+								fCollision_Distance.z = -fDistanceZ;
+								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+							}
+							else
+							{
+								fCollision_Distance.x = fDistanceX;
+								fCollision_Distance.y = fDistanceY;
+								fCollision_Distance.z = -fDistanceZ;
+
+								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+								fCollision_Distance.z = fDistanceZ;
+								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+							}
+						}
+						else
+						{
+							if (SourcePosition.x > DestPosition.x)
+							{
+								fCollision_Distance.x = fDistanceX;
+								fCollision_Distance.y = fDistanceY;
+								fCollision_Distance.z = fDistanceZ;
+
+								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+								fCollision_Distance.x = -fDistanceX;
+								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+							}
+							else
+							{
+								fCollision_Distance.x = -fDistanceX;
+								fCollision_Distance.y = fDistanceY;
+								fCollision_Distance.z = fDistanceZ;
+
+								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+								fCollision_Distance.x = fDistanceX;
+								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+							}
+						}
+					}
 
 				}
 			}
 		}
-		
+
 	}
 
 
@@ -200,7 +311,7 @@ HRESULT CCollision::Collision_Obsever_Release()
 	return S_OK;
 }
 
-CCollision * CCollision::Create(LPDIRECT3DDEVICE9 pGraphic_Device,void* pArg)
+CCollision * CCollision::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg)
 {
 	CCollision*	pInstance = new CCollision(pGraphic_Device);
 

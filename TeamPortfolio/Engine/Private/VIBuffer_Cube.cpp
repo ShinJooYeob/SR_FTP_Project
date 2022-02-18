@@ -14,19 +14,19 @@ CVIBuffer_Cube::CVIBuffer_Cube(const CVIBuffer_Cube & rhs)
 
 HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 {
-	m_iStride = sizeof(VTXTEX);
+	m_iStride = sizeof(VTXCUBETEX);
 	m_iNumVertices = 8;
-	m_dwFVF = D3DFVF_XYZ | D3DFVF_TEX1;
+	m_dwFVF = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0);
 	m_eDrawPrimitive = D3DPT_TRIANGLELIST;
 	m_iNumPrimitive = 12;
 
 	if (FAILED(__super::Create_VertexBuffer()))
 		return E_FAIL;
 
-	m_pVertices = new VTXTEX[m_iNumVertices];
-	ZeroMemory(m_pVertices, sizeof(VTXTEX) * m_iNumVertices);
+	m_pVertices = new VTXCUBETEX[m_iNumVertices];
+	ZeroMemory(m_pVertices, sizeof(VTXCUBETEX) * m_iNumVertices);
 
-	VTXTEX*			pVertices = nullptr;
+	VTXCUBETEX*			pVertices = nullptr;
 
 	m_pVB->Lock(0, 0, (void**)&pVertices, 0);
 
@@ -38,8 +38,9 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 			for (int X = 0; X < 2; ++X)
 			{
 				pVertices[VertexNumber].vPosition = _float3(X - 0.5f, Y - 0.5f, Z - 0.5f);
+				pVertices[VertexNumber].vTexUV = pVertices[VertexNumber].vPosition;
 
-				((VTXTEX*)m_pVertices)[VertexNumber] = pVertices[VertexNumber];
+				((VTXCUBETEX*)m_pVertices)[VertexNumber] = pVertices[VertexNumber];
 
 				++VertexNumber;
 			}
@@ -50,8 +51,12 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 
 	m_iIndicesSize = sizeof(FACEINDICES16);
 	m_eIndexFormat = D3DFMT_INDEX16;
+
 	if (FAILED(__super::Create_IndexBuffer()))
 		return E_FAIL;
+
+	m_pIndices = new FACEINDICES16[m_iNumPrimitive];
+	ZeroMemory(m_pIndices, sizeof(FACEINDICES16) * m_iNumPrimitive);
 
 	FACEINDICES16*		pIndices = nullptr;
 
@@ -61,16 +66,7 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 	m_pIB->Lock(0, 0, (void**)&pIndices, 0);
 
 
-	pIndices[IndexNumber]._0 = 2;
-	pIndices[IndexNumber]._1 = 3;
-	pIndices[IndexNumber]._2 = 1;
-	++IndexNumber;
-
-	pIndices[IndexNumber]._0 = 2;
-	pIndices[IndexNumber]._1 = 1;
-	pIndices[IndexNumber]._2 = 0;
-	++IndexNumber;
-	/////
+	/////+X
 	pIndices[IndexNumber]._0 = 3;
 	pIndices[IndexNumber]._1 = 7;
 	pIndices[IndexNumber]._2 = 5;
@@ -80,7 +76,44 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 	pIndices[IndexNumber]._1 = 5;
 	pIndices[IndexNumber]._2 = 1;
 	++IndexNumber;
-	//////
+
+
+	/////// -X
+	pIndices[IndexNumber]._0 = 6;
+	pIndices[IndexNumber]._1 = 2;
+	pIndices[IndexNumber]._2 = 0;
+	++IndexNumber;
+
+	pIndices[IndexNumber]._0 = 6;
+	pIndices[IndexNumber]._1 = 0;
+	pIndices[IndexNumber]._2 = 4;
+	++IndexNumber;
+
+
+	///// +Y
+	pIndices[IndexNumber]._0 = 6;
+	pIndices[IndexNumber]._1 = 7;
+	pIndices[IndexNumber]._2 = 3;
+	++IndexNumber;
+
+	pIndices[IndexNumber]._0 = 6;
+	pIndices[IndexNumber]._1 = 3;
+	pIndices[IndexNumber]._2 = 2;
+	++IndexNumber;
+
+	////// -Y
+	pIndices[IndexNumber]._0 = 0;
+	pIndices[IndexNumber]._1 = 1;
+	pIndices[IndexNumber]._2 = 5;
+	++IndexNumber;
+
+	pIndices[IndexNumber]._0 = 0;
+	pIndices[IndexNumber]._1 = 5;
+	pIndices[IndexNumber]._2 = 4;
+	++IndexNumber;
+
+
+	////// +Z
 	pIndices[IndexNumber]._0 = 7;
 	pIndices[IndexNumber]._1 = 6;
 	pIndices[IndexNumber]._2 = 4;
@@ -91,42 +124,23 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 	pIndices[IndexNumber]._2 = 5;
 	++IndexNumber;
 
-	//***********************
 
-	pIndices[IndexNumber]._0 = 6;
-	pIndices[IndexNumber]._1 = 2;
+	//////-Z
+	pIndices[IndexNumber]._0 = 2;
+	pIndices[IndexNumber]._1 = 3;
+	pIndices[IndexNumber]._2 = 1;
+	++IndexNumber;
+
+	pIndices[IndexNumber]._0 = 2;
+	pIndices[IndexNumber]._1 = 1;
 	pIndices[IndexNumber]._2 = 0;
 	++IndexNumber;
 
-	pIndices[IndexNumber]._0 = 6;
-	pIndices[IndexNumber]._1 = 0;
-	pIndices[IndexNumber]._2 = 4;
-	++IndexNumber;
-	/////
-	pIndices[IndexNumber]._0 = 6;
-	pIndices[IndexNumber]._1 = 7;
-	pIndices[IndexNumber]._2 = 3;
-	++IndexNumber;
-
-	pIndices[IndexNumber]._0 = 6;
-	pIndices[IndexNumber]._1 = 3;
-	pIndices[IndexNumber]._2 = 2;
-	++IndexNumber;
-	//////
-	pIndices[IndexNumber]._0 = 0;
-	pIndices[IndexNumber]._1 = 1;
-	pIndices[IndexNumber]._2 = 5;
-	++IndexNumber;
-
-	pIndices[IndexNumber]._0 = 0;
-	pIndices[IndexNumber]._1 = 5;
-	pIndices[IndexNumber]._2 = 4;
-	++IndexNumber;
 
 	m_pIB->Unlock();
 
 
-
+	memcpy(m_pIndices, pIndices, sizeof(FACEINDICES16) * m_iNumPrimitive);
 
 
 

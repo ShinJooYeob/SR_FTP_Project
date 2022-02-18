@@ -99,16 +99,19 @@ _int CObject_MoveCube::LateUpdate(_float fTimeDelta)
 
 _int CObject_MoveCube::Render()
 {
-	if (nullptr == m_ComVIBuffer)
+	if (nullptr == m_ComColiisionBuffer)
 		return E_FAIL;
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
+	if (FAILED(m_ComTexture->Bind_Texture(3)))// 몇번째 인덱스인지 명시 0부터 시작
+		return E_FAIL;
+
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
-	m_ComVIBuffer->Render();
+	m_ComColiisionBuffer->Render();
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
@@ -180,13 +183,17 @@ HRESULT CObject_MoveCube::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
 
+	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Texture_Sky"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+		return E_FAIL;
+
+
 
 	/* For.Com_Renderer */
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer_Cube */
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_VIBuffer_Cube"), (CComponent**)&m_ComVIBuffer)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_CollisionBuffer"), (CComponent**)&m_ComColiisionBuffer)))
 		return E_FAIL;
 
 	///////////////////////////////////////////////////////
@@ -255,37 +262,47 @@ HRESULT CObject_MoveCube::SetUp_RenderState()
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
-	//m_pGraphic_Device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	//m_pGraphic_Device->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-	//m_pGraphic_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	//m_pGraphic_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	////m_pGraphic_Device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	////m_pGraphic_Device->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	////m_pGraphic_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	////m_pGraphic_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+	///*
+	//_float4		vSourColor, vDestColor;
+
+	//(vSourColor.rgb) * vSourColor.a + (vDestColor.rgb) * (1.f - vSourColor.a);*/
+
+
+	//////////////////////////
+	//m_pGraphicDevice->SetTexture(0, NULL);
+	//m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	///////////////////////////////////////////////////////////////////////////
+
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 0);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
-	/*
-	_float4		vSourColor, vDestColor;
-
-	(vSourColor.rgb) * vSourColor.a + (vDestColor.rgb) * (1.f - vSourColor.a);*/
-
-
-	////////////////////////
-	m_pGraphicDevice->SetTexture(0, NULL);
-	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-	/////////////////////////////////////////////////////////////////////////
 
 	return S_OK;
 }
 
 HRESULT CObject_MoveCube::Release_RenderState()
 {
+
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
-	///////////////////////////
-	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	///////////////////////////////
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	/////////////////////////////
+	//m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	/////////////////////////////////
 
 	return S_OK;
 }
@@ -296,7 +313,7 @@ CObject_MoveCube * CObject_MoveCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, v
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CPlayer_ProtoType");
+		MSGBOX("Fail to Create CObject_MoveCube");
 		Safe_Release(pInstance);
 
 	}
@@ -311,7 +328,7 @@ CGameObject * CObject_MoveCube::Clone(void * pArg)
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CTestCubeMove_Clone");
+		MSGBOX("Fail to Create CObject_MoveCube");
 		Safe_Release(pInstance);
 
 	}
@@ -324,8 +341,9 @@ void CObject_MoveCube::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_ComTexture);
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComTransform);
-	Safe_Release(m_ComVIBuffer);
+	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_ComRenderer);
 }

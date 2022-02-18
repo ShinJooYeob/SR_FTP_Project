@@ -33,7 +33,7 @@ HRESULT CObject_PushCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(5.f, -1.f, 0.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(5.f, -1.f, 5.f));
 
 	return S_OK;
 }
@@ -69,7 +69,7 @@ _int CObject_PushCube::LateUpdate(_float fTimeDelta)
 
 _int CObject_PushCube::Render()
 {
-	if (nullptr == m_ComVIBuffer)
+	if (nullptr == m_ComColiisionBuffer)
 		return E_FAIL;
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
@@ -82,7 +82,7 @@ _int CObject_PushCube::Render()
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
-	m_ComVIBuffer->Render();
+	m_ComColiisionBuffer->Render();
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
@@ -201,7 +201,7 @@ HRESULT CObject_PushCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_VIBuffer_Cube */
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_VIBuffer_Cube"), (CComponent**)&m_ComVIBuffer)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_CollisionBuffer"), (CComponent**)&m_ComColiisionBuffer)))
 		return E_FAIL;
 
 	///////////////////////////////////////////////////////
@@ -336,6 +336,6 @@ void CObject_PushCube::Free()
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComTransform);
-	Safe_Release(m_ComVIBuffer);
+	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_ComRenderer);
 }
