@@ -168,32 +168,24 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 #pragma region PROTOTYPE_COMPONENT
 
 	CTexture::TEXTUREDESC TextureDesc;
-
-	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.tga");
-	TextureDesc.iNumTexture = 1;
-	TextureDesc.iStartIndex = 0;
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("Player.txt");
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_FixCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/UI/drapes_ground.png");
-	TextureDesc.iNumTexture = 1;
-	TextureDesc.iStartIndex = 1;
+	TextureDesc.szTextFilePath = TEXT("Player.txt");
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_PushCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/Terrain/Brush.png");
-	TextureDesc.iNumTexture = 1;
-	TextureDesc.iStartIndex = 1;
+	TextureDesc.szTextFilePath = TEXT("Player.txt");
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_GravityCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds");
+	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	TextureDesc.iNumTexture = 4; //텍스쳐 갯수
-	TextureDesc.iStartIndex = 0; //인덱스 시작 번호 FEZ는 1로 되어 있어서 이렇게 씀
 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Sky"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;

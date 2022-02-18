@@ -38,7 +38,7 @@ HRESULT CTexture::Initialize_Prototype(void * pArg)
 
 	TEXTUREDESC tTextureDesc{};
 	memcpy(&tTextureDesc, pArg, sizeof(TEXTUREDESC));
-
+	
 	if (FAILED(Read_TextFile(tTextureDesc.eTextureType,tTextureDesc.szTextFilePath)))
 		return E_FAIL;
 	

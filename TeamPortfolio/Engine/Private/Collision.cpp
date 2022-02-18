@@ -57,6 +57,8 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 		//_Matrix& SourceWorldMatrix = SourceObject->Get_WorldMatrix(); //Source의 월드행렬
 		_float3 SourceCubeVerties[8];
 		memcpy(SourceCubeVerties, DefaultCubeVerties, sizeof(_float3) * 8);
+		CTransform* SoruceTransform = (CTransform*)pFlexibleObjects->Get_Component(TEXT("Com_Transform")); //Dest의 트랜스 폼
+		_float3  SourcePosition = SoruceTransform->Get_MatrixState(CTransform::STATE_POS);
 
 		for (_uint i = 0; i < 8; ++i)
 		{
@@ -76,8 +78,8 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 				CTransform* DestObject = (CTransform*)pDestObjects->Get_Component(TEXT("Com_Transform")); //Dest의 트랜스 폼
 
 				//COLLISION_FLEXIBLE 오브젝트와 일정거리(루트 2) 이상라면 굳이 충돌연산을 하지 않음
-				_float3&	DestPos = DestObject->Get_MatrixState(CTransform::STATE_POS);
-				if(SourcePosition.Get_Distance(DestPos) > 1.5f)
+				_float3&	DestPosition = DestObject->Get_MatrixState(CTransform::STATE_POS);
+				if(SourcePosition.Get_Distance(DestPosition) > 1.5f)
 					continue;
 
 				//_float3&		SourcePosition = SourceObject->Get_MatrixState(CTransform::STATE_POS); //SourceObject의 포지션
@@ -112,7 +114,7 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 
 				for (_uint i = 0; i < 8; ++i)
 				{
-					DestCubeVerties[i] = DestCubeVerties[i] + DestPos;
+					DestCubeVerties[i] = DestCubeVerties[i] + DestPosition;
 					//DestCubeVerties[i] = DestCubeVerties[i].PosVector_Matrix(DesteWorldMatrix);
 					//D3DXVec3TransformCoord(&SourceCubeVerties[i], &m_CCollision_SourceVertices[i].vPosition, &SourceWorldMatrix);
 				}

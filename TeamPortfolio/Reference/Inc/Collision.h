@@ -31,8 +31,8 @@ private:
 
 	_float3 DefaultCubeVerties[8] = {};
 
-	//VTXTEX*	m_CCollision_SourceVertices;
-	//VTXTEX*	m_CCollision_DestVertices;
+	//VTXCUBETEX*	m_CCollision_SourceVertices;
+	//VTXCUBETEX*	m_CCollision_DestVertices;
 
 public:
 	static CCollision* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

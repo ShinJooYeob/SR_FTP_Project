@@ -105,7 +105,7 @@ _int CObject_MoveCube::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture(3)))// 몇번째 인덱스인지 명시 0부터 시작
+	if (FAILED(m_ComTexture->Bind_Texture()))// 몇번째 인덱스인지 명시 0부터 시작
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
