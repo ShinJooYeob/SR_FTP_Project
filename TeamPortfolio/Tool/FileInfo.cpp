@@ -32,6 +32,8 @@ CString CFileInfo::ConvertRelativePath(CString strFullPath)
 
 void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPathInfoList, E_FILETYPE type)
 {
+	// %d를 붙이는 연속된 이미지파일 저장시 사용
+
 	wstring	wstrFilePath = wstrPath + L"\\*.*";
 
 	// mfc에서 제공하는 파일 및 경로 제어 관련 클래스
@@ -126,19 +128,7 @@ void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<MYFILEPA
 	// wstrPath 파일 폴더의 경로가 들어온다. / 이 다음 모든 파일을 확인
 	wstring	wstrFilePath;
 	wstrFilePath = wstrPath + L"\\*.*";
-	//switch (type)
-	//{
-	//case FILETYPE_PNG:
-	//	wstrFilePath = wstrPath + L"\\*.png";
-	//	break;
-	//case FILETYPE_XML:
-	//	wstrFilePath = wstrPath + L"\\*.xml";
-	//	break;
-	//case FILETYPE_ALL:
-	//	wstrFilePath = wstrPath + L"\\*.*";
-	//	break;
-	//}
-
+	
 	// mfc에서 제공하는 파일 및 경로 제어 관련 클래스
 	CFileFind		Find;
 
