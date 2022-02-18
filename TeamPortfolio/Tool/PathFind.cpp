@@ -94,9 +94,14 @@ void CPathFind::OnLbnSelchangeList1()
 
 void CPathFind::OnSaveData()
 {
-	// 저장버튼을 누르면 해당 경로 txt 파일로 저장된다.	
-	
+	// 저장버튼을 누르면 해당 경로 txt 파일로 저장된다.		
 	wstring SaveFileFullPath = GetSaveFilePath();
+	if(SaveFileFullPath.length()<1)
+	{
+		FAILED_TOOL_MSG(L"NoFileName");
+		return;
+	}
+
 
 	wofstream		fout;
 	fout.open(SaveFileFullPath);
@@ -115,7 +120,7 @@ void CPathFind::OnSaveData()
 	}
 
 	// 윈도우의 기본 프로그램을 실행시켜주는 함수
-	CString pathstr = L"notepad.exe";
+	CString pathstr = L"notepad.exe ";
 	pathstr = pathstr + SaveFileFullPath.c_str();
 
 	WinExec(CT2CA(pathstr.operator LPCWSTR()),SW_SHOW);
@@ -126,6 +131,11 @@ void CPathFind::OnLoadData()
 	ClearPathData();
 
 	wstring LoadFileFullPath = GetSaveFilePath();
+	if (LoadFileFullPath.length() < 1)
+	{
+		FAILED_TOOL_MSG(L"NoFileName");
+		return;
+	}
 
 	UpdateData(TRUE);
 
@@ -168,14 +178,19 @@ void CPathFind::OnLoadData()
 
 			// 패스 정보 추가
 			wstrCombined = wstring(wObjKey) + L"|" + wstring(wStateKey) + L"|" + wstring(wCount) + L"|" + wstring(wFullpath);
+
+
 		}
 
 		fin.close();		// close 함수는 생략 가능(객체 타입이어서 소멸 시점에 알아서 개방한 파일 또한 소멸 가능)
 	}
+	
+	Update_PathListData();
+
 	UpdateData(FALSE);
 
 	// 윈도우의 기본 프로그램을 실행시켜주는 함수
-	CString pathstr = L"notepad.exe";
+	CString pathstr = L"notepad.exe ";
 	pathstr = pathstr + LoadFileFullPath.c_str();
 	WinExec(CT2CA(pathstr.operator LPCWSTR()), SW_SHOW);
 }
@@ -209,12 +224,8 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 		// 이거 수정
 		CFileInfo::DirInfoExtraction(szFilePath, m_PathInfoList, FILETYPE_PNG);
 	}
-	m_ListBox.ResetContent();
 
-	for (auto& iter : m_PathInfoList)
-	{
-		m_ListBox.AddString(iter->wstrObjKey.c_str());
-	}
+	Update_PathListData();
 
 #pragma endregion
 
@@ -253,6 +264,8 @@ wstring CPathFind::GetSaveFilePath()
 {
 	CString cstrFIleName = {};
 	GetDlgItemText(mEditBox.GetDlgCtrlID(), cstrFIleName);
+	if (cstrFIleName.GetLength() < 1)
+		return L"";
 	wstring wstrFilename;
 	wstrFilename = cstrFIleName.operator LPCWSTR();
 	wstring SaveFileFullPath = FilePath + wstrFilename + Extension;
@@ -280,6 +293,21 @@ HRESULT CPathFind::ClearPathData()
 	}
 	m_MapPngImage.clear();*/
 
+	return S_OK;
+}
+
+HRESULT CPathFind::Update_PathListData()
+{
+	if (m_PathInfoList.empty())
+		return E_FAIL;
+	m_ListBox.ResetContent();
+	for (auto& iter : m_PathInfoList)
+	{
+		TCHAR buf[10];
+		_itot_s(iter->iCount, buf, 10);
+		wstring combinestring = iter->wstrObjKey + L"|" + iter->wstrStateKey + L"|" + buf + L"|" + iter->wstrPath;
+		m_ListBox.AddString(combinestring.c_str());
+	}
 	return S_OK;
 }
 

@@ -45,6 +45,7 @@ private:
 	wstring FindPath(wstring strname);
 	wstring GetSaveFilePath();
 	HRESULT	ClearPathData();
+	HRESULT Update_PathListData();
 
 
 private:
