@@ -102,21 +102,6 @@
     <ClInclude Include="PathFind.h">
       <Filter>00. Special\01. View\01. MyButton\01. PathFind</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Include.h">
-      <Filter>99.Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Struct.h">
-      <Filter>99.Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Enum.h">
-      <Filter>99.Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Functor.h">
-      <Filter>99.Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\Tool_Define.h">
-      <Filter>99.Header</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectTool_Rect.h">
       <Filter>04.Object\01.VertexObject</Filter>
     </ClInclude>
@@ -131,6 +116,21 @@
     </ClInclude>
     <ClInclude Include="MyForm.h">
       <Filter>00. Special\01. View\00. MyForm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Struct.h">
+      <Filter>99.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Tool_Define.h">
+      <Filter>99.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Enum.h">
+      <Filter>99.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Functor.h">
+      <Filter>99.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Include.h">
+      <Filter>99.Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -180,11 +180,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\Tool.rc2">
-      <Filter>리소스 파일</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="res\ToolDoc.ico">
       <Filter>리소스 파일</Filter>
     </Image>
@@ -194,5 +189,10 @@
     <Image Include="res\Toolbar.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\res\Tool.rc2">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>
