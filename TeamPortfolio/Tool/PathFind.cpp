@@ -49,10 +49,11 @@ END_MESSAGE_MAP()
 
 void CPathFind::OnLbnSelchangeList1()
 {
+	// 리스트 박스 선택시 이벤트
+
 //	if (m_GameObject_Rect_Tool == nullptr)
 	//	return;
 
-	// 텍스처 파일 선택시 보여지게 하기
 
 	UpdateData(TRUE);
 
@@ -190,29 +191,30 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 
 	// 드롭다운
 	UpdateData(TRUE);
+
 	CDialog::OnDropFiles(hDropInfo);
 
 	// 전체 경로
-	//TCHAR	szFilePath[MAX_PATH] = L"";
+	TCHAR	szFilePath[MAX_PATH] = L"";
 
-	//// DragQueryFile : 드롭된 파일을 정보를 얻어오는 함수
-	//// 0xffffffff(-1) : 두 번째 인자값을 -1로 지정하면 드롭된 파일 개수를 반환하는 옵션
-	//int iFileCnt = DragQueryFile(hDropInfo, -1, nullptr, 0);
+	// DragQueryFile : 드롭된 파일을 정보를 얻어오는 함수
+	// 0xffffffff(-1) : 두 번째 인자값을 -1로 지정하면 드롭된 파일 개수를 반환하는 옵션
+	int iFileCnt = DragQueryFile(hDropInfo, -1, nullptr, 0);
 
-	//TCHAR szFileName[64] = L"";
+	TCHAR szFileName[64] = L"";
 
-	//for (int i = 0; i < iFileCnt; ++i)
-	//{
-	//	DragQueryFile(hDropInfo, i, szFilePath, MAX_PATH);
-	//	// 이거 수정
-	//	CFileInfo::DirInfoExtraction_Custom(szFilePath, m_MyPathInfoList, FILETYPE_PNG);
-	//}
-	//m_ListBox.ResetContent();
+	for (int i = 0; i < iFileCnt; ++i)
+	{
+		DragQueryFile(hDropInfo, i, szFilePath, MAX_PATH);
+		// 이거 수정
+		CFileInfo::DirInfoExtraction(szFilePath, m_PathInfoList, FILETYPE_PNG);
+	}
+	m_ListBox.ResetContent();
 
-	//for (auto& iter : m_PathInfoList)
-	//{
-	//	m_ListBox.AddString(iter->wFileName.c_str());
-	//}
+	for (auto& iter : m_PathInfoList)
+	{
+		m_ListBox.AddString(iter->wstrObjKey.c_str());
+	}
 
 #pragma endregion
 

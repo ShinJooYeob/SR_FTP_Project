@@ -29,10 +29,11 @@ private:
 	virtual ~CSuperToolSIngleton() = default;
 
 public: // For. Device
-	HRESULT		InitDevice(void);
+	HRESULT		InitDevice();
 	HRESULT		Update_Tool(_float ftimer);
 	HRESULT		Render_Begin(void);
 	HRESULT		Render_End(HWND hWnd = NULL);
+
 
 
 
@@ -44,6 +45,9 @@ private:
 	HRESULT Ready_Object_Component();
 	HRESULT Ready_Object_Clone(const _tchar* layertag);
 	HRESULT Ready_Object_Camera(const _tchar* layertag);
+
+
+	HRESULT		Render_Set_Statee();
 
 	// 창 초기화
 private:

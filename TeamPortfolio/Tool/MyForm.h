@@ -30,6 +30,7 @@ public:
 	CTrans_Dialog	m_TransformDialog;
 
 	CButton m_CheckCameraEnable;
+	CButton m_CheckWirframeEnable;
 
 
 protected:

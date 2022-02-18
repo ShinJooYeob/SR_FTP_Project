@@ -74,6 +74,8 @@ HRESULT CSuperToolSIngleton::Render_Begin(void)
 {
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
+	Render_Set_Statee();
+
 	m_pGameInstance->Render_Begin();
 	return S_OK;
 }
@@ -85,6 +87,21 @@ HRESULT CSuperToolSIngleton::Render_End(HWND hWnd)
 	m_pGraphicDevice->EndScene();
 	m_pGraphicDevice->Present(nullptr, nullptr, hWnd, nullptr);
 }
+
+HRESULT CSuperToolSIngleton::Render_Set_Statee()
+{
+	if (m_pGraphicDevice == nullptr)
+		return E_FAIL;
+	
+	bool bWire = m_pMyButtomView->m_CheckWirframeEnable.GetCheck();
+	if (bWire)
+		m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	else
+		m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DRS_FILLMODE);
+
+	return S_OK;
+}
+
 
 HRESULT CSuperToolSIngleton::Ready_Initalize_Object()
 {

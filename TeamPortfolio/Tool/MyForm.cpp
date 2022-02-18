@@ -32,6 +32,7 @@ void CMyForm::DoDataExchange(CDataExchange* pDX)
 	CFormView::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COMBO2, m_ComboBox);
 	DDX_Control(pDX, IDC_CHECK1, m_CheckCameraEnable);
+	DDX_Control(pDX, IDC_CHECK2, m_CheckWirframeEnable);
 }
 
 BEGIN_MESSAGE_MAP(CMyForm, CFormView)

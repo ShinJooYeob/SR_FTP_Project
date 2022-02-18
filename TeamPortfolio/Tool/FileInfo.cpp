@@ -30,7 +30,7 @@ CString CFileInfo::ConvertRelativePath(CString strFullPath)
 	return CString(szRelativePath);
 }
 
-void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPathInfoList)
+void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPathInfoList, E_FILETYPE type)
 {
 	wstring	wstrFilePath = wstrPath + L"\\*.*";
 
@@ -59,6 +59,11 @@ void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPat
 			// 찾은게 시스템 파일인 경우 건너뛴다.
 			if (Find.IsSystem())
 				continue;
+
+			// 확장자 검사 type
+			if (false == FindType(Find, type))
+				continue;
+
 
 			IMGPATH*		pImgPath = new IMGPATH;
 			TCHAR			szPath[MAX_PATH] = L"";
@@ -170,6 +175,7 @@ void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<MYFILEPA
 			MYFILEPATH*		pImgPath = new MYFILEPATH;
 			TCHAR			szPath[MAX_PATH] = L"";
 
+			// 확장자 검사 type
 			if (false == FindType(Find, type))
 				continue;
 
@@ -183,7 +189,7 @@ void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<MYFILEPA
 			pImgPath->wFileName = Find.GetFileTitle().GetString();
 			PathRemoveFileSpec(szPath);
 
-			// 확장자가 png가 아니면 제외
+		
 
 			// pImgPath->wstrFullPath = szPath;
 			// PathFindFileName(szPath);			
