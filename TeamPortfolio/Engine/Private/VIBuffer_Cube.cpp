@@ -38,6 +38,7 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 			for (int X = 0; X < 2; ++X)
 			{
 				pVertices[VertexNumber].vPosition = _float3(X - 0.5f, Y - 0.5f, Z - 0.5f);
+				pVertices[VertexNumber].vTexUV = pVertices[VertexNumber].vPosition;
 
 				((VTXCUBETEX*)m_pVertices)[VertexNumber] = pVertices[VertexNumber];
 
@@ -65,16 +66,7 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 	m_pIB->Lock(0, 0, (void**)&pIndices, 0);
 
 
-	pIndices[IndexNumber]._0 = 2;
-	pIndices[IndexNumber]._1 = 3;
-	pIndices[IndexNumber]._2 = 1;
-	++IndexNumber;
-
-	pIndices[IndexNumber]._0 = 2;
-	pIndices[IndexNumber]._1 = 1;
-	pIndices[IndexNumber]._2 = 0;
-	++IndexNumber;
-	/////
+	/////+X
 	pIndices[IndexNumber]._0 = 3;
 	pIndices[IndexNumber]._1 = 7;
 	pIndices[IndexNumber]._2 = 5;
@@ -84,7 +76,44 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 	pIndices[IndexNumber]._1 = 5;
 	pIndices[IndexNumber]._2 = 1;
 	++IndexNumber;
-	//////
+
+
+	/////// -X
+	pIndices[IndexNumber]._0 = 6;
+	pIndices[IndexNumber]._1 = 2;
+	pIndices[IndexNumber]._2 = 0;
+	++IndexNumber;
+
+	pIndices[IndexNumber]._0 = 6;
+	pIndices[IndexNumber]._1 = 0;
+	pIndices[IndexNumber]._2 = 4;
+	++IndexNumber;
+
+
+	///// +Y
+	pIndices[IndexNumber]._0 = 6;
+	pIndices[IndexNumber]._1 = 7;
+	pIndices[IndexNumber]._2 = 3;
+	++IndexNumber;
+
+	pIndices[IndexNumber]._0 = 6;
+	pIndices[IndexNumber]._1 = 3;
+	pIndices[IndexNumber]._2 = 2;
+	++IndexNumber;
+
+	////// -Y
+	pIndices[IndexNumber]._0 = 0;
+	pIndices[IndexNumber]._1 = 1;
+	pIndices[IndexNumber]._2 = 5;
+	++IndexNumber;
+
+	pIndices[IndexNumber]._0 = 0;
+	pIndices[IndexNumber]._1 = 5;
+	pIndices[IndexNumber]._2 = 4;
+	++IndexNumber;
+
+
+	////// +Z
 	pIndices[IndexNumber]._0 = 7;
 	pIndices[IndexNumber]._1 = 6;
 	pIndices[IndexNumber]._2 = 4;
@@ -95,37 +124,18 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 	pIndices[IndexNumber]._2 = 5;
 	++IndexNumber;
 
-	//***********************
 
-	pIndices[IndexNumber]._0 = 6;
-	pIndices[IndexNumber]._1 = 2;
+	//////-Z
+	pIndices[IndexNumber]._0 = 2;
+	pIndices[IndexNumber]._1 = 3;
+	pIndices[IndexNumber]._2 = 1;
+	++IndexNumber;
+
+	pIndices[IndexNumber]._0 = 2;
+	pIndices[IndexNumber]._1 = 1;
 	pIndices[IndexNumber]._2 = 0;
 	++IndexNumber;
 
-	pIndices[IndexNumber]._0 = 6;
-	pIndices[IndexNumber]._1 = 0;
-	pIndices[IndexNumber]._2 = 4;
-	++IndexNumber;
-	/////
-	pIndices[IndexNumber]._0 = 6;
-	pIndices[IndexNumber]._1 = 7;
-	pIndices[IndexNumber]._2 = 3;
-	++IndexNumber;
-
-	pIndices[IndexNumber]._0 = 6;
-	pIndices[IndexNumber]._1 = 3;
-	pIndices[IndexNumber]._2 = 2;
-	++IndexNumber;
-	//////
-	pIndices[IndexNumber]._0 = 0;
-	pIndices[IndexNumber]._1 = 1;
-	pIndices[IndexNumber]._2 = 5;
-	++IndexNumber;
-
-	pIndices[IndexNumber]._0 = 0;
-	pIndices[IndexNumber]._1 = 5;
-	pIndices[IndexNumber]._2 = 4;
-	++IndexNumber;
 
 	m_pIB->Unlock();
 

@@ -187,6 +187,14 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_GravityCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	TextureDesc.szFilePath = TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	TextureDesc.iNumTexture = 4; //텍스쳐 갯수
+	TextureDesc.iStartIndex = 0; //인덱스 시작 번호 FEZ는 1로 되어 있어서 이렇게 씀
+
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Sky"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 #pragma endregion
 
 

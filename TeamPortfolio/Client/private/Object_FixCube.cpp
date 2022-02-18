@@ -233,7 +233,7 @@ CObject_FixCube * CObject_FixCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, voi
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CPlayer_ProtoType");
+		MSGBOX("Fail to Create CObject_FixCube");
 		Safe_Release(pInstance);
 
 	}
@@ -248,7 +248,7 @@ CGameObject * CObject_FixCube::Clone(void * pArg)
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CTestCubeMove_Clone");
+		MSGBOX("Fail to Create CObject_FixCube");
 		Safe_Release(pInstance);
 
 	}
