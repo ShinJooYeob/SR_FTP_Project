@@ -13,7 +13,7 @@ HRESULT CRenderer::Initialize_Prototype(void * pArg)
 	m_pGraphicDevice->GetViewport(&ViewPortDesc);
 	_int iWinCX = ViewPortDesc.Width;
 	_int iWinCY = ViewPortDesc.Height;
-	D3DXMatrixOrthoLH(&m_ProjMatrix, iWinCX, iWinCY, 0.0f, 1.f);
+	D3DXMatrixOrthoLH(&m_ProjMatrix, (_float)iWinCX, (_float)iWinCY, 0.0f, 1.f);
 	return S_OK;
 }
 

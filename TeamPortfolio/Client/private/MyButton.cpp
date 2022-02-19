@@ -34,10 +34,10 @@ HRESULT CMyButton::Initialize_Clone(void * pArg)
 
 	_float4 vUIDesc;
 	vUIDesc =*(_float4*)pArg;
-	m_rcButtonRect.top = vUIDesc.y - vUIDesc.w *0.5f;
-	m_rcButtonRect.bottom = vUIDesc.y + vUIDesc.w *0.5f;
-	m_rcButtonRect.right = vUIDesc.x + vUIDesc.z*0.5f;
-	m_rcButtonRect.left = vUIDesc.x - vUIDesc.z*0.5f;
+	m_rcButtonRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	m_rcButtonRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	m_rcButtonRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	m_rcButtonRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
 
 	if (FAILED(Set_UI_Transform(m_ComTransform, vUIDesc)))
 		return E_FAIL;

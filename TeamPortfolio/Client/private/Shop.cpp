@@ -159,10 +159,10 @@ HRESULT CShop::Set_Skill_Rect()
 {
 	
 		RECT rcRect;
-		rcRect.top = m_fY - 95;
-		rcRect.right = m_fX -28;
-		rcRect.left = m_fX - 55;
-		rcRect.bottom = m_fY - 45;
+		rcRect.top = LONG(m_fY - 95);
+		rcRect.right = LONG(m_fX -28);
+		rcRect.left = LONG(m_fX - 55);
+		rcRect.bottom = LONG(m_fY - 45);
 
 		POINT ptMouse;
 		GetCursorPos(&ptMouse);
