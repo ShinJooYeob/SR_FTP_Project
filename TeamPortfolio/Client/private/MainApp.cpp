@@ -175,11 +175,19 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), CTexture::Create(m_pGraphicDevice,&TextureDesc))))
 		return E_FAIL;
 
-	//블랙크 텍스처
+	//블랭크 텍스처
 	TextureDesc.szTextFilePath = TEXT("Player.txt");
 	
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Blank), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+
 
 	// 콜리전 프로토타입 생성
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Collision"), m_pCollision = CCollision::Create(m_pGraphicDevice))))

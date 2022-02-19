@@ -181,7 +181,6 @@ enum COMPONENTID
 	Com_VIBuffer,
 	Com_Transform,
 	Com_Texture,
-	Com_CollisionBuffer,
 	Com_Collision,
 	Com_Inventory
 
@@ -195,9 +194,6 @@ static const _tchar* Tag_Component(COMPONENTID eTag)
 		break;
 	case Com_VIBuffer:
 		return TEXT("Com_VIBuffer");
-		break;
-	case Com_CollisionBuffer:
-		return TEXT("Com_CollisionBuffer");
 		break;
 	case Com_Transform:
 		return TEXT("Com_Transform");

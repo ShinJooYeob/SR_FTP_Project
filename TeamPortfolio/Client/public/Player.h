@@ -43,7 +43,6 @@ private:
 
 	/* 충돌처리 */
 	CCollision*		m_pCollisionCom = nullptr;
-	CVIBuffer_Cube*			m_ComColiisionBuffer = nullptr;
 
 private:
 	_float					m_fFrame = 0.f;

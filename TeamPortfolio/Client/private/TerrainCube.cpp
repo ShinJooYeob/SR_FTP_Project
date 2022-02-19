@@ -76,6 +76,9 @@ _int CTerrainCube::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
+	if (FAILED(m_ComTexture->Bind_Texture()))
+		return E_FAIL;
+
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
@@ -121,7 +124,7 @@ HRESULT CTerrainCube::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), TAG_COM(Com_CollisionBuffer), (CComponent**)&m_ComColiisionBuffer)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_pCollisionCom)))
@@ -148,8 +151,8 @@ HRESULT CTerrainCube::SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	////////////////////////
-	m_pGraphicDevice->SetTexture(0, NULL);
-	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	//m_pGraphicDevice->SetTexture(0, NULL);
+	//m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	/////////////////////////////////////////////////////////////////////////
 
 	return S_OK;
@@ -201,6 +204,7 @@ void CTerrainCube::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComTransform);

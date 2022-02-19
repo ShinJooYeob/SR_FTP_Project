@@ -83,10 +83,13 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 	{
 		for (_uint i = 1; i < 10 ; i++)
 		{
-			for (_uint j = 1; j < 10 ; j++) {
+			if (i == 1 || i == 9) {
 
-				if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)k, (_float)j)))
-					return E_FAIL;
+				for (_uint j = 1; j < 10; j++) {
+
+					if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)k, (_float)j)))
+						return E_FAIL;
+				}
 			}
 		}
 	}
@@ -102,7 +105,7 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	CCamera::CAMERADESC CameraDesc;
 
 	CameraDesc.bIsOrtho = true;
-	CameraDesc.vEye = _float3(5.f, 3.f, -10.f);
+	CameraDesc.vEye = _float3(5.f, 3.f, -20.f);
 	CameraDesc.vAt = CameraDesc.vWorldRotAxis =  _float3(5.f, 3.f, 5.f);
 
 	CameraDesc.vAxisY = _float3(0, 1, 0);

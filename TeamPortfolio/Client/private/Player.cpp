@@ -143,9 +143,6 @@ HRESULT CPlayer::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
-
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), TAG_COM(Com_CollisionBuffer), (CComponent**)&m_ComColiisionBuffer)))
-		return E_FAIL;
 	
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), TAG_COM(Com_Transform), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
@@ -598,6 +595,7 @@ HRESULT CPlayer::SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 130);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 
 	if (m_bIsShdow)
 	{
@@ -612,6 +610,7 @@ HRESULT CPlayer::SetUp_RenderState()
 
 HRESULT CPlayer::Release_RenderState()
 {
+	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
@@ -665,7 +664,6 @@ void CPlayer::Free()
 
 	Safe_Release(m_pCamera_Main);
 	Safe_Release(m_pCollisionCom);
-	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_ComInventory);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);

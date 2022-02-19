@@ -69,8 +69,6 @@ _int CObject_FixCube::LateUpdate(_float fTimeDelta)
 
 _int CObject_FixCube::Render()
 {
-	if (nullptr == m_ComColiisionBuffer)
-		return E_FAIL;
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
@@ -82,7 +80,7 @@ _int CObject_FixCube::Render()
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
-	m_ComColiisionBuffer->Render();
+	m_ComVIBuffer->Render();
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
@@ -132,8 +130,10 @@ HRESULT CObject_FixCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For.버텍스 큐브 */
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_CollisionBuffer"), (CComponent**)&m_ComColiisionBuffer)))
+
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
+
 
 	///////////////////////////////////////////////////////
 	/* For.콜리전 */
@@ -261,9 +261,9 @@ void CObject_FixCube::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComTransform);
-	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_ComRenderer);
 	Safe_Release(m_ComTexture);
 }
