@@ -65,7 +65,10 @@ _int CPlayer::Update(_float fDeltaTime)
 
 	if (FAILED(Find_FootHold_Object(fDeltaTime))) 
 		return E_FAIL;
-	
+
+	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
+		return E_FAIL;
+
 
 
 	return _int();
@@ -78,9 +81,6 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
 
-
-	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
-		return E_FAIL;
 
 
 	//렌더링 그룹에 넣어주는 역활
@@ -316,16 +316,26 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 	_Matrix matVeiwSpace;
 	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
 
+	_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+
+
 	//카메라 바라보도록 설정
 	_float3 vCamLook;
 	memcpy(&vCamLook, &(matVeiwSpace.InverseMatrix().m[2][0]), sizeof(_float3));
-
-	_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 
 	if (m_bTextureReverse)
 		m_ComTransform->LookAt(vPlayerPos - vCamLook);
 	else
 		m_ComTransform->LookAt(vPlayerPos + vCamLook);
+
+
+
+	//_float3 NewLook = ((*(_float3*)(&matVeiwSpace.InverseMatrix().m[3][0])) - vPlayerPos).Get_Nomalize();
+
+	//if (m_bTextureReverse)
+	//	m_ComTransform->LookAt(vPlayerPos + NewLook);
+	//else
+	//	m_ComTransform->LookAt(vPlayerPos - NewLook);
 
 
 

@@ -4,6 +4,8 @@
 
 BEGIN(Engine)
 
+class CTransform;
+
 class ENGINE_DLL CCollision : public CComponent
 {
 public:
@@ -23,6 +25,10 @@ public:
 
 public:
 	HRESULT Add_CollisionGroup(COLLISIONGROUP eCollisionGroup, class CGameObject* pCollisionObject);
+
+public:
+	HRESULT Collision_Pushed(CTransform* pMyTansform, _float3 fCollision_Distance, _float fDeltaTime);
+	HRESULT Collision_Suck_In(CTransform* pMyTansform, _float3 fCollision_Distance, _float fDeltaTime);
 	
 
 

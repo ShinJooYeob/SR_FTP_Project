@@ -47,6 +47,66 @@ HRESULT CCollision::Add_CollisionGroup(COLLISIONGROUP eCollisionGroup, CGameObje
 	return S_OK;
 }
 
+HRESULT CCollision::Collision_Pushed(CTransform * pMyTansform, _float3 fCollision_Distance, _float fDeltaTime)
+{
+
+	if (abs(fCollision_Distance.x) > abs(fCollision_Distance.y))
+	{
+		if (abs(fCollision_Distance.y) > abs(fCollision_Distance.z))
+		{
+			pMyTansform->MovetoDir(_float3(0, 0, fCollision_Distance.z), fDeltaTime);
+		}
+		else
+		{
+			pMyTansform->MovetoDir(_float3(0, fCollision_Distance.y, 0), fDeltaTime);
+		}
+	}
+	else
+	{
+		if (abs(fCollision_Distance.x) > abs(fCollision_Distance.z))
+		{
+			pMyTansform->MovetoDir(_float3(0, 0, fCollision_Distance.z), fDeltaTime);
+		}
+		else
+		{
+			pMyTansform->MovetoDir(_float3(fCollision_Distance.x, 0, 0), fDeltaTime);
+		}
+	}
+	return S_OK;
+}
+
+HRESULT CCollision::Collision_Suck_In(CTransform * pMyTansform, _float3 fCollision_Distance, _float fDeltaTime)
+{
+	fCollision_Distance = fCollision_Distance.Get_Inverse();
+	fDeltaTime *= 0.25f;
+
+
+	if (abs(fCollision_Distance.x) > abs(fCollision_Distance.y))
+	{
+		if (abs(fCollision_Distance.y) > abs(fCollision_Distance.z))
+		{
+			pMyTansform->MovetoDir(_float3(0, 0, fCollision_Distance.z), fDeltaTime);
+		}
+		else
+		{
+			pMyTansform->MovetoDir(_float3(0, fCollision_Distance.y, 0), fDeltaTime);
+		}
+	}
+	else
+	{
+		if (abs(fCollision_Distance.x) > abs(fCollision_Distance.z))
+		{
+			pMyTansform->MovetoDir(_float3(0, 0, fCollision_Distance.z), fDeltaTime);
+		}
+		else
+		{
+			pMyTansform->MovetoDir(_float3(fCollision_Distance.x, 0, 0), fDeltaTime);
+		}
+	}
+
+	return S_OK;
+}
+
 HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 {
 
@@ -70,7 +130,7 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 
 			for (auto& pDestObjects : m_CollisionObjects[Collsion_enum])
 			{
-				if (&pFlexibleObjects == &pDestObjects)
+				if (pFlexibleObjects == pDestObjects)
 					continue;
 	
 				
@@ -136,6 +196,8 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 
 					SourceCubeVerties[0].z <= DestCubeVerties[7].z &&
 					DestCubeVerties[0].z <= SourceCubeVerties[7].z)
+
+
 				{
 
 					fBubbleSortX.push_back(SourceCubeVerties[0].x);
@@ -175,120 +237,139 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 					++tempZ;
 					fDistanceZ = (*tempZ) - fDistanceZ;
 
-					//SourcePosition
-					//DestPosition
 
-					_float3 fCollision_Distance;
+					//조건 받는 오브젝트에게 방향을 알려주는 부분
+					_float3 fCollision_Distance = { fDistanceX ,fDistanceY ,fDistanceZ };
 
-					if (fDistanceX > fDistanceY)
-					{
-						if (fDistanceY > fDistanceZ)
-						{
-							if (SourcePosition.z > DestPosition.z)
-							{
-								fCollision_Distance.x = fDistanceX;
-								fCollision_Distance.y = fDistanceY;
-								fCollision_Distance.z = fDistanceZ;
+					if (DestPosition.x > SourcePosition.x)
+						fCollision_Distance.x *= -1;
 
-								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+					if (DestPosition.y > SourcePosition.y) 
+						fCollision_Distance.y *= -1;
+		
+					if (DestPosition.z > SourcePosition.z) 
+						fCollision_Distance.z *= -1;
+			
 
-								fCollision_Distance.z = -fDistanceZ;
-								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
-							}
-							else
-							{
-								fCollision_Distance.x = fDistanceX;
-								fCollision_Distance.y = fDistanceY;
-								fCollision_Distance.z = -fDistanceZ;
+					pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance				, fDeltaTime);
+					pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance.Get_Inverse(), fDeltaTime);
 
-								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
 
-								fCollision_Distance.z = fDistanceZ;
-								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
 
-							}
-						}
-						else
-						{
-							if (SourcePosition.y > DestPosition.y)
-							{
-								fCollision_Distance.x = fDistanceX;
-								fCollision_Distance.y = fDistanceY;
-								fCollision_Distance.z = fDistanceZ;
+					/*				if (fDistanceX > fDistanceY)
+									{
+										if (fDistanceY > fDistanceZ)
+										{
+											if (SourcePosition.z > DestPosition.z)
+											{
+												fCollision_Distance.x = fDistanceX;
+												fCollision_Distance.y = fDistanceY;
+												fCollision_Distance.z = fDistanceZ;
 
-								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
 
-								fCollision_Distance.y = -fDistanceY;
-								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
-							}
-							else
-							{
-								fCollision_Distance.x = fDistanceX;
-								fCollision_Distance.y = -fDistanceY;
-								fCollision_Distance.z = fDistanceZ;
+												pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+												fCollision_Distance.z = -fDistanceZ;
+												pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+											}
+											else
+											{
+												fCollision_Distance.x = fDistanceX;
+												fCollision_Distance.y = fDistanceY;
+												fCollision_Distance.z = -fDistanceZ;
 
-								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+												pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
 
-								fCollision_Distance.y = fDistanceY;
-								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
-							}
-						}
-					}
-					else
-					{
-						if (fDistanceX > fDistanceZ)
-						{
-							if (SourcePosition.z > DestPosition.z)
-							{
-								fCollision_Distance.x = fDistanceX;
-								fCollision_Distance.y = fDistanceY;
-								fCollision_Distance.z = fDistanceZ;
+												fCollision_Distance.z = fDistanceZ;
+												pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
 
-								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+											}
+										}
+										else
+										{
+											if (SourcePosition.y > DestPosition.y)
+											{
+												fCollision_Distance.x = fDistanceX;
+												fCollision_Distance.y = fDistanceY;
+												fCollision_Distance.z = fDistanceZ;
 
-								fCollision_Distance.z = -fDistanceZ;
-								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
-							}
-							else
-							{
-								fCollision_Distance.x = fDistanceX;
-								fCollision_Distance.y = fDistanceY;
-								fCollision_Distance.z = -fDistanceZ;
+												pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
 
-								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+												fCollision_Distance.y = -fDistanceY;
+												pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+											}
+											else
+											{
+												fCollision_Distance.x = fDistanceX;
+												fCollision_Distance.y = -fDistanceY;
+												fCollision_Distance.z = fDistanceZ;
 
-								fCollision_Distance.z = fDistanceZ;
-								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
-							}
-						}
-						else
-						{
-							if (SourcePosition.x > DestPosition.x)
-							{
-								fCollision_Distance.x = fDistanceX;
-								fCollision_Distance.y = fDistanceY;
-								fCollision_Distance.z = fDistanceZ;
+												pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
 
-								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+												fCollision_Distance.y = fDistanceY;
+												pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+											}
+										}
+									}
+									else
+									{
+										if (fDistanceX > fDistanceZ)
+										{
+											if (SourcePosition.z > DestPosition.z)
+											{
+												fCollision_Distance.x = fDistanceX;
+												fCollision_Distance.y = fDistanceY;
+												fCollision_Distance.z = fDistanceZ;
 
-								fCollision_Distance.x = -fDistanceX;
-								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
-							}
-							else
-							{
-								fCollision_Distance.x = -fDistanceX;
-								fCollision_Distance.y = fDistanceY;
-								fCollision_Distance.z = fDistanceZ;
+												pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
 
-								pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+												fCollision_Distance.z = -fDistanceZ;
+												pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+											}
+											else
+											{
+												fCollision_Distance.x = fDistanceX;
+												fCollision_Distance.y = fDistanceY;
+												fCollision_Distance.z = -fDistanceZ;
 
-								fCollision_Distance.x = fDistanceX;
-								pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
-							}
-						}
-					}
+												pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+												fCollision_Distance.z = fDistanceZ;
+												pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+											}
+										}
+										else
+										{
+											if (SourcePosition.x > DestPosition.x)
+											{
+												fCollision_Distance.x = fDistanceX;
+												fCollision_Distance.y = fDistanceY;
+												fCollision_Distance.z = fDistanceZ;
+
+												pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+												fCollision_Distance.x = -fDistanceX;
+												pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+											}
+											else
+											{
+												fCollision_Distance.x = -fDistanceX;
+												fCollision_Distance.y = fDistanceY;
+												fCollision_Distance.z = fDistanceZ;
+
+												pFlexibleObjects->Obsever_On_Trigger(pDestObjects, fCollision_Distance, fDeltaTime);
+
+												fCollision_Distance.x = fDistanceX;
+												pDestObjects->Obsever_On_Trigger(pFlexibleObjects, fCollision_Distance, fDeltaTime);
+											}
+										}
+									}
+				*/
 
 				}
+
+
+	
+
 			}
 		}
 

@@ -31,9 +31,9 @@ HRESULT CObject_PushCube::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
+	//m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(5.f, -1.f, 5.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(5.f, 0.f, 5.f));
 
 	return S_OK;
 }
@@ -104,13 +104,13 @@ _int CObject_PushCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fC
 
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
 	{
-		Collision_Not_Moving(pDestObjects, fCollision_Distance, fDeltaTime);
+		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
-		Collision_Moving(pDestObjects, fCollision_Distance, fDeltaTime);
-
+		//m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
+		
 	}
 
 
@@ -120,29 +120,29 @@ _int CObject_PushCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fC
 
 _int CObject_PushCube::Collision_Not_Moving(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	_float3 vDestPos = ((CTransform*)(pDestObjects->Get_Component(TEXT("Com_Transform"))))->Get_MatrixState(CTransform::STATE_POS);
+	//_float3 vDestPos = ((CTransform*)(pDestObjects->Get_Component(TEXT("Com_Transform"))))->Get_MatrixState(CTransform::STATE_POS);
 	_float3 vSourcePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 
-	if (fCollision_Distance.x > fCollision_Distance.y)
+	if (abs(fCollision_Distance.x) > abs(fCollision_Distance.y))
 	{
-		if (fCollision_Distance.y > fCollision_Distance.z)
+		if (abs(fCollision_Distance.y) > abs(fCollision_Distance.z))
 		{
-			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, 0, fCollision_Distance.z));
+			m_ComTransform->MovetoDir(_float3(0, 0, fCollision_Distance.z), fDeltaTime);
 		}
 		else
 		{
-			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, fCollision_Distance.y, 0));
+			m_ComTransform->MovetoDir(_float3(0, fCollision_Distance.y, 0), fDeltaTime);
 		}
 	}
 	else
 	{
-		if (fCollision_Distance.x > fCollision_Distance.z)
+		if (abs(fCollision_Distance.x) > abs(fCollision_Distance.z))
 		{
-			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, 0, fCollision_Distance.z));
+			m_ComTransform->MovetoDir(_float3(0, 0, fCollision_Distance.z), fDeltaTime);
 		}
 		else
 		{
-			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(fCollision_Distance.x, 0, 0));
+			m_ComTransform->MovetoDir(_float3(fCollision_Distance.x, 0, 0), fDeltaTime);
 		}
 	}
 
@@ -151,31 +151,32 @@ _int CObject_PushCube::Collision_Not_Moving(CGameObject * pDestObjects, _float3 
 
 _int CObject_PushCube::Collision_Moving(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	_float3 vDestPos = ((CTransform*)(pDestObjects->Get_Component(TEXT("Com_Transform"))))->Get_MatrixState(CTransform::STATE_POS);
+	//_float3 vDestPos = ((CTransform*)(pDestObjects->Get_Component(TEXT("Com_Transform"))))->Get_MatrixState(CTransform::STATE_POS);
 	_float3 vSourcePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 
-	if (fCollision_Distance.x > fCollision_Distance.y)
+	if (abs(fCollision_Distance.x) > abs(fCollision_Distance.y))
 	{
-		if (fCollision_Distance.y > fCollision_Distance.z)
+		if (abs(fCollision_Distance.y) > abs(fCollision_Distance.z))
 		{
-			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, 0, fCollision_Distance.z));
+			m_ComTransform->MovetoDir(_float3(0, 0, fCollision_Distance.z), fDeltaTime);
 		}
 		else
 		{
-			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, fCollision_Distance.y, 0));
+			m_ComTransform->MovetoDir(_float3(0, fCollision_Distance.y, 0), fDeltaTime);
 		}
 	}
 	else
 	{
-		if (fCollision_Distance.x > fCollision_Distance.z)
+		if (abs(fCollision_Distance.x) > abs(fCollision_Distance.z))
 		{
-			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(0, 0, fCollision_Distance.z));
+			m_ComTransform->MovetoDir(_float3(0, 0, fCollision_Distance.z), fDeltaTime);
 		}
 		else
 		{
-			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSourcePos + _float3(fCollision_Distance.x, 0, 0));
+			m_ComTransform->MovetoDir(_float3(fCollision_Distance.x, 0, 0), fDeltaTime);
 		}
 	}
+
 
 	return _int();
 }

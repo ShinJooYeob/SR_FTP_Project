@@ -63,12 +63,14 @@ private:
 	CameraEffectID			m_eEffectID = CAM_EFT_END;
 	_uint					m_ARGB[4] = { 0 };
 	_float					m_fTimeDelta = 0;
+	_Matrix					m_CamEffectMatricx;
 private:
 	HRESULT			SetUp_Components();
 
-
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
+
+	HRESULT Input_Keyboard(_float fDeltaTime);
 
 public:
 	static CCamera_Main* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

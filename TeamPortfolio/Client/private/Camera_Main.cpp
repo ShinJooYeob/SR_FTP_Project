@@ -61,123 +61,29 @@ HRESULT CCamera_Main::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
+
+	//카메라 이팩트용 이미지 월드 세팅
+	m_CamEffectMatricx =
+	{
+		(_float)g_iWinCX,	0,					0,					0,
+		0,					(_float)g_iWinCY,	0,					0,
+		0,					0,					1,					0,
+		0,					0,					0,					1,
+	};
+
+
+
+	return S_OK;
+
+
 	return S_OK;
 }
 
 _int CCamera_Main::Update(_float fDeltaTime)
 {
 
-
-
-	CGameInstance* pInstance = GetSingle(CGameInstance);
-
-
-
-	if (pInstance->Get_DIKeyState(DIK_W) & DIS_Press)
-	{
-		m_pTransform->Move_Forward(fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_S) & DIS_Press)
-	{
-		m_pTransform->Move_Backward(fDeltaTime);
-
-	}
-	if (pInstance->Get_DIKeyState(DIK_X) & DIS_Press)
-	{
-		m_pTransform->MovetoTarget(m_pTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_Z) & DIS_Press)
-	{
-		m_pTransform->MovetoTarget(m_pTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), -fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_V) & DIS_Down)
-	{
-		Change_Camera_Demension();
-	}
-
-	if (pInstance->Get_DIKeyState(DIK_1) & DIS_Down)
-	{
-		CameraEffect(CCamera_Main::CAM_EFT_FADE_IN,fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_2) & DIS_Down)
-	{
-		CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_3) & DIS_Down)
-	{
-		CameraEffect(CCamera_Main::CAM_EFT_SHAKE, fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_4) & DIS_Down)
-	{
-		CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
-	}
-
-
-	if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
-	{
-
-		_float3 vOriginCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
-		_float3 vRotAxis = m_CameraDesc.vWorldRotAxis;
-		vRotAxis.y = 0;
-		_float3 vCameraPos = vOriginCameraPos - vRotAxis;
-		vCameraPos.y = 0;
-
-		_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1, 0, 0)));
-
-		if (0 > vCameraPos.z)
-			fRadianAngle = 2 * D3DX_PI - fRadianAngle;
-
-		m_fStartAngle = fRadianAngle;
-		m_fTargetAngle = fRadianAngle + D3DXToRadian(90);
-		m_fPassedTime = 0;
-		m_IsTurning = true;
-
-	}
-	
-	if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
-	{
-		_float3 vOriginCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);		
-		_float3 vRotAxis = m_CameraDesc.vWorldRotAxis;
-		vRotAxis.y = 0;
-		_float3 vCameraPos = vOriginCameraPos - vRotAxis;
-		vCameraPos.y = 0;
-
-		_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1, 0, 0)));
-
-		if (0 > vCameraPos.z)
-			fRadianAngle = 2 * D3DX_PI - fRadianAngle;
-
-		m_fStartAngle = fRadianAngle;
-		m_fTargetAngle = fRadianAngle - D3DXToRadian(90);
-		m_fPassedTime = 0;
-		m_IsTurning = true;
-
-	}
-	if (m_IsTurning) {
-
-		Revolution_Turn_AxisY_CW(m_CameraDesc.vWorldRotAxis, fDeltaTime);
-
-	}
-
-
-
-	if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_RBUTTON) & DIS_DoubleDown)
-	{
-		Change_Camera_Demension();
-	}
-
-	//_long MoveDist;
-
-	//if (MoveDist = pInstance->Get_DIMouseMoveState(CInput_Device::MMS_X))
-	//{
-	//	m_pTransform->Turn_CW({0,1,0}, fDeltaTime * MoveDist * 0.1f);
-
-	//}
-	//if (MoveDist = pInstance->Get_DIMouseMoveState(CInput_Device::MMS_Y))
-	//{
-	//	m_pTransform->Turn_CW(m_pTransform->Get_MatrixState(CTransform::STATE_RIGHT), fDeltaTime * MoveDist * 0.1f);
-	//}
-
+	if (FAILED(Input_Keyboard(fDeltaTime)))
+		return E_FAIL;
 
 	__super::Update(fDeltaTime);
 
@@ -204,23 +110,9 @@ _int CCamera_Main::Render()
 	if (m_pGraphicDevice == nullptr)
 		return E_FAIL;
 
-	_float3 vCamPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
-	_float3 vCamLook = m_pTransform->Get_MatrixState(CTransform::STATE_LOOK);
-	_float3 vPos = vCamPos + vCamLook * (m_CameraDesc.fNear + 0.001f);
-	
 
-	_Matrix matUI = m_pTransform->Get_WorldMatrix();
-
-	memcpy(&(matUI.m[3][0]), &vPos, sizeof(_float3));
-	matUI.m[0][0] *= 30;
-	matUI.m[0][1] *= 30;
-	matUI.m[0][2] *= 30;
-	matUI.m[1][0] *= 20;
-	matUI.m[1][1] *= 20;
-	matUI.m[1][2] *= 20;
-
-
-	m_pGraphicDevice->SetTransform(D3DTS_WORLD, &matUI);
+	if(FAILED(m_pGraphicDevice->SetTransform(D3DTS_WORLD, &m_CamEffectMatricx)))
+		return E_FAIL;
 
 
 	if (FAILED(m_ComTexture->Bind_Texture()))
@@ -491,6 +383,121 @@ HRESULT CCamera_Main::Release_RenderState()
 	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
 	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+
+	return S_OK;
+}
+
+HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
+{
+
+	CGameInstance* pInstance = GetSingle(CGameInstance);
+
+
+
+	if (pInstance->Get_DIKeyState(DIK_W) & DIS_Press)
+	{
+		m_pTransform->Move_Forward(fDeltaTime);
+	}
+	if (pInstance->Get_DIKeyState(DIK_S) & DIS_Press)
+	{
+		m_pTransform->Move_Backward(fDeltaTime);
+
+	}
+	if (pInstance->Get_DIKeyState(DIK_X) & DIS_Press)
+	{
+		m_pTransform->MovetoTarget(m_pTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
+	}
+	if (pInstance->Get_DIKeyState(DIK_Z) & DIS_Press)
+	{
+		m_pTransform->MovetoTarget(m_pTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), -fDeltaTime);
+	}
+	if (pInstance->Get_DIKeyState(DIK_V) & DIS_Down)
+	{
+		Change_Camera_Demension();
+	}
+
+	if (pInstance->Get_DIKeyState(DIK_1) & DIS_Down)
+	{
+		CameraEffect(CCamera_Main::CAM_EFT_FADE_IN, fDeltaTime);
+	}
+	if (pInstance->Get_DIKeyState(DIK_2) & DIS_Down)
+	{
+		CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, fDeltaTime);
+	}
+	if (pInstance->Get_DIKeyState(DIK_3) & DIS_Down)
+	{
+		CameraEffect(CCamera_Main::CAM_EFT_SHAKE, fDeltaTime);
+	}
+	if (pInstance->Get_DIKeyState(DIK_4) & DIS_Down)
+	{
+		CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
+	}
+
+
+	if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
+	{
+
+		_float3 vOriginCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
+		_float3 vRotAxis = m_CameraDesc.vWorldRotAxis;
+		vRotAxis.y = 0;
+		_float3 vCameraPos = vOriginCameraPos - vRotAxis;
+		vCameraPos.y = 0;
+
+		_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1, 0, 0)));
+
+		if (0 > vCameraPos.z)
+			fRadianAngle = 2 * D3DX_PI - fRadianAngle;
+
+		m_fStartAngle = fRadianAngle;
+		m_fTargetAngle = fRadianAngle + D3DXToRadian(90);
+		m_fPassedTime = 0;
+		m_IsTurning = true;
+
+	}
+
+	if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
+	{
+		_float3 vOriginCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
+		_float3 vRotAxis = m_CameraDesc.vWorldRotAxis;
+		vRotAxis.y = 0;
+		_float3 vCameraPos = vOriginCameraPos - vRotAxis;
+		vCameraPos.y = 0;
+
+		_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1, 0, 0)));
+
+		if (0 > vCameraPos.z)
+			fRadianAngle = 2 * D3DX_PI - fRadianAngle;
+
+		m_fStartAngle = fRadianAngle;
+		m_fTargetAngle = fRadianAngle - D3DXToRadian(90);
+		m_fPassedTime = 0;
+		m_IsTurning = true;
+
+	}
+	if (m_IsTurning) {
+
+		Revolution_Turn_AxisY_CW(m_CameraDesc.vWorldRotAxis, fDeltaTime);
+
+	}
+
+
+
+	if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_RBUTTON) & DIS_DoubleDown)
+	{
+		Change_Camera_Demension();
+	}
+
+	//_long MoveDist;
+
+	//if (MoveDist = pInstance->Get_DIMouseMoveState(CInput_Device::MMS_X))
+	//{
+	//	m_pTransform->Turn_CW({0,1,0}, fDeltaTime * MoveDist * 0.1f);
+
+	//}
+	//if (MoveDist = pInstance->Get_DIMouseMoveState(CInput_Device::MMS_Y))
+	//{
+	//	m_pTransform->Turn_CW(m_pTransform->Get_MatrixState(CTransform::STATE_RIGHT), fDeltaTime * MoveDist * 0.1f);
+	//}
 
 	return S_OK;
 }

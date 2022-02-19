@@ -20,8 +20,8 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Player(TAG_LAY(Layer_Player))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
+	//	return E_FAIL;
 
 
 	return S_OK;
