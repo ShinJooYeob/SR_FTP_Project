@@ -32,6 +32,17 @@ _int CInventory::Get_Skill_Level(_int eSKILL)
 	return m_pSkill_Index[eSKILL];
 }
 
+_int CInventory::Get_Skill_Price(_int eSKILL)
+{
+	if (eSKILL > m_iMaxSkill_Index)
+	{
+		MSGBOX("indexÃÊ°ú");
+		return -1;
+	}
+	return m_pSkillPrice[eSKILL];
+}
+
+
 void CInventory::Set_Skill_Level(_int eSKILL, _int Skill_level)
 {
 	if (eSKILL > m_iMaxSkill_Index)
@@ -40,6 +51,11 @@ void CInventory::Set_Skill_Level(_int eSKILL, _int Skill_level)
 		return;
 	}
 	m_pSkill_Index[eSKILL] += Skill_level;
+}
+
+void CInventory::Set_Skill_Price(_int eSKILL, _int Skill_Price)
+{
+	m_pSkillPrice[eSKILL] = Skill_Price;
 }
 
 void CInventory::Initialize_Skill_Array(_int eSkill_Index)

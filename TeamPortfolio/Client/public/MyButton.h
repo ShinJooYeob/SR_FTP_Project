@@ -42,15 +42,14 @@ private:
 
 
 
-private:	_float			m_fFrame = 0.f;
-			SKILL			m_eSkill;
-			
+private:	
+	_float			m_fFrame = 0.f;
 public:
 
 private:
 	HRESULT			SetUp_Components();
 	HRESULT			Buy_Skill(_int eSKILL);
-
+	SKILL			m_eSkill;
 
 public:
 	static CMyButton* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

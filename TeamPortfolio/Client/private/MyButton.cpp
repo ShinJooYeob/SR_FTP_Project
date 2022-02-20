@@ -31,13 +31,13 @@ HRESULT CMyButton::Initialize_Clone(void * pArg)
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-
+	
 	_float4 vUIDesc;
 	vUIDesc =*(_float4*)pArg;
-	m_rcButtonRect.top = vUIDesc.y - vUIDesc.w *0.5f;
-	m_rcButtonRect.bottom = vUIDesc.y + vUIDesc.w *0.5f;
-	m_rcButtonRect.right = vUIDesc.x + vUIDesc.z*0.5f;
-	m_rcButtonRect.left = vUIDesc.x - vUIDesc.z*0.5f;
+	m_rcButtonRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	m_rcButtonRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	m_rcButtonRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	m_rcButtonRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
 
 	if (FAILED(Set_UI_Transform(m_ComTransform, vUIDesc)))
 		return E_FAIL;
@@ -55,19 +55,13 @@ _int CMyButton::Update(_float fDeltaTime)
 	POINT ptMouse;
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
-
-	if (PtInRect(&m_rcButtonRect, ptMouse))
+	if (pInstance->Get_DIKeyState(CInput_Device::MBS_LBUTTON) & DIS_Down)
 	{
-		if (pInstance->Get_DIKeyState(CInput_Device::MBS_LBUTTON) & DIS_Down)
+		if (PtInRect(&m_rcButtonRect, ptMouse))
 		{
 			if (!lstrcmp(L"Buy", m_pButtonName))
 			{
-				m_Player_Inventory->Set_Skill_Level(m_eSkill, 1);
-				/*m_Player_Inventory->Set_Gold(m_eSkill,m_Player_Inventory->)*/
-			}
-			else if (!lstrcmp(L"Sell", m_pButtonName))
-			{
-				m_Player_Inventory->Set_Skill_Level(m_eSkill, -1);
+				Buy_Skill(m_eSkill);
 			}
 			else if (!lstrcmp(L"Exit", m_pButtonName))
 					return 1;
@@ -78,6 +72,7 @@ _int CMyButton::Update(_float fDeltaTime)
 		}
 	}
 	return _int();
+
 }
 
 _int CMyButton::LateUpdate(_float fDeltaTime)
@@ -140,7 +135,7 @@ HRESULT CMyButton::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Run"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Shop"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
 	Safe_AddRef(m_Player_Inventory);
@@ -151,16 +146,17 @@ HRESULT CMyButton::SetUp_Components()
 
 
 
-
 HRESULT CMyButton::Buy_Skill(_int eSKILL)
 {
-	/*if (m_Skill[eSKILL].Price <= m_Player_Inventory->Get_Gold())
+	
+
+	if (m_Player_Inventory->Get_Skill_Price(m_eSkill) <= m_Player_Inventory->Get_Gold())
 	{
-		m_Player_Inventory->Set_Skill_Level(eSKILL, 1);
-		m_Player_Inventory->Set_Gold(-m_Skill[eSKILL].Price);
+		m_Player_Inventory->Set_Skill_Level(m_eSkill, 1);
+		m_Player_Inventory->Set_Gold(-m_Player_Inventory->Get_Skill_Price(m_eSkill));
 	}
 	else
-		MSGBOX("소지금이 부족합니다")*/
+		MSGBOX("소지금이 부족합니다")
 
 		return S_OK;
 }

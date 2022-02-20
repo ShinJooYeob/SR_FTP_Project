@@ -45,6 +45,7 @@ protected:
 
 protected:
 	HRESULT Create_VertexBuffer();
+	_bool Pick(const _Matrix & WorldMatrixInverse, _float3 * pOut);
 	HRESULT Create_IndexBuffer();
 
 public:
