@@ -51,10 +51,12 @@ private:
 
 private:	_float			m_fFrame = 0.f;
 	SKILLINFO			m_Skill[SKILL_END];//스킬 정보를 담아놓는 배열
-
+	list<CUI*>			m_UIList;
+	list<CUI*>			m_UIPrototypes;
 	bool			m_bIsPress=false;
 public:
-	
+	HRESULT			Update_UIList(_float fTimeDelta);
+	HRESULT			LateUpdate_UIList(_float fTimeDelta);
 private:
 	HRESULT			SetUp_Components();
 	HRESULT			SetUp_Skills();

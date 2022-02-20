@@ -44,8 +44,9 @@ private:
 
 private:	
 	_float			m_fFrame = 0.f;
+	
 public:
-
+	void			Set_ButtonName(TCHAR* pButtonName);
 private:
 	HRESULT			SetUp_Components();
 	HRESULT			Buy_Skill(_int eSKILL);

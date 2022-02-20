@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "..\public\Shop.h"
-
+#include "MyButton.h"
 
 
 
@@ -10,8 +10,12 @@ CShop::CShop(LPDIRECT3DDEVICE9 pGraphicDevice)
 }
 
 CShop::CShop(const CShop & rhs)
-	: CUI(rhs)
+	: CUI(rhs), m_UIPrototypes(rhs.m_UIPrototypes)
 {
+	for (auto pUI : m_UIPrototypes)
+	{
+		Safe_AddRef(pUI);
+	}
 }
 
 HRESULT CShop::Initialize_Prototype(void * pArg)
@@ -19,6 +23,8 @@ HRESULT CShop::Initialize_Prototype(void * pArg)
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
 	
+	
+	m_UIPrototypes.push_back(CMyButton::Create(m_pGraphicDevice));
 
 	return S_OK;
 }
@@ -40,8 +46,8 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Skills()))
 		return E_FAIL;
 	
-	/*if (FAILED(m_ComTexture->Change_TextureLayer(TEXT("Run"))))
-		return E_FAIL;*/
+	if (FAILED(m_ComTexture->Change_TextureLayer(TEXT("Shop"))))
+		return E_FAIL;
 
 	
 	return S_OK;
@@ -51,7 +57,11 @@ _int CShop::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-
+	if (m_bIsPress == true)
+	{
+		if (FAILED(Update_UIList(fDeltaTime)))
+			return E_FAIL;
+	}
 	
 	return _int();
 }
@@ -70,13 +80,16 @@ _int CShop::LateUpdate(_float fDeltaTime)
 
 	if (pInstance->Get_DIKeyState(DIK_F11) & DIS_Down)
 		m_bIsPress = !m_bIsPress;
-	if(m_bIsPress == true)
+
+	if (m_bIsPress == true)
 	{
 		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
 			return E_FAIL;
 
-		Set_Skill_Rect();
+		if (FAILED(LateUpdate_UIList(fDeltaTime)))
+			return E_FAIL;
 	}
+
 	return _int();
 }
 
@@ -115,10 +128,44 @@ _int CShop::LateRender()
 
 HRESULT CShop::Ready_Layer_Button(const _tchar * pLayerTag)
 {
-	_float4 UIDesc=_float4(300.f, 280.f, 100.f, 100.f);
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Button"),UIDesc))
-		return E_FAIL;
+	CMyButton* temp = (CMyButton*)(m_UIPrototypes.front()->Clone(&_float4(500, 300, 50, 50)));
+	temp->Set_ButtonName(L"Buy");
+	m_UIList.push_back((CUI*)temp);
+	
+	temp = (CMyButton*)(m_UIPrototypes.front()->Clone(&_float4(300, 300, 50, 50)));
+	temp->Set_ButtonName(L"Exit");
+	m_UIList.push_back((CUI*)temp);
+	return S_OK;
+}
 
+HRESULT CShop::Update_UIList(_float fTimeDelta)
+{
+	int hr;
+	for (auto pUI : m_UIList)
+	{
+		
+		hr = (pUI->Update(fTimeDelta));
+		switch (hr)
+		{
+		case 99:
+			m_bIsPress = false;
+			break;
+		default:
+			break;
+		}
+	}
+
+
+	return S_OK;
+}
+
+HRESULT CShop::LateUpdate_UIList(_float fTimeDelta)
+{
+	for (auto pUI : m_UIList)
+	{
+		if (FAILED(pUI->LateUpdate(fTimeDelta)))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 
@@ -161,19 +208,6 @@ HRESULT CShop::SetUp_Skills()
 HRESULT CShop::Set_Skill_Rect()
 {
 	
-		RECT rcRect;
-		rcRect.top = LONG(m_fY - 95);
-		rcRect.right = LONG(m_fX -28);
-		rcRect.left = LONG(m_fX - 55);
-		rcRect.bottom = LONG(m_fY - 45);
-
-		POINT ptMouse;
-		GetCursorPos(&ptMouse);
-		ScreenToClient(g_hWnd, &ptMouse);
-
-		if (PtInRect(&rcRect, ptMouse))
-			MSGBOX("·ºÃæ")
-
 	return S_OK;
 }
 
@@ -250,6 +284,19 @@ CGameObject * CShop::Clone(void * pArg)
 void CShop::Free()
 {
 	__super::Free();
+	for (auto pUI : m_UIList)
+	{
+		Safe_Release(pUI);
+
+	}
+	m_UIList.clear();
+	for (auto pUI : m_UIPrototypes)
+	{
+		Safe_Release(pUI);
+
+	}
+	m_UIPrototypes.clear();
+
 
 	Safe_Release(m_Player_Inventory);
 	Safe_Release(m_ComTexture);

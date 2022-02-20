@@ -140,8 +140,7 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Shop), CShop::Create(m_pGraphicDevice))))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Button), CMyButton::Create(m_pGraphicDevice))))
-		return E_FAIL;
+
 	
 	//////////////////////////////////////////////큐브로 충돌처리 테스트중입니다. -은혁
 

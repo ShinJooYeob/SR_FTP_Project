@@ -52,19 +52,22 @@ _int CMyButton::Update(_float fDeltaTime)
 		return E_FAIL;
 	
 	CGameInstance* pInstance = GetSingle(CGameInstance);
-	POINT ptMouse;
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
-	if (pInstance->Get_DIKeyState(CInput_Device::MBS_LBUTTON) & DIS_Down)
+	
+	if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Down)
 	{
+		POINT ptMouse;
+		GetCursorPos(&ptMouse);
+		ScreenToClient(g_hWnd, &ptMouse);
+
 		if (PtInRect(&m_rcButtonRect, ptMouse))
 		{
 			if (!lstrcmp(L"Buy", m_pButtonName))
 			{
-				Buy_Skill(m_eSkill);
+				MSGBOX("구매 완료");
+				return 5;
 			}
 			else if (!lstrcmp(L"Exit", m_pButtonName))
-					return 1;
+					return 99;
 			else if (!lstrcmp(L"?", m_pButtonName))
 					return 1;
 			else if (!lstrcmp(L"?", m_pButtonName))
@@ -121,6 +124,23 @@ _int CMyButton::LateRender()
 		return E_FAIL;
 
 	return _int();
+}
+
+void CMyButton::Set_ButtonName(TCHAR * pButtonName)
+{
+	{ m_pButtonName = pButtonName; };
+	if (!lstrcmp(L"Buy", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Buy");
+	}
+	else if (!lstrcmp(L"Exit", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Exit");
+	}
+	else if (!lstrcmp(L"?", m_pButtonName))
+		return;
+	else if (!lstrcmp(L"?", m_pButtonName))
+		return;
 }
 
 HRESULT CMyButton::SetUp_Components()
