@@ -112,6 +112,7 @@ _int CObject_GravityCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
 		//
+		int t = 1;
 	}
 
 	return _int();
@@ -130,9 +131,9 @@ _int CObject_GravityCube::Collision_Gravity(_float fDeltaTime)
 
 	_float Distance = GravityCubePos.Get_Distance(PlayerPos);
 
-	if (Distance < 4)
+	if (Distance < 4) //거리 조절 가능
 	{
-		fDeltaTime *= 0.25f; // 속도 조절 중
+		fDeltaTime *= 0.5f; // 속도 조절 가능
 		Player->MovetoTarget(GravityCubePos, fDeltaTime);
 	}
 
