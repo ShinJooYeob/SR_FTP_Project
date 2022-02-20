@@ -1,0 +1,2 @@
+UI|Shop|1|../bin/Resources/Textures/UI/Shop.png
+UI|Button|1|../bin/Resources/Textures/UI/Run.png

@@ -112,15 +112,11 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	//Shop Texture
 
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-
+	TextureDesc.szTextFilePath = TEXT("UI.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Shop), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
-	//Button Texture
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Run"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
+	
 
 
 	//TestCubeFixObject
@@ -144,7 +140,7 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Shop), CShop::Create(m_pGraphicDevice))))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Button") , CMyButton::Create(m_pGraphicDevice))))
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Button), CMyButton::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	
 	//////////////////////////////////////////////큐브로 충돌처리 테스트중입니다. -은혁

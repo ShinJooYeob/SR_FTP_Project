@@ -40,6 +40,9 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Skills()))
 		return E_FAIL;
 	
+	/*if (FAILED(m_ComTexture->Change_TextureLayer(TEXT("Run"))))
+		return E_FAIL;*/
+
 	
 	return S_OK;
 }
@@ -88,14 +91,14 @@ _int CShop::Render()
 	if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
 		return E_FAIL;
 
-	/*if (FAILED(SetUp_RenderState()))
-		return E_FAIL;*/
+	if (FAILED(SetUp_RenderState()))
+		return E_FAIL;
 
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
 
-	//if (FAILED(Release_RenderState()))
-	//	return E_FAIL;
+	if (FAILED(Release_RenderState()))
+		return E_FAIL;
 
 
 
@@ -112,7 +115,7 @@ _int CShop::LateRender()
 
 HRESULT CShop::Ready_Layer_Button(const _tchar * pLayerTag)
 {
-	_float4 UIDesc=_float4(550.f, 280.f, 100.f, 100.f);
+	_float4 UIDesc=_float4(300.f, 280.f, 100.f, 100.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Button"),UIDesc))
 		return E_FAIL;
 
