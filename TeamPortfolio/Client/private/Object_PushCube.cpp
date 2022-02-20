@@ -109,7 +109,7 @@ _int CObject_PushCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fC
 
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
-		//m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
+		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 		
 	}
 

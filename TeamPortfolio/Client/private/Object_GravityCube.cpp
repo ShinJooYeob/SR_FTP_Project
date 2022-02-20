@@ -46,6 +46,7 @@ _int CObject_GravityCube::Update(_float fTimeDelta)
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	return _int();
@@ -61,6 +62,12 @@ _int CObject_GravityCube::LateUpdate(_float fTimeDelta)
 
 	//if (FAILED(SetUp_OnTerrain(fTimeDelta)))
 	//	return -1;
+
+
+	//객체에게 중력을 적용하기 위한 값
+
+	if (FAILED(Collision_Gravity(fTimeDelta)))
+		return -1;
 
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
@@ -102,17 +109,36 @@ _int CObject_GravityCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3
 {
 	_uint I = 0;
 
-
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
-		Collision_Gravity(pDestObjects, fCollision_Distance, fDeltaTime);
+		//
 	}
 
 	return _int();
 }
 
-_int CObject_GravityCube::Collision_Gravity(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
+_int CObject_GravityCube::Collision_Gravity(_float fDeltaTime)
 {
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	//객체에게 중력을 적용하기 위한 값
+	CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
+
+	_float3& PlayerPos = Player->Get_MatrixState(CTransform::STATE_POS);
+
+	_float3& GravityCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	_float Distance = GravityCubePos.Get_Distance(PlayerPos);
+
+	if (Distance < 4)
+	{
+		fDeltaTime *= 0.25f; // 속도 조절 중
+		Player->MovetoTarget(GravityCubePos, fDeltaTime);
+	}
+
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return _int();
 }
 
