@@ -296,9 +296,6 @@
     <ClInclude Include="..\Public\Component.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Renderer.h">
-      <Filter>01.Utility\05.ComponentMgr\01.Components\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Transform.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Transform</Filter>
     </ClInclude>
@@ -379,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Effect.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\UI\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Renderer.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
