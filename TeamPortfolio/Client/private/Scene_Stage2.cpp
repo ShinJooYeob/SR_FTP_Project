@@ -14,9 +14,9 @@ HRESULT CScene_Stage2::Initialize()
 	////////////////////////////은혁이 테스트
 	if (FAILED(Ready_Layer_Cube(TEXT("Layer_Cube"))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_FixCube(TEXT("Layer_FixCube"))))
+	if (FAILED(Ready_Layer_FixCube(TEXT("Layer_Fix_Cube"))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_PushCube(TEXT("Layer_PushCube"))))
+	if (FAILED(Ready_Layer_PushCube(TEXT("Layer_Push_Cube"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_Gravity_Cube"))))

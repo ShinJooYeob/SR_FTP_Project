@@ -27,8 +27,8 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
-	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)override;
-	virtual _int Collision_Gravity(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime);
+	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
+	virtual _int Collision_Gravity(_float fDeltaTime);
 
 private:
 	HRESULT SetUp_Components();

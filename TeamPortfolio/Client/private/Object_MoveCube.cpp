@@ -128,14 +128,22 @@ _int CObject_MoveCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCo
 {
 	const _tchar* test = pDestObjects->Get_Layer_Tag();
 
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
+	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Fix_Cube")))
 	{
 		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_PushCube")))
+
+	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Push_Cube")))
 	{
+		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
+	}
+
+	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Gravity_Cube")))
+	{
+		//플레이어 3초 전으로 돌아가겠끔
+		int i = 0;
 		//m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
-		m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
+		//m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 	
 
