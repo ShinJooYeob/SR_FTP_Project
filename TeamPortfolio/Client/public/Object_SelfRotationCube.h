@@ -43,6 +43,7 @@ private:
 
 
 	_float					seconds = 0;
+	_float					m_RotAngle = 0;
 
 public:
 	static CObject_SelfRotationCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

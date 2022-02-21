@@ -63,28 +63,20 @@ _int CObject_SelfRotationCube::LateUpdate(_float fTimeDelta)
 	//시간단위 fTimeDelta는 1초를 뜻함
 	if (seconds > 3.f)
 	{
-		//_float3 vOriginCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-		//_float3 vRotAxis = m_CameraDesc.vWorldRotAxis;
-		//vRotAxis.y = 0;
-		//_float3 vCameraPos = vOriginCameraPos - vRotAxis;
-		//vCameraPos.y = 0;
+		
+		//////////////////////////////////////////////쓰고 싶은 보간타입,    시작각도,    몇도를 돌릴지,  몇초부터~,  몇초동안~
+		_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds - 3.f, 2.0f);
+		
 
-		//_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1, 0, 0)));
-
-		//if (0 > vCameraPos.z)
-		//	fRadianAngle = 2 * D3DX_PI - fRadianAngle;
-
-		//m_fStartAngle = fRadianAngle;
-		//m_fTargetAngle = fRadianAngle - D3DXToRadian(90);
-		//m_fPassedTime = 0;
-		//m_IsTurning = true;
-		//_float 
-
-		m_ComTransform->Turn_CW(_float3(0,1,0), fTimeDelta);
-		if (seconds > 6.f)
+		if (seconds > 5.f) 
 		{
 			seconds = 0;
+			m_RotAngle = m_RotAngle + 90;  //각도를 돌렸으니 m_RotAngle에 넣어준다. 이걸 넣어주지 않는다면 계속 초기화가 된다.
+			TempAngle = m_RotAngle;//시간이 끝날 때 오차가 발생하기 때문에 타겟앵글로 한번 더 예외처리를 해준다. 지금 세컨드를 float으로 받고 델타도 사실 일정하지 않기 때문
 		}
+		
+		///////////////////////////임의의 축,       라디안
+		m_ComTransform->Rotation_CW(_float3(0,1,0), D3DXToRadian(TempAngle));
 		
 	}
 
