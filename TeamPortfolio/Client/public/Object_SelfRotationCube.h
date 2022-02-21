@@ -42,10 +42,7 @@ private:
 	CCollision*				m_pCollisionCom = nullptr;
 
 
-	_bool					m_bIsJumped = false;
-	_float					m_fJumpPower = 5.f;
-	_float					m_fNowJumpPower = 0.f;
-
+	_float					seconds = 0;
 
 public:
 	static CObject_SelfRotationCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

@@ -58,6 +58,38 @@ _int CObject_SelfRotationCube::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
+	seconds += fTimeDelta;
+
+	//시간단위 fTimeDelta는 1초를 뜻함
+	if (seconds > 3.f)
+	{
+		//_float3 vOriginCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+		//_float3 vRotAxis = m_CameraDesc.vWorldRotAxis;
+		//vRotAxis.y = 0;
+		//_float3 vCameraPos = vOriginCameraPos - vRotAxis;
+		//vCameraPos.y = 0;
+
+		//_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1, 0, 0)));
+
+		//if (0 > vCameraPos.z)
+		//	fRadianAngle = 2 * D3DX_PI - fRadianAngle;
+
+		//m_fStartAngle = fRadianAngle;
+		//m_fTargetAngle = fRadianAngle - D3DXToRadian(90);
+		//m_fPassedTime = 0;
+		//m_IsTurning = true;
+		//_float 
+
+		m_ComTransform->Turn_CW(_float3(0,1,0), fTimeDelta);
+		if (seconds > 6.f)
+		{
+			seconds = 0;
+		}
+		
+	}
+
+
+
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
