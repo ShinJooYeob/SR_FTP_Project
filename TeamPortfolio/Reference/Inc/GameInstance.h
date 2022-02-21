@@ -82,8 +82,7 @@ public: /* For. IMGUI Interface */
 	CImguiMgr* GetIMGui();
 
 public:
-	HRESULT Transform_ToWorldSpace();
-	HRESULT Transform_ToLocalSpace(_Matrix WorldMatrixinverse);
+	HRESULT Update_Transform_ToWorldSpace(POINT p);
 	_bool isPick(_float3 * pLocalPoint, _float3 * pOut);
 
 private:

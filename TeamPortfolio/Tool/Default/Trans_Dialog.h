@@ -47,10 +47,16 @@ private:
 	
 	// 텍스처 리스트 박스
 	CListBox m_TextureListBox;
+	
+	// 슬라이더
+	CSliderCtrl m_Silder_Rotation[3];
+
 
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
 	afx_msg void OnBnClickedButton1();
 	
 	afx_msg void OnLbnSelchangeList1();
+public:
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };

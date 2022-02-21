@@ -45,6 +45,10 @@ void CTrans_Dialog::DoDataExchange(CDataExchange* pDX)
 
 
 	DDX_Control(pDX, IDC_LIST1, m_TextureListBox);
+
+	DDX_Control(pDX, IDC_SLIDER1, m_Silder_Rotation[0]);
+	DDX_Control(pDX, IDC_SLIDER2, m_Silder_Rotation[1]);
+	DDX_Control(pDX, IDC_SLIDER3, m_Silder_Rotation[2]);
 }
 
 HRESULT CTrans_Dialog::EditToObjectUpdate(CEdit* edit,_uint editCount)
@@ -68,9 +72,16 @@ HRESULT CTrans_Dialog::EditToObjectUpdate(CEdit* edit,_uint editCount)
 	m_GameObject_Rect_Tool->Set_Position(_float3(newfloat[0], newfloat[1], newfloat[2]));
 	_float3 newRot = _float3(D3DXToRadian(newfloat[3]), D3DXToRadian(newfloat[4]), D3DXToRadian(newfloat[5]));
 
+	for (int i=0;i<3;i++)
+	{
+		m_Silder_Rotation[i].SetPos(newfloat[i + 3]);
+	}
+	
 	m_GameObject_Rect_Tool->Set_Rotation(newRot);
 	m_GameObject_Rect_Tool->Set_Scaled(_float3(newfloat[6], newfloat[7], newfloat[8]));
 
+	delete[] newfloat;
+	newfloat = nullptr;
 
 	return S_OK;
 }
@@ -82,6 +93,7 @@ HRESULT CTrans_Dialog::EditToObjectUpdate(CEdit* edit,_uint editCount)
 BEGIN_MESSAGE_MAP(CTrans_Dialog, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &CTrans_Dialog::OnBnClickedButton1)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CTrans_Dialog::OnLbnSelchangeList1)
+	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
 
@@ -100,8 +112,6 @@ HRESULT CTrans_Dialog::ResetTexture()
 			wsprintf(fomatText, L"Block_%d", i);
 			m_TextureListBox.AddString(fomatText);
 		}
-
-
 	}
 	return S_OK;
 }
@@ -118,6 +128,11 @@ BOOL CTrans_Dialog::OnInitDialog()
 	{
 		m_GameObject_Rect_Tool = GetSingle(CSuperToolSIngleton)->GetObjectRect();
 		m_GameObject_Rect_Tool->AddRef();
+	}
+
+	for (auto& slider : m_Silder_Rotation)
+	{
+		slider.SetRange(0, 360);
 	}
 
 	// 값 초기화
@@ -144,9 +159,6 @@ BOOL CTrans_Dialog::OnInitDialog()
 BOOL CTrans_Dialog::DestroyWindow()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-
-
-
 	return CDialog::DestroyWindow();
 }
 
@@ -166,5 +178,28 @@ void CTrans_Dialog::OnLbnSelchangeList1()
 	_uint index = m_TextureListBox.GetCurSel();
 
 	tex->Bind_Texture(index);
+}
 
+
+
+
+void CTrans_Dialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	for (int i=0;i<3;i++)
+	{
+		if (m_Silder_Rotation[i].GetDlgCtrlID() == pScrollBar->GetDlgCtrlID())
+		{
+			int iPos = m_Silder_Rotation[i].GetPos();
+			CString sPos;
+			sPos.Format(_T("%d"), iPos);
+			m_InputNumber[i+3].SetWindowText(sPos);
+			EditToObjectUpdate(m_InputNumber, 9);
+			break;
+
+		}
+	}
+
+	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 }

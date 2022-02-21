@@ -49,6 +49,9 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(void* pArg)
 
 	m_pVB->Unlock();
 
+
+
+
 	m_iIndicesSize = sizeof(FACEINDICES16);
 	m_eIndexFormat = D3DFMT_INDEX16;
 

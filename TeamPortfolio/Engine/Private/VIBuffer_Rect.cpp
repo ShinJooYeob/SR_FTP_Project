@@ -30,6 +30,9 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype(void * pArg)
 	if (FAILED(__super::Create_VertexBuffer()))
 		return E_FAIL;
 
+	m_pVertices = new VTXCUBETEX[m_iNumVertices];
+	ZeroMemory(m_pVertices, sizeof(VTXCUBETEX) * m_iNumVertices);
+
 	/*
 	만들어진 컴객체를 통해 Lock이라는 함수를 호출하면 
 	만들어진 해당 컴객체 안의 맴버 변수에 다른 쓰래드가 접근 하는 것을 막을 뿐만아니라
@@ -59,9 +62,16 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype(void * pArg)
 	pVertices[3].vTexUV = _float2(0.0f, 1.0f);
 
 
+
+	memcpy(m_pVertices, pVertices, sizeof(VTXTEX) * m_iNumVertices);
 	m_pVB->Unlock();	
 
+
 	//////////Index버퍼///////////////
+
+	m_pIndices = new FACEINDICES16[m_iNumPrimitive];
+	ZeroMemory(m_pIndices, sizeof(FACEINDICES16) * m_iNumPrimitive);
+
 	m_iIndicesSize = sizeof(FACEINDICES16);
 	m_eIndexFormat = D3DFMT_INDEX16;
 	
@@ -77,8 +87,8 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype(void * pArg)
 	pIndices[1]._0 = 0;
 	pIndices[1]._1 = 2;
 	pIndices[1]._2 = 3;
+	memcpy(m_pIndices, pIndices, sizeof(FACEINDICES16) * m_iNumPrimitive);
 	m_pIB->Unlock();
-
 
 
 	return S_OK;

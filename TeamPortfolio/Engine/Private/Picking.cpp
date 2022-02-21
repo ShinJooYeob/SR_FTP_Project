@@ -53,6 +53,33 @@ HRESULT	CPicking::Transform_ToWorldSpace()
 	return S_OK;
 }
 
+HRESULT CPicking::Transform_ToWorldSpace(POINT mousePos)
+{
+
+	D3DVIEWPORT9	ViewPortDesc;
+	m_pGraphic_Device->GetViewport(&ViewPortDesc);
+
+	_float4 vMousePos;
+	vMousePos.x = mousePos.x / (ViewPortDesc.Width*0.5f) - 1.f;
+	vMousePos.y = mousePos.y / -(ViewPortDesc.Height*0.5f) + 1.f;
+	vMousePos.z = 0.f;
+	vMousePos.w = 1.f;
+
+	_Matrix ProjMatrixInverse;
+	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &ProjMatrixInverse);
+	D3DXMatrixInverse(&ProjMatrixInverse, nullptr, &ProjMatrixInverse);
+	D3DXVec4Transform(&vMousePos, &vMousePos, &ProjMatrixInverse);
+	memcpy(&m_vRayDir, &(vMousePos - _float4(0.f, 0.f, 0.f, 1.f)), sizeof(_float3));
+	m_vRayPos = _float3(0.f, 0.f, 0.f);
+
+	_Matrix ViewMatrixInverse;
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrixInverse);
+	D3DXMatrixInverse(&ViewMatrixInverse, nullptr, &ViewMatrixInverse);
+	D3DXVec3TransformNormal(&m_vRayDir, &m_vRayDir, &ViewMatrixInverse);
+	D3DXVec3TransformCoord(&m_vRayPos, &m_vRayPos, &ViewMatrixInverse);
+	return S_OK;
+}
+
 HRESULT CPicking::Transform_ToLocalSpace(_Matrix WorldMatrixInverse)
 {
 	D3DXVec3TransformNormal(&m_vLocalRayDir, &m_vRayDir, &WorldMatrixInverse);

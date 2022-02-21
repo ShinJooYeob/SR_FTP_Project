@@ -37,6 +37,9 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+
+
+
 public:
 
 	virtual void OnInitialUpdate();
@@ -49,4 +52,5 @@ public:
 	afx_msg void OnBnClickedButtonLoad();
 	afx_msg void OnCbnSelchangeCombo2();
 	afx_msg void OnBnClickedButtonCube();
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };

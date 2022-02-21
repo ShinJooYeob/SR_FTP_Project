@@ -11,9 +11,10 @@ private:
 	virtual ~CPicking() = default;
 
 public:
-	 HRESULT Initialize(LPDIRECT3DDEVICE9 pGraphic_Device, HWND hWnd,void * pArg);
+	HRESULT Initialize(LPDIRECT3DDEVICE9 pGraphic_Device, HWND hWnd, void * pArg=nullptr);
 	 _bool	is_On_Rect(const RECT* TargetRect);
 	 HRESULT Transform_ToWorldSpace();
+	 HRESULT Transform_ToWorldSpace(POINT mousePos);
 	 HRESULT Transform_ToLocalSpace(_Matrix WorldMatrixinverse);
 	 _bool isPick(_float3 * pLocalPoint, _float3 * pOut);
 private:

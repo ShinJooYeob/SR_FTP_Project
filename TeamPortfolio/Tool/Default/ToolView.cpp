@@ -114,12 +114,8 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 			return;
 	*/
 
-	// #Bug 정적으로 그리기 때문에 업데이트가 필요없고 데이터만 있으면 될듯.
+	GetSingle(CSuperToolSIngleton)->Update_Tool(0.01f);
 
-	GetSingle(CGameInstance)->Transform_ToWorldSpace();
-
-	GetSingle(CSuperToolSIngleton)->Update_Tool(0.03f);
-	
 	// #Tag Tool Renderer
 	GetSingle(CSuperToolSIngleton)->Render_Begin();
 	
@@ -180,13 +176,7 @@ void CToolView::OnInitialUpdate()
 	SetScrollSizes(MM_TEXT, CSize(TILECX * TILEX, (TILECY * TILEY / 2)));
 
 	// #Tag Tool 디바이스 초기화
-	g_hWnd = m_hWnd;
-
-	if (FAILED(GetSingle(CSuperToolSIngleton)->InitDevice()))
-	{
-		AfxMessageBox(L"Device Init Failed");
-		return;
-	}
+	
 
 
 
@@ -223,7 +213,19 @@ void CToolView::OnInitialUpdate()
 
 	// 오브젝트 / 컴포넌트 프로토타입
 
+
+	g_hWnd = m_hWnd;
+
+	if (FAILED(GetSingle(CSuperToolSIngleton)->InitDevice()))
+	{
+		AfxMessageBox(L"Device Init Failed");
+		return;
+	}
+
 	SetTimer(TIMER_UPDATE, 50, NULL);
+
+	
+
 
 	return;
 }
@@ -258,12 +260,21 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	//	0.f), pMapTool->m_iDrawID);
 
 	// pMiniView->Invalidate(FALSE);
+	
+
 	Invalidate(FALSE);
 }
 
 void CToolView::OnMouseMove(UINT nFlags, CPoint point)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+{	
+	// 이벤트로 들어오는 걸로 피킹수행하자..
+	// DX 랜더된 곳의 윈도우 좌표가 들어온다.
+	
+
+	// 피킹 클래스 툴용으로 수정
+	GetSingle(CGameInstance)->Update_Transform_ToWorldSpace(point);
+
+
 
 	CScrollView::OnMouseMove(nFlags, point);
 

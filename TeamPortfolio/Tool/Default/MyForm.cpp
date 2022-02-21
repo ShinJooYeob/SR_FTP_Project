@@ -45,6 +45,7 @@ BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON12, &CMyForm::OnBnClickedButtonLoad)
 	ON_CBN_SELCHANGE(IDC_COMBO2, &CMyForm::OnCbnSelchangeCombo2)
 	ON_BN_CLICKED(IDC_BUTTON13, &CMyForm::OnBnClickedButtonCube)
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 // CMyForm 진단입니다.
@@ -148,4 +149,18 @@ void CMyForm::OnBnClickedButtonCube()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// 큐브 컴포넌트로 바꾸기
 	GetSingle(CSuperToolSIngleton)->GetObjectRect()->Set_ViBuffer_Change();
+}
+
+
+void CMyForm::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	//_tchar PickMouseText[64] = L"";
+	//wsprintf(PickMouseText, L"MousePos (%d,%d)", ptMouse.x, ptMouse.y);
+
+	//SetDlgItemText(IDC_STATIC1, MFCMouseText);
+	//SetDlgItemText(IDC_STATIC2, PickMouseText);
+
+	CFormView::OnLButtonDown(nFlags, point);
 }

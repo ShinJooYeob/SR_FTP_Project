@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "ObjectTool_ToolObject.h"
+#include "VIBuffer.h"
+#include "Picking.h"
 
 CObjectTool_ToolObject::CObjectTool_ToolObject(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CGameObject(pGraphicDevice),
@@ -54,6 +56,16 @@ _int CObjectTool_ToolObject::LateUpdate(_float fDeltaTime)
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this)))
 		return E_FAIL;
 
+	//if (GetKeyState(VK_LBUTTON) & 0x8000)
+	{
+		_float3	vOut;
+
+		
+		if (true == m_ComVIBuffer->Pick(m_ComTransform->Get_InverseWorldMatrix(), &vOut))
+			int a = 10;
+	}
+
+
 	return 0;
 }
 
@@ -76,12 +88,6 @@ _int CObjectTool_ToolObject::Render()
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
 
-	if (!m_isRect)
-	{
-		// Cube Rot
-			
-	}
-
 	return 0;
 }
 
@@ -89,13 +95,12 @@ _int CObjectTool_ToolObject::LateRender()
 {
 	if (FAILED(__super::LateRender()))
 		return E_FAIL;
-
 	return 0;
 }
 
 HRESULT CObjectTool_ToolObject::Set_Scaled(_float3 scale)
 {
-	FAILED_CHECK(m_ComTransform);
+	NULL_CHECK_BREAK(m_ComTransform);
 
 	if (scale.x == 0)
 		scale.x = 1.f;
@@ -112,7 +117,7 @@ HRESULT CObjectTool_ToolObject::Set_Scaled(_float3 scale)
 
 HRESULT CObjectTool_ToolObject::Set_Rotation(_float3 rot)
 {
-	FAILED_CHECK(m_ComTransform);
+	NULL_CHECK_BREAK(m_ComTransform);
 
 	D3DXQUATERNION quat_x, quat_y, quat_z, quat_1, quat_2;
 	_Matrix matrix;
@@ -136,7 +141,7 @@ HRESULT CObjectTool_ToolObject::Set_Rotation(_float3 rot)
 
 HRESULT CObjectTool_ToolObject::Set_Position(_float3 Position)
 {
-	FAILED_CHECK(m_ComTransform);
+	NULL_CHECK_BREAK(m_ComTransform);
 
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, Position);
 	return S_OK;
@@ -145,7 +150,7 @@ HRESULT CObjectTool_ToolObject::Set_Position(_float3 Position)
 HRESULT CObjectTool_ToolObject::Set_Texture(const _tchar* pathdata)
 {
 	// 기존에 있던 텍스쳐 날림
-	FAILED_CHECK(m_ComTexture);
+	NULL_CHECK_BREAK(m_ComTexture);
 
 	m_ComTexture->ClearTexture();
 	lstrcpy(m_tOutputData.strStrTextureFullPath, pathdata);
