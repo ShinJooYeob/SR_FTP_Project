@@ -37,6 +37,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
 	m_ComTransform->Scaled(_float3(0.7f, 0.9f, 1.f));
 
+	
 	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))));
 	
 	if (m_pCamera_Main == nullptr)
@@ -153,7 +154,7 @@ HRESULT CPlayer::SetUp_Components()
 	iMaxSkillNum = SKILL_END;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Inventory), TAG_COM(Com_Inventory), (CComponent**)&m_ComInventory, &iMaxSkillNum)))
 		return E_FAIL;
-
+	
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_pCollisionCom)))
 		return E_FAIL;
 

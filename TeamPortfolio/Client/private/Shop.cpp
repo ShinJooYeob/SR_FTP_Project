@@ -12,6 +12,7 @@ CShop::CShop(LPDIRECT3DDEVICE9 pGraphicDevice)
 CShop::CShop(const CShop & rhs)
 	: CUI(rhs), m_UIPrototypes(rhs.m_UIPrototypes)
 {
+	m_iChosenSkill = SHOP_DASH;
 	for (auto pUI : m_UIPrototypes)
 	{
 		Safe_AddRef(pUI);
@@ -36,8 +37,8 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	
-	if (FAILED(Set_UI_Transform(m_ComTransform, _float4(600.f, 300.0f, g_iWinCX >> 1, g_iWinCY >> 1))))
+	m_vUIDesc=_float4(g_iWinCX >> 1, g_iWinCY >> 1, g_iWinCX >> 1, g_iWinCY >> 1);
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Button(TEXT("Prototype_Component_Texture_Shop"))))
@@ -46,7 +47,7 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Skills()))
 		return E_FAIL;
 	
-	if (FAILED(m_ComTexture->Change_TextureLayer(TEXT("Shop"))))
+	if (FAILED(m_ComTexture->Change_TextureLayer(TEXT("Shop1"))))
 		return E_FAIL;
 
 	
@@ -128,12 +129,24 @@ _int CShop::LateRender()
 
 HRESULT CShop::Ready_Layer_Button(const _tchar * pLayerTag)
 {
-	CMyButton* temp = (CMyButton*)(m_UIPrototypes.front()->Clone(&_float4(500, 300, 50, 50)));
+	CMyButton* temp = (CMyButton*)(m_UIPrototypes.front()->Clone(&_float4(m_vUIDesc.x+115, m_vUIDesc.y+75, 100, 100)));
 	temp->Set_ButtonName(L"Buy");
 	m_UIList.push_back((CUI*)temp);
 	
-	temp = (CMyButton*)(m_UIPrototypes.front()->Clone(&_float4(300, 300, 50, 50)));
+	temp = (CMyButton*)(m_UIPrototypes.front()->Clone(&_float4(m_vUIDesc.x + 215, m_vUIDesc.y + 75, 100, 100)));
 	temp->Set_ButtonName(L"Exit");
+	m_UIList.push_back((CUI*)temp);
+
+	temp = (CMyButton*)(m_UIPrototypes.front()->Clone(&_float4(m_vUIDesc.x - 215, m_vUIDesc.y - 60, 100, 100)));
+	temp->Set_ButtonName(L"SPEEDUP");
+	m_UIList.push_back((CUI*)temp);
+
+	temp = (CMyButton*)(m_UIPrototypes.front()->Clone(&_float4(m_vUIDesc.x - 115, m_vUIDesc.y - 60, 100, 100)));
+	temp->Set_ButtonName(L"DUBBLEJUMP");
+	m_UIList.push_back((CUI*)temp);
+
+	temp = (CMyButton*)(m_UIPrototypes.front()->Clone(&_float4(m_vUIDesc.x - 15, m_vUIDesc.y - 60, 100, 100)));
+	temp->Set_ButtonName(L"DASH");
 	m_UIList.push_back((CUI*)temp);
 	return S_OK;
 }
@@ -147,8 +160,25 @@ HRESULT CShop::Update_UIList(_float fTimeDelta)
 		hr = (pUI->Update(fTimeDelta));
 		switch (hr)
 		{
-		case 99:
+		case SHOP_SPEEDUP:
+			m_iChosenSkill = SHOP_SPEEDUP;
+			break;
+		case SHOP_DUBBLEJUMP:
+			m_iChosenSkill = SHOP_DUBBLEJUMP;
+			break;
+		case SHOP_DASH:
+			m_iChosenSkill = SHOP_DASH;
+			break;
+		case SHOP_POTION:
+			m_iChosenSkill = SHOP_POTION;
+			break;
+		case SHOP_BUY:
+			Buy_Skill(m_iChosenSkill);
+			break;
+		case SHOP_EXIT:
 			m_bIsPress = false;
+			break;
+		case SHOP_SELL:
 			break;
 		default:
 			break;
@@ -193,6 +223,7 @@ HRESULT CShop::SetUp_Components()
 HRESULT CShop::SetUp_Skills()
 {
 	ZeroMemory(m_Skill, sizeof(_int)*SKILL_END);
+	
 	m_Skill[SKILL_SPEEDUP].Move_Speed+= 1*(m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP));
 	m_Skill[SKILL_SPEEDUP].Price = 1000;
 	
@@ -211,12 +242,13 @@ HRESULT CShop::Set_Skill_Rect()
 	return S_OK;
 }
 
-HRESULT CShop::Buy_Skill(_int eSKILL)
+HRESULT CShop::Buy_Skill(_int ChosenSkill)
 {
-	if (m_Skill[eSKILL].Price <= m_Player_Inventory->Get_Gold())
+	
+	if (m_Skill[ChosenSkill].Price <= m_Player_Inventory->Get_Gold())
 	{
-		m_Player_Inventory->Set_Skill_Level(eSKILL, 1);
-		m_Player_Inventory->Set_Gold(-m_Skill[eSKILL].Price);
+		m_Player_Inventory->Set_Skill_Level(ChosenSkill, 1);
+		m_Player_Inventory->Set_Gold(-m_Skill[ChosenSkill].Price);
 	}
 	else
 		MSGBOX("소지금이 부족합니다")

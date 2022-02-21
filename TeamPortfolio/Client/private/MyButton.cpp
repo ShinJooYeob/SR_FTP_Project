@@ -61,17 +61,23 @@ _int CMyButton::Update(_float fDeltaTime)
 
 		if (PtInRect(&m_rcButtonRect, ptMouse))
 		{
-			if (!lstrcmp(L"Buy", m_pButtonName))
-			{
-				MSGBOX("구매 완료");
-				return 5;
-			}
+			if (!lstrcmp(L"SPEEDUP", m_pButtonName))
+					return SHOP_SPEEDUP;
+			else if (!lstrcmp(L"DUBBLEJUMP", m_pButtonName))
+				return SHOP_DUBBLEJUMP;
+			else if (!lstrcmp(L"DASH", m_pButtonName))
+					return SHOP_DASH;
+			else if (!lstrcmp(L"POTION", m_pButtonName))
+					return SHOP_POTION;
+			else if (!lstrcmp(L"Buy", m_pButtonName))
+					return SHOP_BUY;
 			else if (!lstrcmp(L"Exit", m_pButtonName))
-					return 99;
-			else if (!lstrcmp(L"?", m_pButtonName))
-					return 1;
-			else if (!lstrcmp(L"?", m_pButtonName))
-					return 1;
+				return SHOP_EXIT;
+			else if (!lstrcmp(L"Sell", m_pButtonName))
+			{
+				MSGBOX("판매 완료");
+				return SHOP_SELL;
+			}
 		}
 	}
 	return _int();
@@ -137,10 +143,18 @@ void CMyButton::Set_ButtonName(TCHAR * pButtonName)
 	{
 		m_ComTexture->Change_TextureLayer(L"Exit");
 	}
-	else if (!lstrcmp(L"?", m_pButtonName))
-		return;
-	else if (!lstrcmp(L"?", m_pButtonName))
-		return;
+	else if (!lstrcmp(L"DUBBLEJUMP", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"DUBBLEJUMP");
+	}
+	else if (!lstrcmp(L"DASH", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"DASH");
+	}
+	else if (!lstrcmp(L"SPEEDUP", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"SPEEDUP");
+	}
 }
 
 HRESULT CMyButton::SetUp_Components()
@@ -157,29 +171,12 @@ HRESULT CMyButton::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Shop"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
-	Safe_AddRef(m_Player_Inventory);
-
+	
 
 	return S_OK;
 }
 
 
-
-HRESULT CMyButton::Buy_Skill(_int eSKILL)
-{
-	
-
-	if (m_Player_Inventory->Get_Skill_Price(m_eSkill) <= m_Player_Inventory->Get_Gold())
-	{
-		m_Player_Inventory->Set_Skill_Level(m_eSkill, 1);
-		m_Player_Inventory->Set_Gold(-m_Player_Inventory->Get_Skill_Price(m_eSkill));
-	}
-	else
-		MSGBOX("소지금이 부족합니다")
-
-		return S_OK;
-}
 
 
 

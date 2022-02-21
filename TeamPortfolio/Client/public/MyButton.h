@@ -49,8 +49,6 @@ public:
 	void			Set_ButtonName(TCHAR* pButtonName);
 private:
 	HRESULT			SetUp_Components();
-	HRESULT			Buy_Skill(_int eSKILL);
-	SKILL			m_eSkill;
 
 public:
 	static CMyButton* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
