@@ -46,6 +46,7 @@
 #define IDC_SLIDER2                     1026
 #define IDC_SLIDER3                     1027
 #define IDC_COMBO1                      1028
+#define IDC_SLIDER4                     1028
 #define IDC_COMBO2                      1029
 #define IDC_STATIC1                     1031
 
