@@ -116,9 +116,10 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 
 	// #Bug 정적으로 그리기 때문에 업데이트가 필요없고 데이터만 있으면 될듯.
 
+	GetSingle(CGameInstance)->Transform_ToWorldSpace();
+
 	GetSingle(CSuperToolSIngleton)->Update_Tool(0.03f);
-
-
+	
 	// #Tag Tool Renderer
 	GetSingle(CSuperToolSIngleton)->Render_Begin();
 	
