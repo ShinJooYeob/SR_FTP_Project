@@ -95,6 +95,8 @@ _int CObjectTool_ToolObject::LateRender()
 
 HRESULT CObjectTool_ToolObject::Set_Scaled(_float3 scale)
 {
+	FAILED_CHECK(m_ComTransform);
+
 	if (scale.x == 0)
 		scale.x = 1.f;
 
@@ -108,8 +110,34 @@ HRESULT CObjectTool_ToolObject::Set_Scaled(_float3 scale)
 	return S_OK;
 }
 
+HRESULT CObjectTool_ToolObject::Set_Rotation(_float3 rot)
+{
+	FAILED_CHECK(m_ComTransform);
+
+	D3DXQUATERNION quat_x, quat_y, quat_z, quat_1, quat_2;
+	_Matrix matrix;
+	D3DXVECTOR3 axis_x(1.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 axis_y(0.0f, 1.0f, 0.0f);
+	D3DXVECTOR3 axis_z(0.0f, 0.0f, 1.0f);
+	D3DXQuaternionRotationAxis(&quat_x, &axis_x, rot.x);
+	D3DXQuaternionRotationAxis(&quat_y, &axis_y, rot.y);
+	D3DXQuaternionRotationAxis(&quat_z, &axis_z, rot.z);
+
+	quat_1 = quat_y * quat_x * quat_z;
+	D3DXQuaternionNormalize(&quat_2, &quat_1);
+	D3DXMatrixRotationQuaternion(&matrix, &quat_2);
+
+	m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, *(_float3*)&matrix.m[0]);
+	m_ComTransform->Set_MatrixState(CTransform::STATE_UP, *(_float3*)&matrix.m[1]);
+	m_ComTransform->Set_MatrixState(CTransform::STATE_LOOK, *(_float3*)&matrix.m[2]);
+
+	return S_OK;
+}
+
 HRESULT CObjectTool_ToolObject::Set_Position(_float3 Position)
 {
+	FAILED_CHECK(m_ComTransform);
+
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, Position);
 	return S_OK;
 }
@@ -117,6 +145,8 @@ HRESULT CObjectTool_ToolObject::Set_Position(_float3 Position)
 HRESULT CObjectTool_ToolObject::Set_Texture(const _tchar* pathdata)
 {
 	// 기존에 있던 텍스쳐 날림
+	FAILED_CHECK(m_ComTexture);
+
 	m_ComTexture->ClearTexture();
 	lstrcpy(m_tOutputData.strStrTextureFullPath, pathdata);
 
@@ -148,21 +178,29 @@ HRESULT CObjectTool_ToolObject::Set_ViBuffer_Change()
 
 	if (m_isRect)
 	{
-		if (FAILED(__super::Change_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect) , TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
-			return E_FAIL;
+		FAILED_CHECK(__super::Change_Component(
+			SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), 
+			TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer));
 
-		if (FAILED(__super::Change_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
-			return E_FAIL;
+		
+		FAILED_CHECK(__super::Change_Component(
+			SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default),
+			TAG_COM(Com_Texture), (CComponent**)&m_ComTexture));
+	
 		m_ComTexture->Bind_Texture(0);
 
 	}
 	else
 	{
-		if (FAILED(__super::Change_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
-			return E_FAIL;
+		FAILED_CHECK(__super::Change_Component(
+			SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube),
+			TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer));
 
-		if (FAILED(__super::Change_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Cube), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
-			return E_FAIL;
+
+		FAILED_CHECK(__super::Change_Component(
+			SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Cube),
+			TAG_COM(Com_Texture), (CComponent**)&m_ComTexture));
+
 		m_ComTexture->Bind_Texture(0);
 	}
 	return S_OK;

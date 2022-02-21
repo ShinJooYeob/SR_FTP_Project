@@ -66,6 +66,9 @@ HRESULT CTrans_Dialog::EditToObjectUpdate(CEdit* edit,_uint editCount)
 		return E_FAIL;
 
 	m_GameObject_Rect_Tool->Set_Position(_float3(newfloat[0], newfloat[1], newfloat[2]));
+	_float3 newRot = _float3(D3DXToRadian(newfloat[3]), D3DXToRadian(newfloat[4]), D3DXToRadian(newfloat[5]));
+
+	m_GameObject_Rect_Tool->Set_Rotation(newRot);
 	m_GameObject_Rect_Tool->Set_Scaled(_float3(newfloat[6], newfloat[7], newfloat[8]));
 
 

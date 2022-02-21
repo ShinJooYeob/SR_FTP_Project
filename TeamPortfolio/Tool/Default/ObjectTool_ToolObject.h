@@ -30,7 +30,7 @@ public:
 public:
 
 	HRESULT Set_Scaled(_float3 scale);
-//	HRESULT Set_Rotation(_float3 rot);
+	HRESULT Set_Rotation(_float3 rot);
 	HRESULT Set_Position(_float3 Position);
 	HRESULT Set_Texture(const _tchar* pathdata);
 	HRESULT Set_Data(OUTPUT_OBJECTINFO data);
