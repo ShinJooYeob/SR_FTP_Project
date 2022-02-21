@@ -21,6 +21,9 @@ HRESULT CScene_Stage2::Initialize()
 
 	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_Gravity_Cube"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Object_SelfRotationCube(TEXT("Layer_SelfRotationCube"))))
+		return E_FAIL;
 	////////////////////////////////////////////////////////////////////
 
 	return S_OK;
@@ -104,6 +107,13 @@ HRESULT CScene_Stage2::Ready_Layer_PushCube(const _tchar * pLayerTag)
 HRESULT CScene_Stage2::Ready_Layer_GravityCube(const _tchar * pLayerTag)
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_GravityCube")))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CScene_Stage2::Ready_Layer_Object_SelfRotationCube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_SelfRotationCube")))
 		return E_FAIL;
 	return S_OK;
 }
