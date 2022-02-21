@@ -30,10 +30,31 @@ HRESULT CObject_OrbitCube::Initialize_Clone(void * pArg)
 	/* 현재 객체에게 추가되어야할 컴포넌트들을 복제(or 참조)하여 멤버변수에 보관한다.  */
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
+	//m_pGraphicDevice
+	if (pArg != nullptr)
+	{
+		memcpy(&m_OrbitCubeDesc, pArg, sizeof(ORBITCUBEDESC));
+	}
+	else
+	{
+		MSGBOX("Fail to Clone CObject_OrbitCube");
+	}
 
+	if (pArg != nullptr)
+	{
+		_float3 vSettingPoint;
+		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+	}
 	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
+	/*
+	여기서부터 내일 아침해야함 우리가 구한 이동행렬에 포지션 넣으면 걍 위치가 바귄다 이동행렬을 포지션에 곱하지말고
+	월드 변환 행렬에 곱하셈 그리고 그걸 바인딩 시키면 됨. 기존에 있던건 없애고 하자. 그 상태에서 돌리면 공전이 될거임
+	잊지말자. 이동은 포지션을 뜻하는듯 근데 부모는 이동행렬!!! 이동행렬은 부모이다.
+	*/
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(2.f, 3.f, 7.f));
+
+
 
 	return S_OK;
 }
@@ -61,36 +82,25 @@ _int CObject_OrbitCube::LateUpdate(_float fTimeDelta)
 
 	seconds += fTimeDelta;
 
-	////시간단위 fTimeDelta는 1초를 뜻함
-	//if (seconds > 3.f)
-	//{
-
-	//	//////////////////////////////////////////////쓰고 싶은 보간타입,    시작각도,    몇도를 돌릴지,  몇초부터~,  몇초동안~
-	//	_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds - 3.f, 2.0f);
-
-
-	//	if (seconds > 5.f)
-	//	{
-	//		seconds = 0;
-	//		m_RotAngle = m_RotAngle + 90;  //각도를 돌렸으니 m_RotAngle에 넣어준다. 이걸 넣어주지 않는다면 계속 초기화가 된다.
-	//		TempAngle = m_RotAngle;//시간이 끝날 때 오차가 발생하기 때문에 타겟앵글로 한번 더 예외처리를 해준다. 지금 세컨드를 float으로 받고 델타도 사실 일정하지 않기 때문
-	//	}
-
-	//	///////////////////////////임의의 축,       라디안
-	//	m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
-
-	//}
-
 	//시간단위 fTimeDelta는 1초를 뜻함
+	if (seconds > 3.f)
+	{
 
-	//////////////////////////////////////////////쓰고 싶은 보간타입,    시작각도,    몇도를 돌릴지,  몇초부터~,  몇초동안~
-	_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds - 3.f, 2.0f);
+		//////////////////////////////////////////////쓰고 싶은 보간타입,    시작각도,    몇도를 돌릴지,  몇초부터~,  몇초동안~
+		_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds - 3.f, 2.0f);
 
-	m_RotAngle = m_RotAngle + 90;  //각도를 돌렸으니 m_RotAngle에 넣어준다. 이걸 넣어주지 않는다면 계속 초기화가 된다.
-	TempAngle = m_RotAngle;//시간이 끝날 때 오차가 발생하기 때문에 타겟앵글로 한번 더 예외처리를 해준다. 지금 세컨드를 float으로 받고 델타도 사실 일정하지 않기 때문
-	///////////////////////////임의의 축,       라디안
-	m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
 
+		if (seconds > 5.f)
+		{
+			seconds = 0;
+			m_RotAngle = m_RotAngle + 90;  //각도를 돌렸으니 m_RotAngle에 넣어준다. 이걸 넣어주지 않는다면 계속 초기화가 된다.
+			TempAngle = m_RotAngle;//시간이 끝날 때 오차가 발생하기 때문에 타겟앵글로 한번 더 예외처리를 해준다. 지금 세컨드를 float으로 받고 델타도 사실 일정하지 않기 때문
+		}
+
+		///////////////////////////임의의 축,       라디안
+		m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
+
+	}
 
 
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);

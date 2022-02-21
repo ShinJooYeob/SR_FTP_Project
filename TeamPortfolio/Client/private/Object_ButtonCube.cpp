@@ -113,7 +113,7 @@ _int CObject_ButtonCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 f
 
 		seconds += fDeltaTime;
 
-		if ( pInstance->Get_DIKeyState(DIK_Q) /*& DIS_Down*/)
+		if ( pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
 		{
 			Switch_Q = true;
 		}
@@ -128,29 +128,30 @@ _int CObject_ButtonCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 f
 
 				m_RotAngle = m_RotAngle + 90;
 				TempAngle = m_RotAngle;
+
 				Switch_Q = false;
 			}
 			TransformCube->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
 		}
 
-		if ( pInstance->Get_DIKeyState(DIK_E) /*& DIS_Down*/)
+		if ( pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
 		{
 			Switch_E = true;
 		}
 		if(Switch_E)
 		{
-			_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds, 2.0f);
+			_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle - 90, seconds, 2.0f);
 
 			if (seconds > 2.f)
 			{
 				seconds = 0;
 
-				m_RotAngle = m_RotAngle + 90;
+				m_RotAngle = m_RotAngle - 90;
 				TempAngle = m_RotAngle;
 
 				Switch_E = false;
 			}
-			TransformCube->Rotation_CCW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
+			TransformCube->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
 		}
 
 		RELEASE_INSTANCE(CGameInstance);

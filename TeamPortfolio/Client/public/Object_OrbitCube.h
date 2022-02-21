@@ -13,6 +13,11 @@ END
 
 class CObject_OrbitCube final : public CGameObject
 {
+public:
+	typedef struct tagOrbitCubeDesc{
+		_float3 fTransform;
+		_float3 fRotAxis;
+	}ORBITCUBEDESC;
 private:
 	explicit CObject_OrbitCube(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CObject_OrbitCube(const CObject_OrbitCube& rhs);
@@ -34,6 +39,7 @@ private:
 	HRESULT Release_RenderState();
 
 private:
+	ORBITCUBEDESC			m_OrbitCubeDesc;
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;

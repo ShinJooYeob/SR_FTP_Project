@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\Scene_Stage2.h"
+#include "Object_OrbitCube.h"
 
 CScene_Stage2::CScene_Stage2(LPDIRECT3DDEVICE9 GraphicDevice)
 	:CScene(GraphicDevice)
@@ -160,8 +161,21 @@ HRESULT CScene_Stage2::Ready_Layer_Object_PortalCube_B(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage2::Ready_Layer_OrbitCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_OrbitCube")))
-		return E_FAIL;
+	CObject_OrbitCube::ORBITCUBEDESC OrbitCubeDesc;
+
+	for (_uint Z = 0; Z < 2; Z++)
+	{
+		for (_uint Y = 0; Y < 2; Y++)
+		{
+			for (_uint X = 0; X < 2; X++) {
+				OrbitCubeDesc.fTransform = _float3(5.f+X, 1.f + Y, 7.f+Z);
+				OrbitCubeDesc.fRotAxis = _float3(2.f, 3.f, 5.f);
+				if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_OrbitCube"),&OrbitCubeDesc))
+					return E_FAIL;
+				}
+			}
+		}
+
 	return S_OK;
 }
 
