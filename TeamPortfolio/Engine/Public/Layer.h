@@ -26,6 +26,8 @@ public:
 	CComponent* Get_Commponent_By_LayerIndex(const _tchar* tagComponet, _uint iLayerIndex);
 	CGameObject* Get_GameObject_By_LayerIndex(_uint iLayerIndex);
 
+	HRESULT Set_NowSceneNum(_uint eScene);
+
 private:
 	list< CGameObject*>			m_ObjectList;
 	typedef list< CGameObject*>	OBJECTS;

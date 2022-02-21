@@ -62,6 +62,8 @@ private:
 	_float3					m_vClimingBlock;
 	_float3					m_vReturnStair = _float3(0,0,0);
 
+	CGameObject*			m_pCarryObject = nullptr;
+	CTransform*				m_pCarryObjectTransform = nullptr;
 
 	CCamera_Main*			m_pCamera_Main = nullptr;
 

@@ -8,3 +8,5 @@ Player|climing_back|6|../bin/Resources/Textures/Player/climing_back/climing_back
 Player|run|6|../bin/Resources/Textures/Player/run/Run_%d.png
 Player|hurt|8|../bin/Resources/Textures/Player/hurt/Hurt_%d.png
 Player|pull_down|7|../bin/Resources/Textures/Player/pull_down/PullDown_%d.png
+Player|carrywalk|9|../bin/Resources/Textures/Player/carrywalk/Carry_Walk_%d.png
+

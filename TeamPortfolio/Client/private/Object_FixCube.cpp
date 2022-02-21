@@ -31,9 +31,14 @@ HRESULT CObject_FixCube::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_ComTransform->Scaled(_float3(50.f, 10.f, 50.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0.f, -6.f, 20.f));
+
+	if (pArg != nullptr) {
+		_float3 vSettingPoint;
+		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+		m_Layer_Tag = TEXT("Layer_FixCube");
+	}
 
 	return S_OK;
 }
@@ -74,16 +79,19 @@ _int CObject_FixCube::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture(1)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
-	m_ComVIBuffer->Render();
+	if (FAILED(m_ComVIBuffer->Render()))
+		return E_FAIL;
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -122,7 +130,7 @@ HRESULT CObject_FixCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_FixCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.렌더러 */
@@ -140,59 +148,6 @@ HRESULT CObject_FixCube::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Collision"), TEXT("Com_Collision"), (CComponent**)&m_pCollisionCom)))
 		return E_FAIL;
 	//////////////////////////////////////////////
-
-	return S_OK;
-}
-
-HRESULT CObject_FixCube::SetUp_OnTerrain(_float fDeltaTime)
-{
-	CGameInstance* pGameInstance = GetSingle(CGameInstance);
-
-
-	CGameObject* pTerrain = pGameInstance->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STAGESELECT, TEXT("Layer_Terrain"));
-
-	if (pTerrain == nullptr)
-		return E_FAIL;
-
-	CVIBuffer_Terrain* pTerrainBuffer = (CVIBuffer_Terrain*)(pTerrain->Find_Components(TEXT("Com_VIBuffer")));
-	CTransform*		pTerrainTransform = (CTransform*)(pTerrain->Find_Components(TEXT("Com_Transform")));
-
-
-
-	_float3 vResultPos;
-
-	_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-
-	if (!FAILED(pTerrainBuffer->PointInTerrain(&vResultPos, vPlayerPos, pTerrainTransform->Get_InverseWorldMatrix())))
-	{
-		if (vPlayerPos.y > vResultPos.y) //지형보다 플레이어가 위에 있다면
-		{
-
-			m_fNowJumpPower -= fDeltaTime * m_fJumpPower *2.f;
-
-			//경과 시간
-			//1 - (m_fNowJumpPower / m_fJumpPower);
-
-			_float Time = 1 - (m_fNowJumpPower / m_fJumpPower);
-
-			_float Temp = vPlayerPos.y + (m_fNowJumpPower - Time*Time * m_fJumpPower)*fDeltaTime;
-
-			vResultPos.y = (Temp > vResultPos.y) ? Temp : vResultPos.y;
-		}
-		else //지형에 닿았다면
-		{
-			m_fNowJumpPower = 0;
-			m_bIsJumped = false;
-		}
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vResultPos);
-
-	}
-	else //지형 밖으로 넘어갔을 경우
-	{
-		m_fNowJumpPower = 0;
-		m_bIsJumped = true;
-	}
-
 
 	return S_OK;
 }

@@ -66,6 +66,7 @@ private:
 	_float					m_fTimeDelta = 0;
 	_Matrix					m_CamEffectMatricx;
 private:
+	HRESULT			SetUp_DefaultLookAtAxis(void* pArg);
 	HRESULT			SetUp_Components();
 
 	HRESULT SetUp_RenderState();

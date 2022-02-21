@@ -58,6 +58,13 @@ _int CPlayer::Update(_float fDeltaTime)
 		return E_FAIL;
 
 
+	if (m_pCarryObject) {
+		m_pCarryObjectTransform->Set_MatrixState(CTransform::STATE_POS,
+			m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 0.35f, 0));
+
+	}
+
+
 	if (FAILED(Input_Keyboard(fDeltaTime)))
 		return E_FAIL;
 
@@ -131,7 +138,22 @@ _int CPlayer::LateRender()
 _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
 
-	m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
+
+	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
+	{
+		if (m_pCarryObject == nullptr)
+		{
+			m_pCarryObject = pDestObjects;
+			m_pCarryObjectTransform = (CTransform*)(m_pCarryObject->Get_Component(TAG_COM(Com_Transform)));
+
+			Safe_AddRef(m_pCarryObject);
+			Safe_AddRef(m_pCarryObjectTransform);
+		}
+	}
+	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Terrain)))
+	{
+		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
+	}
 	return _int();
 }
 
@@ -180,7 +202,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 		{
 			m_ComTransform->MovetoDir(_float3(0, 1.f, 0), fDeltaTime);
 			m_fNowJumpPower = 0;
-
+			m_bIsJumped = 0;
 			m_bIsCliming = true;
 		}
 	}
@@ -270,6 +292,15 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 		m_bTextureReverse = true;
 	else if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
 		m_bTextureReverse = false;
+
+	if (m_pCarryObject) {
+		m_bIsCliming = false;
+		m_bIsRunning = false;
+		m_ComTransform->Set_MoveSpeed(1.f);
+		m_ComTexture->Change_TextureLayer_Wait(TEXT("carrywalk"), 3.f);
+		return S_OK;
+	}
+
 
 
 	if (m_fNowJumpPower == 0) 
@@ -389,6 +420,11 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 
 	 for (; ObjectListIter != pTerrainLayer->end();)
 	 {
+		 if (m_pCarryObject == (*ObjectListIter)) {
+			 ObjectListIter++;
+			 continue;
+		 }
+
 		 vTerrainWorldPos = ((CTransform*)((*ObjectListIter)->Find_Components(TAG_COM(Com_Transform))))
 			 ->Get_MatrixState(CTransform::STATE_POS);
 
@@ -689,6 +725,10 @@ void CPlayer::Free()
 {
 	__super::Free();
 
+
+
+	Safe_Release(m_pCarryObject);
+	Safe_Release(m_pCarryObjectTransform);
 	Safe_Release(m_pCamera_Main);
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComInventory);

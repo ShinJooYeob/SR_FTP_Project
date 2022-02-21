@@ -65,6 +65,14 @@ CGameObject * CLayer::Get_GameObject_By_LayerIndex(_uint iLayerIndex)
 	return (*iter);
 }
 
+HRESULT CLayer::Set_NowSceneNum(_uint eScene)
+{
+	for (auto& pGameObeject : m_ObjectList)
+		pGameObeject->Set_NowSceneNum(eScene);
+	
+	return S_OK;
+}
+
 
 
 CLayer * CLayer::Create()

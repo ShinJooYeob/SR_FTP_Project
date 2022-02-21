@@ -46,7 +46,8 @@ HRESULT CObjectMgr::Add_GameObject_To_Layer(_uint eSceneNum, const _tchar * tagL
 		return E_FAIL;
 
 	pInstance->Set_NowSceneNum(eSceneNum);
-	pInstance->Set_Layer_Tag(tagLayer);
+	if (pInstance->Get_Layer_Tag() == nullptr)
+		pInstance->Set_Layer_Tag(tagLayer);
 
 	CLayer* pLayer = Find_Layer(eSceneNum,tagLayer);
 
@@ -87,6 +88,15 @@ HRESULT CObjectMgr::Clear_Scene_GameObjects(_uint eSceneNum)
 
 
 	m_mapLayer[eSceneNum].clear();
+
+	
+	return S_OK;
+}
+
+HRESULT CObjectMgr::Set_StaticGameObject_NowSceneNum(_uint eSceneNum)
+{
+	for (auto& pair : m_mapLayer[0])
+		pair.second->Set_NowSceneNum(eSceneNum);
 
 	return S_OK;
 }

@@ -184,6 +184,10 @@ HRESULT CShop::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Shop"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
+	
+	if (m_Player_Inventory == nullptr)
+		return E_FAIL;
+	
 	Safe_AddRef(m_Player_Inventory);
 
 

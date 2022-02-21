@@ -31,7 +31,6 @@ public:
 
 private:
 	HRESULT SetUp_Components();
-	HRESULT SetUp_OnTerrain(_float fDeltaTime);
 
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();

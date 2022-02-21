@@ -55,25 +55,13 @@ HRESULT CCamera_Main::Initialize_Prototype(void * pArg)
 
 HRESULT CCamera_Main::Initialize_Clone(void * pArg)
 {
-	if (FAILED(__super::Initialize_Clone(pArg)))
+	if (FAILED(SetUp_DefaultLookAtAxis(pArg)))
 		return E_FAIL;
+
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-
-	//카메라 이팩트용 이미지 월드 세팅
-	m_CamEffectMatricx =
-	{
-		(_float)g_iWinCX,	0,					0,					0,
-		0,					(_float)g_iWinCY,	0,					0,
-		0,					0,					1,					0,
-		0,					0,					0,					1,
-	};
-
-
-
-	return S_OK;
 
 
 	return S_OK;
@@ -148,7 +136,7 @@ void CCamera_Main::CameraEffect(CameraEffectID eEffect,_float fTimeDelta, _float
 	m_fTimeDelta = fTimeDelta;
 	m_fTotalEftFrame = fTotalFrame;
 	GetSingle(CGameInstance)->PlayThread(CameraEffectThread, this);
-
+	
 }
 
 HRESULT CCamera_Main::Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelta)
@@ -348,6 +336,45 @@ void CCamera_Main::HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 	return;
 }
 
+HRESULT CCamera_Main::SetUp_DefaultLookAtAxis(void* pArg)
+{
+
+	if (pArg != nullptr)
+		memcpy(&m_CameraDesc, pArg, sizeof(CAMERADESC));
+
+	if (m_pGraphicDevice == nullptr)
+		return E_FAIL;
+
+	m_pTransform = CTransform::Create(m_pGraphicDevice);
+
+	if (nullptr == m_pTransform)
+		return E_FAIL;
+
+	m_pTransform->Set_TransformDesc(m_CameraDesc.TransformDesc);
+
+
+	m_CameraDesc.vEye = m_CameraDesc.vWorldRotAxis;
+	m_CameraDesc.vEye.z -= 20;
+	m_CameraDesc.vAt = m_CameraDesc.vWorldRotAxis;
+
+	_float3 vRight, vUp, vLook;
+
+	vLook = (m_CameraDesc.vAt - m_CameraDesc.vEye).Get_Nomalize();
+
+	vRight = m_CameraDesc.vAxisY.Get_Cross(vLook).Get_Nomalize();
+
+	vUp = vLook.Get_Cross(vRight).Get_Nomalize();
+
+	m_pTransform->Set_MatrixState(CTransform::STATE_RIGHT, vRight);
+	m_pTransform->Set_MatrixState(CTransform::STATE_UP, vUp);
+	m_pTransform->Set_MatrixState(CTransform::STATE_LOOK, vLook);
+	m_pTransform->Set_MatrixState(CTransform::STATE_POS, m_CameraDesc.vEye);
+
+
+
+	return S_OK;
+}
+
 HRESULT CCamera_Main::SetUp_Components()
 {
 
@@ -359,6 +386,18 @@ HRESULT CCamera_Main::SetUp_Components()
 
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
+
+
+
+	//카메라 이팩트용 이미지 월드 세팅
+	m_CamEffectMatricx =
+	{
+		(_float)g_iWinCX,	0,					0,					0,
+		0,					(_float)g_iWinCY,	0,					0,
+		0,					0,					1,					0,
+		0,					0,					0,					1,
+	};
+
 
 	return S_OK;
 }
