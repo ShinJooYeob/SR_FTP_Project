@@ -28,6 +28,8 @@ public:
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
 
+	virtual _int Object_Transfer(_float fDeltaTime);
+
 private:
 	HRESULT SetUp_Components();
 
@@ -41,6 +43,8 @@ private:
 	CVIBuffer_Cube*			m_ComVIBuffer = nullptr;
 
 	CCollision*				m_pCollisionCom = nullptr;
+
+	_float					Seconds = 0.f;
 
 
 public:

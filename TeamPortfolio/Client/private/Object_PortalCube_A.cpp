@@ -95,13 +95,39 @@ _int CObject_PortalCube_A::LateRender()
 
 _int CObject_PortalCube_A::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	_uint I = 0;
-
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
-		//
-		int t = 1;
+		Object_Transfer(fDeltaTime);
+
 	}
+
+	return _int();
+}
+
+_int CObject_PortalCube_A::Object_Transfer(_float fDeltaTime)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	Seconds += fDeltaTime;
+
+	if (Seconds > 2)
+	{
+
+		CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
+
+		CTransform* PortalCube_B = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_PortalCube_B"), TAG_COM(Com_Transform));
+
+		_float3 PortalCube_B_Pos = PortalCube_B->Get_MatrixState(CTransform::STATE_POS);
+
+		PortalCube_B_Pos.y += 1.f;
+
+		Player->Set_MatrixState(CTransform::STATE_POS, PortalCube_B_Pos);
+
+		Seconds = 0;
+	};
+
+
+	RELEASE_INSTANCE(CGameInstance);
 
 	return _int();
 }
