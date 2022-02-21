@@ -1,19 +1,19 @@
 #include "stdafx.h"
-#include "..\public\Object_GravityCube.h"
+#include "..\public\Object_PortalCube_A.h"
 
 
-CObject_GravityCube::CObject_GravityCube(LPDIRECT3DDEVICE9 pGraphic_Device)
+CObject_PortalCube_A::CObject_PortalCube_A(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 {
 
 }
 
-CObject_GravityCube::CObject_GravityCube(const CObject_GravityCube & rhs)
+CObject_PortalCube_A::CObject_PortalCube_A(const CObject_PortalCube_A & rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT CObject_GravityCube::Initialize_Prototype(void * pArg)
+HRESULT CObject_PortalCube_A::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
@@ -22,7 +22,7 @@ HRESULT CObject_GravityCube::Initialize_Prototype(void * pArg)
 	return S_OK;
 }
 
-HRESULT CObject_GravityCube::Initialize_Clone(void * pArg)
+HRESULT CObject_PortalCube_A::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
@@ -33,12 +33,12 @@ HRESULT CObject_GravityCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-7.f, 0.f, 7.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-5.f, 0.f, 1.f));
 
 	return S_OK;
 }
 
-_int CObject_GravityCube::Update(_float fTimeDelta)
+_int CObject_PortalCube_A::Update(_float fTimeDelta)
 {
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
@@ -52,7 +52,7 @@ _int CObject_GravityCube::Update(_float fTimeDelta)
 	return _int();
 }
 
-_int CObject_GravityCube::LateUpdate(_float fTimeDelta)
+_int CObject_PortalCube_A::LateUpdate(_float fTimeDelta)
 {
 	if (0 > __super::LateUpdate(fTimeDelta))
 		return -1;
@@ -60,21 +60,12 @@ _int CObject_GravityCube::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
-	//if (FAILED(SetUp_OnTerrain(fTimeDelta)))
-	//	return -1;
-
-
-	//객체에게 중력을 적용하기 위한 값
-
-	if (FAILED(Collision_Gravity(fTimeDelta)))
-		return -1;
-
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
 }
 
-_int CObject_GravityCube::Render()
+_int CObject_PortalCube_A::Render()
 {
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
@@ -94,7 +85,7 @@ _int CObject_GravityCube::Render()
 	return _int();
 }
 
-_int CObject_GravityCube::LateRender()
+_int CObject_PortalCube_A::LateRender()
 {
 	if (FAILED(__super::LateRender()))
 		return E_FAIL;
@@ -102,7 +93,7 @@ _int CObject_GravityCube::LateRender()
 	return _int();
 }
 
-_int CObject_GravityCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
+_int CObject_PortalCube_A::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
 	_uint I = 0;
 
@@ -115,33 +106,8 @@ _int CObject_GravityCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3
 	return _int();
 }
 
-_int CObject_GravityCube::Collision_Gravity(_float fDeltaTime)
-{
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	//객체에게 중력을 적용하기 위한 값
-	CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
-
-	_float3& PlayerPos = Player->Get_MatrixState(CTransform::STATE_POS);
-
-	_float3& GravityCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-
-	_float Distance = GravityCubePos.Get_Distance(PlayerPos);
-
-	if (Distance < 4) //거리 조절 가능
-	{
-		fDeltaTime *= 0.5f; // 속도 조절 가능
-		Player->MovetoTarget(GravityCubePos, fDeltaTime);
-	}
-
-
-	RELEASE_INSTANCE(CGameInstance);
-
-	return _int();
-}
-
-
-HRESULT CObject_GravityCube::SetUp_Components()
+HRESULT CObject_PortalCube_A::SetUp_Components()
 {
 	/* For.Com_Transform */
 	CTransform::TRANSFORMDESC		TransformDesc;
@@ -154,7 +120,7 @@ HRESULT CObject_GravityCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_GravityCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_PortalCube_A_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
@@ -174,12 +140,7 @@ HRESULT CObject_GravityCube::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CObject_GravityCube::SetUp_OnTerrain(_float fDeltaTime)
-{
-	return S_OK;
-}
-
-HRESULT CObject_GravityCube::SetUp_RenderState()
+HRESULT CObject_PortalCube_A::SetUp_RenderState()
 {
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
@@ -191,7 +152,7 @@ HRESULT CObject_GravityCube::SetUp_RenderState()
 	return S_OK;
 }
 
-HRESULT CObject_GravityCube::Release_RenderState()
+HRESULT CObject_PortalCube_A::Release_RenderState()
 {
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
@@ -203,13 +164,13 @@ HRESULT CObject_GravityCube::Release_RenderState()
 	return S_OK;
 }
 
-CObject_GravityCube * CObject_GravityCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)
+CObject_PortalCube_A * CObject_PortalCube_A::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)
 {
-	CObject_GravityCube* pInstance = new CObject_GravityCube(pGraphic_Device);
+	CObject_PortalCube_A* pInstance = new CObject_PortalCube_A(pGraphic_Device);
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CObject_GravityCube");
+		MSGBOX("Fail to Create CObject_PortalCube_A");
 		Safe_Release(pInstance);
 
 	}
@@ -218,13 +179,13 @@ CObject_GravityCube * CObject_GravityCube::Create(LPDIRECT3DDEVICE9 pGraphic_Dev
 	return pInstance;
 }
 
-CGameObject * CObject_GravityCube::Clone(void * pArg)
+CGameObject * CObject_PortalCube_A::Clone(void * pArg)
 {
-	CObject_GravityCube* pInstance = new CObject_GravityCube((*this));
+	CObject_PortalCube_A* pInstance = new CObject_PortalCube_A((*this));
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CObject_GravityCube");
+		MSGBOX("Fail to Create CObject_PortalCube_A");
 		Safe_Release(pInstance);
 
 	}
@@ -233,7 +194,7 @@ CGameObject * CObject_GravityCube::Clone(void * pArg)
 	return pInstance;
 }
 
-void CObject_GravityCube::Free()
+void CObject_PortalCube_A::Free()
 {
 	__super::Free();
 

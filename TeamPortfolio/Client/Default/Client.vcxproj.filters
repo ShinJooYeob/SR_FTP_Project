@@ -100,6 +100,18 @@
     <Filter Include="01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube">
       <UniqueIdentifier>{87b17532-5608-4585-a71e-1718fe10adaf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_OrbitCube">
+      <UniqueIdentifier>{a1b0e0d3-a121-4086-b646-f1e137c3233a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_PortalCube">
+      <UniqueIdentifier>{1f4fd11c-f03e-4984-b767-dae190294abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_PortalCube\PortalCube_A">
+      <UniqueIdentifier>{50caa6fc-74c3-47a0-afa5-f87d82a6ae65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_PortalCube\PortalCube_B">
+      <UniqueIdentifier>{cb516f59-73dd-40db-9faf-09098f7ca4b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -189,6 +201,15 @@
     <ClInclude Include="..\public\Object_InteractiveCube.h">
       <Filter>01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_OrbitCube.h">
+      <Filter>01.GameObject\SubObject\Object_OrbitCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_PortalCube_A.h">
+      <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_A</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_PortalCube_B.h">
+      <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -265,6 +286,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_InteractiveCube.cpp">
       <Filter>01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_OrbitCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_OrbitCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_PortalCube_A.cpp">
+      <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_A</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_PortalCube_B.cpp">
+      <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

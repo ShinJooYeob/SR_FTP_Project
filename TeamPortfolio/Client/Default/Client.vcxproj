@@ -166,6 +166,9 @@
     <ClInclude Include="..\public\Object_GravityCube.h" />
     <ClInclude Include="..\public\Object_InteractiveCube.h" />
     <ClInclude Include="..\public\Object_MoveCube.h" />
+    <ClInclude Include="..\public\Object_OrbitCube.h" />
+    <ClInclude Include="..\public\Object_PortalCube_A.h" />
+    <ClInclude Include="..\public\Object_PortalCube_B.h" />
     <ClInclude Include="..\public\Object_PushCube.h" />
     <ClInclude Include="..\public\MyButton.h" />
     <ClInclude Include="..\public\Object_SelfRotationCube.h" />
@@ -195,6 +198,9 @@
     <ClCompile Include="..\private\Object_GravityCube.cpp" />
     <ClCompile Include="..\private\Object_InteractiveCube.cpp" />
     <ClCompile Include="..\private\Object_MoveCube.cpp" />
+    <ClCompile Include="..\private\Object_OrbitCube.cpp" />
+    <ClCompile Include="..\private\Object_PortalCube_A.cpp" />
+    <ClCompile Include="..\private\Object_PortalCube_B.cpp" />
     <ClCompile Include="..\private\Object_PushCube.cpp" />
     <ClCompile Include="..\private\MyButton.cpp" />
     <ClCompile Include="..\private\Object_SelfRotationCube.cpp" />

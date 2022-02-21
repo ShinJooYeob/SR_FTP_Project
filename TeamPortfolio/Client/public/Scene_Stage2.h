@@ -22,15 +22,20 @@ private:
 	HRESULT Ready_Layer_Terrain(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_MainCamera(const _tchar* pLayerTag);
 
-	/////////////////////////은혁 test
-	HRESULT Ready_Layer_Cube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_FixCube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_PushCube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_GravityCube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_SelfRotationCube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Object_ButtonCube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Object_InteractiveCube(const _tchar* pLayerTag);
-	//////////////////////////////////////////////////////
+
+	HRESULT Ready_Layer_Cube(const _tchar* pLayerTag); //움직이는 큐브 상호작용 확인용
+	HRESULT Ready_Layer_FixCube(const _tchar* pLayerTag); // 움직이지 않는 큐브 충돌 및 옮기기
+	HRESULT Ready_Layer_PushCube(const _tchar* pLayerTag); //미는 큐브
+	HRESULT Ready_Layer_GravityCube(const _tchar* pLayerTag); // 중력 큐브
+	HRESULT Ready_Layer_SelfRotationCube(const _tchar* pLayerTag); // 스스로 자전하는 큐브
+
+	HRESULT Ready_Layer_Object_ButtonCube(const _tchar* pLayerTag); //InteractiveCube와 상호작용하는 큐브로 변수명 변경 가능
+	HRESULT Ready_Layer_Object_InteractiveCube(const _tchar* pLayerTag); //버튼과 상호작용하는 큐브
+
+	HRESULT Ready_Layer_Object_PortalCube_A(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Object_PortalCube_B(const _tchar* pLayerTag);
+
+	HRESULT Ready_Layer_OrbitCube(const _tchar* pLayerTag);// 공전을 위한 큐브
 
 	D3DLIGHT9		m_Light;
 
