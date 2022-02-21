@@ -125,6 +125,8 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	//랜더링
 	GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
 	GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
+
+
 }
 
 // CToolView 인쇄

@@ -339,14 +339,24 @@ CImguiMgr * CGameInstance::GetIMGui()
 	return m_pImguiMgr->GetInstance();
 }
 
+HRESULT CGameInstance::Transform_ToWorldSpace()
+{
+	FAILED_CHECK(m_pPickingMgr);
+	return m_pPickingMgr->Transform_ToWorldSpace();
+
+}
+
 HRESULT CGameInstance::Transform_ToLocalSpace(_Matrix WorldMatrixinverse)
 {
-	return E_NOTIMPL;
+	FAILED_CHECK(m_pPickingMgr);
+
+	return m_pPickingMgr->Transform_ToLocalSpace(WorldMatrixinverse);
 }
 
 _bool CGameInstance::isPick(_float3 * pLocalPoint, _float3 * pOut)
 {
-	return _bool();
+	FAILED_CHECK(m_pPickingMgr);
+	return m_pPickingMgr->isPick(pLocalPoint,pOut);
 }
 
 
