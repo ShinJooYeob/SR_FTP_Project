@@ -31,7 +31,7 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
-	void		CameraEffect(CameraEffectID eEffect,_float fTimeDelta);
+	void		CameraEffect(CameraEffectID eEffect,_float fTimeDelta, _float fTotalFrame = 1.f);
 
 
 
@@ -61,6 +61,7 @@ private:
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
 
 	CameraEffectID			m_eEffectID = CAM_EFT_END;
+	_float					m_fTotalEftFrame = 0;
 	_uint					m_ARGB[4] = { 0 };
 	_float					m_fTimeDelta = 0;
 	_Matrix					m_CamEffectMatricx;

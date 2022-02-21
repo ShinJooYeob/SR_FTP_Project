@@ -139,13 +139,14 @@ _int CCamera_Main::LateRender()
 	return _int();
 }
 
-void CCamera_Main::CameraEffect(CameraEffectID eEffect,_float fTimeDelta)
+void CCamera_Main::CameraEffect(CameraEffectID eEffect,_float fTimeDelta, _float fTotalFrame)
 {
 	if (m_eEffectID != CAM_EFT_END || eEffect >= CAM_EFT_END)
 		return;
 
 	m_eEffectID = eEffect;
 	m_fTimeDelta = fTimeDelta;
+	m_fTotalEftFrame = fTotalFrame;
 	GetSingle(CGameInstance)->PlayThread(CameraEffectThread, this);
 
 }
@@ -205,6 +206,7 @@ HRESULT CCamera_Main::Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDel
 void CCamera_Main::FadeIn(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
 
+	m_ComTexture->Change_TextureLayer(TEXT("blank"));
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 	m_ARGB[0] = 0;
 	m_ARGB[1] = 0;
@@ -212,7 +214,6 @@ void CCamera_Main::FadeIn(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 	m_ARGB[3] = 0;
 
 	_float fPassedTime = 0;
-	_float fTotalFrameTime = 1.5;
 	_uint  interpolationValue = 0;
 	DWORD SleepTime = DWORD(m_fTimeDelta * 1000);
 
@@ -223,9 +224,9 @@ void CCamera_Main::FadeIn(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 		Sleep(SleepTime);
 		fPassedTime += m_fTimeDelta;
-		interpolationValue = (_uint)pInstance->Easing(0, 0, 255.f, fPassedTime, fTotalFrameTime);
+		interpolationValue = (_uint)pInstance->Easing(0, 0, 255.f, fPassedTime, m_fTotalEftFrame);
 
-		if (fPassedTime >= fTotalFrameTime)
+		if (fPassedTime >= m_fTotalEftFrame)
 		{
 			interpolationValue = 255;
 			EnterCriticalSection(_CriSec);
@@ -246,6 +247,7 @@ void CCamera_Main::FadeIn(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 void CCamera_Main::FadeOut(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
+	m_ComTexture->Change_TextureLayer(TEXT("blank"));
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 	m_ARGB[0] = 255;
 	m_ARGB[1] = 0;
@@ -253,7 +255,6 @@ void CCamera_Main::FadeOut(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 	m_ARGB[3] = 0;
 
 	_float fPassedTime = 0;
-	_float fTotalFrameTime = 1.5;
 	_uint  interpolationValue = 0;
 	DWORD SleepTime = DWORD(m_fTimeDelta * 1000);
 
@@ -264,10 +265,10 @@ void CCamera_Main::FadeOut(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 		Sleep(SleepTime);
 		fPassedTime += m_fTimeDelta;
-		interpolationValue = (_uint)pInstance->Easing(0,255.f, 0, fPassedTime, fTotalFrameTime);
+		interpolationValue = (_uint)pInstance->Easing(0,255.f, 0, fPassedTime, m_fTotalEftFrame);
 
 
-		if (fPassedTime >= fTotalFrameTime)
+		if (fPassedTime >= m_fTotalEftFrame)
 		{
 			interpolationValue = 0;
 			EnterCriticalSection(_CriSec);
@@ -290,7 +291,7 @@ void CCamera_Main::FadeOut(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 void CCamera_Main::CamShake(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
-	Camera_Shaking(m_fTimeDelta);
+	Camera_Shaking(m_fTimeDelta, m_fTotalEftFrame);
 
 	EnterCriticalSection(_CriSec);
 	m_eEffectID = CCamera_Main::CAM_EFT_END;
@@ -300,8 +301,11 @@ void CCamera_Main::CamShake(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 void CCamera_Main::HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
+	EnterCriticalSection(_CriSec);
+	m_ComTexture->Change_TextureLayer(TEXT("shadow"));
+	LeaveCriticalSection(_CriSec);
 
-	Camera_Shaking(m_fTimeDelta);
+	Camera_Shaking(m_fTimeDelta, m_fTotalEftFrame);
 
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 
@@ -311,7 +315,6 @@ void CCamera_Main::HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 	m_ARGB[3] = 120;
 
 	_float fPassedTime = 0;
-	_float fTotalFrameTime = 0.5;
 	_uint  interpolationValue = 0;
 	DWORD SleepTime = DWORD(m_fTimeDelta * 1000);
 
@@ -322,10 +325,10 @@ void CCamera_Main::HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 		Sleep(SleepTime);
 		fPassedTime += m_fTimeDelta;
-		interpolationValue = (_uint)pInstance->Easing(0, 120.f, 0, fPassedTime, fTotalFrameTime);
+		interpolationValue = (_uint)pInstance->Easing(0, 120.f, 0, fPassedTime, m_fTotalEftFrame);
 
 
-		if (fPassedTime >= fTotalFrameTime)
+		if (fPassedTime >= m_fTotalEftFrame)
 		{
 			interpolationValue = 0;
 			EnterCriticalSection(_CriSec);

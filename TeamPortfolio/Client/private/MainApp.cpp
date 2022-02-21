@@ -176,12 +176,12 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 		return E_FAIL;
 
 	//블랭크 텍스처
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
+	TextureDesc.szTextFilePath = TEXT("Cam_Effect.txt");
 	
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Blank), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
+	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
 
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))

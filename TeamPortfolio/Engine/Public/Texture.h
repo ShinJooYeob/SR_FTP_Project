@@ -33,6 +33,8 @@ public:
 	HRESULT Change_TextureLayer_ReturnTo(const _tchar* tagTexureLayer, const _tchar* szReturnTag, _float fFramePerSec = 6.f , _float fResturnFps = 6.f);
 	HRESULT Change_TextureLayer_Wait(const _tchar* tagTexureLayer, _float fFramePerSec = 6.f);
 
+	const _tchar* Get_NowTextureTag() { return m_TagNowTexture; };
+
 	HRESULT Bind_Texture_AutoFrame(_float fTimeDelta);
 	HRESULT Bind_Texture(_uint iTextureIndex = 0);
 	HRESULT ClearTexture();

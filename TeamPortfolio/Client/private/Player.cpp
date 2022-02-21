@@ -57,8 +57,8 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 
-	//if (FAILED(Animation_Change(fDeltaTime)))
-	//	return E_FAIL;
+	if (FAILED(Animation_Change(fDeltaTime)))
+		return E_FAIL;
 
 	if (FAILED(Input_Keyboard(fDeltaTime)))
 		return E_FAIL;
@@ -173,7 +173,6 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 	{
 		if (m_vClimingBlock != NOT_EXIST_BLOCK)
 		{
-			m_ComTexture->Change_TextureLayer_Wait(TEXT("climing_back"),12.f);
 			m_ComTransform->MovetoDir(_float3(0, 1.f, 0), fDeltaTime);
 			m_fNowJumpPower = 0;
 
@@ -196,7 +195,6 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 				}
 				else
 				{
-					m_ComTexture->Change_TextureLayer_Wait(TEXT("climing_back"), 12.f);
 					m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
 					m_bIsCliming = true;
 				}
@@ -227,45 +225,11 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 	//좌우 이동
 	if (m_bCanMoveLeft && pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
 	{
-		if (m_bIsCliming) {
-			m_bTextureReverse = true;
-			m_ComTexture->Change_TextureLayer_Wait(TEXT("climing_back"), 12.f);;
-			m_ComTransform->Move_Right(fDeltaTime);
-		}
-		else {
-
-			if (pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Down)
-			{
-				m_bTextureReverse = true;
-				m_ComTexture->Change_TextureLayer(TEXT("walk"));
-			}
-			else if (pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Up)
-				m_ComTexture->Change_TextureLayer(TEXT("Idle"));
-
-			if (m_bTextureReverse)
-				m_ComTransform->Move_Right(fDeltaTime);
-			else
-				m_ComTransform->Move_Left(fDeltaTime);
-		}
+		m_ComTransform->Move_Right(fDeltaTime);
 	}
 
 	if (m_bCanMoveRight && pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
 	{
-
-		if (m_bIsCliming) {
-			m_bTextureReverse = false;
-			m_ComTexture->Change_TextureLayer_Wait(TEXT("climing_back"), 12.f);;
-		}
-		else {
-			if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Down) {
-				m_bTextureReverse = false;
-				m_ComTexture->Change_TextureLayer(TEXT("walk"));
-
-			}
-			else if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Up)
-				m_ComTexture->Change_TextureLayer(TEXT("Idle"));
-
-		}
 		m_ComTransform->Move_Right(fDeltaTime);
 	}
 
@@ -287,19 +251,39 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 
-	if (m_bIsJumped > 0 && (pInstance->Get_DIKeyState(DIK_UP) & DIS_Down)) 
+	if (pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
+		m_bTextureReverse = true;
+	else if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
+		m_bTextureReverse = false;
+
+
+	if (m_fNowJumpPower == 0) 
 	{
 
-		if (m_vClimingBlock != NOT_EXIST_BLOCK)
+		if (pInstance->Get_DIKeyState(DIK_UP) & DIS_Press || pInstance->Get_DIKeyState(DIK_DOWN) & DIS_Press ||
+			pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
 		{
-			//기어 올라가는 이미지 넣어주기
-			m_ComTexture->Change_TextureLayer_Wait(TEXT("Idle"));
+			if (m_bIsCliming)
+			{
+				m_ComTexture->Change_TextureLayer_Wait(TEXT("climing_back"), 12.f);
+			}
+			else
+			{
+				if (lstrcmp(m_ComTexture->Get_NowTextureTag(), TEXT("jump_down")))
+					m_ComTexture->Change_TextureLayer(TEXT("walk"));
+			}
 
 		}
-	}
+		else {
 
-	if(!(pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press) && !(pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press))
-		m_ComTexture->Change_TextureLayer(TEXT("Idle"));
+			if (!m_bIsCliming && lstrcmp(m_ComTexture->Get_NowTextureTag(),TEXT("jump_down")))
+			{
+				m_ComTexture->Change_TextureLayer(TEXT("Idle"));
+			}
+		}
+
+
+	}
 
 	return S_OK;
 }

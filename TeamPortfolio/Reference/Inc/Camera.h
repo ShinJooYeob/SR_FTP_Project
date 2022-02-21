@@ -34,7 +34,7 @@ public:
 	CTransform*	 Get_Camera_Transform() { return m_pTransform; };
 
 public:
-	HRESULT Camera_Shaking(_float fDeltaTime);
+	HRESULT Camera_Shaking(_float fDeltaTime, _float fTotalEftFrame);
 	void ShakeFunction(_bool* IsClientQuit, CRITICAL_SECTION* _CriSec);
 	
 	void Change_Camera_Demension() { bIsOrtho = !bIsOrtho; };
@@ -49,6 +49,7 @@ protected:
 
 private:
 	_float						m_fTempDeltaTime = 0;
+	_float						m_fTotalEftFrame = 0;
 	bool						IsShaking = false;
 public:
 	virtual CGameObject* Clone(void* pArg)PURE;

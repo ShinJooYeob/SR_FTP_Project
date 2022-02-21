@@ -114,12 +114,13 @@ _int CCamera::LateRender()
 	return _int();
 }
 
-HRESULT CCamera::Camera_Shaking(_float fDeltaTime)
+HRESULT CCamera::Camera_Shaking(_float fDeltaTime, _float fTotalEftFrame)
 {
 	if (!IsShaking) {
 
 		IsShaking = true;
 
+		m_fTotalEftFrame = fTotalEftFrame;
 		m_fTempDeltaTime = fDeltaTime;
 		if (FAILED(GetSingle(CGameInstance)->PlayThread(ShakeThread, this)))
 			return E_FAIL;
@@ -131,33 +132,45 @@ void CCamera::ShakeFunction(_bool * IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
 
 	_float3 vShakeDir;
+	DWORD dwSleepTime = DWORD(m_fTempDeltaTime * 1000);
+	_uint TotalCnt = (_uint)((m_fTotalEftFrame / m_fTempDeltaTime) * 0.25f);
 
-	for (_uint i = 0; i < 16;i++)
+	_float3 TotalMovement = _float3(0, 0, 0);
+	TotalCnt *= 2;
+
+	for (_uint i = 0; i < TotalCnt; i++)
 	{
-		EnterCriticalSection(_CriSec);
-
-		switch (i%2)
+		LeaveCriticalSection(_CriSec);
+		switch (i % 2)
 		{
 		case 0:
-			vShakeDir = _float3(rand() % 100 - 50.f, rand() % 100 - 50.f, 0).Get_Nomalize();
+			vShakeDir = _float3(0, 0, 0);
+			vShakeDir += m_pTransform->Get_MatrixState(CTransform::STATE_RIGHT)* ((rand() % 100) - 50.f);
+			vShakeDir += m_pTransform->Get_MatrixState(CTransform::STATE_UP)* ((rand() % 100) - 50.f);
+			//vShakeDir = _float3( , rand() % 100 - 50.f, 0).Get_Nomalize();
 			m_pTransform->MovetoDir(vShakeDir, m_fTempDeltaTime);
+			TotalMovement += vShakeDir;
 			break;
 
 		case 1:
-			m_pTransform->MovetoDir(vShakeDir.Get_Inverse(), m_fTempDeltaTime);
+			m_pTransform->MovetoDir(vShakeDir*-1.f, m_fTempDeltaTime);
+			TotalMovement += vShakeDir*-1.f;
 			break;
 
 		default:
 			break;
 		}
 
-
 		LeaveCriticalSection(_CriSec);
 
-		Sleep(15);
+		Sleep(dwSleepTime);
 	}
 
+
+
 	EnterCriticalSection(_CriSec);
+	if (TotalMovement != _float3(0, 0, 0))
+		m_pTransform->MovetoDir(TotalMovement, m_fTempDeltaTime);
 	IsShaking = false;
 	LeaveCriticalSection(_CriSec);
 }
