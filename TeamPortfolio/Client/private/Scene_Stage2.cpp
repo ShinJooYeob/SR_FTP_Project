@@ -14,15 +14,20 @@ HRESULT CScene_Stage2::Initialize()
 	////////////////////////////은혁이 테스트
 	if (FAILED(Ready_Layer_Cube(TEXT("Layer_Cube"))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_FixCube(TEXT("Layer_Fix_Cube"))))
+	if (FAILED(Ready_Layer_FixCube(TEXT("Layer_FixCube"))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_PushCube(TEXT("Layer_Push_Cube"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_Gravity_Cube"))))
+	if (FAILED(Ready_Layer_PushCube(TEXT("Layer_PushCube"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Object_SelfRotationCube(TEXT("Layer_SelfRotationCube"))))
+	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_SelfRotationCube(TEXT("Layer_SelfRotationCube"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Object_ButtonCube(TEXT("Layer_ButtonCube"))))
+		return E_FAIL;
+	if (FAILED(Ready_Layer_Object_InteractiveCube(TEXT("Layer_InteractiveCube"))))
 		return E_FAIL;
 	////////////////////////////////////////////////////////////////////
 
@@ -111,9 +116,23 @@ HRESULT CScene_Stage2::Ready_Layer_GravityCube(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CScene_Stage2::Ready_Layer_Object_SelfRotationCube(const _tchar * pLayerTag)
+HRESULT CScene_Stage2::Ready_Layer_SelfRotationCube(const _tchar * pLayerTag)
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_SelfRotationCube")))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CScene_Stage2::Ready_Layer_Object_ButtonCube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_ButtonCube")))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CScene_Stage2::Ready_Layer_Object_InteractiveCube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_InteractiveCube")))
 		return E_FAIL;
 	return S_OK;
 }

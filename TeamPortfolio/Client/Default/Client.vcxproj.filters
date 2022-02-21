@@ -94,6 +94,12 @@
     <Filter Include="01.GameObject\SubObject\Object_SelfRotationCube">
       <UniqueIdentifier>{3e0ba736-a908-449f-94f2-1cb0dfc7720a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_ButtonCube">
+      <UniqueIdentifier>{d1096e8e-dae2-4294-acc8-c9d44f4e37df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube">
+      <UniqueIdentifier>{87b17532-5608-4585-a71e-1718fe10adaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -177,6 +183,12 @@
     <ClInclude Include="..\public\Object_SelfRotationCube.h">
       <Filter>01.GameObject\SubObject\Object_SelfRotationCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_ButtonCube.h">
+      <Filter>01.GameObject\SubObject\Object_ButtonCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_InteractiveCube.h">
+      <Filter>01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -247,6 +259,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_SelfRotationCube.cpp">
       <Filter>01.GameObject\SubObject\Object_SelfRotationCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_ButtonCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_ButtonCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_InteractiveCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

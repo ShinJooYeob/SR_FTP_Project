@@ -27,7 +27,9 @@ private:
 	HRESULT Ready_Layer_FixCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_PushCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_GravityCube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Object_SelfRotationCube(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_SelfRotationCube(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Object_ButtonCube(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Object_InteractiveCube(const _tchar* pLayerTag);
 	//////////////////////////////////////////////////////
 
 	D3DLIGHT9		m_Light;

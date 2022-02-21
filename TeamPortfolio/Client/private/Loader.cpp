@@ -11,6 +11,8 @@
 #include "Object_PushCube.h"
 #include "Object_GravityCube.h"
 #include "Object_SelfRotationCube.h"
+#include "Object_ButtonCube.h"
+#include "Object_InteractiveCube.h"
 #include "MyButton.h"
 
 _uint CALLBACK LoadingThread(void* _Prameter)
@@ -197,6 +199,16 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_SelfRotationCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	TextureDesc.szTextFilePath = TEXT("Player.txt");
+
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_ButtonCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("Player.txt");
+
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_InteractiveCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
 
@@ -217,6 +229,10 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_GravityCube"), CObject_GravityCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_SelfRotationCube"), CObject_SelfRotationCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_ButtonCube"), CObject_ButtonCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_InteractiveCube"), CObject_InteractiveCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 #pragma endregion
