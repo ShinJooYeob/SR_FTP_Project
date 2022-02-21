@@ -17,6 +17,7 @@ class CObjectMgr;
 class CGameObject;
 class CLayer;
 class CImguiMgr;
+class CPicking;
 
 class ENGINE_DLL CGameInstance final :public CBase
 {
@@ -80,6 +81,10 @@ public:
 public: /* For. IMGUI Interface */
 	CImguiMgr* GetIMGui();
 
+public:
+	HRESULT Transform_ToLocalSpace(_Matrix WorldMatrixinverse);
+	_bool isPick(_float3 * pLocalPoint, _float3 * pOut);
+
 private:
 	CGraphic_Device*	m_pGraphicDevice = nullptr;
 	CTimeMgr*			m_pTimerMgr = nullptr;
@@ -90,6 +95,7 @@ private:
 	CInput_Device*		m_pInputDevice = nullptr;
 	CEasingMgr*			m_pEasingMgr = nullptr;
 	CImguiMgr*			m_pImguiMgr = nullptr;
+	CPicking*			m_pPickingMgr = nullptr;
 
 public:
 	static void Release_Engine();

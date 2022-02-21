@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "ComponentMgr.h"
 #include "EasingMgr.h"
+#include "Picking.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -19,7 +20,8 @@ CGameInstance::CGameInstance()
 	m_pComponenetMgr(GetSingle(CComponentMgr)),
 	m_pInputDevice(GetSingle(CInput_Device)),
 	m_pImguiMgr(GetSingle(CImguiMgr)),
-	m_pEasingMgr(GetSingle(CEasingMgr))
+	m_pEasingMgr(GetSingle(CEasingMgr)),
+	m_pPickingMgr(GetSingle(CPicking))
 {
 	m_pThreadMgr->AddRef();
 	m_pTimerMgr->AddRef();
@@ -30,6 +32,7 @@ CGameInstance::CGameInstance()
 	m_pInputDevice->AddRef();
 	m_pEasingMgr->AddRef();
 	m_pImguiMgr->AddRef();
+	m_pPickingMgr->AddRef();
 }
 
 
@@ -38,7 +41,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst,const CGraphic_Device::
 	if (m_pGraphicDevice == nullptr || m_pObjectMgr == nullptr || m_pComponenetMgr == nullptr || m_pSceneMgr == nullptr)
 		return E_FAIL;
 
-	//if (FAILED(m_pSeverMgr->ConnectSever())) 
+	//if (FAILED(m_pSeverMgr->ConnectSever()))
 	//{
 	//	MSGBOX("Failed to Connecting Sever");
 	//}
@@ -55,6 +58,9 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst,const CGraphic_Device::
 	if (FAILED(m_pComponenetMgr->Reserve_Container(iMaxSceneNum)))
 		return E_FAIL;
 
+	if (FAILED(m_pPickingMgr->Initialize(*ppOut,GraphicDesc.hWnd,nullptr)))
+		return E_FAIL;
+	
 
 	return S_OK;
 }
@@ -72,6 +78,10 @@ HRESULT CGameInstance::Initialize_Engine_Tool(const CGraphic_Device::GRAPHICDESC
 
 	if (FAILED(m_pComponenetMgr->Reserve_Container(iMaxSceneNum)))
 		return E_FAIL;
+
+	if (FAILED(m_pPickingMgr->Initialize(*ppOut, GraphicDesc.hWnd,nullptr)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -329,6 +339,16 @@ CImguiMgr * CGameInstance::GetIMGui()
 	return m_pImguiMgr->GetInstance();
 }
 
+HRESULT CGameInstance::Transform_ToLocalSpace(_Matrix WorldMatrixinverse)
+{
+	return E_NOTIMPL;
+}
+
+_bool CGameInstance::isPick(_float3 * pLocalPoint, _float3 * pOut)
+{
+	return _bool();
+}
+
 
 void CGameInstance::Release_Engine()
 {
@@ -343,6 +363,9 @@ void CGameInstance::Release_Engine()
 	if (0 != GetSingle(CEasingMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com EasingMgr ");
 
+	if (0 != GetSingle(CPicking)->DestroyInstance())
+		MSGBOX("Failed to Release Com CPicking ");
+
 	if (0 != GetSingle(CObjectMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com ObjectMgr ");
 
@@ -351,7 +374,7 @@ void CGameInstance::Release_Engine()
 
 	if (0 != GetSingle(CComponentMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com ComponentMgr");
-	
+
 	if (0 != GetSingle(CInput_Device)->DestroyInstance())
 		MSGBOX("Failed to Release Com CInput_Device "); 
 
@@ -359,10 +382,11 @@ void CGameInstance::Release_Engine()
 		MSGBOX("Failed to Release Com Graphic_Device "); 
 	
 	if (0 != GetSingle(CTimeMgr)->DestroyInstance())
-		MSGBOX("Failed to Release Com TimeMgr ");
-
+		MSGBOX("Failed to Release Com TimeMgr ");	
 	if (0 != GetSingle(CImguiMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com CImguiMgr ");
+
+	
 }
 
 void CGameInstance::Free()
@@ -376,4 +400,5 @@ void CGameInstance::Free()
 	Safe_Release(m_pImguiMgr);
 	Safe_Release(m_pTimerMgr);
 	Safe_Release(m_pEasingMgr);
+	Safe_Release(m_pPickingMgr);
 }

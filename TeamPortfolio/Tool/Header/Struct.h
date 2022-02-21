@@ -89,6 +89,7 @@ typedef struct tagOutputObject
 enum E_FILETYPE
 {
 	FILETYPE_PNG,
+	FILETYPE_DDS,
 	FILETYPE_XML,
 	FILETYPE_ALL,
 	FILETYPE_END,

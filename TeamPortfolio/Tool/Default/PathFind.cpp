@@ -35,7 +35,8 @@ void CPathFind::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_ListBox);
 	DDX_Control(pDX, IDC_EDIT2, mEditBox);
-//	DDX_Control(pDX, IDC_PICTURE, m_Picture);
+	//	DDX_Control(pDX, IDC_PICTURE, m_Picture);
+	DDX_Control(pDX, IDC_COMBO1, m_ComboBox_Filetype);
 }
 
 BEGIN_MESSAGE_MAP(CPathFind, CDialog)
@@ -199,7 +200,7 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 {
 	// 파일 드롭시 처리
 	ClearPathData();
-
+	
 #pragma region 경로저장
 	// 폴더 드롭다운시 텍스쳐 이미지를 탐색한다.
 	// 세부적으로 파일 탐색 재설정해야될듯
@@ -355,7 +356,8 @@ BOOL CPathFind::DestroyWindow()
 BOOL CPathFind::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
+	m_ComboBox_Filetype.SetCurSel(0);
+	m_ePathFileType = (E_FILETYPE)m_ComboBox_Filetype.GetCurSel();
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	//m_GameObject_Rect_Tool = nullptr;
 	//m_GameObject_Rect_Tool = GetSingle(CSuperToolSIngleton)->GetObjectRect();

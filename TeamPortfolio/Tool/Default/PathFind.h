@@ -54,18 +54,13 @@ private:
 	const wstring Extension = L".txt";
 	CEdit mEditBox; // 파일이름 박스
 
-public:
-
 	// control
-	CListBox m_ListBox;
-
+	CListBox				m_ListBox;
+	CComboBox				m_ComboBox_Filetype;
 	list<IMGPATH*>			m_PathInfoList;
+	E_FILETYPE				m_ePathFileType;
 //	list<MYFILEPATH*>		m_MyPathInfoList;
 //	map<wstring, CImage*>		m_MapPngImage;
-
-private:
-//	CObjectTool_Rect*			m_GameObject_Rect_Tool = nullptr;
-//	CStatic m_Picture;
 
 
 public:

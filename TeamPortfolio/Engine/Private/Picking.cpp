@@ -9,6 +9,7 @@ HRESULT CPicking::Initialize(LPDIRECT3DDEVICE9 pGraphic_Device, HWND hWnd, void 
 {
 	m_hWnd = hWnd;
 	m_pGraphic_Device = pGraphic_Device;
+	Safe_AddRef(m_pGraphic_Device);
 	return S_OK;
 }
 
