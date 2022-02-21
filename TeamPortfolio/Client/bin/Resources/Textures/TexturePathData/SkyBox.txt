@@ -1,1 +1,1 @@
-SkyBox|none|3|../Bin/Resources/Textures/SkyBox/Sky_%d.dds
+SkyBox|none|1|../Bin/Resources/Textures/SkyBox/DefaultCube_%d.dds

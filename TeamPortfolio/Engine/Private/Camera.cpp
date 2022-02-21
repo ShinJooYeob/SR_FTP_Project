@@ -140,7 +140,7 @@ void CCamera::ShakeFunction(_bool * IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 	for (_uint i = 0; i < TotalCnt; i++)
 	{
-		LeaveCriticalSection(_CriSec);
+		EnterCriticalSection(_CriSec);
 		switch (i % 2)
 		{
 		case 0:

@@ -397,23 +397,6 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 
 
 
-	if (pInstance->Get_DIKeyState(DIK_W) & DIS_Press)
-	{
-		m_pTransform->Move_Forward(fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_S) & DIS_Press)
-	{
-		m_pTransform->Move_Backward(fDeltaTime);
-
-	}
-	if (pInstance->Get_DIKeyState(DIK_X) & DIS_Press)
-	{
-		m_pTransform->MovetoTarget(m_pTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_Z) & DIS_Press)
-	{
-		m_pTransform->MovetoTarget(m_pTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1.f, 0), -fDeltaTime);
-	}
 	if (pInstance->Get_DIKeyState(DIK_V) & DIS_Down)
 	{
 		Change_Camera_Demension();

@@ -27,6 +27,8 @@ private:
 	virtual ~CTransform() = default;
 
 public:
+	//SetDesc
+	void Set_MoveSpeed(_float fMoveSpeed) { m_TransforDesc.fMovePerSec = fMoveSpeed; };
 
 //Move////////////////////////////////////////////////////////////////////////
 	void Move_Forward(_float fDeltaTime);

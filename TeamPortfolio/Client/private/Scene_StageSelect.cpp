@@ -81,11 +81,12 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 	}
 	for (_uint k = 0; k < 10; k++)
 	{
-		for (_uint i = 1; i < 10 ; i++)
+		for (_uint i = 1; i < 10; i++)
 		{
-			if (i == 1 || i == 9) {
-
-				for (_uint j = 1; j < 10; j++) {
+			for (_uint j = 1; j < 10; j++) 
+			{
+				if (i == 1 || i == 9 || j == 3 || j == 7) 
+				{
 
 					if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)k, (_float)j)))
 						return E_FAIL;

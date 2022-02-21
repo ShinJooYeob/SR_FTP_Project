@@ -5,3 +5,6 @@ Player|walk|6|../bin/Resources/Textures/Player/Walk/walk.ani%d.png
 Player|jump_up|2|../bin/Resources/Textures/Player/jump_up/jump_up_%d.png
 Player|jump_down|2|../bin/Resources/Textures/Player/jump_down/jump_down_%d.png
 Player|climing_back|6|../bin/Resources/Textures/Player/climing_back/climing_back_%d.png
+Player|run|6|../bin/Resources/Textures/Player/run/Run_%d.png
+Player|hurt|8|../bin/Resources/Textures/Player/hurt/Hurt_%d.png
+Player|pull_down|7|../bin/Resources/Textures/Player/pull_down/PullDown_%d.png

@@ -35,7 +35,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 
 	m_fNowJumpPower = m_fJumpPower = 10.f;
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
-	m_ComTransform->Scaled(_float3(0.7f, 0.9f, 1.f));
+	//m_ComTransform->Scaled(_float3(1., 0.9f, 1.f));
 
 	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))));
 	
@@ -57,10 +57,11 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 
-	if (FAILED(Animation_Change(fDeltaTime)))
-		return E_FAIL;
 
 	if (FAILED(Input_Keyboard(fDeltaTime)))
+		return E_FAIL;
+
+	if (FAILED(Animation_Change(fDeltaTime)))
 		return E_FAIL;
 
 	if (FAILED(Find_FootHold_Object(fDeltaTime))) 
@@ -69,6 +70,9 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
 		return E_FAIL;
 
+
+	if (FAILED(Set_CamY(fDeltaTime)))
+		return E_FAIL;
 
 
 	return _int();
@@ -127,6 +131,7 @@ _int CPlayer::LateRender()
 _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
 
+	m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 	return _int();
 }
 
@@ -136,7 +141,7 @@ HRESULT CPlayer::SetUp_Components()
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
 	TransformDesc.fMovePerSec = 3.f;
 	TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
-	
+	//TransformDesc.vPivot = _float3(0, 0.1f, 0);
 
 
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Renderer), TAG_COM(Com_Renderer), (CComponent**)&m_ComRenderer)))
@@ -189,14 +194,16 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 				m_fNowJumpPower = 0;
 				if (m_vDownstairsNear != NOT_EXIST_BLOCK)
 				{
-					_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-					vPlayerPos.y = m_vDownstairsNear.y + 0.5f;
+					m_fNowJumpPower = -fDeltaTime;
 					m_bIsCliming = false;
 				}
 				else
 				{
-					m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
-					m_bIsCliming = true;
+					if (!(m_ComTexture->Get_IsReturnTexture())) 
+					{
+						m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
+						m_bIsCliming = true;
+					}
 				}
 			}
 		}
@@ -204,31 +211,39 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 		{
 			if (m_vDownstairsNear != NOT_EXIST_BLOCK)
 			{
-				m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
 
-				_Matrix matVeiwSpace;
-				m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
+				if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_DoubleDown) 
+				{
+					//m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
 
-				_float3 vPlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
+					_Matrix matVeiwSpace;
+					m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
 
-				vPlayerPos.z = m_vDownstairsNear.z - 1.f;
+					_float3 vPlayerViewPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
 
-				vPlayerPos = vPlayerPos.PosVector_Matrix(matVeiwSpace.InverseMatrix());
-				m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vPlayerPos);
+					vPlayerViewPos.y = m_vDownstairsNear.y + 0.45f;
+					vPlayerViewPos.z = m_vDownstairsNear.z - 0.6f;
 
-				m_fNowJumpPower = 0;
-				m_bIsCliming = true;
+					m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vPlayerViewPos.PosVector_Matrix(matVeiwSpace.InverseMatrix()));
+
+					m_fNowJumpPower = 0;
+					m_bIsCliming = true;
+					m_ComTexture->Change_TextureLayer_ReturnToWait(TEXT("pull_down"),TEXT("climing_back"),12.f, 12.f);
+
+				}
+
+			
 			}
 		}
 	}
 
 	//좌우 이동
-	if (m_bCanMoveLeft && pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
+	if (pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
 	{
 		m_ComTransform->Move_Right(fDeltaTime);
 	}
 
-	if (m_bCanMoveRight && pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
+	if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
 	{
 		m_ComTransform->Move_Right(fDeltaTime);
 	}
@@ -265,18 +280,43 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 		{
 			if (m_bIsCliming)
 			{
-				m_ComTexture->Change_TextureLayer_Wait(TEXT("climing_back"), 12.f);
+				m_bIsRunning = false;
+				m_ComTransform->Set_MoveSpeed(2.5f);
+				
+				if (!(m_ComTexture->Get_IsReturnTexture()))
+				{
+					m_ComTexture->Change_TextureLayer_Wait(TEXT("climing_back"), 12.f);
+				}
+
 			}
 			else
 			{
-				if (lstrcmp(m_ComTexture->Get_NowTextureTag(), TEXT("jump_down")))
-					m_ComTexture->Change_TextureLayer(TEXT("walk"));
+				if (lstrcmp(m_ComTexture->Get_NowTextureTag(), TEXT("jump_down"))) 
+				{
+
+					if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_DoubleDown || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_DoubleDown)
+					{
+						m_bIsRunning = true;
+						m_ComTransform->Set_MoveSpeed(4.f);
+					}
+					else if(pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Down || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Down)
+					{
+						m_bIsRunning = false;
+						m_ComTransform->Set_MoveSpeed(2.5f);
+					}
+
+					if (m_bIsRunning)
+						m_ComTexture->Change_TextureLayer(TEXT("run"));
+					else
+						m_ComTexture->Change_TextureLayer(TEXT("walk"));
+
+				}
 			}
 
 		}
 		else {
 
-			if (!m_bIsCliming && lstrcmp(m_ComTexture->Get_NowTextureTag(),TEXT("jump_down")))
+			if (!m_bIsCliming && !(m_ComTexture->Get_IsReturnTexture()))
 			{
 				m_ComTexture->Change_TextureLayer(TEXT("Idle"));
 			}
@@ -310,17 +350,6 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 		m_ComTransform->LookAt(vPlayerPos + vCamLook);
 
 
-
-	//_float3 NewLook = ((*(_float3*)(&matVeiwSpace.InverseMatrix().m[3][0])) - vPlayerPos).Get_Nomalize();
-
-	//if (m_bTextureReverse)
-	//	m_ComTransform->LookAt(vPlayerPos + NewLook);
-	//else
-	//	m_ComTransform->LookAt(vPlayerPos - NewLook);
-
-
-
-
 	if (m_pCamera_Main->Get_bIsTuring())
 		return S_OK;
 
@@ -351,8 +380,8 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 	 auto ObjectListIter = pTerrainLayer->begin();
 
 	 m_bIsShdow = false;
-	 m_bCanMoveLeft = true;
-	 m_bCanMoveRight = true;
+	 //m_bCanMoveLeft = true;
+	 //m_bCanMoveRight = true;
 	// m_bCanMoveUp = false;
 
 	 _float3 vTerrainWorldPos;
@@ -380,17 +409,17 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 					 fPlayerBackZ = vTerrainObjectViewPos.z;
 			 }
 
-			 if (vTerrainObjectViewPos.z > vPlayerViewPos.z - 0.25f && vTerrainObjectViewPos.z < vPlayerViewPos.z + 0.25f)
-			 {
-				 if (vTerrainObjectViewPos.x > vPlayerViewPos.x + 0.55f  && vTerrainObjectViewPos.x < vPlayerViewPos.x + 1.1f)
-				 {
-					 m_bCanMoveRight = false;
-				 }
-				 else if (vTerrainObjectViewPos.x < vPlayerViewPos.x - 0.55f  && vTerrainObjectViewPos.x  > vPlayerViewPos.x - 1.1f)
-				 {
-					 m_bCanMoveLeft = false;
-				 }
-			 }
+			 //if (vTerrainObjectViewPos.z > vPlayerViewPos.z - 0.25f && vTerrainObjectViewPos.z < vPlayerViewPos.z + 0.25f)
+			 //{
+				// if (vTerrainObjectViewPos.x > vPlayerViewPos.x + 0.55f  && vTerrainObjectViewPos.x < vPlayerViewPos.x + 1.1f)
+				// {
+				//	 //m_bCanMoveRight = false;
+				// }
+				// else if (vTerrainObjectViewPos.x < vPlayerViewPos.x - 0.55f  && vTerrainObjectViewPos.x  > vPlayerViewPos.x - 1.1f)
+				// {
+				//	 //m_bCanMoveLeft = false;
+				// }
+			 //}
 		 }
 		 if (vTerrainWorldPos.y <= vPlayerPos.y - 0.5f && vTerrainWorldPos.y >= vPlayerPos.y - 1.5f + fGravity)
 		 {//아래층의
@@ -418,13 +447,12 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 				 fFootNearZ = (*SelectedListiter).z;
 			 }
 		 }
-		 if(m_vClimingBlock == NOT_EXIST_BLOCK && (*SelectedListiter).y < vPlayerViewPos.y + 0.5f && (*SelectedListiter).y >= vPlayerViewPos.y - 0.5f)
+		 if ((*SelectedListiter).y < vPlayerViewPos.y + 0.5f && (*SelectedListiter).y >= vPlayerViewPos.y - 0.5f)
 		 {
 			 //같은 층에
-			 if ((*SelectedListiter).z > fPlayerFrontZ)
+			 if ((*SelectedListiter).z > fPlayerFrontZ + 1.f && (*SelectedListiter).z < m_vClimingBlock.z)
 			 {
 				 m_vClimingBlock = (*SelectedListiter);
-				// m_bCanMoveUp = true;
 			 }
 		 }
 		 SelectedListiter++;
@@ -433,7 +461,7 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 
 
 	 if (m_vDownstairsNear != NOT_EXIST_BLOCK)
-		 m_vReturnStair = m_vDownstairsNear;
+		 m_vReturnStair = m_vDownstairsNear.PosVector_Matrix(matVeiwSpace.InverseMatrix());
 
 
 
@@ -474,7 +502,6 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 
 		if (m_vDownstairsNear != NOT_EXIST_BLOCK)
 		{
-
 			vResultPos.z = m_vDownstairsNear.z;
 			if (vResultPos.y + fGravity < m_vDownstairsNear.y + 1.0f && m_fNowJumpPower < 0) //플레이어가 지형보다 아래에 있다면
 			{
@@ -491,13 +518,16 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 		else if (Time > 3.f && m_vReturnStair != _float3(0, 0, 0))
 		{
 			//피격 이미지 넣어주기/////////////////////////
+			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"),8.f);
 			//m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
-			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT,fDeltaTime);
-			vResultPos = m_vReturnStair;
+			vResultPos = m_vReturnStair.PosVector_Matrix(matVeiwSpace);
 			vResultPos.y += 1.f;
-
 			m_fNowJumpPower = 0;
 			m_bIsJumped = 0;
+
+
+
+			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT,fDeltaTime);
 		}
 		else {
 			m_fNowJumpPower -= fDeltaTime * m_fJumpPower;
@@ -542,6 +572,19 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 
 
 
+	return S_OK;
+}
+
+HRESULT CPlayer::Set_CamY(_float fDeltaTime)
+{
+	CTransform* pCamTransform = m_pCamera_Main->Get_Camera_Transform();
+	_float3 vCamPos = pCamTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	vCamPos.y = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, vCamPos.y,
+		m_ComTransform->Get_MatrixState(CTransform::STATE_POS).y + 3.f, fDeltaTime, fDeltaTime * 2.5f);
+
+
+	pCamTransform->Set_MatrixState(CTransform::STATE_POS, vCamPos);
 	return S_OK;
 }
 

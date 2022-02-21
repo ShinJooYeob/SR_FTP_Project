@@ -1,2 +1,2 @@
 CamEffect|blank|1|../Bin/Resources/Textures/UI/Blank.png
-CamEffect|shadow|1|../Bin/Resources/Textures/Player/Idle/idle_0.png
+CamEffect|shadow|1|../Bin/Resources/Textures/UI/Idle_Shadow.png

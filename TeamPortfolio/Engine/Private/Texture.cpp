@@ -220,6 +220,38 @@ HRESULT CTexture::Change_TextureLayer_ReturnTo(const _tchar * tagTexureLayer, co
 	return S_OK;
 }
 
+HRESULT CTexture::Change_TextureLayer_ReturnToWait(const _tchar * tagTexureLayer, const _tchar * szReturnTag, _float fFramePerSec, _float fResturnFps)
+{
+	if (tagTexureLayer == nullptr || szReturnTag == nullptr)
+		return E_FAIL;
+
+
+	if (lstrcmp(m_TagNowTexture, tagTexureLayer))
+	{
+		auto iter = find_if(m_mapTextureLayers.begin(), m_mapTextureLayers.end(), CTagStringFinder(tagTexureLayer));
+
+		if (iter == m_mapTextureLayers.end())
+			return E_FAIL;
+
+
+		Safe_Release(m_pBindedTextureLayer);
+		m_pBindedTextureLayer = iter->second;
+		Safe_AddRef(m_pBindedTextureLayer);
+
+		m_fFrameTime = 0;
+		m_iNumMaxTexture = m_pBindedTextureLayer->Get_TextureNum();
+		m_TagNowTexture = tagTexureLayer;
+	}
+
+	m_bIsWaitTexture = true;
+	m_bIsReturnTexture = true;
+	m_fFramePerSec = fFramePerSec;
+	m_iReturnFps = fResturnFps;
+	m_szReturnTag = szReturnTag;
+
+	return S_OK;
+}
+
 HRESULT CTexture::Change_TextureLayer_Wait(const _tchar * tagTexureLayer, _float fFramePerSec)
 {
 
@@ -258,7 +290,12 @@ HRESULT CTexture::Bind_Texture_AutoFrame(_float fTimeDelta)
 
 	if (m_fFrameTime >= (_float)(m_iNumMaxTexture + 1))
 	{
-		if (m_bIsWaitTexture)
+		if (m_bIsWaitTexture && m_bIsReturnTexture)
+		{
+			Change_TextureLayer_Wait(m_szReturnTag, m_iReturnFps);
+			m_szReturnTag = nullptr;
+		}
+		else if (m_bIsWaitTexture)
 		{
 			m_fFrameTime = (_float)m_iNumMaxTexture;
 			m_TagNowTexture = nullptr;
@@ -266,6 +303,7 @@ HRESULT CTexture::Bind_Texture_AutoFrame(_float fTimeDelta)
 		else if (m_bIsReturnTexture)
 		{
 			Change_TextureLayer(m_szReturnTag, m_iReturnFps);
+			m_szReturnTag = nullptr;
 		}
 		else
 		{

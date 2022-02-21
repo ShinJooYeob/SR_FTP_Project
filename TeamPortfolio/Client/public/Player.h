@@ -54,9 +54,9 @@ private:
 	_bool					m_bIsCliming = false;
 	_bool					m_bIsShdow = false;
 
-	_bool					m_bCanMoveLeft = false;
-	_bool					m_bCanMoveRight = false;
 	_bool					m_bTextureReverse = false;
+
+	_bool					m_bIsRunning = false;
 
 	_float3					m_vDownstairsNear;
 	_float3					m_vClimingBlock;
@@ -73,6 +73,7 @@ private:
 
 	HRESULT			Find_FootHold_Object(_float fDeltaTime);
 	HRESULT			Set_PosOnFootHoldObject(_float fDeltaTime);
+	HRESULT			Set_CamY(_float fDeltaTime);
 
 
 	HRESULT SetUp_RenderState();

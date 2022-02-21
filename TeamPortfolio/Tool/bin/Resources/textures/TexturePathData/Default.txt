@@ -1,1 +1,0 @@
-Default|none|1|../bin/Resources/Textures/Default.jpg

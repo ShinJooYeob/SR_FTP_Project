@@ -1,7 +1,0 @@
-Player|climing_back|6|..\bin\Resources\textures\Player\climing_back\climing_back_%d.png
-Player|Idle|67|..\bin\Resources\textures\Player\Idle\idle_%d.png
-Player|jump_down|2|..\bin\Resources\textures\Player\jump_down\jump_down_%d.png
-Player|jump_up|2|..\bin\Resources\textures\Player\jump_up\jump_up_%d.png
-Player|Panic|8|..\bin\Resources\textures\Player\Panic\panic_%d.png
-Player|talk|24|..\bin\Resources\textures\Player\talk\talk_%d.png
-Player|walk|6|..\bin\Resources\textures\Player\walk\walk.ani%d.png
