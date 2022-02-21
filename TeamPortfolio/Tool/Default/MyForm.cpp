@@ -5,7 +5,7 @@
 #include "Tool.h"
 #include "MyForm.h"
 
-#include "ObjectTool_Rect.h"
+#include "ObjectTool_ToolObject.h"
 
 
 // CMyForm
@@ -142,10 +142,6 @@ void CMyForm::OnCbnSelchangeCombo2()
 
 	}
 }
-
-
-
-
 
 void CMyForm::OnBnClickedButtonCube()
 {

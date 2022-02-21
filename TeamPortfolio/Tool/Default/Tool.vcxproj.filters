@@ -102,9 +102,6 @@
     <ClInclude Include="PathFind.h">
       <Filter>00. Special\01. View\01. MyButton\01. PathFind</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectTool_Rect.h">
-      <Filter>04.Object\01.VertexObject</Filter>
-    </ClInclude>
     <ClInclude Include="Camera_Tool.h">
       <Filter>04.Object\03 Camera_Tool</Filter>
     </ClInclude>
@@ -132,6 +129,9 @@
     <ClInclude Include="..\Header\Include.h">
       <Filter>99.Header</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectTool_ToolObject.h">
+      <Filter>04.Object\01.VertexObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -152,9 +152,6 @@
     <ClCompile Include="PathFind.cpp">
       <Filter>00. Special\01. View\01. MyButton\01. PathFind</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectTool_Rect.cpp">
-      <Filter>04.Object\01.VertexObject</Filter>
-    </ClCompile>
     <ClCompile Include="Camera_Tool.cpp">
       <Filter>04.Object\03 Camera_Tool</Filter>
     </ClCompile>
@@ -172,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="MyForm.cpp">
       <Filter>00. Special\01. View\00. MyForm</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTool_ToolObject.cpp">
+      <Filter>04.Object\01.VertexObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

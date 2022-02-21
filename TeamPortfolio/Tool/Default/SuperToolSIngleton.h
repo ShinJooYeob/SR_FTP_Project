@@ -19,7 +19,7 @@ END
 
 BEGIN(Tool)
 
-class CObjectTool_Rect;
+class CObjectTool_ToolObject;
 class CSuperToolSIngleton : public CBase
 {
 	DECLARE_SINGLETON(CSuperToolSIngleton)
@@ -72,9 +72,9 @@ public:
 	CPathFind*  GetPathTool() {	return m_pPathDialog; }
 	CTrans_Dialog* GetTransTool() { return m_pTransDialog; }
 
-	CObjectTool_Rect* GetObjectRect() { return m_Object_Rect; }
+	CObjectTool_ToolObject* GetObjectRect() { return m_Object_Rect; }
 public:
-	HRESULT SaveData_Object(CObjectTool_Rect* obj, CWnd* cwnd);
+	HRESULT SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd);
 	HRESULT LoadData_Object(CWnd * cwnd);
 
 
@@ -88,7 +88,8 @@ private:
 	CPathFind*			m_pPathDialog;	// 경로 창
 	CTrans_Dialog*		m_pTransDialog;	// 위치 조정 창
 
-	CObjectTool_Rect*	m_Object_Rect;
+	CObjectTool_ToolObject*	m_Object_Rect;
+
 
 
 private:

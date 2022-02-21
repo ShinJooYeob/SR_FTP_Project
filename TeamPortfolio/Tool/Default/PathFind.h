@@ -6,15 +6,11 @@
 // 패스 정보 툴
 
 BEGIN(Tool)
-class CObjectTool_Rect;
+class CObjectTool_ToolObject;
 END
 class CPathFind : public CDialog
 {
 public:
-	enum E_PathMODE
-	{
-		PATHMODE_PATH, PATHMODE_SELECT, PATHMODE_END
-	};
 
 	DECLARE_DYNAMIC(CPathFind)
 
@@ -50,7 +46,7 @@ private:
 
 private:
 	// 경로와 확장자 저장
-	const wstring FilePath = L"../Data/";
+	const wstring FilePath = L"../bin/Resources/textures/TexturePathData/";
 	const wstring Extension = L".txt";
 	CEdit mEditBox; // 파일이름 박스
 
@@ -59,12 +55,11 @@ private:
 	CComboBox				m_ComboBox_Filetype;
 	list<IMGPATH*>			m_PathInfoList;
 	E_FILETYPE				m_ePathFileType;
-//	list<MYFILEPATH*>		m_MyPathInfoList;
-//	map<wstring, CImage*>		m_MapPngImage;
 
 
 public:
 	virtual BOOL DestroyWindow();
 	virtual BOOL OnInitDialog();
+	afx_msg void OnCbnSelchangeCombo1();
 };
 	

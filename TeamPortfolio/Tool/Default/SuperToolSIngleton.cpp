@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SuperToolSIngleton.h"
 #include "GameInstance.h"
-#include "ObjectTool_Rect.h"
+#include "ObjectTool_ToolObject.h"
 #include "Camera_Tool.h"
 
 
@@ -117,38 +117,45 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 	// #Tag 툴 모든 오브젝트의 원형 생성
 
 	// Prototype_GameObject_BackGround
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BackGround"), CObjectTool_Rect::Create(m_pGraphicDevice)));
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_BackGround), CObjectTool_ToolObject::Create(m_pGraphicDevice)));
 
 	// 카메라 생성
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Camera"), CCamera_Tool::Create(m_pGraphicDevice)));
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Tool::Create(m_pGraphicDevice)));
 
 	// #Tag 툴 모든 컴포넌트의 원형 생성
 
 
 	//렌더러 컴객체 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), m_pComRenderer = CRenderer::Create(m_pGraphicDevice)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Renderer), m_pComRenderer = CRenderer::Create(m_pGraphicDevice)));
 
 	Safe_AddRef(m_pComRenderer);
 
 	//버퍼인덱스 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pGraphicDevice)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect) , CVIBuffer_Rect::Create(m_pGraphicDevice)));
 
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), CVIBuffer_Cube::Create(m_pGraphicDevice)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), CVIBuffer_Cube::Create(m_pGraphicDevice)));
 
 
 	//Transform 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), CTransform::Create(m_pGraphicDevice)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), CTransform::Create(m_pGraphicDevice)));
 
-	/* 디폴트 텍스처 프로토타입 생성 */
+	// 블록 디폴트 
 	CTexture::TEXTUREDESC TextureDesc{};
-	TextureDesc.szTextFilePath = TEXT("Default.txt");
-
+	TextureDesc.szTextFilePath = g_FileName_Blocktxt;
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), CTexture::Create(m_pGraphicDevice, &TextureDesc)));
+
+
+	// 큐브 디폴트
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	TextureDesc.szTextFilePath = g_Filename_Cubetxt;
+	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Cube), CTexture::Create(m_pGraphicDevice, &TextureDesc)));
+
 
 	return S_OK;
 }
@@ -158,10 +165,10 @@ HRESULT CSuperToolSIngleton::Ready_Object_Clone(const _tchar* layertag)
 	// #Tag 씬에서 사용할 클론 객체 생성
 
 	// BackObj
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TEXT("Prototype_GameObject_BackGround")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TAG_OP(Prototype_BackGround)))
 		return E_FAIL;
 
-	m_Object_Rect = (CObjectTool_Rect*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, layertag);
+	m_Object_Rect = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, layertag);
 	Safe_AddRef(m_Object_Rect);
 	return S_OK;
 }
@@ -188,7 +195,7 @@ HRESULT CSuperToolSIngleton::Ready_Object_Camera(const _tchar* layertag)
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Main::Create(m_pGraphicDevice, &CameraDesc))))
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TEXT("Prototype_GameObject_Camera"), &CameraDesc))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TAG_OP(Prototype_Camera_Main), &CameraDesc))
 		return E_FAIL;
 
 }
@@ -207,7 +214,7 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView()
 }
 
 
-HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_Rect* obj, CWnd* cwnd)
+HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd)
 {
 	// 저장 클릭시 하는 것
 
@@ -243,17 +250,7 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_Rect* obj, CWnd* cwnd)
 			return E_FAIL;
 
 		// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.
-		MYFILEPATH path = obj->Get_PathData();
-		OUTPUT_OBJECTINFO infoObj;
-		infoObj.fScale = obj->Get_Scale();
-		infoObj.fPos = obj->Get_Pos();
-		lstrcpy(infoObj.strObjectName, Filename);
-		lstrcpy(infoObj.strTextureName, path.wFileName.c_str());
-		lstrcpy(infoObj.strTexturePath, path.wstrFullPath.c_str());
-
-
-		//infoObj.strFileName = path.wFileName.c_str();
-		//infoObj.strFullPath = path.wstrFullPath.c_str();
+		OUTPUT_OBJECTINFO infoObj = obj->Get_ObjectInfo();
 
 		DWORD	dwByte = 0;
 

@@ -74,24 +74,15 @@ typedef struct tagMyTexturePath
 
 }MYFILEPATH;
 
+// 오브젝트에 대한 정보
+// 오브젝트 월드 행렬 / 이름 / 텍스처경로 / 키
 typedef struct tagOutputObject
 {
 	D3DXVECTOR3 fScale;
 	D3DXVECTOR3 fPos;
 	TCHAR strObjectName[MAX_PATH];
-	TCHAR strTextureName[MAX_PATH];
-	TCHAR strTexturePath[MAX_PATH];
+	TCHAR strStrTextureFullPath[MAX_PATH];
+	unsigned int StateIndex;
 
 }OUTPUT_OBJECTINFO;
 
-
-
-enum E_FILETYPE
-{
-	FILETYPE_PNG,
-	FILETYPE_DDS,
-	FILETYPE_XML,
-	FILETYPE_ALL,
-	FILETYPE_END,
-
-};

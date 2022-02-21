@@ -6,7 +6,7 @@
 // 위치조정 툴
 
 BEGIN(Tool)
-class CObjectTool_Rect;
+class CObjectTool_ToolObject;
 END
 class CTrans_Dialog : public CDialog
 {
@@ -30,14 +30,27 @@ private:
 	// Edit에 값에 따라 
 	HRESULT EditToObjectUpdate(CEdit* edit,_uint count=9);
 
+private:
+//	const _tchar*	m_LoadFileName = L"Blocks.txt";
+//	const _tchar*	m_LoadFileName2 = L"Blocks.txt";
+
 public:
-	   
-	CObjectTool_Rect* m_GameObject_Rect_Tool;
+	 
+	CObjectTool_ToolObject* m_GameObject_Rect_Tool;
+
+	HRESULT ResetTexture();
+
+private:
 
 	// 위치 / 크기정보 Set 
 	CEdit m_InputNumber[9];
+	
+	// 텍스처 리스트 박스
+	CListBox m_TextureListBox;
 
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
 	afx_msg void OnBnClickedButton1();
+	
+	afx_msg void OnLbnSelchangeList1();
 };

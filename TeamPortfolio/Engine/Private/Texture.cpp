@@ -57,13 +57,8 @@ HRESULT CTexture::ClearTexture()
 
 	for (auto& Pair : m_mapTextureLayers)
 		Safe_Release(Pair.second);
-
-	
-
 	Safe_Release(m_pBindedTextureLayer);
-
 	m_mapTextureLayers.clear();
-
 	return S_OK;
 }
 
@@ -284,6 +279,11 @@ HRESULT CTexture::Bind_Texture(_uint iTextureIndex)
 		return E_FAIL;
 
 	return m_pBindedTextureLayer->Bind_Texture(iTextureIndex);
+}
+
+_uint CTexture::CurrentTextureLayerSize()
+{
+	return m_pBindedTextureLayer->Get_TextureNum();
 }
 
 

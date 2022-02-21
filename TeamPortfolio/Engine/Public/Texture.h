@@ -35,6 +35,9 @@ public:
 
 	HRESULT Bind_Texture_AutoFrame(_float fTimeDelta);
 	HRESULT Bind_Texture(_uint iTextureIndex = 0);
+
+	_uint CurrentTextureLayerSize();
+
 	HRESULT ClearTexture();
 
 private:
