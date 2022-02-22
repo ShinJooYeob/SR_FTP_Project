@@ -33,7 +33,7 @@ HRESULT CObject_PortalCube_B::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS,_float3(7.f,0.f,15.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS,_float3(5.f,0.f,15.f));
 
 	return S_OK;
 }

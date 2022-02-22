@@ -34,18 +34,13 @@ HRESULT CObject_OrbitCube::Initialize_Clone(void * pArg)
 	if (pArg != nullptr)
 	{
 		memcpy(&m_OrbitCubeDesc, pArg, sizeof(ORBITCUBEDESC));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_OrbitCubeDesc.fTransform);
 	}
 	else
 	{
 		MSGBOX("Fail to Clone CObject_OrbitCube");
 	}
 
-	if (pArg != nullptr)
-	{
-		_float3 vSettingPoint;
-		memcpy(&vSettingPoint, pArg, sizeof(_float3));
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
-	}
 	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 
 
@@ -116,11 +111,11 @@ _int CObject_OrbitCube::LateUpdate(_float fTimeDelta)
 
 _int CObject_OrbitCube::Render()
 {
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
 
-	/*if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		return E_FAIL;*/
 
-	m_pGraphicDevice->SetTransform(D3DTS_WORLD, &parentMatrix);
+	//m_pGraphicDevice->SetTransform(D3DTS_WORLD, &parentMatrix);
 
 
 	if (FAILED(m_ComTexture->Bind_Texture()))

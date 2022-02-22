@@ -112,6 +112,15 @@
     <Filter Include="01.GameObject\SubObject\Object_PortalCube\PortalCube_B">
       <UniqueIdentifier>{cb516f59-73dd-40db-9faf-09098f7ca4b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube">
+      <UniqueIdentifier>{ea8faaeb-792c-45b4-bc38-ba3a10ecf987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube\Object_DescentCube">
+      <UniqueIdentifier>{c67859c4-976d-4dd8-8a00-2e6aae3515c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube">
+      <UniqueIdentifier>{fa90b281-ed72-4735-9712-4db6007ced48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

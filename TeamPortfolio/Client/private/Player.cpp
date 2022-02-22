@@ -638,7 +638,7 @@ CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 		Safe_Release(pInstance);
 
 	}
-
+	
 
 	return pInstance;
 }

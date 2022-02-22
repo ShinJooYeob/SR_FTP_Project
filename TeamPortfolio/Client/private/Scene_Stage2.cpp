@@ -169,7 +169,7 @@ HRESULT CScene_Stage2::Ready_Layer_OrbitCube(const _tchar * pLayerTag)
 		{
 			for (_uint X = 0; X < 2; X++) {
 				OrbitCubeDesc.fTransform = _float3(5.f+X, 1.f + Y, 7.f+Z);
-				OrbitCubeDesc.fRotAxis = _float3(2.f, 3.f, 5.f);
+				OrbitCubeDesc.fRotAxis = _float3(0.f, 4.f, 0.f);
 				if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_OrbitCube"),&OrbitCubeDesc))
 					return E_FAIL;
 				}
