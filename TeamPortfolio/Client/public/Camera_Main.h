@@ -57,6 +57,7 @@ private:
 	_float			m_fTargetAngle = 0;
 	_bool			m_IsTurning = false;
 
+
 	CTexture*				m_ComTexture = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;

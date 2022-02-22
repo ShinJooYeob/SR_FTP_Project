@@ -42,7 +42,7 @@ public:
 
 
 protected:
-	_bool						m_bIsOrtho = false;
+	_bool						m_bIsOrtho = true;
 	CTransform*					m_pTransform = nullptr;
 	CAMERADESC					m_CameraDesc;
 	_Matrix						m_OrthoMatrix;

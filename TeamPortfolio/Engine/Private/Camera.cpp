@@ -52,6 +52,8 @@ HRESULT CCamera::Initialize_Clone(void * pArg)
 	if (nullptr == m_pTransform)
 		return E_FAIL;
 
+	m_bIsOrtho = true;
+
 	m_pTransform->Set_TransformDesc(m_CameraDesc.TransformDesc);
 
 	_float3 vRight, vUp, vLook;
@@ -82,7 +84,7 @@ _int CCamera::Update(_float fDeltaTime)
 	_Matrix matProj;
 	
 
-	if (FAILED(Set_ProjectMatrix(true)))
+	if (FAILED(Set_ProjectMatrix(m_bIsOrtho)))
 		return E_FAIL;
 
 

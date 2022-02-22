@@ -62,8 +62,6 @@ HRESULT CCamera_Main::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-
-
 	return S_OK;
 }
 
@@ -106,6 +104,10 @@ _int CCamera_Main::LateUpdate(_float fDeltaTime)
 		
 		if(FAILED(m_MiniMapUI->Reset_MiniMapSize({ EsaingValue ,EsaingValue })))
 			return E_FAIL;
+	}
+
+	if (pInstace->Get_DIKeyState(DIK_M) & DIS_Down) {
+		Change_Camera_Demension();
 	}
 
 
