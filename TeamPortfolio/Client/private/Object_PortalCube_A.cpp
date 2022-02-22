@@ -47,6 +47,7 @@ _int CObject_PortalCube_A::Update(_float fTimeDelta)
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	return _int();
@@ -99,6 +100,7 @@ _int CObject_PortalCube_A::Obsever_On_Trigger(CGameObject * pDestObjects, _float
 	{
 		Object_Transfer(fDeltaTime);
 
+
 	}
 
 	return _int();
@@ -107,6 +109,7 @@ _int CObject_PortalCube_A::Obsever_On_Trigger(CGameObject * pDestObjects, _float
 _int CObject_PortalCube_A::Object_Transfer(_float fDeltaTime)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
 
 	Seconds += fDeltaTime;
 

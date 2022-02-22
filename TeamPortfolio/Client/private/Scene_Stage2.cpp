@@ -39,6 +39,11 @@ HRESULT CScene_Stage2::Initialize()
 	if (FAILED(Ready_Layer_Object_PortalCube_B(TEXT("Layer_PortalCube_B"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Object_RisingCube(TEXT("Layer_RisingCube"))))
+		return E_FAIL;
+	if (FAILED(Ready_Layer_Object_DescentCube(TEXT("Layer_DescentCube"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -105,8 +110,16 @@ HRESULT CScene_Stage2::Ready_Layer_Cube(const _tchar * pLayerTag)
 }
 HRESULT CScene_Stage2::Ready_Layer_FixCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube")))
-		return E_FAIL;
+	for (_uint x = 0; x < 20; ++x)
+	{
+		for (_uint z = 0; z < 20; ++z)
+		{
+			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube"), &_float3(-10.f+(_float)x, (_float)-1, (_float)z)))
+				return E_FAIL;
+		}
+	}
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube")))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -155,6 +168,20 @@ HRESULT CScene_Stage2::Ready_Layer_Object_PortalCube_A(const _tchar * pLayerTag)
 HRESULT CScene_Stage2::Ready_Layer_Object_PortalCube_B(const _tchar * pLayerTag)
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_PortalCube_B")))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CScene_Stage2::Ready_Layer_Object_RisingCube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_RisingCube")))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CScene_Stage2::Ready_Layer_Object_DescentCube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_DescentCube")))
 		return E_FAIL;
 	return S_OK;
 }

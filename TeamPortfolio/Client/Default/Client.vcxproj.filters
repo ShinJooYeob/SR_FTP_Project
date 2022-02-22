@@ -219,6 +219,12 @@
     <ClInclude Include="..\public\Object_PortalCube_B.h">
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_DescentCube.h">
+      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_DescentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_RisingCube.h">
+      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -304,6 +310,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_PortalCube_B.cpp">
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_DescentCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_DescentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_RisingCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

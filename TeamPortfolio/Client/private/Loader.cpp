@@ -16,6 +16,8 @@
 #include "Object_OrbitCube.h"
 #include "Object_PortalCube_A.h"
 #include "Object_PortalCube_B.h"
+#include "Object_RisingCube.h"
+#include "Object_DescentCube.h"
 #include "MyButton.h"
 
 _uint CALLBACK LoadingThread(void* _Prameter)
@@ -177,28 +179,28 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	///////////////////////////////////¹ÚÀºÇõ Å×½ºÆ® Àå¼Ò
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-
+	//프로토타입 컴포넌트#######################################################################################################
 #pragma region PROTOTYPE_COMPONENT
 
 	CTexture::TEXTUREDESC TextureDesc;
-	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_FixCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
 
+
+	//미는 큐브
 	TextureDesc.szTextFilePath = TEXT("Player.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_PushCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//중력 큐브
 	TextureDesc.szTextFilePath = TEXT("Player.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_GravityCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//자전 큐브
 	TextureDesc.szTextFilePath = TEXT("Player.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_SelfRotationCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-
+	//상호작용 큐브
 	TextureDesc.szTextFilePath = TEXT("Player.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_ButtonCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
@@ -206,17 +208,30 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_InteractiveCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-
+	//공전 큐브
 	TextureDesc.szTextFilePath = TEXT("Player.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_OrbitCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//포탈 큐브 A
 	TextureDesc.szTextFilePath = TEXT("UI.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_PortalCube_A_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
-
+	//포탈 큐브 B
 	TextureDesc.szTextFilePath = TEXT("UI.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_PortalCube_B_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	//상승 큐브
+	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_RisingCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	//하강 큐브
+	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_DescentCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 
@@ -225,10 +240,15 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Sky"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP; //고정되어 있는 큐브
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_FixCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 #pragma endregion
 
 
-
+	//프로토타입_게임 오브젝트@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #pragma  region PROTOTYPE_GAMEOBJECT
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_MoveCube"), CObject_MoveCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
@@ -249,6 +269,10 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_PortalCube_A"), CObject_PortalCube_A::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_PortalCube_B"), CObject_PortalCube_B::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_RisingCube"), CObject_RisingCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_DescentCube"), CObject_DescentCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 

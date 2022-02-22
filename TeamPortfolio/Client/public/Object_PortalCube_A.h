@@ -46,6 +46,7 @@ private:
 	CCollision*				m_pCollisionCom = nullptr;
 
 	_float					Seconds = 0.f;
+	bool					Collision = false;
 
 
 public:

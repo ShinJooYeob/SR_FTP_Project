@@ -98,7 +98,6 @@ _int CObject_PortalCube_B::Obsever_On_Trigger(CGameObject * pDestObjects, _float
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
 		Object_Transfer(fDeltaTime);
-
 	}
 
 	return _int();

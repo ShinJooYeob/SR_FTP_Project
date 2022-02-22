@@ -32,8 +32,11 @@ private:
 	HRESULT Ready_Layer_Object_ButtonCube(const _tchar* pLayerTag); //InteractiveCube와 상호작용하는 큐브로 변수명 변경 가능
 	HRESULT Ready_Layer_Object_InteractiveCube(const _tchar* pLayerTag); //버튼과 상호작용하는 큐브
 
-	HRESULT Ready_Layer_Object_PortalCube_A(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Object_PortalCube_B(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Object_PortalCube_A(const _tchar* pLayerTag); //포탈 A
+	HRESULT Ready_Layer_Object_PortalCube_B(const _tchar* pLayerTag); //포탈 B
+
+	HRESULT Ready_Layer_Object_RisingCube(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Object_DescentCube(const _tchar* pLayerTag);
 
 	HRESULT Ready_Layer_OrbitCube(const _tchar* pLayerTag);// 공전을 위한 큐브
 

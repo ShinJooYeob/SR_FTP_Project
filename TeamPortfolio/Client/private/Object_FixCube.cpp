@@ -31,9 +31,14 @@ HRESULT CObject_FixCube::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_ComTransform->Scaled(_float3(50.f, 10.f, 50.f));
+	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0.f, -6.f, 20.f));
+	if (pArg != nullptr) {
+		_float3 vSettingPoint;
+		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+	}
+	//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0.f, -6.f, 20.f));
 
 	return S_OK;
 }

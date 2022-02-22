@@ -44,7 +44,7 @@ _int CObject_MoveCube::Update(_float fTimeDelta)
 
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FLEXIBLE, this);
 
-	//m_ComTransform->MovetoDir(_float3(0, -1, 0), fTimeDelta);
+	m_ComTransform->MovetoDir(_float3(0, -1, 0), fTimeDelta);
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
@@ -130,6 +130,7 @@ _int CObject_MoveCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCo
 
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
 	{
+		//Collision_Not_Moving(pDestObjects, fCollision_Distance,fDeltaTime);
 		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 
