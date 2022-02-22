@@ -64,6 +64,9 @@ private:	_float			m_fFrame = 0.f;
 			_float4			m_vUIDesc;
 public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
+	
+	
+	HRESULT			LateUpdate_UIList(_float fTimeDelta);
 	HRESULT			LateUpdate_UIButtonList(_float fTimeDelta);
 private:
 	HRESULT			SetUp_Components();

@@ -34,10 +34,10 @@ HRESULT CMyButton::Initialize_Clone(void * pArg)
 
 	_float4 vUIDesc;
 	vUIDesc = *(_float4*)pArg;
-	m_rcButtonRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
-	m_rcButtonRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
-	m_rcButtonRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
-	m_rcButtonRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
+	m_rcRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	m_rcRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	m_rcRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	m_rcRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
 
 	if (FAILED(Set_UI_Transform(m_ComTransform, vUIDesc)))
 		return E_FAIL;
@@ -59,7 +59,7 @@ _int CMyButton::Update(_float fDeltaTime)
 		GetCursorPos(&ptMouse);
 		ScreenToClient(g_hWnd, &ptMouse);
 		m_isClicked = false;
-		if (PtInRect(&m_rcButtonRect, ptMouse))
+		if (PtInRect(&m_rcRect, ptMouse))
 		{
 			if (!lstrcmp(L"SPEEDUP", m_pButtonName))
 			{

@@ -34,10 +34,10 @@ HRESULT CUI_Image::Initialize_Clone(void * pArg)
 
 	_float4 vUIDesc;
 	vUIDesc = *(_float4*)pArg;
-	m_rcButtonRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
-	m_rcButtonRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
-	m_rcButtonRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
-	m_rcButtonRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
+	m_rcRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	m_rcRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	m_rcRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	m_rcRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
 
 	if (FAILED(Set_UI_Transform(m_ComTransform, vUIDesc)))
 		return E_FAIL;
@@ -142,33 +142,18 @@ _int CUI_Image::LateRender()
 	return _int();
 }
 
-void CUI_Image::Set_ButtonName(TCHAR * pButtonName)
+void CUI_Image::Set_ImageName(TCHAR * pImageName)
 {
-	{ m_pButtonName = pButtonName; };
-	if (!lstrcmp(L"Buy", m_pButtonName))
+	{ m_pImageName = pImageName; };
+	if (!lstrcmp(L"Button1", m_pImageName))
 	{
-		m_ComTexture->Change_TextureLayer(L"Buy");
+		m_ComTexture->Change_TextureLayer(L"Button1");
 	}
-	else if (!lstrcmp(L"Exit", m_pButtonName))
+	else if (!lstrcmp(L"Button2", m_pImageName))
 	{
-		m_ComTexture->Change_TextureLayer(L"Exit");
+		m_ComTexture->Change_TextureLayer(L"Button2");
 	}
-	else if (!lstrcmp(L"DUBBLEJUMP", m_pButtonName))
-	{
-		m_ComTexture->Change_TextureLayer(L"DUBBLEJUMP");
-	}
-	else if (!lstrcmp(L"DASH", m_pButtonName))
-	{
-		m_ComTexture->Change_TextureLayer(L"DASH");
-	}
-	else if (!lstrcmp(L"SPEEDUP", m_pButtonName))
-	{
-		m_ComTexture->Change_TextureLayer(L"SPEEDUP");
-	}
-	else if (!lstrcmp(L"POTION", m_pButtonName))
-	{
-		m_ComTexture->Change_TextureLayer(L"POTION");
-	}
+	
 }
 
 HRESULT CUI_Image::SetUp_Components()

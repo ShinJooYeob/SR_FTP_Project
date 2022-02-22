@@ -37,7 +37,7 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	m_vUIDesc = _float4(g_iWinCX >> 1, g_iWinCY >> 1, g_iWinCX >> 1, g_iWinCY >> 1);
+	m_vUIDesc = _float4(g_iWinCX >> 1, g_iWinCY >> 1, g_iWinCX, g_iWinCY);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
 
@@ -88,7 +88,8 @@ _int CShop::LateUpdate(_float fDeltaTime)
 	{
 		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
 			return E_FAIL;
-
+		if (FAILED(LateUpdate_UIList(fDeltaTime)))
+			return E_FAIL;
 		if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
 			return E_FAIL;
 	}
@@ -141,11 +142,19 @@ CUI * CShop::Find_UI(const _tchar * tagUI)
 
 HRESULT CShop::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 {
+	
 
-	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 605, m_vUIDesc.y + 75, 100, 100)));
-	temp->Set_ButtonName(L"test");
-	m_UIList.emplace(L"Image_test", (CUI*)temp);
+	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 215, m_vUIDesc.y - 60, 100, 100)));
+	temp->Set_ImageName(L"Button1");
+	m_UIList.emplace(L"Button_1", (CUI*)temp);
 
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 115, m_vUIDesc.y - 60, 100, 100)));
+	temp->Set_ImageName(L"Button1");
+	m_UIList.emplace(L"Button_2", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 605, m_vUIDesc.y + 75, 100, 100)));
+	temp->Set_ImageName(L"Button2");
+	m_UIList.emplace(L"Button_3", (CUI*)temp);
 	return S_OK;
 }
 HRESULT CShop::Ready_Layer_Button(const _tchar * pLayerTag)
@@ -221,11 +230,21 @@ HRESULT CShop::Update_UIButtonList(_float fTimeDelta)
 	return S_OK;
 }
 
+HRESULT CShop::LateUpdate_UIList(_float fTimeDelta)
+{
+	for (auto pair : m_UIList)
+	{
+		if (FAILED(pair.second->LateUpdate(fTimeDelta)))
+			return E_FAIL;
+	}
+	return S_OK;
+}
+
 HRESULT CShop::LateUpdate_UIButtonList(_float fTimeDelta)
 {
-	for (auto pUI : m_UIButtonList)
+	for (auto pair : m_UIButtonList)
 	{
-		if (FAILED(pUI.second->LateUpdate(fTimeDelta)))
+		if (FAILED(pair.second->LateUpdate(fTimeDelta)))
 			return E_FAIL;
 	}
 	return S_OK;

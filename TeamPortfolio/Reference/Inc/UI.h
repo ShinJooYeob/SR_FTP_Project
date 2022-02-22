@@ -23,8 +23,7 @@ public:
 
 protected:
 	_float				m_fX, m_fY, m_fSizeX, m_fSizeY;
-	TCHAR*				m_pButtonName;
-	RECT				m_rcButtonRect;
+	RECT				m_rcRect;
 public:
 	virtual void Free() override;
 };

@@ -162,7 +162,9 @@
     <ClInclude Include="..\public\MyButton.h">
       <Filter>01.GameObject\UI\Button</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\UI_Image.h" />
+    <ClInclude Include="..\public\UI_Image.h">
+      <Filter>01.GameObject\UI\UI_Image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -225,7 +227,9 @@
     <ClCompile Include="..\private\MyButton.cpp">
       <Filter>01.GameObject\UI\Button</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\UI_Image.cpp" />
+    <ClCompile Include="..\private\UI_Image.cpp">
+      <Filter>01.GameObject\UI\UI_Image</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

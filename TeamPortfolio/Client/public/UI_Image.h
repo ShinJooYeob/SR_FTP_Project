@@ -45,9 +45,9 @@ private:
 
 private:
 	_float			m_fFrame = 0.f;
-
+	TCHAR*			m_pImageName;
 public:
-	void			Set_ButtonName(TCHAR* pButtonName);
+	void			Set_ImageName(TCHAR* pImageName);
 private:
 	HRESULT			SetUp_Components();
 
