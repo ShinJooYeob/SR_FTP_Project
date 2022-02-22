@@ -28,7 +28,7 @@ public:
 	virtual _int LateRender()override;
 
 public:
-
+	HRESULT Set_Defult(wstring objectName);
 	HRESULT Set_Scaled(_float3 scale);
 	HRESULT Set_Rotation(_float3 rot);
 	HRESULT Set_Position(_float3 Position);

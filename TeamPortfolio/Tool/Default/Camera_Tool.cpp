@@ -36,8 +36,8 @@ HRESULT CCamera_Tool::Initialize_Clone(void * pArg)
 _int CCamera_Tool::Update(_float fDeltaTime)
 {
 
-	bool isKey = GetSingle(CSuperToolSIngleton)->GetMyButtonView()->m_CheckCameraEnable.GetCheck();
-	
+	bool isKey = (_bool)GetSingle(CSuperToolSIngleton)->GetMyButtonView()->m_CheckCameraEnable.GetCheck();
+
 	if (isKey)
 	{
 		if (GetKeyState(VK_UP) & 0x8000)

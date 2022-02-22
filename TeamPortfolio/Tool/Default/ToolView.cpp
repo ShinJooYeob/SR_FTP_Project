@@ -114,7 +114,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 			return;
 	*/
 
-	GetSingle(CSuperToolSIngleton)->Update_Tool(0.01f);
+	GetSingle(CSuperToolSIngleton)->Update_Tool(0.03f);
 
 	// #Tag Tool Renderer
 	GetSingle(CSuperToolSIngleton)->Render_Begin();
@@ -222,7 +222,7 @@ void CToolView::OnInitialUpdate()
 		return;
 	}
 
-	SetTimer(TIMER_UPDATE, 50, NULL);
+	SetTimer(TIMER_UPDATE, 30, NULL);
 
 	
 

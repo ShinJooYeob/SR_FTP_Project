@@ -32,6 +32,7 @@ public:
 	CButton m_CheckCameraEnable;
 	CButton m_CheckWirframeEnable;
 
+	HRESULT Update_ViewListBox();
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -44,13 +45,14 @@ public:
 
 	virtual void OnInitialUpdate();
 
+	CListBox m_ListBox_Objects;
+	
 	afx_msg void OnPathFind();
 	afx_msg void OnTransform();
 	afx_msg void OnObjectSave();
 	afx_msg void OnMapSave();
-	CComboBox m_ComboBox;
 	afx_msg void OnBnClickedButtonLoad();
-	afx_msg void OnCbnSelchangeCombo2();
 	afx_msg void OnBnClickedButtonCube();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedButton_CreateObject();
 };

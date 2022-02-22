@@ -31,6 +31,7 @@
 #define IDC_EDIT8                       1008
 #define IDC_BUTTON13                    1008
 #define IDC_RADIO2                      1009
+#define IDC_BUTTON14                    1009
 #define IDC_RADIO3                      1010
 #define IDC_CHECK1                      1011
 #define IDC_CHECK2                      1012
@@ -46,17 +47,17 @@
 #define IDC_SLIDER2                     1026
 #define IDC_SLIDER3                     1027
 #define IDC_COMBO1                      1028
-#define IDC_SLIDER4                     1028
 #define IDC_COMBO2                      1029
 #define IDC_STATIC1                     1031
+#define IDC_LIST3                       1034
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        324
+#define _APS_NEXT_RESOURCE_VALUE        326
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1032
+#define _APS_NEXT_CONTROL_VALUE         1035
 #define _APS_NEXT_SYMED_VALUE           317
 #endif
 #endif

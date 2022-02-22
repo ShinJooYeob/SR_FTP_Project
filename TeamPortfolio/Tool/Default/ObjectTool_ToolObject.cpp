@@ -98,6 +98,21 @@ _int CObjectTool_ToolObject::LateRender()
 	return 0;
 }
 
+HRESULT CObjectTool_ToolObject::Set_Defult(wstring objectName)
+{
+	OUTPUT_OBJECTINFO info;
+	
+	Set_Position(_float3(0,0,0));
+	Set_Rotation(_float3(0, 0, 0));
+	Set_Scaled(_float3(1, 1, 1));
+	info.StateIndex = 0;
+	lstrcpy(info.strObjectName, objectName.c_str());
+	lstrcpy(info.strStrTextureFullPath, L"");
+	lstrcpy(info.strStrTextureFileName, L"");	
+	m_tOutputData = info;
+	return E_NOTIMPL;
+}
+
 HRESULT CObjectTool_ToolObject::Set_Scaled(_float3 scale)
 {
 	NULL_CHECK_BREAK(m_ComTransform);
@@ -178,6 +193,9 @@ HRESULT CObjectTool_ToolObject::Set_Data(OUTPUT_OBJECTINFO data)
 
 HRESULT CObjectTool_ToolObject::Set_ViBuffer_Change()
 {
+	// #STOP ¿·±Ò Ω∫≈æ
+	return S_OK;
+
 	m_isRect = !m_isRect;
 	Safe_Release(m_ComVIBuffer);
 
@@ -221,11 +239,11 @@ HRESULT CObjectTool_ToolObject::SetUp_Components()
 
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Renderer), TAG_COM(Com_Renderer), (CComponent**)&m_ComRenderer)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), TAG_COM(Com_Transform), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Cube), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 	
 	return S_OK;

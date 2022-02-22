@@ -24,6 +24,7 @@ class CSuperToolSIngleton : public CBase
 {
 	DECLARE_SINGLETON(CSuperToolSIngleton)
 
+	const int iObjectSize = 20;
 private:
 	explicit CSuperToolSIngleton();
 	virtual ~CSuperToolSIngleton() = default;
@@ -73,9 +74,33 @@ public:
 	CTrans_Dialog* GetTransTool() { return m_pTransDialog; }
 
 	CObjectTool_ToolObject* GetObjectRect() { return m_Object_Rect; }
+
 public:
 	HRESULT SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd);
 	HRESULT LoadData_Object(CWnd * cwnd);
+	HRESULT Create_ToolObject_Button(wstring name);
+private:
+	CObjectTool_ToolObject* Create_New_ToolObject();
+	HRESULT Change_ToolObject(CObjectTool_ToolObject* obj, wstring name);
+
+public: // For.ToolView tp ToolObject 
+	HRESULT Add_Vec_ToolObject(CObjectTool_ToolObject* obj);
+	CObjectTool_ToolObject* Find_Vec_ToolObject(_uint index);
+	CObjectTool_ToolObject* Get_CurrentToolObject() { return m_Object_Rect; }
+
+	const vector<CObjectTool_ToolObject*>&  Get_ToolVec() const { return m_Vec_ToolViewObjects; }
+
+	_uint Get_ToolVec_Size() { return m_Vec_ToolViewObjects.size(); }
+	_bool Get_ToolVec_isEmpty() { return m_Vec_ToolViewObjects.empty(); }
+
+private:
+	// ToolView에서 오브젝트 리스트들을 맵으로 저장
+	vector<CObjectTool_ToolObject*> m_Vec_ToolViewObjects;
+
+	// Current Tool View Object
+	CObjectTool_ToolObject*	m_Object_Rect;
+
+	// CObjectTool_ToolObject*	m_Object_ProtoObject;
 
 
 private:
@@ -88,7 +113,8 @@ private:
 	CPathFind*			m_pPathDialog;	// 경로 창
 	CTrans_Dialog*		m_pTransDialog;	// 위치 조정 창
 
-	CObjectTool_ToolObject*	m_Object_Rect;
+
+
 
 
 
@@ -98,7 +124,7 @@ private:
 	CRenderer*					m_pComRenderer;
 
 	// 기타 COM 객체
-	// LPD3DXSPRITE			m_pSprite;
+	// LPD3DXSPRITE				m_pSprite;
 	// LPD3DXFONT				m_pFont;
 
 public:

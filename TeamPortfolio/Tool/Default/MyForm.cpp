@@ -27,12 +27,32 @@ CMyForm::~CMyForm()
 {
 }
 
+HRESULT CMyForm::Update_ViewListBox()
+{
+	UpdateData(FALSE);
+
+	m_ListBox_Objects.ResetContent();
+
+	if (GetSingle(CSuperToolSIngleton)->Get_ToolVec_isEmpty())
+		return E_FAIL;
+
+	auto Vectors = GetSingle(CSuperToolSIngleton)->Get_ToolVec();
+	
+	for (auto vec : Vectors)
+	{
+		m_ListBox_Objects.AddString(vec->Get_ObjectInfo().strObjectName);
+	}
+	UpdateData(TRUE);
+
+	return S_OK;
+}
+
 void CMyForm::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_COMBO2, m_ComboBox);
 	DDX_Control(pDX, IDC_CHECK1, m_CheckCameraEnable);
 	DDX_Control(pDX, IDC_CHECK2, m_CheckWirframeEnable);
+	DDX_Control(pDX, IDC_LIST3, m_ListBox_Objects);
 }
 
 BEGIN_MESSAGE_MAP(CMyForm, CFormView)
@@ -43,9 +63,9 @@ BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON10, &CMyForm::OnObjectSave)
 	ON_BN_CLICKED(IDC_BUTTON11, &CMyForm::OnMapSave)
 	ON_BN_CLICKED(IDC_BUTTON12, &CMyForm::OnBnClickedButtonLoad)
-	ON_CBN_SELCHANGE(IDC_COMBO2, &CMyForm::OnCbnSelchangeCombo2)
 	ON_BN_CLICKED(IDC_BUTTON13, &CMyForm::OnBnClickedButtonCube)
 	ON_WM_LBUTTONDOWN()
+	ON_BN_CLICKED(IDC_BUTTON14, &CMyForm::OnBnClickedButton_CreateObject)
 END_MESSAGE_MAP()
 
 // CMyForm 진단입니다.
@@ -72,14 +92,19 @@ void CMyForm::OnInitialUpdate()
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
-	m_Font.CreatePointFont(130, L"궁서");
+	m_Font.CreatePointFont(80, L"바탕");
 
 	GetDlgItem(IDC_BUTTON9)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON2)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON10)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON11)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON12)->SetFont(&m_Font);
+	GetDlgItem(IDC_BUTTON13)->SetFont(&m_Font);
+	GetDlgItem(IDC_BUTTON14)->SetFont(&m_Font);
 
+	Update_ViewListBox();
+
+	
 }
 
 // 각 버튼 이벤트 함수
@@ -122,27 +147,27 @@ void CMyForm::OnBnClickedButtonLoad()
 	GetSingle(CSuperToolSIngleton)->LoadData_Object(this);
 }
 
-void CMyForm::OnCbnSelchangeCombo2()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	int a = m_ComboBox.GetCurSel();
-	int b = 0;
-	switch (a)
-	{
-	case 0:
-		b = 0;
-		break;
+//void CMyForm::OnCbnSelchangeCombo2()
+//{
+	//// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	//int a = m_ComboBox.GetCurSel();
+	//int b = 0;
+	//switch (a)
+	//{
+	//case 0:
+	//	b = 0;
+	//	break;
 
-	case 1:
-		b = 1;
-		break;
+	//case 1:
+	//	b = 1;
+	//	break;
 
-	case 2:
-		b = 2;
-		break;
+	//case 2:
+	//	b = 2;
+	//	break;
 
-	}
-}
+	//}
+//}
 
 void CMyForm::OnBnClickedButtonCube()
 {
@@ -163,4 +188,16 @@ void CMyForm::OnLButtonDown(UINT nFlags, CPoint point)
 	//SetDlgItemText(IDC_STATIC2, PickMouseText);
 
 	CFormView::OnLButtonDown(nFlags, point);
+}
+
+
+void CMyForm::OnBnClickedButton_CreateObject()
+{
+	static int num = 0;
+	num++;
+	TCHAR t[64];
+	wsprintf(t,L"new_%d",num);
+	GetSingle(CSuperToolSIngleton)->Create_ToolObject_Button(t);
+
+	
 }

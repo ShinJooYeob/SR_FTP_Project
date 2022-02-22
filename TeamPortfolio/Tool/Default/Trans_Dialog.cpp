@@ -209,11 +209,11 @@ void CTrans_Dialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 void CTrans_Dialog::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	if (nChar == 'C')
-	{
-		CTransform* trans = (CTransform*)m_GameObject_Rect_Tool->Get_Component(TAG_COM(Com_Transform));
-		trans->Turn_CCW(_float3(0, 1, 0), 0.3f);
+	//if (nChar == 'C')
+	//{
+	//	CTransform* trans = (CTransform*)m_GameObject_Rect_Tool->Get_Component(TAG_COM(Com_Transform));
+	//	trans->Turn_CCW(_float3(0, 1, 0), 0.3f);
 
-	}
+	//}
 	CDialog::OnKeyDown(nChar, nRepCnt, nFlags);
 }
