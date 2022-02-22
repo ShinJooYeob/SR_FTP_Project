@@ -85,9 +85,9 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 	{
 		for (_uint i = 1; i < 10; i++)
 		{
-			for (_uint j = 1; j < 10; j++) 
+			for (_uint j = 1; j < 10; j++)
 			{
-				if (i == 1 || i == 9 || j == 3 || j == 7) 
+				if (i == 1 || i == 9 || j == 3 || j == 7)
 				{
 
 					if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)k, (_float)j)))
@@ -99,6 +99,9 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube"), &_float3((_float)6, (_float)1, (_float)0)))
 		return E_FAIL;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_GravityCube"), TEXT("Prototype_GameObject_Object_GravityCube"), &_float3((_float)6, (_float)10, (_float)3)))
+		return E_FAIL;
+
 
 
 	return S_OK;

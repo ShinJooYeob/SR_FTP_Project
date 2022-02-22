@@ -58,6 +58,16 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 
+	if (m_bIsDead) {
+		m_fDeadTime += fDeltaTime;
+
+		if (m_fDeadTime > 5.f) {
+			m_bIsDead = false;
+			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0, 1.f, 0));
+		}
+
+	}
+	else {
 
 	if (FAILED(Input_Keyboard(fDeltaTime)))
 		return E_FAIL;
@@ -71,6 +81,7 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
 		return E_FAIL;
 
+	}
 
 	if (FAILED(Set_CamY(fDeltaTime)))
 		return E_FAIL;
@@ -153,6 +164,17 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 		else if(m_pCarryObject != pDestObjects)
 			m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 
+	}
+	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_GravityCube")))
+	{
+		if (!m_bIsDead)
+		{
+			m_bIsDead = true;
+			m_fDeadTime = 0;
+			m_ComTexture->Change_TextureLayer_Wait(TEXT("suckIn"));
+		}
+		if (m_fDeadTime < 4.0f)
+			m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Terrain)))
 	{
