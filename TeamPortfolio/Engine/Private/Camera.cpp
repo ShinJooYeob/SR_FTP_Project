@@ -81,17 +81,9 @@ _int CCamera::Update(_float fDeltaTime)
 
 	_Matrix matProj;
 	
-	if (bIsOrtho)
-		D3DXMatrixOrthoLH(&matProj, 16.f * m_CameraDesc.fAspect, 16.f, m_CameraDesc.fNear, m_CameraDesc.fFar);
-	/*CalculateOrtho(1280.f, 720.f);*/
 
-	else
-		D3DXMatrixPerspectiveFovLH(&matProj, m_CameraDesc.fFovy, m_CameraDesc.fAspect, m_CameraDesc.fNear, m_CameraDesc.fFar);
-	
-	if (FAILED(m_pGraphicDevice->SetTransform(D3DTS_PROJECTION, &matProj)))
-		return -1;
-
-
+	if (FAILED(Set_ProjectMatrix(true)))
+		return E_FAIL;
 
 
 	return _int();
@@ -147,7 +139,6 @@ void CCamera::ShakeFunction(_bool * IsClientQuit, CRITICAL_SECTION * _CriSec)
 			vShakeDir = _float3(0, 0, 0);
 			vShakeDir += m_pTransform->Get_MatrixState(CTransform::STATE_RIGHT)* ((rand() % 100) - 50.f);
 			vShakeDir += m_pTransform->Get_MatrixState(CTransform::STATE_UP)* ((rand() % 100) - 50.f);
-			//vShakeDir = _float3( , rand() % 100 - 50.f, 0).Get_Nomalize();
 			m_pTransform->MovetoDir(vShakeDir, m_fTempDeltaTime);
 			TotalMovement += vShakeDir;
 			break;
@@ -175,23 +166,21 @@ void CCamera::ShakeFunction(_bool * IsClientQuit, CRITICAL_SECTION * _CriSec)
 	LeaveCriticalSection(_CriSec);
 }
 
-_Matrix CCamera::CalculateOrtho(_float WINCX, _float WINCY)
+HRESULT CCamera::Set_ProjectMatrix(_bool bIsOrtho)
 {
-	float fFar = 1;
-	float fNear = 0;
-	float w = 2.f / WINCX;
-	float h = 2.f / WINCY;
-	float a = 1.f;
-	float b = 0;
-	_Matrix Matrix(
-	w,		0.f,	0.f,	0.f,
-	0.f,	h,		0.f,	0.f,
-	0.f,	0.f,	a,		0.f,
-	0.f,	0.f,	b,		1.f);
-	/*D3DXMatrixOrthoLH(&pMatrix, g_iWinCX*2.f, g_iWinCY*2.f, 1.f, 0.f);*/
+	_Matrix matProj;
 
-	m_OrthoMatrix = Matrix;
-	return m_OrthoMatrix;
+	if (bIsOrtho)
+		D3DXMatrixOrthoLH(&matProj, 16.f * m_CameraDesc.fAspect, 16.f, m_CameraDesc.fNear, m_CameraDesc.fFar);
+
+	else
+		D3DXMatrixPerspectiveFovLH(&matProj, m_CameraDesc.fFovy, m_CameraDesc.fAspect, m_CameraDesc.fNear, m_CameraDesc.fFar);
+
+
+	if (FAILED(m_pGraphicDevice->SetTransform(D3DTS_PROJECTION, &matProj)))
+		return E_FAIL;
+	
+	return S_OK;
 }
 
 void CCamera::Free()

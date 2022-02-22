@@ -91,6 +91,9 @@
     <Filter Include="01.GameObject\UI\Button">
       <UniqueIdentifier>{52f3b991-5a7d-4daa-9e54-5ebd3090e34d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Camera_Main\MiniMapUI">
+      <UniqueIdentifier>{c5ed9b76-6a5e-4fb7-8f55-432eaf9463d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -171,6 +174,9 @@
     <ClInclude Include="..\public\MyButton.h">
       <Filter>01.GameObject\UI\Button</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MiniMapUI.h">
+      <Filter>01.GameObject\Camera_Main\MiniMapUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -238,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="..\private\MyButton.cpp">
       <Filter>01.GameObject\UI\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MiniMapUI.cpp">
+      <Filter>01.GameObject\Camera_Main\MiniMapUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

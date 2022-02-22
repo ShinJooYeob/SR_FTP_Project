@@ -43,7 +43,9 @@ HRESULT CBackGround::Initialize_Clone(void * pArg)
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 
+
 	}
+		m_ComTransform->Scaled(_float3(10,10,1));
 	
 
 
@@ -83,8 +85,8 @@ _int CBackGround::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		return E_FAIL;
+	//if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+	//	return E_FAIL;
 
 	if (FAILED(m_ComTexture->Bind_Texture()))
 		return E_FAIL;

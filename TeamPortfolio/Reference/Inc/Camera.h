@@ -37,12 +37,12 @@ public:
 	HRESULT Camera_Shaking(_float fDeltaTime, _float fTotalEftFrame);
 	void ShakeFunction(_bool* IsClientQuit, CRITICAL_SECTION* _CriSec);
 	
-	void Change_Camera_Demension() { bIsOrtho = !bIsOrtho; };
-	_Matrix CalculateOrtho(_float WINCX, _float WINCY);
+	void Change_Camera_Demension() { m_bIsOrtho = !m_bIsOrtho; };
+	HRESULT Set_ProjectMatrix(_bool bIsOrtho);
 
 
 protected:
-	_bool						bIsOrtho = false;
+	_bool						m_bIsOrtho = false;
 	CTransform*					m_pTransform = nullptr;
 	CAMERADESC					m_CameraDesc;
 	_Matrix						m_OrthoMatrix;

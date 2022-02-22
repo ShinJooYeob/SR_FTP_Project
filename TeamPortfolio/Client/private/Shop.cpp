@@ -100,7 +100,7 @@ _int CShop::Render()
 	
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
-	
+
 	if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
 		return E_FAIL;
 

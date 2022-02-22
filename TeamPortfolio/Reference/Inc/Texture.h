@@ -38,7 +38,7 @@ public:
 	_bool Get_IsReturnTexture() { return (m_szReturnTag != nullptr); };
 
 	HRESULT Bind_Texture_AutoFrame(_float fTimeDelta);
-	HRESULT Bind_Texture(_uint iTextureIndex = 0);
+	HRESULT Bind_Texture(_uint iTextureIndex = 0, _uint iStageIndex = 0);
 	HRESULT ClearTexture();
 
 private:

@@ -5,7 +5,7 @@
 
 
 BEGIN(Engine)
-//class CTexture;
+class CTexture;
 class CRenderer;
 class CVIBuffer_Rect;
 class CTransform;

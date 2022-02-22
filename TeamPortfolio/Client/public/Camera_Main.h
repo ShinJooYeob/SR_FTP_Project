@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Camera.h"
+#include "MiniMapUI.h"
 
 BEGIN(Client)
 
@@ -59,6 +60,10 @@ private:
 	CTexture*				m_ComTexture = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
+
+	CMiniMapUI*				m_MiniMapUI = nullptr;
+	_float					m_MapOpenTime= 0;
+	
 
 	CameraEffectID			m_eEffectID = CAM_EFT_END;
 	_float					m_fTotalEftFrame = 0;

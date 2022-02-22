@@ -83,6 +83,32 @@ _int CCamera_Main::LateUpdate(_float fDeltaTime)
 {	
 	//렌더링 그룹에 넣어주는 역활
 
+	CGameInstance* pInstace = GetSingle(CGameInstance);
+
+	if(pInstace->Get_DIKeyState(DIK_TAB) & DIS_Press)
+	{
+		if (pInstace->Get_DIKeyState(DIK_TAB) & DIS_Down)
+			m_MapOpenTime = 0;
+		
+
+		if (FAILED(m_ComRenderer->Add_MainCamemra(this)))
+			return E_FAIL;
+
+		if (FAILED(m_MiniMapUI->LateUpdate(fDeltaTime)))
+			return E_FAIL;
+
+		m_MapOpenTime += fDeltaTime;
+
+		_float EsaingValue = pInstace->Easing(TYPE_BounceIn, 0, g_iWinCY, m_MapOpenTime, 2);
+
+		if (m_MapOpenTime > 2.f)
+			EsaingValue = g_iWinCY;
+		
+		if(FAILED(m_MiniMapUI->Reset_MiniMapSize({ EsaingValue ,EsaingValue })))
+			return E_FAIL;
+	}
+
+
 	if (m_eEffectID <= CCamera_Main::CAM_EFT_HIT )
 	{
 		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
@@ -173,14 +199,6 @@ HRESULT CCamera_Main::Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelt
 
 	return S_OK;
 
-
-	//_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1,0,0)));
-	//
-
-	//if (0 > vCameraPos.z)
-	//	fRadianAngle = 2 * D3DX_PI - fRadianAngle;
-
-	//fRadianAngle += D3DXToRadian(90) * fTimeDelta;
 
 }
 
@@ -388,6 +406,9 @@ HRESULT CCamera_Main::SetUp_Components()
 		return E_FAIL;
 
 
+	m_MiniMapUI = CMiniMapUI::Create(m_pGraphicDevice, &_float4(g_iWinCX - 100.f, 100.f, 100.f,100.f));
+	if (m_MiniMapUI == nullptr)
+		return E_FAIL;
 
 	//카메라 이팩트용 이미지 월드 세팅
 	m_CamEffectMatricx =
@@ -512,17 +533,6 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 		Change_Camera_Demension();
 	}
 
-	//_long MoveDist;
-
-	//if (MoveDist = pInstance->Get_DIMouseMoveState(CInput_Device::MMS_X))
-	//{
-	//	m_pTransform->Turn_CW({0,1,0}, fDeltaTime * MoveDist * 0.1f);
-
-	//}
-	//if (MoveDist = pInstance->Get_DIMouseMoveState(CInput_Device::MMS_Y))
-	//{
-	//	m_pTransform->Turn_CW(m_pTransform->Get_MatrixState(CTransform::STATE_RIGHT), fDeltaTime * MoveDist * 0.1f);
-	//}
 
 	return S_OK;
 }
@@ -556,6 +566,8 @@ CGameObject * CCamera_Main::Clone(void * pArg)
 void CCamera_Main::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_MiniMapUI);
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComRenderer);

@@ -316,12 +316,12 @@ HRESULT CTexture::Bind_Texture_AutoFrame(_float fTimeDelta)
 
 }
 
-HRESULT CTexture::Bind_Texture(_uint iTextureIndex)
+HRESULT CTexture::Bind_Texture(_uint iTextureIndex, _uint iStageIndex)
 {
 	if (m_pBindedTextureLayer == nullptr)
 		return E_FAIL;
 
-	return m_pBindedTextureLayer->Bind_Texture(iTextureIndex);
+	return m_pBindedTextureLayer->Bind_Texture(iTextureIndex, iStageIndex);
 }
 
 

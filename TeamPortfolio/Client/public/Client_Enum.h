@@ -118,6 +118,7 @@ enum COMPONENTPROTOTYPEID
 	Prototype_VIBuffer_Cube,
 	//////////////////////////////////////////////////////////////////////////
 	Prototype_Texture_Blank,
+	Prototype_Texture_MiniMap,
 	Prototype_Texture_Default,
 	Prototype_Texture_Player, 
 	Prototype_Texture_Terrain,
@@ -153,6 +154,10 @@ static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 
 	case Prototype_Texture_Blank:
 		return TEXT("Prototype_Component_Texture_Blank");
+		break;
+
+	case Prototype_Texture_MiniMap:
+		return TEXT("Prototype_Component_Texture_MiniMap");
 		break;
 	case Prototype_Texture_Default:
 		return TEXT("Prototype_Component_Texture_Default");

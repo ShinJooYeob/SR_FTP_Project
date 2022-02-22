@@ -28,12 +28,29 @@ public:
 	HRESULT Add_RenderGroup(RENDERGROUP eRenderID ,CGameObject* pGameObject);
 	HRESULT Render_RenderGroup();
 
+	HRESULT Add_MainCamemra(class CCamera* pCCamera);
+
+	LPDIRECT3DTEXTURE9 Get_MiniMapTex() { return m_pMinmapTex; }
+
 private:
 	list<CGameObject*>			m_RenderObjectList[RENDER_END];
 	typedef list<CGameObject*>		RENDEROBJECTS;
 private:
+
 	_Matrix						m_ProjMatrix;
+	class CCamera*				m_MainCamera = nullptr; 
+
+
+	const UINT MAP_SIZE = 256;
+
+
+	LPDIRECT3DTEXTURE9			m_pMinmapTex = nullptr;
+	LPDIRECT3DSURFACE9			m_pMinmapSurf = nullptr;
+	LPDIRECT3DSURFACE9			m_pMinmapTexZ = nullptr;
+
 private:
+	HRESULT Update_MinmapTexture();
+
 	HRESULT Render_Priority();
 	HRESULT Render_NonAlpha();
 	HRESULT Render_Alpha();

@@ -1,5 +1,7 @@
 #include "..\Public\Renderer.h"
 #include "GameObject.h"
+#include "Camera.h"
+
 
 
 CRenderer::CRenderer(LPDIRECT3DDEVICE9 pGraphicDevice)
@@ -14,6 +16,27 @@ HRESULT CRenderer::Initialize_Prototype(void * pArg)
 	_int iWinCX = ViewPortDesc.Width;
 	_int iWinCY = ViewPortDesc.Height;
 	D3DXMatrixOrthoLH(&m_ProjMatrix, (_float)iWinCX, (_float)iWinCY, 0.0f, 1.f);
+
+
+	m_pMinmapTex;
+	m_pMinmapSurf;
+	m_pMinmapTexZ;
+
+	// 그림자 텍스처 생성
+	if (FAILED(m_pGraphicDevice->CreateTexture(MAP_SIZE, MAP_SIZE, 1,
+		D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8,
+		D3DPOOL_DEFAULT, &m_pMinmapTex, NULL)))
+		return E_FAIL;
+	if (FAILED(m_pMinmapTex->GetSurfaceLevel(0, &m_pMinmapSurf)))
+		return E_FAIL;
+	if (FAILED(m_pGraphicDevice->CreateDepthStencilSurface(
+		MAP_SIZE, MAP_SIZE, D3DFMT_D24S8,
+		D3DMULTISAMPLE_NONE, 0, TRUE,
+		&m_pMinmapTexZ, NULL)))
+		return E_FAIL;
+
+
+
 	return S_OK;
 }
 
@@ -38,6 +61,13 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderID, CGameObject * pGameObj
 
 HRESULT CRenderer::Render_RenderGroup()
 {
+	if (m_MainCamera) 
+	{
+		if (FAILED(Update_MinmapTexture()))
+			return E_FAIL;
+	}
+
+
 	if (FAILED(Render_Priority()))
 		return E_FAIL;
 
@@ -49,6 +79,16 @@ HRESULT CRenderer::Render_RenderGroup()
 
 	if (FAILED(Render_UI()))
 		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CRenderer::Add_MainCamemra(CCamera * pCCamera)
+{
+	Safe_Release(m_MainCamera);
+
+	m_MainCamera = pCCamera;
+	Safe_AddRef(m_MainCamera);
+
 	return S_OK;
 }
 
@@ -89,7 +129,7 @@ HRESULT CRenderer::Render_Alpha()
 		return pSour->Get_CamDistance() > pDest->Get_CamDistance();
 	});
 
-		for (auto& RenderObject : m_RenderObjectList[RENDER_ALPHA])
+	for (auto& RenderObject : m_RenderObjectList[RENDER_ALPHA])
 	{
 		if (RenderObject != nullptr)
 		{
@@ -99,6 +139,60 @@ HRESULT CRenderer::Render_Alpha()
 		Safe_Release(RenderObject);
 	}
 	m_RenderObjectList[RENDER_ALPHA].clear();
+	return S_OK;
+}
+
+HRESULT CRenderer::Update_MinmapTexture()
+{
+
+	LPDIRECT3DSURFACE9 pOldBackBuffer = nullptr, pOldZBuffer = nullptr;
+
+
+	if (m_MainCamera && FAILED(m_MainCamera->Set_ProjectMatrix(false)))
+		return E_FAIL;
+
+	m_pGraphicDevice->GetRenderTarget(0, &pOldBackBuffer);
+	m_pGraphicDevice->GetDepthStencilSurface(&pOldZBuffer);
+
+	m_pGraphicDevice->SetRenderTarget(0, m_pMinmapSurf);				
+	m_pGraphicDevice->SetDepthStencilSurface(m_pMinmapTexZ);
+
+	m_pGraphicDevice->Clear(0L, NULL
+		, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER
+		, 0x00000000, 1.0f, 0L);
+
+
+
+
+
+	for (auto& RenderObject : m_RenderObjectList[RENDER_NONALPHA])
+	{
+		if (RenderObject != nullptr)
+		{
+			if (FAILED(RenderObject->Render()))
+				return E_FAIL;
+		}
+	}
+
+
+	m_pGraphicDevice->SetRenderTarget(0, pOldBackBuffer);
+	m_pGraphicDevice->SetDepthStencilSurface(pOldZBuffer);
+
+	pOldBackBuffer->Release();
+	pOldZBuffer->Release();
+
+
+
+	if (m_MainCamera && FAILED(m_MainCamera->Set_ProjectMatrix(true)))
+		return E_FAIL;
+
+
+
+	Safe_Release(m_MainCamera);
+
+
+
+
 	return S_OK;
 }
 
@@ -117,6 +211,10 @@ HRESULT CRenderer::Render_UI()
 	m_pGraphicDevice->SetTransform(D3DTS_VIEW, &ViewMatrix);
 	m_pGraphicDevice->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
 
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+
 	for (auto& RenderObject : m_RenderObjectList[RENDER_UI])
 	{
 		if (RenderObject != nullptr)
@@ -128,6 +226,9 @@ HRESULT CRenderer::Render_UI()
 	}
 	m_RenderObjectList[RENDER_UI].clear();
 
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	m_pGraphicDevice->SetTransform(D3DTS_VIEW, &BeforeViewMatrix);
 	m_pGraphicDevice->SetTransform(D3DTS_PROJECTION, &BeforeProjectmat);
@@ -159,6 +260,10 @@ CComponent * CRenderer::Clone(void * pArg)
 void CRenderer::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pMinmapTex);
+	Safe_Release(m_pMinmapSurf);
+	Safe_Release(m_pMinmapTexZ);
 
 	for (_uint i = 0; i < RENDER_END; ++i)
 	{

@@ -46,12 +46,12 @@ HRESULT CTextureLayer::Initialize_Prototype(void * pArg)
 
 
 
-HRESULT CTextureLayer::Bind_Texture(_uint iTextureIndex)
+HRESULT CTextureLayer::Bind_Texture(_uint iTextureIndex,_uint iStageIndex)
 {
 	if (iTextureIndex >= m_vecTexture.size())
 		return E_FAIL;
 
-	return m_pGraphicDevice->SetTexture(0, m_vecTexture[iTextureIndex]);
+	return m_pGraphicDevice->SetTexture(iStageIndex, m_vecTexture[iTextureIndex]);
 }
 
 HRESULT CTextureLayer::ClearTexture()

@@ -154,6 +154,7 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
 
+
 	//렌더러 컴객체 프로토타입 생성
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Renderer), m_pComRenderer = CRenderer::Create(m_pGraphicDevice))))
 		return E_FAIL;
@@ -162,7 +163,6 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	//버퍼인덱스 프로토타입 생성
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), CVIBuffer_Rect::Create(m_pGraphicDevice))))
 		return E_FAIL;
-
 	//Transform 프로토타입 생성
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), CTransform::Create(m_pGraphicDevice))))
 		return E_FAIL;
@@ -179,6 +179,11 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	TextureDesc.szTextFilePath = TEXT("Cam_Effect.txt");
 	
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Blank), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	//미니맵 텍스쳐
+	TextureDesc.szTextFilePath = TEXT("MiniMap.txt");
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_MiniMap), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
