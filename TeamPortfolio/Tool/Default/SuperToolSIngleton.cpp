@@ -328,7 +328,7 @@ CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject()
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Object", TAG_OP(Prototype_BackGround)))
 		return nullptr;
 
-	int index = Get_ToolVec_Size() - 1;
+	int index = Get_ToolVec_Size();
 	CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC,L"Object", index);
 	Add_Vec_ToolObject(newobj);
 	Safe_AddRef(newobj);
