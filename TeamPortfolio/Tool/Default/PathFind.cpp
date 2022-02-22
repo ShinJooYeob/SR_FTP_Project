@@ -273,7 +273,7 @@ wstring CPathFind::GetSaveFilePath()
 		return L"";
 	wstring wstrFilename;
 	wstrFilename = cstrFIleName.operator LPCWSTR();
-	wstring SaveFileFullPath = FilePath + wstrFilename + Extension;
+	wstring SaveFileFullPath = g_FilePath_TexturePathData + wstrFilename + Extension;
 	return SaveFileFullPath;
 }
 

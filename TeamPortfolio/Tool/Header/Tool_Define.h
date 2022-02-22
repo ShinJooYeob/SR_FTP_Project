@@ -31,6 +31,12 @@ enum SCENEID
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;
 // 저장 파일 이름
+
+static const wstring g_FilePath_TexturePathData = L"../bin/Resources/textures/TexturePathData/";
+static const wstring g_FilePath_ObjectPathData = L"../bin/Resources/Data/";
+static const wstring g_FilePath_ObjectPathData_Save = L"\\bin\\Resources\\Data\\";
+
+
 static const TCHAR* g_FileName_Blocktxt = TEXT("Blocks.txt");
 static const TCHAR* g_Filename_Cubetxt = TEXT("Cube.txt");
 

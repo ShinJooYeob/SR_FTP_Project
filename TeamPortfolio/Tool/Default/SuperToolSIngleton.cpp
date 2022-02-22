@@ -235,36 +235,35 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* 
 
 	TCHAR	szPath[MAX_PATH] = L"";
 	GetCurrentDirectory(MAX_PATH, szPath);
-
 	PathRemoveFileSpec(szPath);
-	lstrcat(szPath, L"\\Data");
+	
 
+	lstrcat(szPath, g_FilePath_ObjectPathData_Save.c_str());
 	Dlg.m_ofn.lpstrInitialDir = szPath;
 
 	if (IDOK == Dlg.DoModal())
 	{
 		// 이름
-		CString				str = Dlg.GetPathName().GetString();
-		CString				Filename = PathFindFileName(str);
+		//CString				str = Dlg.GetPathName().GetString();
+		//CString				Filename = PathFindFileName(str);
 
-		const TCHAR*		pGetPath = str.GetString();
+		//const TCHAR*		pGetPath = str.GetString();
 
 
+		//HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
-		HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+		//if (INVALID_HANDLE_VALUE == hFile)
+		//	return E_FAIL;
 
-		if (INVALID_HANDLE_VALUE == hFile)
-			return E_FAIL;
+		//// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.
+		//OUTPUT_OBJECTINFO infoObj = obj->Get_ObjectInfo();
 
-		// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.
-		OUTPUT_OBJECTINFO infoObj = obj->Get_ObjectInfo();
+		//DWORD	dwByte = 0;
 
-		DWORD	dwByte = 0;
+		//// 저장
+		//WriteFile(hFile, &infoObj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
 
-		// 저장
-		WriteFile(hFile, &infoObj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
-
-		CloseHandle(hFile);
+		//CloseHandle(hFile);
 
 	}
 	return S_OK;

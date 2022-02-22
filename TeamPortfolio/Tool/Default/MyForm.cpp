@@ -133,7 +133,15 @@ void CMyForm::OnTransform()
 
 void CMyForm::OnObjectSave()
 {
+	// 현재 선택된 오브젝트 
 	GetSingle(CSuperToolSIngleton)->SaveData_Object(GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject(), this);
+}
+
+
+void CMyForm::OnBnClickedButtonLoad()
+{
+	// 오브젝트 로드 해서 새로 생성
+	GetSingle(CSuperToolSIngleton)->LoadData_Object(this);
 }
 
 void CMyForm::OnMapSave()
@@ -141,12 +149,6 @@ void CMyForm::OnMapSave()
 
 }
 
-
-void CMyForm::OnBnClickedButtonLoad()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	GetSingle(CSuperToolSIngleton)->LoadData_Object(this);
-}
 
 //void CMyForm::OnCbnSelchangeCombo2()
 //{
