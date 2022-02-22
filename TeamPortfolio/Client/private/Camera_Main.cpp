@@ -97,7 +97,7 @@ _int CCamera_Main::LateUpdate(_float fDeltaTime)
 
 		m_MapOpenTime += fDeltaTime;
 
-		_float EsaingValue = pInstace->Easing(TYPE_BounceIn, 0, g_iWinCY, m_MapOpenTime, 2);
+		_float EsaingValue = pInstace->Easing(TYPE_BounceOut, 0, g_iWinCY, m_MapOpenTime, 2);
 
 		if (m_MapOpenTime > 2.f)
 			EsaingValue = g_iWinCY;

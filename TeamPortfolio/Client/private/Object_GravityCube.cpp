@@ -63,14 +63,12 @@ _int CObject_GravityCube::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
-	//if (FAILED(SetUp_OnTerrain(fTimeDelta)))
-	//	return -1;
 
 
 	//객체에게 중력을 적용하기 위한 값
 
-	//if (FAILED(Collision_Gravity(fTimeDelta)))
-	//	return -1;
+	if (FAILED(Collision_Gravity(fTimeDelta)))
+		return -1;
 
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
@@ -119,10 +117,10 @@ _int CObject_GravityCube::Collision_Gravity(_float fDeltaTime)
 
 	//객체에게 중력을 적용하기 위한 값
 	CTransform* Player = nullptr;
-	//if(m_eNowSceneNum == SCENE_STAGESELECT)
-	// Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(m_eNowSceneNum, TAG_LAY(Layer_Player), TAG_COM(Com_Transform));
-	//else	
-	//	Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(m_eNowSceneNum, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
+	if (m_eNowSceneNum == SCENE_STAGESELECT)
+		Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(m_eNowSceneNum, TAG_LAY(Layer_Player), TAG_COM(Com_Transform));
+	else
+		Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(m_eNowSceneNum, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
 
 
 
