@@ -168,11 +168,11 @@ HRESULT CShop::Ready_Layer_Button(const _tchar * pLayerTag)
 	temp->Set_ButtonName(L"Exit");
 	m_UIButtonList.emplace(L"Button_Exit", (CUI*)temp);
 
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 215, m_vUIDesc.y - 60, 100, 100)));
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 215, m_vUIDesc.y - 60, 60, 60)));
 	temp->Set_ButtonName(L"SPEEDUP");
 	m_UIButtonList.emplace(L"Button_SPEEDUP", (CUI*)temp);
 
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 115, m_vUIDesc.y - 60, 100, 100)));
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 115, m_vUIDesc.y - 60, 60, 60)));
 	temp->Set_ButtonName(L"DUBBLEJUMP");
 	m_UIButtonList.emplace(L"Button_DUBBLEJUMP", (CUI*)temp);
 
