@@ -47,6 +47,7 @@ private:
 
 	CCollision*				m_pCollisionCom = nullptr;
 
+	_Matrix					parentMatrix;
 
 	_float					seconds = 0;
 	_float					m_RotAngle = 0;

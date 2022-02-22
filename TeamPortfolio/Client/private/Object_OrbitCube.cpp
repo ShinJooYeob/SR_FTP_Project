@@ -47,11 +47,17 @@ HRESULT CObject_OrbitCube::Initialize_Clone(void * pArg)
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
-	/*
-	여기서부터 내일 아침해야함 우리가 구한 이동행렬에 포지션 넣으면 걍 위치가 바귄다 이동행렬을 포지션에 곱하지말고
-	월드 변환 행렬에 곱하셈 그리고 그걸 바인딩 시키면 됨. 기존에 있던건 없애고 하자. 그 상태에서 돌리면 공전이 될거임
-	잊지말자. 이동은 포지션을 뜻하는듯 근데 부모는 이동행렬!!! 이동행렬은 부모이다.
-	*/
+
+
+	m_pGraphicDevice->GetTransform(D3DTS_WORLD, &parentMatrix);
+
+	D3DXMatrixInverse(&parentMatrix, nullptr, &parentMatrix);
+
+
+	memcpy(&parentMatrix.m[3][0], &m_OrbitCubeDesc.fTransform, sizeof(_float3));
+
+
+	//이렇게 구한 부모 행렬과 각 각의 월드 행렬과 곱해줘야한다.?
 
 
 
@@ -111,8 +117,10 @@ _int CObject_OrbitCube::LateUpdate(_float fTimeDelta)
 _int CObject_OrbitCube::Render()
 {
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		return E_FAIL;
+	/*if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;*/
+
+	m_pGraphicDevice->SetTransform(D3DTS_WORLD, &parentMatrix);
 
 
 	if (FAILED(m_ComTexture->Bind_Texture()))
