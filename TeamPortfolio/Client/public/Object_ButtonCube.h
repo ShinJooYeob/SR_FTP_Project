@@ -46,8 +46,10 @@ private:
 
 	_float					m_RotAngle = 0;
 	_float					seconds = 0;
-	bool					Switch_Q = false;
-	bool					Switch_E = false;
+
+	_float					Angle = 0;
+
+	bool					m_bSwitch = false;
 
 public:
 	static CObject_ButtonCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
