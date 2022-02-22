@@ -93,6 +93,10 @@ public: // For.ToolView tp ToolObject
 	_uint Get_ToolVec_Size() { return m_Vec_ToolViewObjects.size(); }
 	_bool Get_ToolVec_isEmpty() { return m_Vec_ToolViewObjects.empty(); }
 
+	// 선택된 것만 랜더링
+	HRESULT Update_Select_Render_None();
+	HRESULT Update_Select_Render_Visble(CObjectTool_ToolObject* visbleobj);
+
 private:
 	// ToolView에서 오브젝트 리스트들을 맵으로 저장
 	vector<CObjectTool_ToolObject*> m_Vec_ToolViewObjects;

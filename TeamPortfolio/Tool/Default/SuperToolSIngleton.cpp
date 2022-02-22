@@ -362,6 +362,21 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Find_Vec_ToolObject(_uint index)
 
 }
 
+HRESULT CSuperToolSIngleton::Update_Select_Render_None()
+{
+	for (auto a: m_Vec_ToolViewObjects)
+	{
+		a->Set_Visble(false);
+	}
+	return S_OK;
+}
+
+HRESULT CSuperToolSIngleton::Update_Select_Render_Visble(CObjectTool_ToolObject * visbleobj)
+{
+	visbleobj->Set_Visble(true);
+	return S_OK;
+}
+
 
 
 void CSuperToolSIngleton::Free()

@@ -10,6 +10,7 @@ CObjectTool_ToolObject::CObjectTool_ToolObject(LPDIRECT3DDEVICE9 pGraphicDevice)
 	m_ComTransform(nullptr),
 	m_ComTexture(nullptr)
 {
+	m_isVisble = true;
 }
 
 CObjectTool_ToolObject::CObjectTool_ToolObject(const CObjectTool_ToolObject & rhs)
@@ -73,6 +74,9 @@ _int CObjectTool_ToolObject::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
+
+	if (!m_isVisble)
+		return 0;
 
 	NULL_CHECK_BREAK(m_ComTransform);
 	NULL_CHECK_BREAK(m_ComTexture);

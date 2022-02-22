@@ -66,6 +66,7 @@ BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON13, &CMyForm::OnBnClickedButtonCube)
 	ON_WM_LBUTTONDOWN()
 	ON_BN_CLICKED(IDC_BUTTON14, &CMyForm::OnBnClickedButton_CreateObject)
+	ON_LBN_SELCHANGE(IDC_LIST3, &CMyForm::OnLbnSelchangeList_ObjectSelect)
 END_MESSAGE_MAP()
 
 // CMyForm 진단입니다.
@@ -200,4 +201,20 @@ void CMyForm::OnBnClickedButton_CreateObject()
 	GetSingle(CSuperToolSIngleton)->Create_ToolObject_Button(t);
 
 	
+}
+
+
+void CMyForm::OnLbnSelchangeList_ObjectSelect()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// 선택한 오브젝트만 렌더링
+	int index = m_ListBox_Objects.GetCurSel();
+
+	//GetSingle(CSuperToolSIngleton)->Update_Select_Render_None();
+	//GetSingle(CSuperToolSIngleton)->Update_Select_Render_Visble(m_);
+
+
+	//Update_Select_Render_Visble
+
+
 }

@@ -36,7 +36,7 @@ public:
 	HRESULT Set_Data(OUTPUT_OBJECTINFO data);
 
 	HRESULT Set_ViBuffer_Change();
-
+	void	Set_Visble(_bool b) { m_isVisble = b; }
 
 	const OUTPUT_OBJECTINFO& Get_ObjectInfo()const { return m_tOutputData; }
 	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS);  }
@@ -50,6 +50,8 @@ private:
 private:
 	_bool					m_isRect = true;
 	_bool					m_isCubeRot = false;
+	_bool					m_isVisble = true; // 랜더링 유무
+
 
 	float					mYDegree = 0;
 
