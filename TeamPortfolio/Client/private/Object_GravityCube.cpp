@@ -31,9 +31,9 @@ HRESULT CObject_GravityCube::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	//m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
+	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-5.f, 0.f, 5.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-7.f, 0.f, 7.f));
 
 	return S_OK;
 }

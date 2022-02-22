@@ -91,6 +91,36 @@
     <Filter Include="01.GameObject\Camera_Main\MiniMapUI">
       <UniqueIdentifier>{c5ed9b76-6a5e-4fb7-8f55-432eaf9463d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_SelfRotationCube">
+      <UniqueIdentifier>{3e0ba736-a908-449f-94f2-1cb0dfc7720a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_ButtonCube">
+      <UniqueIdentifier>{d1096e8e-dae2-4294-acc8-c9d44f4e37df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube">
+      <UniqueIdentifier>{87b17532-5608-4585-a71e-1718fe10adaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_OrbitCube">
+      <UniqueIdentifier>{a1b0e0d3-a121-4086-b646-f1e137c3233a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_PortalCube">
+      <UniqueIdentifier>{1f4fd11c-f03e-4984-b767-dae190294abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_PortalCube\PortalCube_A">
+      <UniqueIdentifier>{50caa6fc-74c3-47a0-afa5-f87d82a6ae65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_PortalCube\PortalCube_B">
+      <UniqueIdentifier>{cb516f59-73dd-40db-9faf-09098f7ca4b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube">
+      <UniqueIdentifier>{ea8faaeb-792c-45b4-bc38-ba3a10ecf987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube\Object_DescentCube">
+      <UniqueIdentifier>{c67859c4-976d-4dd8-8a00-2e6aae3515c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube">
+      <UniqueIdentifier>{fa90b281-ed72-4735-9712-4db6007ced48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -171,6 +201,30 @@
     <ClInclude Include="..\public\MiniMapUI.h">
       <Filter>01.GameObject\Camera_Main\MiniMapUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_SelfRotationCube.h">
+      <Filter>01.GameObject\SubObject\Object_SelfRotationCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_ButtonCube.h">
+      <Filter>01.GameObject\SubObject\Object_ButtonCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_InteractiveCube.h">
+      <Filter>01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_OrbitCube.h">
+      <Filter>01.GameObject\SubObject\Object_OrbitCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_PortalCube_A.h">
+      <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_A</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_PortalCube_B.h">
+      <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_DescentCube.h">
+      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_DescentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_RisingCube.h">
+      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -238,6 +292,30 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Image.cpp">
       <Filter>01.GameObject\UI\UI_Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_SelfRotationCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_SelfRotationCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_ButtonCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_ButtonCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_InteractiveCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_OrbitCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_OrbitCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_PortalCube_A.cpp">
+      <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_A</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_PortalCube_B.cpp">
+      <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_DescentCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_DescentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_RisingCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

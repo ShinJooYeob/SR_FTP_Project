@@ -29,7 +29,7 @@ public:
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)override;
 	virtual _int Collision_Not_Moving(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime);
-
+	
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_OnTerrain(_float fDeltaTime);

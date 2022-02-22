@@ -17,4 +17,3 @@ using namespace Client;
 #define GETIMGUI GetSingle(CGameInstance)->GetIMGui()
 
 #define NOT_EXIST_BLOCK		_float3(9999.f,9999.f,9999.f)
-
