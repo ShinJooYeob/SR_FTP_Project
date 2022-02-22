@@ -73,15 +73,15 @@ public:
 	CPathFind*  GetPathTool() {	return m_pPathDialog; }
 	CTrans_Dialog* GetTransTool() { return m_pTransDialog; }
 
-	CObjectTool_ToolObject* GetObjectRect() { return m_Object_Rect; }
-
 public:
 	HRESULT SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd);
 	HRESULT LoadData_Object(CWnd * cwnd);
 	HRESULT Create_ToolObject_Button(wstring name);
+	HRESULT Select_ToolObject_Button(int index);
+
 private:
-	CObjectTool_ToolObject* Create_New_ToolObject();
-	HRESULT Change_ToolObject(CObjectTool_ToolObject* obj, wstring name);
+	CObjectTool_ToolObject* Create_New_ToolObject(wstring name);
+	HRESULT Change_ToolObject(CObjectTool_ToolObject* obj);
 
 public: // For.ToolView tp ToolObject 
 	HRESULT Add_Vec_ToolObject(CObjectTool_ToolObject* obj);
@@ -102,6 +102,7 @@ private:
 	vector<CObjectTool_ToolObject*> m_Vec_ToolViewObjects;
 
 	// Current Tool View Object
+	// 이건 이제 공통으로 사용하는 것이 아니라 사용할 때 마다 정보를 받아 사용하게 변경
 	CObjectTool_ToolObject*	m_Object_Rect;
 
 	// CObjectTool_ToolObject*	m_Object_ProtoObject;
@@ -116,10 +117,6 @@ private:
 	CToolView*			m_pToolView;	// 툴 뷰
 	CPathFind*			m_pPathDialog;	// 경로 창
 	CTrans_Dialog*		m_pTransDialog;	// 위치 조정 창
-
-
-
-
 
 
 private:

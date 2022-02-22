@@ -133,7 +133,7 @@ void CMyForm::OnTransform()
 
 void CMyForm::OnObjectSave()
 {
-	GetSingle(CSuperToolSIngleton)->SaveData_Object(GetSingle(CSuperToolSIngleton)->GetObjectRect(), this);
+	GetSingle(CSuperToolSIngleton)->SaveData_Object(GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject(), this);
 }
 
 void CMyForm::OnMapSave()
@@ -174,7 +174,8 @@ void CMyForm::OnBnClickedButtonCube()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// 큐브 컴포넌트로 바꾸기
-	GetSingle(CSuperToolSIngleton)->GetObjectRect()->Set_ViBuffer_Change();
+	GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject()->Set_ViBuffer_Change();
+
 }
 
 
@@ -199,8 +200,6 @@ void CMyForm::OnBnClickedButton_CreateObject()
 	TCHAR t[64];
 	wsprintf(t,L"new_%d",num);
 	GetSingle(CSuperToolSIngleton)->Create_ToolObject_Button(t);
-
-	
 }
 
 
@@ -209,12 +208,12 @@ void CMyForm::OnLbnSelchangeList_ObjectSelect()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// 선택한 오브젝트만 렌더링
 	int index = m_ListBox_Objects.GetCurSel();
+	
 
-	//GetSingle(CSuperToolSIngleton)->Update_Select_Render_None();
-	//GetSingle(CSuperToolSIngleton)->Update_Select_Render_Visble(m_);
+	GetSingle(CSuperToolSIngleton)->Select_ToolObject_Button(index);
+	GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject()->Texture_CurrentBind();
 
 
-	//Update_Select_Render_Visble
 
 
 }

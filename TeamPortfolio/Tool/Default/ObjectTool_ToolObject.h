@@ -33,6 +33,7 @@ public:
 	HRESULT Set_Rotation(_float3 rot);
 	HRESULT Set_Position(_float3 Position);
 	HRESULT Set_Texture(const _tchar* pathdata);
+	HRESULT Set_TextureNum_Bind(int num = 0);
 	HRESULT Set_Data(OUTPUT_OBJECTINFO data);
 
 	HRESULT Set_ViBuffer_Change();
@@ -42,7 +43,7 @@ public:
 	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS);  }
 	_float3 Get_Scale() { return m_ComTransform->Get_MatrixScale(); }
 
-
+	HRESULT Texture_CurrentBind();
 
 private:
 	HRESULT			SetUp_Components();

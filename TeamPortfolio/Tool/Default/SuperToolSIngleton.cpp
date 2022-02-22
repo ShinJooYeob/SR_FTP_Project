@@ -315,13 +315,28 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 HRESULT CSuperToolSIngleton::Create_ToolObject_Button(wstring name)
 {
 	// 버튼을 누르면 새 오브젝트 생성.
-	FAILED_CHECK(Change_ToolObject(Create_New_ToolObject(), name));
+	FAILED_CHECK(Change_ToolObject(Create_New_ToolObject(name)));
 	// 리스타 박스 업데이트
 	m_pMyButtomView->Update_ViewListBox();
 	return S_OK;
 }
 
-CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject()
+HRESULT CSuperToolSIngleton::Select_ToolObject_Button(int index)
+{
+	// 버튼을 누르면 새 오브젝트 생성.
+	CObjectTool_ToolObject* currentObj = Find_Vec_ToolObject(index);
+	if (currentObj == nullptr)
+		return E_FAIL;
+	Change_ToolObject(currentObj);
+
+	Update_Select_Render_None();
+	Update_Select_Render_Visble(currentObj);
+
+	return S_OK;
+}
+
+
+CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject(wstring name)
 {
 	// 현재 오브젝트를 저장하고 새 큐브 오브젝트를 만든다.
 	// 새로 만든 객체는 여기 클래스의 Vector에 넣는다.
@@ -330,12 +345,13 @@ CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject()
 
 	int index = Get_ToolVec_Size();
 	CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC,L"Object", index);
+	newobj->Set_Defult(name);
 	Add_Vec_ToolObject(newobj);
 	Safe_AddRef(newobj);
 	return newobj;
 }
 
-HRESULT CSuperToolSIngleton::Change_ToolObject(CObjectTool_ToolObject * obj, wstring name)
+HRESULT CSuperToolSIngleton::Change_ToolObject(CObjectTool_ToolObject * obj)
 {
 	// 현재 오브젝트 릴리스
 	Safe_Release(m_Object_Rect);
@@ -343,7 +359,6 @@ HRESULT CSuperToolSIngleton::Change_ToolObject(CObjectTool_ToolObject * obj, wst
 	m_Object_Rect = obj;
 	// Safe_AddRef
 	Safe_AddRef(m_Object_Rect);
-	m_Object_Rect->Set_Defult(name);
 	return S_OK;
 }
 
@@ -359,7 +374,6 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Find_Vec_ToolObject(_uint index)
 		return nullptr;
 
 	return m_Vec_ToolViewObjects[index];
-
 }
 
 HRESULT CSuperToolSIngleton::Update_Select_Render_None()

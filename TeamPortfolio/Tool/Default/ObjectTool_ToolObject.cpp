@@ -23,6 +23,7 @@ HRESULT CObjectTool_ToolObject::Initialize_Prototype(void * pArg)
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
 
+
 	return S_OK;
 }
 
@@ -184,6 +185,15 @@ HRESULT CObjectTool_ToolObject::Set_Texture(const _tchar* pathdata)
 	return S_OK;
 }
 
+HRESULT CObjectTool_ToolObject::Set_TextureNum_Bind(int num)
+{
+	NULL_CHECK_BREAK(m_ComTexture);
+
+	m_tOutputData.StateIndex = num;
+	m_ComTexture->Bind_Texture(m_tOutputData.StateIndex);
+	return S_OK;
+}
+
 HRESULT CObjectTool_ToolObject::Set_Data(OUTPUT_OBJECTINFO data)
 {
 	m_tOutputData = data;
@@ -230,6 +240,15 @@ HRESULT CObjectTool_ToolObject::Set_ViBuffer_Change()
 
 		m_ComTexture->Bind_Texture(0);
 	}
+	return S_OK;
+}
+
+
+HRESULT CObjectTool_ToolObject::Texture_CurrentBind()
+{
+	NULL_CHECK_BREAK(m_ComTexture);
+
+	m_ComTexture->Bind_Texture(m_tOutputData.StateIndex);
 	return S_OK;
 }
 

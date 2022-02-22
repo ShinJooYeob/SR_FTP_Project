@@ -35,9 +35,6 @@ private:
 //	const _tchar*	m_LoadFileName2 = L"Blocks.txt";
 
 public:
-	 
-	CObjectTool_ToolObject* m_GameObject_Rect_Tool;
-
 	HRESULT ResetTexture();
 
 private:
