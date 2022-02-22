@@ -121,6 +121,9 @@
     <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube">
       <UniqueIdentifier>{fa90b281-ed72-4735-9712-4db6007ced48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\Mouse_Image">
+      <UniqueIdentifier>{998ea89d-2d88-4455-99f7-04fbeeb5464c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -225,6 +228,11 @@
     <ClInclude Include="..\public\Object_RisingCube.h">
       <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Inventory_Main.h" />
+    <ClInclude Include="..\public\Item.h" />
+    <ClInclude Include="..\public\UI_Mouse.h">
+      <Filter>01.GameObject\UI\Mouse_Image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -316,6 +324,11 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_RisingCube.cpp">
       <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Inventory_Main.cpp" />
+    <ClCompile Include="..\private\Item.cpp" />
+    <ClCompile Include="..\private\UI_Mouse.cpp">
+      <Filter>01.GameObject\UI\Mouse_Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

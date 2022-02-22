@@ -187,6 +187,7 @@
     <ClInclude Include="..\public\TerrainCube.h" />
     <ClInclude Include="..\public\TerrainGround.h" />
     <ClInclude Include="..\public\UI_Image.h" />
+    <ClInclude Include="..\public\UI_Mouse.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="..\private\TerrainCube.cpp" />
     <ClCompile Include="..\private\TerrainGround.cpp" />
     <ClCompile Include="..\private\UI_Image.cpp" />
+    <ClCompile Include="..\private\UI_Mouse.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

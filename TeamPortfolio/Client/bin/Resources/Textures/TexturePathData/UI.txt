@@ -6,4 +6,7 @@ UI|DUBBLEJUMP|1|../bin/Resources/Textures/UI/DUBBLEJUMP.png
 UI|DASH|1|../bin/Resources/Textures/UI/DASH.png
 UI|POTION|1|../bin/Resources/Textures/UI/POTION.png
 UI|Button1|1|../bin/Resources/Textures/UI/Button1.png
-UI|Button2|1|../bin/Resources/Textures/UI/Button1.png
+UI|Button2|1|../bin/Resources/Textures/UI/Button2.png
+UI|Price1|1|../bin/Resources/Textures/UI/500G.png
+UI|Price2|1|../bin/Resources/Textures/UI/1000G.png
+UI|Price3|1|../bin/Resources/Textures/UI/3000G.png

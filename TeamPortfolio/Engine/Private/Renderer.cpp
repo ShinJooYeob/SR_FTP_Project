@@ -215,6 +215,11 @@ HRESULT CRenderer::Render_UI()
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
+	m_RenderObjectList[RENDER_UI].sort([](CGameObject* pSour, CGameObject* pDest)->_bool
+	{
+		return pSour->Get_CamDistance() > pDest->Get_CamDistance();
+	});
+
 	for (auto& RenderObject : m_RenderObjectList[RENDER_UI])
 	{
 		if (RenderObject != nullptr)
