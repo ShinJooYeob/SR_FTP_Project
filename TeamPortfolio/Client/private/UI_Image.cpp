@@ -1,21 +1,21 @@
 #include "stdafx.h"
-#include "..\public\MyButton.h"
+#include "..\public\UI_Image.h"
 
 
 
 
 
-CMyButton::CMyButton(LPDIRECT3DDEVICE9 pGraphicDevice)
+CUI_Image::CUI_Image(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CUI(pGraphicDevice)
 {
 }
 
-CMyButton::CMyButton(const CMyButton & rhs)
+CUI_Image::CUI_Image(const CUI_Image & rhs)
 	: CUI(rhs)
 {
 }
 
-HRESULT CMyButton::Initialize_Prototype(void * pArg)
+HRESULT CUI_Image::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
@@ -24,7 +24,7 @@ HRESULT CMyButton::Initialize_Prototype(void * pArg)
 	return S_OK;
 }
 
-HRESULT CMyButton::Initialize_Clone(void * pArg)
+HRESULT CUI_Image::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
@@ -46,93 +46,45 @@ HRESULT CMyButton::Initialize_Clone(void * pArg)
 	return S_OK;
 }
 
-_int CMyButton::Update(_float fDeltaTime)
+_int CUI_Image::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 
-	CGameInstance* pInstance = GetSingle(CGameInstance);
-
-	if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Down)
-	{
-		POINT ptMouse;
-		GetCursorPos(&ptMouse);
-		ScreenToClient(g_hWnd, &ptMouse);
-		m_isClicked = false;
-		if (PtInRect(&m_rcButtonRect, ptMouse))
-		{
-			if (!lstrcmp(L"SPEEDUP", m_pButtonName))
-			{
-				m_isClicked = true;
-				return SHOP_SPEEDUP;
-			}
-			else if (!lstrcmp(L"DUBBLEJUMP", m_pButtonName))
-			{
-				m_isClicked = true;
-				return SHOP_DUBBLEJUMP;
-			}
-			else if (!lstrcmp(L"DASH", m_pButtonName))
-			{
-				m_isClicked = true;
-				return SHOP_DASH;
-			}
-			else if (!lstrcmp(L"POTION", m_pButtonName))
-			{
-				m_isClicked = true;
-				return SHOP_POTION;
-			}
-			else if (!lstrcmp(L"Buy", m_pButtonName))
-			{
-
-				return SHOP_BUY;
-			}
-			else if (!lstrcmp(L"Exit", m_pButtonName))
-			{
-
-				return SHOP_EXIT;
-			}
-			else if (!lstrcmp(L"Sell", m_pButtonName))
-			{
-				MSGBOX("판매 완료");
-				return SHOP_SELL;
-			}
-		}
-	}
 	return _int();
 
 }
 
-HRESULT CMyButton::SetUp_RenderState()
+HRESULT CUI_Image::SetUp_RenderState()
 {
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
-	if (m_isClicked)
-	{
-		m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-		m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-		m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-		//Sour => 현재 그리려고하는 그림의 색
-		//Dest => 직전까지 화면에 그려진 색
-		//
-		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
-		m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(120, 255, 255, 255));
-		//
-		//
-		//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	//Sour => 현재 그리려고하는 그림의 색
+	//Dest => 직전까지 화면에 그려진 색
+	//
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(120, 255, 255, 255));
+	//
+	//
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 
 
-		m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 20);
-		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-	}
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 20);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 
 	return S_OK;
 }
 
-HRESULT CMyButton::Release_RenderState()
+HRESULT CUI_Image::Release_RenderState()
 {
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
@@ -142,7 +94,7 @@ HRESULT CMyButton::Release_RenderState()
 }
 
 
-_int CMyButton::LateUpdate(_float fDeltaTime)
+_int CUI_Image::LateUpdate(_float fDeltaTime)
 {
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
@@ -157,7 +109,7 @@ _int CMyButton::LateUpdate(_float fDeltaTime)
 	return _int();
 }
 
-_int CMyButton::Render()
+_int CUI_Image::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -182,7 +134,7 @@ _int CMyButton::Render()
 	return _int();
 }
 
-_int CMyButton::LateRender()
+_int CUI_Image::LateRender()
 {
 	if (FAILED(__super::LateRender()))
 		return E_FAIL;
@@ -190,7 +142,7 @@ _int CMyButton::LateRender()
 	return _int();
 }
 
-void CMyButton::Set_ButtonName(TCHAR * pButtonName)
+void CUI_Image::Set_ButtonName(TCHAR * pButtonName)
 {
 	{ m_pButtonName = pButtonName; };
 	if (!lstrcmp(L"Buy", m_pButtonName))
@@ -219,7 +171,7 @@ void CMyButton::Set_ButtonName(TCHAR * pButtonName)
 	}
 }
 
-HRESULT CMyButton::SetUp_Components()
+HRESULT CUI_Image::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
@@ -242,9 +194,9 @@ HRESULT CMyButton::SetUp_Components()
 
 
 
-CMyButton * CMyButton::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
+CUI_Image * CUI_Image::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 {
-	CMyButton* pInstance = new CMyButton(pGraphicDevice);
+	CUI_Image* pInstance = new CUI_Image(pGraphicDevice);
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
@@ -257,9 +209,9 @@ CMyButton * CMyButton::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 	return pInstance;
 }
 
-CGameObject * CMyButton::Clone(void * pArg)
+CGameObject * CUI_Image::Clone(void * pArg)
 {
-	CMyButton* pInstance = new CMyButton((*this));
+	CUI_Image* pInstance = new CUI_Image((*this));
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
@@ -272,7 +224,7 @@ CGameObject * CMyButton::Clone(void * pArg)
 	return pInstance;
 }
 
-void CMyButton::Free()
+void CUI_Image::Free()
 {
 	__super::Free();
 

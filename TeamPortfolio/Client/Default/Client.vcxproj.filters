@@ -85,6 +85,9 @@
     <Filter Include="01.GameObject\UI\Button">
       <UniqueIdentifier>{52f3b991-5a7d-4daa-9e54-5ebd3090e34d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\UI_Image">
+      <UniqueIdentifier>{83d2780f-0c8c-4d45-a1a5-a1cba71a192c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -159,6 +162,7 @@
     <ClInclude Include="..\public\MyButton.h">
       <Filter>01.GameObject\UI\Button</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_Image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -221,6 +225,7 @@
     <ClCompile Include="..\private\MyButton.cpp">
       <Filter>01.GameObject\UI\Button</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\UI_Image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
