@@ -10,12 +10,12 @@ class CTexture;
 END
 
 BEGIN(Tool)
-class CObjectTool_Rect final :public CGameObject
+class CObjectTool_ToolObject final :public CGameObject
 {
 private:
-	explicit CObjectTool_Rect(LPDIRECT3DDEVICE9 pGraphicDevice);
-	explicit CObjectTool_Rect(const CObjectTool_Rect& rhs);
-	virtual ~CObjectTool_Rect() = default;
+	explicit CObjectTool_ToolObject(LPDIRECT3DDEVICE9 pGraphicDevice);
+	explicit CObjectTool_ToolObject(const CObjectTool_ToolObject& rhs);
+	virtual ~CObjectTool_ToolObject() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
@@ -28,37 +28,44 @@ public:
 	virtual _int LateRender()override;
 
 public:
-
+	HRESULT Set_Defult(wstring objectName);
 	HRESULT Set_Scaled(_float3 scale);
-//	HRESULT Set_Rotation(_float3 rot);
+	HRESULT Set_Rotation(_float3 rot);
 	HRESULT Set_Position(_float3 Position);
-	HRESULT Set_Texture(MYFILEPATH pathdata);
+	HRESULT Set_Texture(const _tchar* pathdata);
 	HRESULT Set_Data(OUTPUT_OBJECTINFO data);
 
 	HRESULT Set_ViBuffer_Change();
+	void	Set_Visble(_bool b) { m_isVisble = b; }
 
-
-	const MYFILEPATH& Get_PathData()const { return m_tImgPath; }
+	const OUTPUT_OBJECTINFO& Get_ObjectInfo()const { return m_tOutputData; }
 	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS);  }
 	_float3 Get_Scale() { return m_ComTransform->Get_MatrixScale(); }
 
 
 
-
-private:
-	bool					m_isRect = true;
-	CTransform*				m_ComTransform = nullptr;
-	CVIBuffer*				m_ComVIBuffer = nullptr;
-
-	CRenderer*				m_ComRenderer = nullptr;
-	CTexture*				m_ComTexture = nullptr;
-
-	MYFILEPATH m_tImgPath;
 private:
 	HRESULT			SetUp_Components();
 
+private:
+	_bool					m_isRect = true;
+	_bool					m_isCubeRot = false;
+	_bool					m_isVisble = true; // 랜더링 유무
+
+
+	float					mYDegree = 0;
+
+	CTransform*				m_ComTransform = nullptr;
+	CVIBuffer*				m_ComVIBuffer = nullptr;
+	CRenderer*				m_ComRenderer = nullptr;
+	CTexture*				m_ComTexture = nullptr;
+
+	OUTPUT_OBJECTINFO		m_tOutputData;
+
+	
+
 public:
-	static CObjectTool_Rect* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
+	static CObjectTool_ToolObject* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg = nullptr)override;
 	virtual void Free()override;
 };

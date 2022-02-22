@@ -4,7 +4,7 @@
 
 
 CVIBuffer::CVIBuffer(LPDIRECT3DDEVICE9 pGraphicDevice)
-	:CComponent(pGraphicDevice), m_pVertices(nullptr)
+	:CComponent(pGraphicDevice), m_pVertices(nullptr), m_pIndices(nullptr)
 {
 }
 
@@ -19,7 +19,8 @@ CVIBuffer::CVIBuffer(const CVIBuffer & rhs)
 	m_iNumPrimitive(rhs.m_iNumPrimitive),
 	m_iIndicesSize(rhs.m_iIndicesSize),
 	m_eIndexFormat(rhs.m_eIndexFormat),
-	m_pVertices(rhs.m_pVertices)
+	m_pVertices(rhs.m_pVertices),
+	m_pIndices(rhs.m_pIndices)
 
 {
 
@@ -67,7 +68,7 @@ HRESULT CVIBuffer::Render()
 
 	// m_pGraphic_Device->DrawPrimitive(m_ePrimitiveType, 0, m_iNumPrimitive);
 	m_pGraphicDevice->DrawIndexedPrimitive(m_eDrawPrimitive,0,0,m_iNumVertices, 0, m_iNumPrimitive);
-	//?/*2: 버텍스 버퍼의 시작위치 3:인덱스 버퍼의 시작 위치*/
+	// 1 드로우 타입 2: 버텍스 버퍼의 시작위치 3:인덱스 버퍼의 시작 위치*/
 
 
 	return S_OK;

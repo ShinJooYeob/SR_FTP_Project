@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SuperToolSIngleton.h"
 #include "GameInstance.h"
-#include "ObjectTool_Rect.h"
+#include "ObjectTool_ToolObject.h"
 #include "Camera_Tool.h"
 
 
@@ -86,6 +86,7 @@ HRESULT CSuperToolSIngleton::Render_End(HWND hWnd)
 		return E_FAIL;
 	m_pGraphicDevice->EndScene();
 	m_pGraphicDevice->Present(nullptr, nullptr, hWnd, nullptr);
+	return S_OK;
 }
 
 HRESULT CSuperToolSIngleton::Render_Set_Statee()
@@ -93,7 +94,7 @@ HRESULT CSuperToolSIngleton::Render_Set_Statee()
 	if (m_pGraphicDevice == nullptr)
 		return E_FAIL;
 	
-	bool bWire = m_pMyButtomView->m_CheckWirframeEnable.GetCheck();
+	_bool bWire = (_bool)m_pMyButtomView->m_CheckWirframeEnable.GetCheck();
 	if (bWire)
 		m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	else
@@ -117,38 +118,44 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 	// #Tag 툴 모든 오브젝트의 원형 생성
 
 	// Prototype_GameObject_BackGround
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BackGround"), CObjectTool_Rect::Create(m_pGraphicDevice)));
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_BackGround), CObjectTool_ToolObject::Create(m_pGraphicDevice)));
 
 	// 카메라 생성
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Camera"), CCamera_Tool::Create(m_pGraphicDevice)));
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Tool::Create(m_pGraphicDevice)));
 
 	// #Tag 툴 모든 컴포넌트의 원형 생성
 
-
 	//렌더러 컴객체 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), m_pComRenderer = CRenderer::Create(m_pGraphicDevice)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Renderer), m_pComRenderer = CRenderer::Create(m_pGraphicDevice)));
 
 	Safe_AddRef(m_pComRenderer);
 
 	//버퍼인덱스 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pGraphicDevice)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect) , CVIBuffer_Rect::Create(m_pGraphicDevice)));
 
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), CVIBuffer_Cube::Create(m_pGraphicDevice)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), CVIBuffer_Cube::Create(m_pGraphicDevice)));
 
 
 	//Transform 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), CTransform::Create(m_pGraphicDevice)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), CTransform::Create(m_pGraphicDevice)));
 
-	/* 디폴트 텍스처 프로토타입 생성 */
+	// 블록 디폴트 
 	CTexture::TEXTUREDESC TextureDesc{};
-	TextureDesc.szTextFilePath = TEXT("Default.txt");
-
+	TextureDesc.szTextFilePath = g_FileName_Blocktxt;
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), CTexture::Create(m_pGraphicDevice, &TextureDesc)));
+
+
+	// 큐브 디폴트
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	TextureDesc.szTextFilePath = g_Filename_Cubetxt;
+	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Cube), CTexture::Create(m_pGraphicDevice, &TextureDesc)));
+
 
 	return S_OK;
 }
@@ -158,10 +165,14 @@ HRESULT CSuperToolSIngleton::Ready_Object_Clone(const _tchar* layertag)
 	// #Tag 씬에서 사용할 클론 객체 생성
 
 	// BackObj
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TEXT("Prototype_GameObject_BackGround")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TAG_OP(Prototype_BackGround)))
 		return E_FAIL;
 
-	m_Object_Rect = (CObjectTool_Rect*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, layertag);
+	// 최초 객체는 0번쨰에 저장한다.
+	m_Object_Rect = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, layertag);
+	m_Object_Rect->Set_Defult(L"DefaultObject");
+	Safe_AddRef(m_Object_Rect);
+	Add_Vec_ToolObject(m_Object_Rect);
 	Safe_AddRef(m_Object_Rect);
 	return S_OK;
 }
@@ -188,13 +199,15 @@ HRESULT CSuperToolSIngleton::Ready_Object_Camera(const _tchar* layertag)
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Main::Create(m_pGraphicDevice, &CameraDesc))))
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TEXT("Prototype_GameObject_Camera"), &CameraDesc))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TAG_OP(Prototype_Camera_Main), &CameraDesc))
 		return E_FAIL;
-
+	return S_OK;
 }
 
 HRESULT CSuperToolSIngleton::Initialize_ToolView()
 {
+	m_Vec_ToolViewObjects.reserve(iObjectSize);
+
 	m_pMainFrame = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 	m_pToolView = static_cast<CToolView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 1));
 	m_pMiniView = static_cast<CMiniView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 0));
@@ -207,9 +220,10 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView()
 }
 
 
-HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_Rect* obj, CWnd* cwnd)
+HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd)
 {
-	// 저장 클릭시 하는 것
+	// 선택한 오브젝트를 저장한다.
+
 
 	// 1. 클릭시 다이얼 로그 생성.
 	CFileDialog		Dlg(FALSE,
@@ -243,17 +257,7 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_Rect* obj, CWnd* cwnd)
 			return E_FAIL;
 
 		// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.
-		MYFILEPATH path = obj->Get_PathData();
-		OUTPUT_OBJECTINFO infoObj;
-		infoObj.fScale = obj->Get_Scale();
-		infoObj.fPos = obj->Get_Pos();
-		lstrcpy(infoObj.strObjectName, Filename);
-		lstrcpy(infoObj.strTextureName, path.wFileName.c_str());
-		lstrcpy(infoObj.strTexturePath, path.wstrFullPath.c_str());
-
-
-		//infoObj.strFileName = path.wFileName.c_str();
-		//infoObj.strFullPath = path.wstrFullPath.c_str();
+		OUTPUT_OBJECTINFO infoObj = obj->Get_ObjectInfo();
 
 		DWORD	dwByte = 0;
 
@@ -268,6 +272,7 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_Rect* obj, CWnd* cwnd)
 
 HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 {
+	// 새 오브젝트를 가져온다.
 
 	//	static TCHAR BASED_CODE szFilter[] = _T("이미지 파일(*.BMP, *.GIF, *.JPG) | *.BMP;*.GIF;*.JPG;*.bmp;*.jpg;*.gif |모든파일(*.*)|*.*||");
 
@@ -307,11 +312,80 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 	return S_OK;
 }
 
+HRESULT CSuperToolSIngleton::Create_ToolObject_Button(wstring name)
+{
+	// 버튼을 누르면 새 오브젝트 생성.
+	FAILED_CHECK(Change_ToolObject(Create_New_ToolObject(), name));
+	// 리스타 박스 업데이트
+	m_pMyButtomView->Update_ViewListBox();
+	return S_OK;
+}
+
+CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject()
+{
+	// 현재 오브젝트를 저장하고 새 큐브 오브젝트를 만든다.
+	// 새로 만든 객체는 여기 클래스의 Vector에 넣는다.
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Object", TAG_OP(Prototype_BackGround)))
+		return nullptr;
+
+	int index = Get_ToolVec_Size();
+	CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC,L"Object", index);
+	Add_Vec_ToolObject(newobj);
+	Safe_AddRef(newobj);
+	return newobj;
+}
+
+HRESULT CSuperToolSIngleton::Change_ToolObject(CObjectTool_ToolObject * obj, wstring name)
+{
+	// 현재 오브젝트 릴리스
+	Safe_Release(m_Object_Rect);
+	// 새 오브젝트 대입
+	m_Object_Rect = obj;
+	// Safe_AddRef
+	Safe_AddRef(m_Object_Rect);
+	m_Object_Rect->Set_Defult(name);
+	return S_OK;
+}
+
+HRESULT CSuperToolSIngleton::Add_Vec_ToolObject(CObjectTool_ToolObject * obj)
+{
+	m_Vec_ToolViewObjects.push_back(obj);
+	return S_OK;
+}
+
+CObjectTool_ToolObject * CSuperToolSIngleton::Find_Vec_ToolObject(_uint index)
+{
+	if (index >= m_Vec_ToolViewObjects.size())
+		return nullptr;
+
+	return m_Vec_ToolViewObjects[index];
+
+}
+
+HRESULT CSuperToolSIngleton::Update_Select_Render_None()
+{
+	for (auto a: m_Vec_ToolViewObjects)
+	{
+		a->Set_Visble(false);
+	}
+	return S_OK;
+}
+
+HRESULT CSuperToolSIngleton::Update_Select_Render_Visble(CObjectTool_ToolObject * visbleobj)
+{
+	visbleobj->Set_Visble(true);
+	return S_OK;
+}
+
 
 
 void CSuperToolSIngleton::Free()
 {
+	for (auto vec : m_Vec_ToolViewObjects)
+		Safe_Release(vec);
+
 	Safe_Release(m_Object_Rect);
+
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pComRenderer);
 	Safe_Release(m_pGameInstance);

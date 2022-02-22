@@ -26,6 +26,8 @@ public:
 	void* Get_Vtxtex();
 	void* Get_CubeVtxtex();
 
+	_bool Pick(const _Matrix & WorldMatrixInverse, _float3 * pOut);
+
 protected:
 	LPDIRECT3DVERTEXBUFFER9			m_pVB = nullptr;
 	_uint							m_iStride = 0; 
@@ -45,7 +47,6 @@ protected:
 
 protected:
 	HRESULT Create_VertexBuffer();
-	_bool Pick(const _Matrix & WorldMatrixInverse, _float3 * pOut);
 	HRESULT Create_IndexBuffer();
 
 public:

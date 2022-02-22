@@ -1,4 +1,0 @@
-Player|Idle|2|..\Resource\Player\Idle\idle_%d.png
-Player|Panic|8|..\Resource\Player\Panic\panic_%d.png
-Player|talk|24|..\Resource\Player\talk\talk_%d.png
-Player|walk|6|..\Resource\Player\walk\walk_%d.png

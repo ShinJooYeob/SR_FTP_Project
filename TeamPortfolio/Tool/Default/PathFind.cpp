@@ -8,7 +8,7 @@
 #include "FileInfo.h"
 #include "MainFrm.h"
 #include "ToolView.h"
-#include "ObjectTool_Rect.h"
+#include "ObjectTool_ToolObject.h"
 
 // CPathFind 대화 상자입니다.
 
@@ -35,7 +35,8 @@ void CPathFind::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_ListBox);
 	DDX_Control(pDX, IDC_EDIT2, mEditBox);
-//	DDX_Control(pDX, IDC_PICTURE, m_Picture);
+	//	DDX_Control(pDX, IDC_PICTURE, m_Picture);
+	DDX_Control(pDX, IDC_COMBO1, m_ComboBox_Filetype);
 }
 
 BEGIN_MESSAGE_MAP(CPathFind, CDialog)
@@ -43,6 +44,7 @@ BEGIN_MESSAGE_MAP(CPathFind, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, &CPathFind::OnSaveData)
 	ON_BN_CLICKED(IDC_BUTTON7, &CPathFind::OnLoadData)
 	ON_WM_DROPFILES()
+	ON_CBN_SELCHANGE(IDC_COMBO1, &CPathFind::OnCbnSelchangeCombo1)
 END_MESSAGE_MAP()
 
 // CPathFind 메시지 처리기입니다.
@@ -67,8 +69,12 @@ void CPathFind::OnLbnSelchangeList1()
 	wstring wStrFilename = strFindName.GetString();
 	wstring fullpath = FindPath(wStrFilename);
 
-
-	
+	//TCHAR DD[20];
+	//const _tchar* constDD = DD;
+	//{
+	//	TCHAR DD1[20] = L"aa";
+	//	lstrcpy(DD, DD1);
+	//}
 
 
 	//int i = 0;
@@ -169,7 +175,6 @@ void CPathFind::OnLoadData()
 
 			// 패스 리스트 추가
 			IMGPATH*		pImgPath = new IMGPATH;
-			TCHAR			szPath[MAX_PATH] = L"";
 			pImgPath->wstrObjKey = wObjKey;
 			pImgPath->wstrStateKey = wStateKey;
 			pImgPath->iCount = _tstoi(wCount);
@@ -199,7 +204,7 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 {
 	// 파일 드롭시 처리
 	ClearPathData();
-
+	
 #pragma region 경로저장
 	// 폴더 드롭다운시 텍스쳐 이미지를 탐색한다.
 	// 세부적으로 파일 탐색 재설정해야될듯
@@ -222,7 +227,7 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 	{
 		DragQueryFile(hDropInfo, i, szFilePath, MAX_PATH);
 		// 이거 수정
-		CFileInfo::DirInfoExtraction(szFilePath, m_PathInfoList, FILETYPE_PNG);
+		CFileInfo::DirInfoExtraction(szFilePath, m_PathInfoList, m_ePathFileType);
 	}
 
 	Update_PathListData();
@@ -355,20 +360,18 @@ BOOL CPathFind::DestroyWindow()
 BOOL CPathFind::OnInitDialog()
 {
 	CDialog::OnInitDialog();
+	m_ComboBox_Filetype.SetCurSel(0);
+	m_ePathFileType = (E_FILETYPE)m_ComboBox_Filetype.GetCurSel();
 
-	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	//m_GameObject_Rect_Tool = nullptr;
-	//m_GameObject_Rect_Tool = GetSingle(CSuperToolSIngleton)->GetObjectRect();
-	//m_GameObject_Rect_Tool->AddRef();
 
-	//mCombo1.SetCurSel(0);
-	//m_ePathMode = (E_PathMODE)mCombo1.GetCurSel();
-
-	//mEdit2.SetWindowTextW(L"Image");
-	//mEdit2.GetWindowText(mStrTxtName);
-	//
-
-	
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+
+void CPathFind::OnCbnSelchangeCombo1()
+{
+	
+	// change FileType
+	m_ePathFileType = (E_FILETYPE)m_ComboBox_Filetype.GetCurSel();
 }

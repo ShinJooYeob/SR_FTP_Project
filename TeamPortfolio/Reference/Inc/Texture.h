@@ -30,15 +30,14 @@ private:
 
 public:
 	HRESULT Change_TextureLayer(const _tchar* tagTexureLayer , _float fFramePerSec = 6.f);
+	HRESULT Change_TextureLayer_ReturnTo(const _tchar* tagTexureLayer, const _tchar* szReturnTag, _float fFramePerSec = 6.f , _float fResturnFps = 6.f);
 	HRESULT Change_TextureLayer_Wait(const _tchar* tagTexureLayer, _float fFramePerSec = 6.f);
-	HRESULT Change_TextureLayer_ReturnTo(const _tchar* tagTexureLayer, const _tchar* szReturnTag, _float fFramePerSec = 6.f, _float fResturnFps = 6.f);
-	HRESULT Change_TextureLayer_ReturnToWait(const _tchar* tagTexureLayer, const _tchar* szReturnTag, _float fFramePerSec = 6.f, _float fResturnFps = 6.f);
-
-	const _tchar* Get_NowTextureTag() { return m_TagNowTexture; };
-	_bool Get_IsReturnTexture() { return (m_szReturnTag != nullptr); };
 
 	HRESULT Bind_Texture_AutoFrame(_float fTimeDelta);
-	HRESULT Bind_Texture(_uint iTextureIndex = 0, _uint iStageIndex = 0);
+	HRESULT Bind_Texture(_uint iTextureIndex = 0);
+
+	_uint CurrentTextureLayerSize();
+
 	HRESULT ClearTexture();
 
 private:

@@ -36,7 +36,7 @@ HRESULT CCamera_Tool::Initialize_Clone(void * pArg)
 _int CCamera_Tool::Update(_float fDeltaTime)
 {
 
-	bool isKey = GetSingle(CSuperToolSIngleton)->GetMyButtonView()->m_CheckCameraEnable.GetCheck();
+	bool isKey = (_bool)GetSingle(CSuperToolSIngleton)->GetMyButtonView()->m_CheckCameraEnable.GetCheck();
 
 	if (isKey)
 	{
@@ -58,6 +58,24 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 			m_pTransform->Move_Right(fDeltaTime);
 		}
 
+
+		if (GetKeyState('W') & 0x8000)
+		{
+			m_pTransform->Move_Forward(fDeltaTime);
+		}
+		if (GetKeyState('S') & 0x8000)
+		{
+			m_pTransform->Move_Backward(fDeltaTime);
+		}
+
+		if (GetKeyState('E') & 0x8000)
+		{
+			m_pTransform->Turn_CW(_float3(0,1,0),fDeltaTime);
+		}
+		if (GetKeyState('Q') & 0x8000)
+		{
+			m_pTransform->Turn_CCW(_float3(0, 1, 0), fDeltaTime);
+		}
 		if (GetKeyState('R') & 0x8000)
 		{
 			m_pTransform->Set_MatrixState(CTransform::STATE_POS, m_StartPos);

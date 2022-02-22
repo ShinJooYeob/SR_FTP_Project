@@ -107,13 +107,15 @@ HRESULT CGameObject::Change_Component(_uint iScenenNum, const _tchar * tagProtot
 	// EX) Rect -> Cube
 	if (Find_Components(tagComponent) != nullptr)
 	{
-		CComponent* pCloneComponent = GetSingle(CGameInstance)->Clone_Component(iScenenNum, tagPrototype, pArg);
+		// 기존 컴포넌트 삭제
+		Safe_Release(*ppOut);
+		Safe_Release(m_mapComponets[tagComponent]);
 
+		CComponent* pCloneComponent = GetSingle(CGameInstance)->Clone_Component(iScenenNum, tagPrototype, pArg);
 		if (pCloneComponent == nullptr)
 			return E_FAIL;
 
 		// 키로 접근해 해당 컴포넌트 삭제 후에 다시 넣는다.
-		Safe_Release(m_mapComponets[tagComponent]);
 		m_mapComponets[tagComponent] = pCloneComponent;
 		(*ppOut) = pCloneComponent;
 		Safe_AddRef(pCloneComponent);

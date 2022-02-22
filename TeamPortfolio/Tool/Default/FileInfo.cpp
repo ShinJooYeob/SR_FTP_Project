@@ -53,7 +53,7 @@ void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPat
 		else if (Find.IsDirectory())
 		{
 			// GetFilePath : 현재 찾은 경로를 얻어오는 함수
-			DirInfoExtraction(wstring(Find.GetFilePath()), rPathInfoList);
+			DirInfoExtraction(wstring(Find.GetFilePath()), rPathInfoList, type);
 		}
 
 		else // 파일을 찾은 상황
@@ -66,6 +66,7 @@ void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPat
 			if (false == FindType(Find, type))
 				continue;
 
+			wstring StrFiletype = Find.GetFileName().Right(3);
 
 			IMGPATH*		pImgPath = new IMGPATH;
 			TCHAR			szPath[MAX_PATH] = L"";
@@ -84,8 +85,8 @@ void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPat
 
 			// substr(시작, 끝) : 시작에서 끝에 해당하는 문자열을 얻어오는 함수
 			// L"AKIHA_AKI01_00%d.png"
-			wstrTextureName = wstrTextureName.substr(0, wstrTextureName.size() - 1) + L"%d.png";
-
+			wstrTextureName = wstrTextureName.substr(0, wstrTextureName.size() - 1) + L"%d." + StrFiletype;
+			
 			TCHAR	szBuf[MAX_STR] = L"";
 			lstrcpy(szBuf, Find.GetFilePath().GetString());
 			// D:\유준환\124기\Frame124\Texture\Stage\Player\Attack\AKIHA_AKI01_000.png
@@ -237,6 +238,9 @@ bool CFileInfo::FindType(CFileFind& Find, E_FILETYPE type)
 	{
 	case FILETYPE_PNG:
 		StrCompare = L"png";
+		break;
+	case FILETYPE_DDS:
+		StrCompare = L"dds";
 		break;
 	case FILETYPE_XML:
 		StrCompare = L"xml";

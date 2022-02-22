@@ -8,7 +8,7 @@
 
 class CToolDoc;
 BEGIN(Tool)
-class CObjectTool_Rect;
+class CObjectTool_ToolObject;
 END
 class CToolView : public CScrollView
 {

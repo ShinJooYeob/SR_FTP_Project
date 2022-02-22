@@ -1,0 +1,4 @@
+UI|Shop|1|../bin/Resources/Textures/UI/Shop.png
+UI|Run|1|../bin/Resources/Textures/UI/Run.png
+UI|Buy|1|../bin/Resources/Textures/UI/map_pivot_2.png
+UI|Exit|1|../bin/Resources/Textures/UI/map_tree_sky_1.png

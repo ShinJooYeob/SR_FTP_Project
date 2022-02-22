@@ -30,6 +30,9 @@ enum SCENEID
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;
+// 저장 파일 이름
+static const TCHAR* g_FileName_Blocktxt = TEXT("Blocks.txt");
+static const TCHAR* g_Filename_Cubetxt = TEXT("Cube.txt");
 
 namespace Tool {};
 

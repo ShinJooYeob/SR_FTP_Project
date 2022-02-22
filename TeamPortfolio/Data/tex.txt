@@ -1,1 +1,0 @@
-textures|blocks|364|..\Resource\textures\blocks\anvil_bas%d.png

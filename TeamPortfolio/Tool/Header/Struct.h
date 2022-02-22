@@ -74,23 +74,28 @@ typedef struct tagMyTexturePath
 
 }MYFILEPATH;
 
+// 오브젝트에 대한 정보
+// 오브젝트 월드 행렬 / 이름 / 텍스처경로 / 키
+enum E_OUTPUTID {OUTPUT_NONE,OUTPUT_OBJECT,OUTPUT_MAP,OUTPUT_AA,OUTPUT_END};
 typedef struct tagOutputObject
 {
+	TCHAR strObjectName[MAX_PATH];			// 오브젝트 이름
+	unsigned int StateIndex;				// 어떤 종류의 큐브인지 판단 
+	TCHAR strStrTextureFullPath[MAX_PATH];	// 사용 텍스처 경로1
+	TCHAR strStrTextureFileName[MAX_PATH];	// 사용 텍스처 경로2
+//	D3DXMATRIX	MatrixData; // 월드 행렬 정보 // 
 	D3DXVECTOR3 fScale;
+	D3DXVECTOR3 fRot;
 	D3DXVECTOR3 fPos;
-	TCHAR strObjectName[MAX_PATH];
-	TCHAR strTextureName[MAX_PATH];
-	TCHAR strTexturePath[MAX_PATH];
 
 }OUTPUT_OBJECTINFO;
 
 
-
-enum E_FILETYPE
+typedef struct tagOutputMap
 {
-	FILETYPE_PNG,
-	FILETYPE_XML,
-	FILETYPE_ALL,
-	FILETYPE_END,
+	vector<OUTPUT_OBJECTINFO> m_Vec_Map;
+	unsigned int iCount;
 
-};
+}OUTPUT_MAPINFO;
+
+
