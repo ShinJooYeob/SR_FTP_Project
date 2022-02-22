@@ -1,4 +1,9 @@
-UI|Shop|1|../bin/Resources/Textures/UI/Shop.png
-UI|Run|1|../bin/Resources/Textures/UI/Run.png
-UI|Buy|1|../bin/Resources/Textures/UI/map_pivot_2.png
-UI|Exit|1|../bin/Resources/Textures/UI/map_tree_sky_1.png
+UI|Shop1|1|../bin/Resources/Textures/UI/Shop1.png
+UI|SPEEDUP|1|../bin/Resources/Textures/UI/Run.png
+UI|Buy|1|../bin/Resources/Textures/UI/Buy.png
+UI|Exit|1|../bin/Resources/Textures/UI/Exit.png
+UI|DUBBLEJUMP|1|../bin/Resources/Textures/UI/DUBBLEJUMP.png
+UI|DASH|1|../bin/Resources/Textures/UI/DASH.png
+UI|POTION|1|../bin/Resources/Textures/UI/POTION.png
+UI|Button1|1|../bin/Resources/Textures/UI/Button1.png
+UI|Button2|1|../bin/Resources/Textures/UI/Button1.png

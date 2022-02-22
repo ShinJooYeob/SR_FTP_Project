@@ -64,12 +64,6 @@
     <Filter Include="01.GameObject\UI\Shop">
       <UniqueIdentifier>{802a000e-c779-46d3-904b-1ca8393c7319}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\UI\ITem">
-      <UniqueIdentifier>{c3d706df-ac0c-4d33-a8fc-af07b1c4e5f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\UI\Inventory_Main">
-      <UniqueIdentifier>{1322d80a-c865-458d-8105-9fef1d791317}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.Scene\05.Scene_IMGUI">
       <UniqueIdentifier>{90b323d6-6a89-43a9-9136-49e1cbede64e}</UniqueIdentifier>
     </Filter>
@@ -90,6 +84,9 @@
     </Filter>
     <Filter Include="01.GameObject\UI\Button">
       <UniqueIdentifier>{52f3b991-5a7d-4daa-9e54-5ebd3090e34d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI\UI_Image">
+      <UniqueIdentifier>{83d2780f-0c8c-4d45-a1a5-a1cba71a192c}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\Camera_Main\MiniMapUI">
       <UniqueIdentifier>{c5ed9b76-6a5e-4fb7-8f55-432eaf9463d3}</UniqueIdentifier>
@@ -141,12 +138,6 @@
     <ClInclude Include="..\public\Player.h">
       <Filter>01.GameObject\Player</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Item.h">
-      <Filter>01.GameObject\UI\ITem</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Inventory_Main.h">
-      <Filter>01.GameObject\UI\Inventory_Main</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Scene_IMGUI.h">
       <Filter>02.Scene\05.Scene_IMGUI</Filter>
     </ClInclude>
@@ -173,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="..\public\MyButton.h">
       <Filter>01.GameObject\UI\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_Image.h">
+      <Filter>01.GameObject\UI\UI_Image</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MiniMapUI.h">
       <Filter>01.GameObject\Camera_Main\MiniMapUI</Filter>
@@ -212,12 +206,6 @@
     <ClCompile Include="..\private\Camera_Main.cpp">
       <Filter>01.GameObject\Camera_Main</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Item.cpp">
-      <Filter>01.GameObject\UI\ITem</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Inventory_Main.cpp">
-      <Filter>01.GameObject\UI\Inventory_Main</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Scene_IMGUI.cpp">
       <Filter>02.Scene\05.Scene_IMGUI</Filter>
     </ClCompile>
@@ -247,6 +235,9 @@
     </ClCompile>
     <ClCompile Include="..\private\MiniMapUI.cpp">
       <Filter>01.GameObject\Camera_Main\MiniMapUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Image.cpp">
+      <Filter>01.GameObject\UI\UI_Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

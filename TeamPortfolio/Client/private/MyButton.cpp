@@ -31,13 +31,13 @@ HRESULT CMyButton::Initialize_Clone(void * pArg)
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	
+
 	_float4 vUIDesc;
-	vUIDesc =*(_float4*)pArg;
-	m_rcButtonRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
-	m_rcButtonRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
-	m_rcButtonRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
-	m_rcButtonRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
+	vUIDesc = *(_float4*)pArg;
+	m_rcRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	m_rcRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	m_rcRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	m_rcRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
 
 	if (FAILED(Set_UI_Transform(m_ComTransform, vUIDesc)))
 		return E_FAIL;
@@ -50,33 +50,97 @@ _int CMyButton::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-	
+
 	CGameInstance* pInstance = GetSingle(CGameInstance);
-	
+
 	if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Down)
 	{
 		POINT ptMouse;
 		GetCursorPos(&ptMouse);
 		ScreenToClient(g_hWnd, &ptMouse);
-
-		if (PtInRect(&m_rcButtonRect, ptMouse))
+		m_isClicked = false;
+		if (PtInRect(&m_rcRect, ptMouse))
 		{
-			if (!lstrcmp(L"Buy", m_pButtonName))
+			if (!lstrcmp(L"SPEEDUP", m_pButtonName))
 			{
-				MSGBOX("구매 완료");
-				return 5;
+				m_isClicked = true;
+				return SHOP_SPEEDUP;
+			}
+			else if (!lstrcmp(L"DUBBLEJUMP", m_pButtonName))
+			{
+				m_isClicked = true;
+				return SHOP_DUBBLEJUMP;
+			}
+			else if (!lstrcmp(L"DASH", m_pButtonName))
+			{
+				m_isClicked = true;
+				return SHOP_DASH;
+			}
+			else if (!lstrcmp(L"POTION", m_pButtonName))
+			{
+				m_isClicked = true;
+				return SHOP_POTION;
+			}
+			else if (!lstrcmp(L"Buy", m_pButtonName))
+			{
+
+				return SHOP_BUY;
 			}
 			else if (!lstrcmp(L"Exit", m_pButtonName))
-					return 99;
-			else if (!lstrcmp(L"?", m_pButtonName))
-					return 1;
-			else if (!lstrcmp(L"?", m_pButtonName))
-					return 1;
+			{
+
+				return SHOP_EXIT;
+			}
+			else if (!lstrcmp(L"Sell", m_pButtonName))
+			{
+				MSGBOX("판매 완료");
+				return SHOP_SELL;
+			}
 		}
 	}
 	return _int();
 
 }
+
+HRESULT CMyButton::SetUp_RenderState()
+{
+	if (nullptr == m_pGraphicDevice)
+		return E_FAIL;
+	if (m_isClicked)
+	{
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		//Sour => 현재 그리려고하는 그림의 색
+		//Dest => 직전까지 화면에 그려진 색
+		//
+		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+		m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(120, 255, 255, 255));
+		//
+		//
+		//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+
+
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 20);
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	}
+
+	return S_OK;
+}
+
+HRESULT CMyButton::Release_RenderState()
+{
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	return S_OK;
+}
+
 
 _int CMyButton::LateUpdate(_float fDeltaTime)
 {
@@ -104,14 +168,14 @@ _int CMyButton::Render()
 	if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
 		return E_FAIL;
 
-	/*if (FAILED(SetUp_RenderState()))
-	return E_FAIL;*/
+	if (FAILED(SetUp_RenderState()))
+		return E_FAIL;
 
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
 
-	//if (FAILED(Release_RenderState()))
-	//	return E_FAIL;
+	if (FAILED(Release_RenderState()))
+		return E_FAIL;
 
 
 
@@ -137,10 +201,22 @@ void CMyButton::Set_ButtonName(TCHAR * pButtonName)
 	{
 		m_ComTexture->Change_TextureLayer(L"Exit");
 	}
-	else if (!lstrcmp(L"?", m_pButtonName))
-		return;
-	else if (!lstrcmp(L"?", m_pButtonName))
-		return;
+	else if (!lstrcmp(L"DUBBLEJUMP", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"DUBBLEJUMP");
+	}
+	else if (!lstrcmp(L"DASH", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"DASH");
+	}
+	else if (!lstrcmp(L"SPEEDUP", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"SPEEDUP");
+	}
+	else if (!lstrcmp(L"POTION", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"POTION");
+	}
 }
 
 HRESULT CMyButton::SetUp_Components()
@@ -157,29 +233,12 @@ HRESULT CMyButton::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Shop"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
-	Safe_AddRef(m_Player_Inventory);
 
 
 	return S_OK;
 }
 
 
-
-HRESULT CMyButton::Buy_Skill(_int eSKILL)
-{
-	
-
-	if (m_Player_Inventory->Get_Skill_Price(m_eSkill) <= m_Player_Inventory->Get_Gold())
-	{
-		m_Player_Inventory->Set_Skill_Level(m_eSkill, 1);
-		m_Player_Inventory->Set_Gold(-m_Player_Inventory->Get_Skill_Price(m_eSkill));
-	}
-	else
-		MSGBOX("소지금이 부족합니다")
-
-		return S_OK;
-}
 
 
 
@@ -217,7 +276,7 @@ void CMyButton::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_Player_Inventory);
+
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);

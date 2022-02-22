@@ -29,7 +29,6 @@ private:
 
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
-	HRESULT Ready_Layer_Button(const _tchar * pLayerTag);
 	virtual HRESULT Initialize_Clone(void* pArg)override;
 
 	virtual _int Update(_float fDeltaTime)override;
@@ -39,6 +38,12 @@ public:
 	virtual _int LateRender()override;
 
 
+public:
+	CUI * Find_UI(const _tchar * tagUI);
+	HRESULT Ready_Layer_UI_Image(const _tchar * pLayerTag);
+	HRESULT Ready_Layer_Button(const _tchar * pLayerTag);
+
+
 
 private:
 	CTexture*				m_ComTexture = nullptr;
@@ -46,25 +51,31 @@ private:
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CInventory*				m_Player_Inventory = nullptr;
-	
-	
+
+
 
 private:	_float			m_fFrame = 0.f;
-	SKILLINFO			m_Skill[SKILL_END];//스킬 정보를 담아놓는 배열
-	list<CUI*>			m_UIList;
-	list<CUI*>			m_UIPrototypes;
-	bool			m_bIsPress=false;
+			SKILLINFO			m_Skill[SKILL_END]; //스킬 정보를 담아놓는 배열
+			_int				m_iChosenSkill; //현재 선택한 스킬이 뭔지 알수 있게 이넘 값 넣는 변수
+			map<const _tchar*, CUI*>			m_UIButtonList;
+			map<const _tchar*, CUI*>			m_UIList;
+			map<const _tchar*, CUI*>			m_UIPrototypes;
+			bool			m_bIsPress = false;
+			_float4			m_vUIDesc;
 public:
-	HRESULT			Update_UIList(_float fTimeDelta);
+	HRESULT			Update_UIButtonList(_float fTimeDelta);
+	
+	
 	HRESULT			LateUpdate_UIList(_float fTimeDelta);
+	HRESULT			LateUpdate_UIButtonList(_float fTimeDelta);
 private:
 	HRESULT			SetUp_Components();
 	HRESULT			SetUp_Skills();
 
-	HRESULT Set_Skill_Rect();
+	HRESULT			Set_Skill_Rect();
 
-	HRESULT			Buy_Skill(_int eSKILL);
-	
+	HRESULT			Buy_Skill(_int ChosenSkill);
+
 
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();

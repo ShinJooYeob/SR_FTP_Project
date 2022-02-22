@@ -13,13 +13,13 @@ class CInventory;
 END
 
 
-class CMyButton final :public CUI
+class CUI_Image final :public CUI
 {
 
 private:
-	explicit CMyButton(LPDIRECT3DDEVICE9 pGraphicDevice);
-	explicit CMyButton(const CMyButton& rhs);
-	virtual ~CMyButton() = default;
+	explicit CUI_Image(LPDIRECT3DDEVICE9 pGraphicDevice);
+	explicit CUI_Image(const CUI_Image& rhs);
+	virtual ~CUI_Image() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
@@ -43,18 +43,16 @@ private:
 
 
 
-
 private:
 	_float			m_fFrame = 0.f;
-	_bool			m_isClicked = false;
-	TCHAR*			m_pButtonName;
+	TCHAR*			m_pImageName;
 public:
-	void			Set_ButtonName(TCHAR* pButtonName);
+	void			Set_ImageName(TCHAR* pImageName);
 private:
 	HRESULT			SetUp_Components();
 
 public:
-	static CMyButton* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
+	static CUI_Image* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg = nullptr)override;
 	virtual void Free()override;
 
