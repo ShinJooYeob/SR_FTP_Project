@@ -1,6 +1,4 @@
 Player|Idle|67|../bin/Resources/Textures/Player/Idle/Idle_%d.png
-Player|panic|8|../bin/Resources/Textures/Player/Panic/panic_%d.png
-Player|talk|24|../bin/Resources/Textures/Player/Talk/talk_%d.png
 Player|walk|6|../bin/Resources/Textures/Player/Walk/walk.ani%d.png
 Player|jump_up|2|../bin/Resources/Textures/Player/jump_up/jump_up_%d.png
 Player|jump_down|2|../bin/Resources/Textures/Player/jump_down/jump_down_%d.png
@@ -9,4 +7,8 @@ Player|run|6|../bin/Resources/Textures/Player/run/Run_%d.png
 Player|hurt|8|../bin/Resources/Textures/Player/hurt/Hurt_%d.png
 Player|pull_down|7|../bin/Resources/Textures/Player/pull_down/PullDown_%d.png
 Player|carrywalk|9|../bin/Resources/Textures/Player/carrywalk/Carry_Walk_%d.png
-
+Player|carrydown|6|../bin/Resources/Textures/Player/carrydown/carrydown_%d.png
+Player|carryjumpup|4|../bin/Resources/Textures/Player/carryjumpup/carryjumpup_%d.png
+Player|carryjumpdown|4|../bin/Resources/Textures/Player/carryjumpdown/carryjumpdown_%d.png
+Player|carryup|6|../bin/Resources/Textures/Player/carryup/carryup_%d.png
+Player|carryIdle|1|../bin/Resources/Textures/Player/carryIdle/carryIdle.png

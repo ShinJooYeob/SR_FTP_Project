@@ -35,7 +35,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 
 	m_fNowJumpPower = m_fJumpPower = 10.f;
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
-	//m_ComTransform->Scaled(_float3(1., 0.9f, 1.f));
+	//m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
 
 	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))));
 	
@@ -56,13 +56,6 @@ _int CPlayer::Update(_float fDeltaTime)
 
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-
-
-	if (m_pCarryObject) {
-		m_pCarryObjectTransform->Set_MatrixState(CTransform::STATE_POS,
-			m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 0.35f, 0));
-
-	}
 
 
 	if (FAILED(Input_Keyboard(fDeltaTime)))
@@ -141,14 +134,24 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
 	{
-		if (m_pCarryObject == nullptr)
+		if (m_pCarryObject == nullptr && GetSingle(CGameInstance)->Get_DIKeyState(DIK_LSHIFT) & DIS_Down)
 		{
 			m_pCarryObject = pDestObjects;
 			m_pCarryObjectTransform = (CTransform*)(m_pCarryObject->Get_Component(TAG_COM(Com_Transform)));
 
+			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carryup"),TEXT("carryIdle"));
+
+			m_bIsCliming = false;
+			m_bIsRunning = false;
+			m_ComTransform->Set_MoveSpeed(1.f);
+			m_fJumpPower *= 0.5f;
+
 			Safe_AddRef(m_pCarryObject);
 			Safe_AddRef(m_pCarryObjectTransform);
 		}
+		else if(m_pCarryObject != pDestObjects)
+			m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
+
 	}
 	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Terrain)))
 	{
@@ -195,66 +198,89 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 
 
-	//등반
-	if (pInstance->Get_DIKeyState(DIK_UP) & DIS_Press)
-	{
-		if (m_vClimingBlock != NOT_EXIST_BLOCK)
-		{
-			m_ComTransform->MovetoDir(_float3(0, 1.f, 0), fDeltaTime);
-			m_fNowJumpPower = 0;
-			m_bIsJumped = 0;
-			m_bIsCliming = true;
-		}
-	}
+	if ((m_pCarryObject != nullptr) && pInstance->Get_DIKeyState(DIK_LSHIFT) & DIS_Up) {
 
-	if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_Press)
-	{
-		if (m_bIsCliming)
+		m_pCarryObjectTransform->Set_MatrixState(CTransform::STATE_POS,
+			m_ComTransform->Get_MatrixState(CTransform::STATE_POS) +
+			(m_ComTransform->Get_MatrixState(CTransform::STATE_RIGHT) * 0.6f));
+
+
+		Safe_Release(m_pCarryObject);
+		Safe_Release(m_pCarryObjectTransform);
+
+		m_pCarryObject = nullptr;
+
+		m_ComTransform->Set_MoveSpeed(2.5f);
+		m_fJumpPower *= 2.f;
+
+
+		m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carrydown"), TEXT("Idle"),12.f);
+
+	}
+	
+	
+	//등반
+	if (!m_pCarryObject) {
+		if (pInstance->Get_DIKeyState(DIK_UP) & DIS_Press)
 		{
 			if (m_vClimingBlock != NOT_EXIST_BLOCK)
 			{
+				m_ComTransform->MovetoDir(_float3(0, 1.f, 0), fDeltaTime);
 				m_fNowJumpPower = 0;
-				if (m_vDownstairsNear != NOT_EXIST_BLOCK)
+				m_bIsJumped = 0;
+				m_bIsCliming = true;
+			}
+		}
+
+		if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_Press)
+		{
+			if (m_bIsCliming)
+			{
+				if (m_vClimingBlock != NOT_EXIST_BLOCK)
 				{
-					m_fNowJumpPower = -fDeltaTime;
-					m_bIsCliming = false;
-				}
-				else
-				{
-					if (!(m_ComTexture->Get_IsReturnTexture())) 
+					m_fNowJumpPower = 0;
+					if (m_vDownstairsNear != NOT_EXIST_BLOCK)
 					{
-						m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
-						m_bIsCliming = true;
+						m_fNowJumpPower = -fDeltaTime;
+						m_bIsCliming = false;
+					}
+					else
+					{
+						if (!(m_ComTexture->Get_IsReturnTexture()))
+						{
+							m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
+							m_bIsCliming = true;
+						}
 					}
 				}
 			}
-		}
-		else
-		{
-			if (m_vDownstairsNear != NOT_EXIST_BLOCK)
+			else
 			{
-
-				if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_DoubleDown) 
+				if (m_vDownstairsNear != NOT_EXIST_BLOCK)
 				{
-					//m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
 
-					_Matrix matVeiwSpace;
-					m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
+					if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_DoubleDown)
+					{
+						//m_ComTransform->MovetoDir(_float3(0, -1.f, 0), fDeltaTime);
 
-					_float3 vPlayerViewPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
+						_Matrix matVeiwSpace;
+						m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
 
-					vPlayerViewPos.y = m_vDownstairsNear.y + 0.45f;
-					vPlayerViewPos.z = m_vDownstairsNear.z - 0.6f;
+						_float3 vPlayerViewPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matVeiwSpace);
 
-					m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vPlayerViewPos.PosVector_Matrix(matVeiwSpace.InverseMatrix()));
+						vPlayerViewPos.y = m_vDownstairsNear.y + 0.45f;
+						vPlayerViewPos.z = m_vDownstairsNear.z - 0.6f;
 
-					m_fNowJumpPower = 0;
-					m_bIsCliming = true;
-					m_ComTexture->Change_TextureLayer_ReturnToWait(TEXT("pull_down"),TEXT("climing_back"),12.f, 12.f);
+						m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vPlayerViewPos.PosVector_Matrix(matVeiwSpace.InverseMatrix()));
+
+						m_fNowJumpPower = 0;
+						m_bIsCliming = true;
+						m_ComTexture->Change_TextureLayer_ReturnToWait(TEXT("pull_down"), TEXT("climing_back"), 12.f, 12.f);
+
+					}
+
 
 				}
-
-			
 			}
 		}
 	}
@@ -273,7 +299,11 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 	//점프
 	if (m_bIsJumped < 2 && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
 	{
-		m_ComTexture->Change_TextureLayer_Wait(TEXT("jump_up"),8.f);
+		if (m_pCarryObject)
+			m_ComTexture->Change_TextureLayer_Wait(TEXT("carryjumpup"), 8.f);
+		else
+			m_ComTexture->Change_TextureLayer_Wait(TEXT("jump_up"), 8.f);
+
 		m_fNowJumpPower = m_fJumpPower;
 		m_bIsJumped++;
 		m_bIsCliming = false;
@@ -293,11 +323,20 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 	else if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
 		m_bTextureReverse = false;
 
+
+
 	if (m_pCarryObject) {
-		m_bIsCliming = false;
-		m_bIsRunning = false;
-		m_ComTransform->Set_MoveSpeed(1.f);
-		m_ComTexture->Change_TextureLayer_Wait(TEXT("carrywalk"), 3.f);
+
+		if (m_fNowJumpPower == 0 && !(m_ComTexture->Get_IsReturnTexture()))
+		{
+
+			if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
+			{
+				m_ComTexture->Change_TextureLayer_Wait(TEXT("carrywalk"));
+			}
+
+		}
+
 		return S_OK;
 	}
 
@@ -311,18 +350,21 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 		{
 			if (m_bIsCliming)
 			{
-				m_bIsRunning = false;
-				m_ComTransform->Set_MoveSpeed(2.5f);
-				
-				if (!(m_ComTexture->Get_IsReturnTexture()))
+				if (!m_pCarryObject) 
 				{
-					m_ComTexture->Change_TextureLayer_Wait(TEXT("climing_back"), 12.f);
-				}
+					m_bIsRunning = false;
+					m_ComTransform->Set_MoveSpeed(2.5f);
 
+					if (!(m_ComTexture->Get_IsReturnTexture()))
+					{
+						m_ComTexture->Change_TextureLayer_Wait(TEXT("climing_back"), 12.f);
+					}
+				}
 			}
 			else
 			{
-				if (lstrcmp(m_ComTexture->Get_NowTextureTag(), TEXT("jump_down"))) 
+				//if (lstrcmp(m_ComTexture->Get_NowTextureTag(), TEXT("jump_down"))) 
+				if (!(m_ComTexture->Get_IsReturnTexture()))
 				{
 
 					if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_DoubleDown || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_DoubleDown)
@@ -507,6 +549,10 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 
 HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 {
+	if (m_pCarryObject) {
+		m_pCarryObjectTransform->Set_MatrixState(CTransform::STATE_POS,
+			m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 0.35f, 0));
+	}
 
 	if (m_pCamera_Main->Get_bIsTuring())
 		return S_OK;
@@ -541,8 +587,12 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 			vResultPos.z = m_vDownstairsNear.z;
 			if (vResultPos.y + fGravity < m_vDownstairsNear.y + 1.0f && m_fNowJumpPower < 0) //플레이어가 지형보다 아래에 있다면
 			{
-				//m_ComTexture->Change_TextureLayer_Wait(TEXT("jump_down"));
-				m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
+
+				if (m_pCarryObject)
+					m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carryjumpdown"), TEXT("carryIdle"), 8.f);
+				else
+					m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
+
 				vResultPos.y = m_vDownstairsNear.y + 1.f;
 				m_fNowJumpPower = 0;
 				m_bIsJumped = 0;
