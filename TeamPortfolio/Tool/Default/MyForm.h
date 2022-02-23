@@ -2,6 +2,7 @@
 
 #include "PathFind.h"
 #include "Trans_Dialog.h"
+#include "MapTool.h"
 
 // CMyForm Æû ºäÀÔ´Ï´Ù.
 
@@ -28,6 +29,7 @@ public:
 	CFont			m_Font;
 	CPathFind		m_PathFind;
 	CTrans_Dialog	m_TransformDialog;
+	CMapTool		m_MapToolDialog;
 
 	CButton m_CheckCameraEnable;
 	CButton m_CheckWirframeEnable;

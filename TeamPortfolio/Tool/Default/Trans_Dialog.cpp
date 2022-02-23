@@ -118,35 +118,83 @@ HRESULT CTrans_Dialog::ResetTexture()
 	return S_OK;
 }
 
+HRESULT CTrans_Dialog::Set_CurrentUpdate_WorldMat()
+{
+	// 현재 선택된 값으로 데이터 업데이트
+	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject();
+
+	_float3 scale = CurrentToolObject->Get_Scale();
+	_float3 pos = CurrentToolObject->Get_Pos();
+
+
+
+	_tchar buf[32] = L"";
+
+	_itot_s(pos.x, buf, 10);
+	m_InputNumber[0].SetWindowText(buf);
+	_itot_s(pos.y, buf, 10);
+	m_InputNumber[1].SetWindowText(buf);
+	_itot_s(pos.z, buf, 10);
+	m_InputNumber[2].SetWindowText(buf);
+
+	_itot_s(scale.x, buf, 10);
+	m_InputNumber[6].SetWindowText(buf);
+	_itot_s(scale.y, buf, 10);
+	m_InputNumber[7].SetWindowText(buf);
+	_itot_s(scale.z, buf, 10);
+	m_InputNumber[8].SetWindowText(buf);
+
+	m_InputNumber[3].SetWindowText(L"0");
+	m_InputNumber[4].SetWindowText(L"0");
+	m_InputNumber[5].SetWindowText(L"0");
+
+	m_Silder_Rotation[0].SetPos(0);
+	m_Silder_Rotation[1].SetPos(0);
+	m_Silder_Rotation[2].SetPos(0);
+
+
+	return S_OK;
+}
+
 // CTrans_Dialog 메시지 처리기
 BOOL CTrans_Dialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
 	for (auto& slider : m_Silder_Rotation)
 	{
 		slider.SetRange(0, 360);
 	}
 
-	// 값 초기화
-	_tchar buf[10] = L"";
-	for (auto&input : m_InputNumber)
+	// 현재 선택된 오브젝트가 있다면 그 값으로 초기화한다.
+	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject();
+	if (CurrentToolObject == nullptr)
 	{
-		_itot_s(0, buf, 10);
-		input.SetWindowText(buf);
+		_tchar buf[10] = L"";
+		for (auto&input : m_InputNumber)
+		{
+			_itot_s(0, buf, 10);
+			input.SetWindowText(buf);
+		}
+		_itot_s(1, buf, 10);
+		m_InputNumber[6].SetWindowText(buf);
+		m_InputNumber[7].SetWindowText(buf);
+		m_InputNumber[8].SetWindowText(buf);
+
+
+		// 텍스처 리스트 업데이트
+		ResetTexture();
+
 	}
-	_itot_s(1, buf, 10);
-	m_InputNumber[6].SetWindowText(buf);
-	m_InputNumber[7].SetWindowText(buf);
-	m_InputNumber[8].SetWindowText(buf);
+	else
+	{
 
+		Set_CurrentUpdate_WorldMat();
+		
+		ResetTexture();
 
-	//	#TODO:  내부 블록 텍스처로 리스트 박스 업데이트.
-	ResetTexture();
-
-
+	}
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }

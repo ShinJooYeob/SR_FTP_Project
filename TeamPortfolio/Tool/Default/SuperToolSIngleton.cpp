@@ -244,26 +244,36 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* 
 	if (IDOK == Dlg.DoModal())
 	{
 		// 이름
-		//CString				str = Dlg.GetPathName().GetString();
-		//CString				Filename = PathFindFileName(str);
 
-		//const TCHAR*		pGetPath = str.GetString();
+		CString				str = Dlg.GetPathName().GetString();
+		CString				Filename = PathFindFileName(str);
 
+		const TCHAR*		pGetPath = str.GetString();
 
-		//HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+		HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
-		//if (INVALID_HANDLE_VALUE == hFile)
-		//	return E_FAIL;
+		if (INVALID_HANDLE_VALUE == hFile)
+			return E_FAIL;
 
-		//// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.
-		//OUTPUT_OBJECTINFO infoObj = obj->Get_ObjectInfo();
+		// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.
+	//	OUTPUT_OBJECTINFO infoObj;
+	//	infoObj.operator =(obj->Get_ObjectInfo());
 
-		//DWORD	dwByte = 0;
+		DWORD	dwByte = 0;
 
-		//// 저장
-		//WriteFile(hFile, &infoObj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+		// 저장
+		// WriteFile(hFile, &infoObj.strObjectName, sizeof(wstring), &dwByte, nullptr);
+		// WriteFile(hFile, &infoObj.StateIndex, sizeof(int), &dwByte, nullptr);
+		// WriteFile(hFile, &infoObj.TexDesc.eTextureType, sizeof(int), &dwByte, nullptr);
+		// WriteFile(hFile, &infoObj.TexDesc.szTextFilePath, sizeof(wstring), &dwByte, nullptr);
+		// WriteFile(hFile, &infoObj.WorldMatData, sizeof(D3DXMATRIX), &dwByte, nullptr);
 
-		//CloseHandle(hFile);
+		WriteFile(hFile, &obj->Get_ObjectInfo(), sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+
+		
+		
+
+		CloseHandle(hFile);
 
 	}
 	return S_OK;
@@ -280,16 +290,14 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 
 	CFileDialog dlg(TRUE, _T("*.dat"), _T(""), OFN_HIDEREADONLY, szFilter);
 
-	OUTPUT_OBJECTINFO infoobj = {};
+	OUTPUT_OBJECTINFO infoObj;
 
 	if (IDOK == dlg.DoModal())
 	{
 
 		CString pathName = dlg.GetPathName();
 
-		// 해석 코드
-
-
+		
 		// 이름
 		CString				str = dlg.GetPathName().GetString();
 		const TCHAR*		pGetPath = str.GetString();
@@ -302,9 +310,20 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 		// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.		
 		DWORD	dwByte = 0;
 
+
 		// 로드
-		ReadFile(hFile, &infoobj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
-		m_Object_Rect->Set_Data(infoobj);
+
+		//ReadFile(hFile, &infoObj.strObjectName, sizeof(wstring), &dwByte, nullptr);
+		//ReadFile(hFile, &infoObj.StateIndex, sizeof(int), &dwByte, nullptr);
+		//ReadFile(hFile, &infotex.eTextureType, sizeof(int), &dwByte, nullptr);
+		//ReadFile(hFile, &infotex.szTextFilePath, sizeof(wstring), &dwByte, nullptr);
+		//ReadFile(hFile, &infoObj.WorldMatData, sizeof(D3DXMATRIX), &dwByte, nullptr);
+
+		ReadFile(hFile, &infoObj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+
+		// 새 오브젝트 생성
+		Create_ToolObject_Data(infoObj);
+
 		CloseHandle(hFile);
 	}
 
@@ -319,6 +338,21 @@ HRESULT CSuperToolSIngleton::Create_ToolObject_Button(wstring name)
 	m_pMyButtomView->Update_ViewListBox();
 	return S_OK;
 }
+
+HRESULT CSuperToolSIngleton::Create_ToolObject_Data(const OUTPUT_OBJECTINFO& data)
+{
+	// 새 오브젝트 생성뒤 넣기
+	// 1. 디폴트 오브젝트 생성
+	CObjectTool_ToolObject* newobj = Create_New_ToolObject(data.strObjectName);
+	// 2. 데이터 세팅
+	newobj->Set_NewOutputData(data);
+	// 3. 정보 업데이트
+	Change_ToolObject(newobj);
+	// 리스타 박스 업데이트
+	m_pMyButtomView->Update_ViewListBox();
+	return S_OK;
+}
+
 
 HRESULT CSuperToolSIngleton::Select_ToolObject_Button(int index)
 {
@@ -356,6 +390,7 @@ HRESULT CSuperToolSIngleton::Change_ToolObject(CObjectTool_ToolObject * obj)
 	Safe_Release(m_Object_Rect);
 	// 새 오브젝트 대입
 	m_Object_Rect = obj;
+
 	// Safe_AddRef
 	Safe_AddRef(m_Object_Rect);
 	return S_OK;

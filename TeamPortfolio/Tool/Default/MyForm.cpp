@@ -146,7 +146,9 @@ void CMyForm::OnBnClickedButtonLoad()
 
 void CMyForm::OnMapSave()
 {
-
+	if (nullptr == m_MapToolDialog.GetSafeHwnd())
+		m_MapToolDialog.Create(IDD_MAPTOOL);	// 해당 id 에 맞는 다이얼로그 생성
+	m_MapToolDialog.ShowWindow(SW_SHOW);
 }
 
 
@@ -194,14 +196,15 @@ void CMyForm::OnLButtonDown(UINT nFlags, CPoint point)
 	CFormView::OnLButtonDown(nFlags, point);
 }
 
-
 void CMyForm::OnBnClickedButton_CreateObject()
 {
 	static int num = 0;
 	num++;
 	TCHAR t[64];
 	wsprintf(t,L"new_%d",num);
-	GetSingle(CSuperToolSIngleton)->Create_ToolObject_Button(t);
+	wstring filename = t;
+
+	GetSingle(CSuperToolSIngleton)->Create_ToolObject_Button(filename);
 }
 
 
@@ -213,6 +216,15 @@ void CMyForm::OnLbnSelchangeList_ObjectSelect()
 	
 
 	GetSingle(CSuperToolSIngleton)->Select_ToolObject_Button(index);
+	// 텍스처와 위치 업데이트
+	if (nullptr != m_TransformDialog.GetSafeHwnd())
+		m_TransformDialog.Set_CurrentUpdate_WorldMat(); // 현재 오브젝트 데이터로 업데이트
+
+	else
+	{
+		m_TransformDialog.Create(IDD_CTrans_Dialog);	
+		m_TransformDialog.Set_CurrentUpdate_WorldMat(); 
+	}
 	GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject()->Texture_CurrentBind();
 
 

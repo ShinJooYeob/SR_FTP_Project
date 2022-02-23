@@ -211,6 +211,7 @@
     <ClInclude Include="Camera_Tool.h" />
     <ClInclude Include="FileInfo.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MapTool.h" />
     <ClInclude Include="MiniView.h" />
     <ClInclude Include="MyForm.h" />
     <ClInclude Include="ObjectTool_ToolObject.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="Camera_Tool.cpp" />
     <ClCompile Include="FileInfo.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="MiniView.cpp" />
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="ObjectTool_ToolObject.cpp" />

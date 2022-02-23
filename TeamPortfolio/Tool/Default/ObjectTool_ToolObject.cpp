@@ -105,17 +105,11 @@ _int CObjectTool_ToolObject::LateRender()
 
 HRESULT CObjectTool_ToolObject::Set_Defult(wstring objectName)
 {
-	OUTPUT_OBJECTINFO info;
 	
-	Set_Position(_float3(0,0,0));
-	Set_Rotation(_float3(0, 0, 0));
-	Set_Scaled(_float3(1, 1, 1));
-	info.StateIndex = 0;
-	lstrcpy(info.strObjectName, objectName.c_str());
-	lstrcpy(info.strStrTextureFullPath, L"");
-	lstrcpy(info.strStrTextureFileName, L"");	
-	m_tOutputData = info;
-	return E_NOTIMPL;
+	lstrcpy(m_tOutputData.strObjectName, objectName.c_str());
+	m_tOutputData.TexDesc.eTextureType = (_uint)m_ComTexture->Get_TextureDESC().eTextureType;
+	lstrcpy(m_tOutputData.TexDesc.szTextFilePath, m_ComTexture->Get_TextureDESC().szTextFilePath);
+	return S_OK;
 }
 
 HRESULT CObjectTool_ToolObject::Set_Scaled(_float3 scale)
@@ -167,19 +161,15 @@ HRESULT CObjectTool_ToolObject::Set_Position(_float3 Position)
 	return S_OK;
 }
 
-HRESULT CObjectTool_ToolObject::Set_Texture(const _tchar* pathdata)
+HRESULT CObjectTool_ToolObject::Set_Texture(wstring pathdata)
 {
 	// 기존에 있던 텍스쳐 날림
 	NULL_CHECK_BREAK(m_ComTexture);
 
 	m_ComTexture->ClearTexture();
-	lstrcpy(m_tOutputData.strStrTextureFullPath, pathdata);
+	lstrcpy(m_tOutputData.TexDesc.szTextFilePath,pathdata.c_str());
 
-
-	CTexture::tagTextureDesc desc = {};
-	desc.szTextFilePath = m_tOutputData.strStrTextureFullPath;
-
-	if (FAILED(m_ComTexture->Initialize_Prototype(&desc)))
+	if (FAILED(m_ComTexture->Initialize_Prototype(&m_tOutputData.TexDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -194,16 +184,16 @@ HRESULT CObjectTool_ToolObject::Set_TextureNum_Bind(int num)
 	return S_OK;
 }
 
-HRESULT CObjectTool_ToolObject::Set_Data(OUTPUT_OBJECTINFO data)
-{
-	m_tOutputData = data;
-
-	Set_Position(m_tOutputData.fPos);
-	Set_Scaled(m_tOutputData.fScale);
-	Set_Texture(m_tOutputData.strStrTextureFullPath);
-	m_ComTexture->Bind_Texture(m_tOutputData.StateIndex);
-	return S_OK;
-}
+//HRESULT CObjectTool_ToolObject::Set_Data(OUTPUT_OBJECTINFO data)
+//{
+//	m_tOutputData = data;
+//
+//	Set_Position(m_tOutputData.fPos);
+//	Set_Scaled(m_tOutputData.fScale);
+//	Set_Texture(m_tOutputData.strStrTextureFullPath);
+//	m_ComTexture->Bind_Texture(m_tOutputData.StateIndex);
+//	return S_OK;
+//}
 
 HRESULT CObjectTool_ToolObject::Set_ViBuffer_Change()
 {
@@ -249,6 +239,8 @@ HRESULT CObjectTool_ToolObject::Texture_CurrentBind()
 	NULL_CHECK_BREAK(m_ComTexture);
 
 	m_ComTexture->Bind_Texture(m_tOutputData.StateIndex);
+	CTexture::TEXTUREDESC t = m_ComTexture->Get_TextureDESC();
+
 	return S_OK;
 }
 
@@ -269,6 +261,33 @@ HRESULT CObjectTool_ToolObject::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Cube), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 	
+	return S_OK;
+}
+
+
+
+HRESULT CObjectTool_ToolObject::Set_NewOutputData(const OUTPUT_OBJECTINFO& data)
+{
+	m_tOutputData = data;
+	// 현재 정보로 컴포넌트 업데이트
+	Set_Output2Component();
+
+	return S_OK;
+}
+
+HRESULT CObjectTool_ToolObject::Set_Output2Component()
+{
+	// Ouput -> 컴포넌트로 동기화
+	m_ComTransform->Set_Matrix(m_tOutputData.WorldMatData);
+
+	return S_OK;
+}
+
+HRESULT CObjectTool_ToolObject::Set_Component2Output()
+{
+	// 컴포넌트 -> Ouput으로 동기화
+	memcpy(&m_tOutputData.WorldMatData, &m_ComTransform->Get_WorldMatrix(),sizeof(_Matrix));
+
 	return S_OK;
 }
 

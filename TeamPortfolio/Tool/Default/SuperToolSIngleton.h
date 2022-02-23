@@ -16,6 +16,7 @@ END
 #include "PathFind.h"
 #include "Trans_Dialog.h"
 #include "ToolView.h"
+#include "MapTool.h"
 
 BEGIN(Tool)
 
@@ -72,12 +73,16 @@ public:
 
 	CPathFind*  GetPathTool() {	return m_pPathDialog; }
 	CTrans_Dialog* GetTransTool() { return m_pTransDialog; }
+	CMapTool* GetMapTool() { return m_pMapToolDialog; }
 
 public:
 	HRESULT SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd);
 	HRESULT LoadData_Object(CWnd * cwnd);
 	HRESULT Create_ToolObject_Button(wstring name);
+	HRESULT Create_ToolObject_Data(const OUTPUT_OBJECTINFO& data);
+
 	HRESULT Select_ToolObject_Button(int index);
+	
 
 private:
 	CObjectTool_ToolObject* Create_New_ToolObject(wstring name);
@@ -117,6 +122,7 @@ private:
 	CToolView*			m_pToolView;	// 툴 뷰
 	CPathFind*			m_pPathDialog;	// 경로 창
 	CTrans_Dialog*		m_pTransDialog;	// 위치 조정 창
+	CMapTool*			m_pMapToolDialog;
 
 
 private:

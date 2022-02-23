@@ -43,6 +43,7 @@ public:
 	_uint CurrentTextureLayerSize();
 
 	HRESULT ClearTexture();
+	const TEXTUREDESC& Get_TextureDESC() const	{return m_TextureDesc;}
 
 private:
 	//얘는 다른 클론들과 공유 X
@@ -61,6 +62,7 @@ private:
 	_uint										m_iNumMaxTexture = 0;
 	const _tchar*								m_TagNowTexture = nullptr;
 	const _tchar*								m_szReturnTag = nullptr;
+	TEXTUREDESC									m_TextureDesc;
 
 private:
 	HRESULT Read_TextFile(TYPE eTextureType, const _tchar* szFilePath);

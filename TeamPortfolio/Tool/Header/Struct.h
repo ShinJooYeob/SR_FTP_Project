@@ -77,16 +77,55 @@ typedef struct tagMyTexturePath
 // 오브젝트에 대한 정보
 // 오브젝트 월드 행렬 / 이름 / 텍스처경로 / 키
 enum E_OUTPUTID {OUTPUT_NONE,OUTPUT_OBJECT,OUTPUT_MAP,OUTPUT_AA,OUTPUT_END};
+#define  STR_MAX 64
+
+typedef struct tagOutputTetureDESC
+{
+	_uint		eTextureType;
+	TCHAR		szTextFilePath[STR_MAX];
+
+}OUTPUT_TETURE;
+
 typedef struct tagOutputObject
 {
-	TCHAR strObjectName[MAX_PATH];			// 오브젝트 이름
-	unsigned int StateIndex;				// 어떤 종류의 큐브인지 판단 
-	TCHAR strStrTextureFullPath[MAX_PATH];	// 사용 텍스처 경로1
-	TCHAR strStrTextureFileName[MAX_PATH];	// 사용 텍스처 경로2
-//	D3DXMATRIX	MatrixData; // 월드 행렬 정보 // 
-	D3DXVECTOR3 fScale;
-	D3DXVECTOR3 fRot;
-	D3DXVECTOR3 fPos;
+	explicit tagOutputObject()
+		:strObjectName(L"")
+	{
+		D3DXMatrixIdentity(&WorldMatData);
+		StateIndex = 0;
+		TexDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+		lstrcpy(TexDesc.szTextFilePath, L"");
+	}
+	explicit tagOutputObject(const tagOutputObject& rhs)
+	{
+		WorldMatData = rhs.WorldMatData;
+
+		StateIndex = rhs.StateIndex;
+		lstrcpy(TexDesc.szTextFilePath, rhs.strObjectName);
+		TexDesc = rhs.TexDesc;
+		lstrcpy(TexDesc.szTextFilePath,rhs.TexDesc.szTextFilePath);
+	}
+
+
+	tagOutputObject&  operator=(const tagOutputObject& rhs)
+	{
+		WorldMatData = rhs.WorldMatData;
+
+		StateIndex = rhs.StateIndex;
+
+		lstrcpy(TexDesc.szTextFilePath, rhs.strObjectName);
+
+		TexDesc = rhs.TexDesc;
+
+		lstrcpy(TexDesc.szTextFilePath, rhs.TexDesc.szTextFilePath);
+		return *this;
+	}
+
+
+	TCHAR			strObjectName[STR_MAX];	// 오브젝트 이름 / 파일 이름
+	unsigned int	StateIndex;		// 어떤 종류의 큐브인지 판단 
+	OUTPUT_TETURE	TexDesc;			// 텍스처 정보
+	D3DXMATRIX		WorldMatData;		// 월드 행렬 정보 // 
 
 }OUTPUT_OBJECTINFO;
 
@@ -99,3 +138,12 @@ typedef struct tagOutputMap
 }OUTPUT_MAPINFO;
 
 
+//typedef struct tagTestString
+//{
+//	wstring a1;
+//	wstring a2;
+//	wstring a3;
+//
+//
+//}OUTPUT_WSTRING;
+//

@@ -32,14 +32,21 @@ public:
 	HRESULT Set_Scaled(_float3 scale);
 	HRESULT Set_Rotation(_float3 rot);
 	HRESULT Set_Position(_float3 Position);
-	HRESULT Set_Texture(const _tchar* pathdata);
+	HRESULT Set_Texture(wstring pathdata);
 	HRESULT Set_TextureNum_Bind(int num = 0);
-	HRESULT Set_Data(OUTPUT_OBJECTINFO data);
+
+	HRESULT	Set_NewOutputData(const OUTPUT_OBJECTINFO& data);
+
+	// 각 정보 동기화
+	HRESULT	Set_Output2Component();
+	HRESULT	Set_Component2Output();
+
+
 
 	HRESULT Set_ViBuffer_Change();
 	void	Set_Visble(_bool b) { m_isVisble = b; }
 
-	const OUTPUT_OBJECTINFO& Get_ObjectInfo()const { return m_tOutputData; }
+	const OUTPUT_OBJECTINFO& Get_ObjectInfo() { Set_Component2Output(); return m_tOutputData; }
 	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS);  }
 	_float3 Get_Scale() { return m_ComTransform->Get_MatrixScale(); }
 
@@ -47,14 +54,13 @@ public:
 
 private:
 	HRESULT			SetUp_Components();
-
 private:
 	_bool					m_isRect = true;
 	_bool					m_isCubeRot = false;
 	_bool					m_isVisble = true; // 랜더링 유무
 
 
-	float					mYDegree = 0;
+	_float3					m_Rot3;// 회전값 일단 생략
 
 	CTransform*				m_ComTransform = nullptr;
 	CVIBuffer*				m_ComVIBuffer = nullptr;
