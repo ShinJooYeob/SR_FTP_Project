@@ -45,7 +45,18 @@ _int CObject_PortalCube_A::Update(_float fTimeDelta)
 
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
 
+	
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	//포탈을 타지 않고 빠져나왔을 때 Seconds의 값은 그대로 있는 문제를 해결하기 위한 예외처리
+	if (Collision == true)
+	{
+		Collision = false;
+	}
+	else
+	{
+		Seconds = 0;
+	}
 
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -110,6 +121,7 @@ _int CObject_PortalCube_A::Object_Transfer(_float fDeltaTime)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
+	Collision = true;
 
 	Seconds += fDeltaTime;
 

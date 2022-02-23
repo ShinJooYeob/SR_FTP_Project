@@ -45,7 +45,7 @@ private:
 	CCollision*				m_pCollisionCom = nullptr;
 
 	_float					Seconds = 0.f;
-
+	_bool					Collision = false;
 
 public:
 	static CObject_PortalCube_B* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

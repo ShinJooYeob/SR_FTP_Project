@@ -47,6 +47,14 @@ _int CObject_PortalCube_B::Update(_float fTimeDelta)
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
+	if (Collision == true)
+	{
+		Collision = false;
+	}
+	else
+	{
+		Seconds = 0;
+	}
 	RELEASE_INSTANCE(CGameInstance);
 
 	return _int();
@@ -106,6 +114,8 @@ _int CObject_PortalCube_B::Obsever_On_Trigger(CGameObject * pDestObjects, _float
 _int CObject_PortalCube_B::Object_Transfer(_float fDeltaTime)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	Collision = true;
 
 	Seconds += fDeltaTime;
 
