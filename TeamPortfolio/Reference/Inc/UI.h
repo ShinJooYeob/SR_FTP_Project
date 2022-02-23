@@ -16,13 +16,14 @@ public:
 	virtual _int LateUpdate(_float fTimeDelta) override;
 	virtual _int Render() override;
 	virtual _int LateRender()override;
-
+	virtual _float Get_CamDistance()  const override { return m_fDepth; }
 
 	// Set Compo³¡³ª°í UIDesc¿¡ fX,fY,SizeX,SizeY º¤ÅÍ ³ÖÀ¸¸éµÊ
 	HRESULT Set_UI_Transform(class CTransform* pComTransform,_float4 vUIDesc);
 
 protected:
 	_float				m_fX, m_fY, m_fSizeX, m_fSizeY;
+	_float				m_fDepth=0;
 	RECT				m_rcRect;
 public:
 	virtual void Free() override;
