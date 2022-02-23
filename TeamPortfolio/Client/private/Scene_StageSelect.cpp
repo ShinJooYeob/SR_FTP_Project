@@ -22,8 +22,7 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
 		return E_FAIL;
-	//if (FAILED(Ready_Layer_Cube(TEXT("Layer_CarryCube"))))
-	//	return E_FAIL;
+
 
 
 	return S_OK;
@@ -104,6 +103,17 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 
 
 
+
+	for (_uint i = 0; i < 6; i++)
+	{
+		for (_uint j = 0; j < 6; j++) {
+
+			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i , (_float)-6, (_float)j)))
+				return E_FAIL;
+		}
+	}
+
+
 	return S_OK;
 }
 
@@ -158,15 +168,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 }
 
 
-HRESULT CScene_StageSelect::Ready_Layer_Cube(const _tchar * pLayerTag)
-{
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube"), &_float3((_float)6, (_float)1, (_float)0)))
-		return E_FAIL;
-
-
-	return S_OK;
-}
 
 HRESULT CScene_StageSelect::Ready_Layer_FixCube(const _tchar * pLayerTag)
 {

@@ -61,7 +61,7 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (m_bIsDead) {
 		m_fDeadTime += fDeltaTime;
 
-		if (m_fDeadTime > 5.f) {
+		if (m_fDeadTime > 3.f) {
 			m_bIsDead = false;
 			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0, 1.f, 0));
 			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
@@ -80,14 +80,12 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (FAILED(Find_FootHold_Object(fDeltaTime))) 
 		return E_FAIL;
 
+
 	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
 		return E_FAIL;
 
+
 	}
-
-	if (FAILED(Set_CamY(fDeltaTime)))
-		return E_FAIL;
-
 
 	return _int();
 }
@@ -99,6 +97,8 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
 
+	if (FAILED(Set_CamY(fDeltaTime)))
+		return E_FAIL;
 
 
 	//렌더링 그룹에 넣어주는 역활
@@ -689,13 +689,23 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 HRESULT CPlayer::Set_CamY(_float fDeltaTime)
 {
 	CTransform* pCamTransform = m_pCamera_Main->Get_Camera_Transform();
-	_float3 vCamPos = pCamTransform->Get_MatrixState(CTransform::STATE_POS);
+	_Matrix matCamWorld = pCamTransform->Get_WorldMatrix();
 
-	vCamPos.y = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, vCamPos.y,
-		m_ComTransform->Get_MatrixState(CTransform::STATE_POS).y + 3.f, fDeltaTime, fDeltaTime * 2.5f);
+	_float3 vPlayerViewPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matCamWorld.InverseMatrix());
 
 
-	pCamTransform->Set_MatrixState(CTransform::STATE_POS, vCamPos);
+	_float3 vNewCamPos = { 0,0,0 };
+
+
+	vNewCamPos.x = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
+		vPlayerViewPos.x + 3.f, fDeltaTime, fDeltaTime * 2.5f);
+	vNewCamPos.y = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
+		vPlayerViewPos.y + 3.f, fDeltaTime, fDeltaTime * 2.5f);
+
+	vNewCamPos = vNewCamPos.PosVector_Matrix(matCamWorld);
+
+
+	pCamTransform->Set_MatrixState(CTransform::STATE_POS, vNewCamPos);
 	return S_OK;
 }
 

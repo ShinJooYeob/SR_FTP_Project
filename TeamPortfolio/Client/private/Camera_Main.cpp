@@ -177,19 +177,22 @@ HRESULT CCamera_Main::Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelt
 	
 	vCameraPos.y = 0;
 
-	_float fRadianAngle = GetSingle(CGameInstance)->Easing(TYPE_ExpoInOut, m_fStartAngle, m_fTargetAngle, m_fPassedTime);
+	_float fDegreeAngle = GetSingle(CGameInstance)->Easing(TYPE_ExpoInOut, m_fStartAngle, m_fTargetAngle, m_fPassedTime);
 
 	if (m_fPassedTime >= 1.f) 
 	{
 		m_IsTurning = false;
-		m_fStartAngle = m_fTargetAngle;
-		fRadianAngle = m_fTargetAngle;
+		fDegreeAngle = m_fTargetAngle;
+		if (m_fTargetAngle < 0)
+			m_eLoookState = _uint((_int((m_fTargetAngle + 360) / 90)) % 4);
+		else
+			m_eLoookState = _uint((_int((m_fTargetAngle) / 90)) % 4);
 	}
 
 	_float fDist = vCameraPos.Get_Distance(_float3(0,0,0));
 
-	vCameraPos.x = cosf(fRadianAngle) * fDist;
-	vCameraPos.z = sinf(fRadianAngle) * fDist;
+	vCameraPos.x = cosf(D3DXToRadian(fDegreeAngle)) * fDist;
+	vCameraPos.z = sinf(D3DXToRadian(fDegreeAngle)) * fDist;
 
 	vCameraPos.y = vOriginCameraPos.y;
 	vCameraPos += vRevPos;
@@ -242,6 +245,7 @@ HRESULT CCamera_Main::Reset_LookAtAxis(void * pArg)
 	m_pTransform->Set_MatrixState(CTransform::STATE_POS, m_CameraDesc.vEye);
 
 
+	m_eLoookState = CameraLookStateID::Look_Front_Axis;
 
 	return S_OK;
 }
@@ -426,6 +430,10 @@ HRESULT CCamera_Main::SetUp_DefaultLookAtAxis(void* pArg)
 	m_pTransform->Set_MatrixState(CTransform::STATE_POS, m_CameraDesc.vEye);
 
 
+	m_eLoookState = CameraLookStateID::Look_Front_Axis;
+
+
+
 
 	return S_OK;
 }
@@ -494,11 +502,6 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 
 
 
-	if (pInstance->Get_DIKeyState(DIK_V) & DIS_Down)
-	{
-		Change_Camera_Demension();
-	}
-
 	if (pInstance->Get_DIKeyState(DIK_1) & DIS_Down)
 	{
 		CameraEffect(CCamera_Main::CAM_EFT_FADE_IN, fDeltaTime);
@@ -517,22 +520,17 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 	}
 
 
+
 	if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
 	{
 
-		_float3 vOriginCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
-		_float3 vRotAxis = m_CameraDesc.vWorldRotAxis;
-		vRotAxis.y = 0;
-		_float3 vCameraPos = vOriginCameraPos - vRotAxis;
-		vCameraPos.y = 0;
 
-		_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1, 0, 0)));
+		m_CameraDesc.vWorldRotAxis = _float3(0,0,16.f).PosVector_Matrix(m_pTransform->Get_WorldMatrix());
 
-		if (0 > vCameraPos.z)
-			fRadianAngle = 2 * D3DX_PI - fRadianAngle;
 
-		m_fStartAngle = fRadianAngle;
-		m_fTargetAngle = fRadianAngle + D3DXToRadian(90);
+		m_fStartAngle = (m_eLoookState ) * 90.f;
+		m_fTargetAngle = (m_eLoookState + 1) * 90.f;
+
 		m_fPassedTime = 0;
 		m_IsTurning = true;
 
@@ -540,19 +538,14 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 
 	if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
 	{
-		_float3 vOriginCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
-		_float3 vRotAxis = m_CameraDesc.vWorldRotAxis;
-		vRotAxis.y = 0;
-		_float3 vCameraPos = vOriginCameraPos - vRotAxis;
-		vCameraPos.y = 0;
 
-		_float fRadianAngle = acosf(vCameraPos.Get_Nomalize().Get_Dot(_float3(1, 0, 0)));
+		m_CameraDesc.vWorldRotAxis = _float3(0, 0, 16.f).PosVector_Matrix(m_pTransform->Get_WorldMatrix());
 
-		if (0 > vCameraPos.z)
-			fRadianAngle = 2 * D3DX_PI - fRadianAngle;
+		m_fStartAngle = (m_eLoookState) * 90.f;
 
-		m_fStartAngle = fRadianAngle;
-		m_fTargetAngle = fRadianAngle - D3DXToRadian(90);
+
+		m_fTargetAngle = (m_eLoookState - 1) * 90.f;
+
 		m_fPassedTime = 0;
 		m_IsTurning = true;
 
@@ -565,10 +558,6 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 
 
 
-	if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_RBUTTON) & DIS_DoubleDown)
-	{
-		Change_Camera_Demension();
-	}
 
 
 	return S_OK;

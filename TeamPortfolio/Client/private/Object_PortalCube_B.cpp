@@ -112,9 +112,9 @@ _int CObject_PortalCube_B::Object_Transfer(_float fDeltaTime)
 	if (Seconds > 2)
 	{
 
-		CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
+		CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(m_eNowSceneNum, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
 
-		CTransform* PortalCube_A = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_PortalCube_A"), TAG_COM(Com_Transform));
+		CTransform* PortalCube_A = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(m_eNowSceneNum, TEXT("Layer_PortalCube_A"), TAG_COM(Com_Transform));
 
 		_float3 PortalCube_A_Pos = PortalCube_A->Get_MatrixState(CTransform::STATE_POS);
 
@@ -144,7 +144,7 @@ HRESULT CObject_PortalCube_B::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_PortalCube_B_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Object_PortalCube_B_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
