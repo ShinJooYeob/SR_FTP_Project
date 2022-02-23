@@ -52,6 +52,8 @@ HRESULT CScene_Stage2::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Object_RightCube(TEXT("Layer_RightCube"))))
 		return E_FAIL;
+	if (FAILED(Ready_Layer_Object_VanishCube(TEXT("Layer_VanishCube"))))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -211,14 +213,21 @@ HRESULT CScene_Stage2::Ready_Layer_Object_DescentCube(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage2::Ready_Layer_Object_LeftCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_LeftCube"), &_float3(-2.f, -1.f, -1.f)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_LeftCube"), &_float3(-8.f, -1.f, -1.f)))
 		return E_FAIL;
 	return S_OK;
 }
 
 HRESULT CScene_Stage2::Ready_Layer_Object_RightCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_RightCube"), &_float3(2.f, -1.f, -1.f)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_RightCube"), &_float3(-6.f, -1.f, -1.f)))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CScene_Stage2::Ready_Layer_Object_VanishCube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_VanishCube"), &_float3(9.f, -1.f, -1.f)))
 		return E_FAIL;
 	return S_OK;
 }

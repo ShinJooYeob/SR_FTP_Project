@@ -20,6 +20,7 @@
 #include "Object_DescentCube.h"
 #include "Object_RightCube.h"
 #include "Object_LeftCube.h"
+#include "Object_VanishCube.h"
 #include "MyButton.h"
 
 _uint CALLBACK LoadingThread(void* _Prameter)
@@ -247,6 +248,11 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_LeftCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//사라지는 큐브
+	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_VanishCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
 	//무브 큐브
 	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
@@ -254,8 +260,9 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Sky"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//고정되어 있는 큐브
 	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP; //고정되어 있는 큐브
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_FixCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
@@ -291,6 +298,8 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_LeftCube"), CObject_LeftCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_RightCube"), CObject_RightCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_VanishCube"), CObject_VanishCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 

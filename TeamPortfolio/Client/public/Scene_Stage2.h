@@ -41,6 +41,9 @@ private:
 	HRESULT Ready_Layer_Object_LeftCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Object_RightCube(const _tchar* pLayerTag);
 
+
+	HRESULT Ready_Layer_Object_VanishCube(const _tchar* pLayerTag);//사라지는 큐브
+
 	HRESULT Ready_Layer_OrbitCube(const _tchar* pLayerTag);// 공전을 위한 큐브
 
 	D3DLIGHT9		m_Light;
