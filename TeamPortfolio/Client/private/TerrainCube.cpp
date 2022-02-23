@@ -38,7 +38,6 @@ HRESULT CTerrainCube::Initialize_Clone(void * pArg)
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
-
 	return S_OK;
 }
 

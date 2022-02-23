@@ -191,7 +191,7 @@ HRESULT CScene_Stage2::Ready_Layer_Object_PortalCube_B(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage2::Ready_Layer_Object_RisingCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_RisingCube")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_RisingCube"),&_float3(1.f, -1.f, 2.f)))
 		return E_FAIL;
 	return S_OK;
 }

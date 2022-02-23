@@ -44,10 +44,11 @@ private:
 
 	CCollision*				m_pCollisionCom = nullptr;
 
-	_float					Seconds = 0.f;
 
-	_bool					m_bCollisionSwitch = false;
+	_float					m_fTimer = 0.f;
+	_float					Seconds = 0.f;
 	_float3					m_fTempPos;
+	_bool					m_bCollisionSwitch = false;
 
 
 public:
