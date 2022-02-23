@@ -44,6 +44,9 @@ _int CObject_MoveCube::Update(_float fTimeDelta)
 
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FLEXIBLE, this);
 
+	//m_ComTransform->MovetoDir( _float3(0, -0.1f, 0), fTimeDelta);
+	//m_ComTransform->MovetoTarget(m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, -1.f, 0), fTimeDelta);
+
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
@@ -135,7 +138,7 @@ _int CObject_MoveCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCo
 
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_PushCube")))
 	{
-		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
+		//m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_GravityCube")))
@@ -145,7 +148,11 @@ _int CObject_MoveCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCo
 		//m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 		//m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
-	
+	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_RisingCube")))
+	{
+		//Collision_Pushed는 본인이 밀리는 함수인듯
+		int i = 0;
+	}
 
 
 	return _int();

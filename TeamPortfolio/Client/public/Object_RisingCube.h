@@ -28,6 +28,7 @@ public:
 	virtual _int LateRender()override;
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
+	virtual _int Collision_Rising(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime);
 
 private:
 	HRESULT SetUp_Components();
@@ -44,6 +45,8 @@ private:
 	CCollision*				m_pCollisionCom = nullptr;
 
 	_float					Seconds = 0.f;
+
+	_bool					m_bCollisionSwitch = false;
 
 
 public:

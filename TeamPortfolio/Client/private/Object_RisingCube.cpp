@@ -33,7 +33,7 @@ HRESULT CObject_RisingCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(1.f, 0.f, 2.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(1.f, -1.f, 2.f));
 
 	return S_OK;
 }
@@ -97,9 +97,25 @@ _int CObject_RisingCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 
 {
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
-
+		Collision_Rising(pDestObjects, fCollision_Distance, fDeltaTime);
+		
 	}
 
+	return _int();
+}
+
+_int CObject_RisingCube::Collision_Rising(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
+{
+	_float3 RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	//속도 조절 가능
+	fDeltaTime *= 0.5f;
+	//_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds - 3.f, 2.0f);
+
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y+ fDeltaTime, RisingCubePos.z));
+
+	//pDestObjects의 y값을 높이면 됨
+	//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y + fDeltaTime, RisingCubePos.z));
 	return _int();
 }
 
