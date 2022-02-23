@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_WM_LBUTTONDOWN()
 	ON_BN_CLICKED(IDC_BUTTON14, &CMyForm::OnBnClickedButton_CreateObject)
 	ON_LBN_SELCHANGE(IDC_LIST3, &CMyForm::OnLbnSelchangeList_ObjectSelect)
+	ON_BN_CLICKED(IDC_BUTTON15, &CMyForm::OnBnClickedButton15)
 END_MESSAGE_MAP()
 
 // CMyForm 진단입니다.
@@ -227,6 +228,21 @@ void CMyForm::OnLbnSelchangeList_ObjectSelect()
 	}
 	GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject()->Texture_CurrentBind();
 
+
+
+
+}
+
+
+void CMyForm::OnBnClickedButton15()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	// Delete Object 테스트
+
+	GetSingle(CSuperToolSIngleton)->DeleteObject();
+
+	GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject()->Texture_CurrentBind();
 
 
 

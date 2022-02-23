@@ -47,6 +47,10 @@ public:/* For.ObjectMgr */
 	CGameObject*	Get_GameObject_By_LayerIndex(_uint eSceneNum, const _tchar* tagLayer, _uint iLayerIndex = 0);
 	list<CGameObject*>*	Get_ObjectList_from_Layer(_uint eSceneNum, const _tchar* tagLayer);
 	CGameObject*	Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, const _tchar* tagLayer, _uint iLayerIndex = 0);
+	HRESULT			Delete_GameObject_To_Layer_Index(_uint eSceneNum, const _tchar* tagLayer, _uint index);
+	HRESULT			Delete_GameObject_To_Layer_Object(_uint eSceneNum, const _tchar* tagLayer, CGameObject* obj);
+
+
 
 public: /*For.ComMgr*/
 	HRESULT			Add_Component_Prototype(_uint eSceneIdx, const _tchar* tagPrototypeComponent, CComponent* pComponenet);

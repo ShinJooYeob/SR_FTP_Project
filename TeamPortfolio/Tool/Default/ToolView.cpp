@@ -48,7 +48,6 @@ CToolView::CToolView()
 
 CToolView::~CToolView()
 {
-	// #Tag Tool ¼Ò¸êÀÚ
 
 	GetSingle(CSuperToolSIngleton)->DestroyInstance();
 }

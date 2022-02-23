@@ -208,6 +208,7 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView()
 {
 	m_Vec_ToolViewObjects.reserve(iObjectSize);
 
+
 	m_pMainFrame = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 	m_pToolView = static_cast<CToolView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 1));
 	m_pMiniView = static_cast<CMiniView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 0));
@@ -384,6 +385,30 @@ CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject(wstring name)
 	return newobj;
 }
 
+CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(const OUTPUT_OBJECTINFO& protoInfo, _float3 Pos,wstring laytag)
+{
+	// #STOP 삭제 테스트 후에 
+
+	// 기본 오브젝트를 클론한다.
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, laytag.c_str(), TAG_OP(Prototype_BackGround)))
+	//	return nullptr;
+	//
+	//// 생성된 오브젝트를 가져옴
+	//CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, laytag.c_str())->back();
+
+	//// 맵 리스트에 넣어준다.
+	//m_Vec_MapObjects.push_back(newobj);
+	//Safe_AddRef(newobj);
+	//
+	//// 데이터를 변경한다.
+	//newobj->set
+
+	
+	// 위치를 변경한다.
+
+	return nullptr;
+}
+
 HRESULT CSuperToolSIngleton::Change_ToolObject(CObjectTool_ToolObject * obj)
 {
 	// 현재 오브젝트 릴리스
@@ -410,6 +435,16 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Find_Vec_ToolObject(_uint index)
 	return m_Vec_ToolViewObjects[index];
 }
 
+CLayer * CSuperToolSIngleton::Get_ViewLayer()
+{
+	return nullptr;
+}
+
+CLayer * CSuperToolSIngleton::Get_MapLayer()
+{
+	return nullptr;
+}
+
 HRESULT CSuperToolSIngleton::Update_Select_Render_None()
 {
 	for (auto a: m_Vec_ToolViewObjects)
@@ -429,8 +464,11 @@ HRESULT CSuperToolSIngleton::Update_Select_Render_Visble(CObjectTool_ToolObject 
 
 void CSuperToolSIngleton::Free()
 {
-	for (auto vec : m_Vec_ToolViewObjects)
-		Safe_Release(vec);
+	//for (auto vec : m_Vec_ToolViewObjects)
+	//	Safe_Release(vec);
+
+	//for (auto vec : m_Vec_MapObjects)
+	//	Safe_Release(vec);
 
 	Safe_Release(m_Object_Rect);
 

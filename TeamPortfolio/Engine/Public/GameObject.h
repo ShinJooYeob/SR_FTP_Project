@@ -23,6 +23,10 @@ public:
 	void Set_Layer_Tag(const _tchar* _pLayer_Tag);
 
 	const _tchar* Get_Layer_Tag();
+	
+	// 오브젝트 삭제판별 / 업데이트가 끝나면 지워준다.
+	void DIED() { m_isDied = true; }
+	_bool Get_IsDied() { return m_isDied; }
 
 
 	//옵저버가 충돌했을 경우 실행됨
@@ -45,6 +49,7 @@ protected:
 	_bool						m_bIsClone = false;
 	const _tchar*				m_Layer_Tag = nullptr;;
 	_float						m_fCamDistance;
+	_bool						m_isDied = false;
 
 protected:
 	HRESULT Add_Component(_uint iScenenNum, const _tchar* tagPrototype,const _tchar* tagComponent, CComponent** ppOut , void* pArg =nullptr);

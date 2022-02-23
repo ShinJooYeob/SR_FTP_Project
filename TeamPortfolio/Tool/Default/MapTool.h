@@ -24,6 +24,18 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
+private:
+	void ListBoxUpdate();
+
+
+	// 스테이지들의 맵을 저장한다.
+	list<CObjectTool_ToolObject*> m_StageMapList;
+	CListBox m_ListBox_Map;
+
+	// 스테이지의 
 
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual BOOL OnInitDialog();
+	afx_msg void OnLbnSelchangeList1();
 };

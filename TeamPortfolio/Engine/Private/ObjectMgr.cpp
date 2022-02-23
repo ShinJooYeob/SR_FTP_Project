@@ -77,6 +77,38 @@ HRESULT CObjectMgr::Add_GameObject_To_Layer(_uint eSceneNum, const _tchar * tagL
 	return S_OK;
 }
 
+HRESULT CObjectMgr::Delete_GameObject_To_Layer_Index(_uint eSceneNum, const _tchar * tagLayer, int index)
+{
+	if (eSceneNum >= m_iMaxSceneNum || m_mapLayer == nullptr)
+		return E_FAIL;
+
+	CLayer* pLayer = Find_Layer(eSceneNum, tagLayer);
+
+	if (pLayer == nullptr)
+		return E_FAIL;
+	
+	FAILED_CHECK(pLayer->Delete_GameObject_By_LayerIndex(index));
+
+	return S_OK;
+}
+
+
+HRESULT CObjectMgr::Delete_GameObject_To_Layer_Object(_uint eSceneNum, const _tchar * tagLayer, CGameObject* obj)
+{
+	if (eSceneNum >= m_iMaxSceneNum || m_mapLayer == nullptr)
+		return E_FAIL;
+
+	CLayer* pLayer = Find_Layer(eSceneNum, tagLayer);
+
+	if (pLayer == nullptr)
+		return E_FAIL;
+
+	FAILED_CHECK(pLayer->Delete_GameObject_By_LayerObject(obj));
+
+
+	return S_OK;
+}
+
 HRESULT CObjectMgr::Clear_Scene_GameObjects(_uint eSceneNum)
 {
 

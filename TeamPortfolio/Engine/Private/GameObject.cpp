@@ -4,13 +4,13 @@
 
 
 CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDevice)
-	:m_pGraphicDevice(pGraphicDevice), m_bIsClone(false)
+	:m_pGraphicDevice(pGraphicDevice), m_bIsClone(false), m_isDied(false)
 {
 	m_pGraphicDevice->AddRef();
 }
 
 CGameObject::CGameObject(const CGameObject & rhs)
-	:m_pGraphicDevice(rhs.m_pGraphicDevice), m_bIsClone(true)
+	:m_pGraphicDevice(rhs.m_pGraphicDevice), m_bIsClone(true), m_isDied(false)
 {
 	m_pGraphicDevice->AddRef();
 }

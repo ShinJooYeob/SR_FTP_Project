@@ -58,4 +58,5 @@ public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnBnClickedButton_CreateObject();
 	afx_msg void OnLbnSelchangeList_ObjectSelect();
+	afx_msg void OnBnClickedButton15();
 };

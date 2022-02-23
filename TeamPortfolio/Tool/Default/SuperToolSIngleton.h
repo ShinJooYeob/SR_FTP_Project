@@ -86,6 +86,8 @@ public:
 
 private:
 	CObjectTool_ToolObject* Create_New_ToolObject(wstring name);
+	CObjectTool_ToolObject* Create_Clone_MapObject(const OUTPUT_OBJECTINFO& protoInfo, _float3 Pos, wstring laytag);
+
 	HRESULT Change_ToolObject(CObjectTool_ToolObject* obj);
 
 public: // For.ToolView tp ToolObject 
@@ -93,10 +95,16 @@ public: // For.ToolView tp ToolObject
 	CObjectTool_ToolObject* Find_Vec_ToolObject(_uint index);
 	CObjectTool_ToolObject* Get_CurrentToolObject() { return m_Object_Rect; }
 
-	const vector<CObjectTool_ToolObject*>&  Get_ToolVec() const { return m_Vec_ToolViewObjects; }
+//	const vector<CObjectTool_ToolObject*>&  Get_ToolVec() const { return m_Vec_ToolViewObjects; }
 
-	_uint Get_ToolVec_Size() { return m_Vec_ToolViewObjects.size(); }
-	_bool Get_ToolVec_isEmpty() { return m_Vec_ToolViewObjects.empty(); }
+//	_uint Get_ToolVec_Size() { return m_Vec_ToolViewObjects.size(); }
+//	_bool Get_ToolVec_isEmpty() { return m_Vec_ToolViewObjects.empty(); }
+
+//	_uint Get_MapVec_Size() { return m_Vec_MapObjects.size(); }
+//	_bool Get_MapVec_isEmpty() { return m_Vec_MapObjects.empty(); }
+
+	CLayer* Get_ViewLayer();
+	CLayer* Get_MapLayer();
 
 	// 선택된 것만 랜더링
 	HRESULT Update_Select_Render_None();
@@ -104,7 +112,10 @@ public: // For.ToolView tp ToolObject
 
 private:
 	// ToolView에서 오브젝트 리스트들을 맵으로 저장
-	vector<CObjectTool_ToolObject*> m_Vec_ToolViewObjects;
+//	vector<CObjectTool_ToolObject*> m_Vec_ToolViewObjects;
+	// MapTool 에서 맵 오브젝트 리스트들을 맵으로 저장
+//	vector<CObjectTool_ToolObject*> m_Vec_MapObjects;
+
 
 	// Current Tool View Object
 	// 이건 이제 공통으로 사용하는 것이 아니라 사용할 때 마다 정보를 받아 사용하게 변경
