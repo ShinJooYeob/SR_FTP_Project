@@ -49,8 +49,17 @@ private:
 
 	_Matrix					parentMatrix;
 
+	_float3					m_RotAxis = _float3(0,0,0);
+
 	_float					seconds = 0;
 	_float					m_RotAngle = 0;
+
+
+
+	_float				m_StartAngle;
+	_float				m_TargetAngle;
+	_float				m_PassedTime;
+	_bool				m_bIsTurning = false;
 
 public:
 	static CObject_OrbitCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
