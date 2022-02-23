@@ -180,7 +180,7 @@ HRESULT CObjectTool_ToolObject::Set_TextureNum_Bind(int num)
 
 HRESULT CObjectTool_ToolObject::Set_ViBuffer_Change()
 {
-	// #STOP 잠깐 스탑
+	// #STOP 아마 안쓸듯
 	return S_OK;
 
 	m_isRect = !m_isRect;

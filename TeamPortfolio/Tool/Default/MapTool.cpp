@@ -20,9 +20,7 @@ CMapTool::CMapTool(CWnd* pParent /*=nullptr*/)
 
 CMapTool::~CMapTool()
 {
-	for (auto obj : m_StageMapList)
-		Safe_Release(obj);
-	m_StageMapList.clear();
+
 }
 
 void CMapTool::DoDataExchange(CDataExchange* pDX)
@@ -34,12 +32,14 @@ void CMapTool::DoDataExchange(CDataExchange* pDX)
 void CMapTool::ListBoxUpdate()
 {
 	m_ListBox_Map.ResetContent();
-	if (m_StageMapList.empty())
+
+	auto maplist =  GetSingle(CSuperToolSIngleton)->Get_GameObjectList(TAG_LAY(Layer_Map));
+	if (maplist == nullptr)
 		return;
 
-	for (auto map: m_StageMapList)
+	for (auto map: *maplist)
 	{
-		m_ListBox_Map.AddString(map->Get_OutputData().strObjectName);
+		m_ListBox_Map.AddString(static_cast<CObjectTool_ToolObject*>(map)->Get_OutputData().strObjectName);
 	}
 
 }
@@ -57,20 +57,7 @@ BOOL CMapTool::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
- // #STOP 잠시
-
-	//for (auto obj : m_StageMapList)
-	//	Safe_Release(obj);
-	//m_StageMapList.clear();
-	//m_ListBox_Map.ResetContent();
-
-	//// 0,0,0 위치에 디폴트 오브젝트 생성
-
-	//m_StageMapList.clear();
-	//
-	//GetSingle(CSuperToolSIngleton)->Create_New_ToolObject()->Clone();
-
-	//ListBoxUpdate();
+	ListBoxUpdate();
 	
 
 

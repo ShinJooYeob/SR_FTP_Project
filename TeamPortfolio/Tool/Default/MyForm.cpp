@@ -241,7 +241,4 @@ void CMyForm::OnBnClickedButton_Delete()
 	obj->DIED();
 	m_ListBox_Objects.DeleteString(index);
 	m_ListBox_Objects.SetCurSel(index);
-
-
-
 }

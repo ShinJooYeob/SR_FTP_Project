@@ -24,8 +24,17 @@ class CObjectTool_ToolObject;
 class CSuperToolSIngleton : public CBase
 {
 	DECLARE_SINGLETON(CSuperToolSIngleton)
+public:
+	// 툴 모드들
+	enum E_TOOL_MODE
+	{
+		TOOLMODE_OBJECT,	// 오브젝트 모드
+		TOOLMODE_MAP,		// 맵모드
+		TOOLMODE_END
+	};
 
 	const int iObjectSize = 20;
+
 private:
 	explicit CSuperToolSIngleton();
 	virtual ~CSuperToolSIngleton() = default;
@@ -77,13 +86,11 @@ public:
 	HRESULT Create_ToolObject_Button(wstring name);
 	HRESULT Create_ToolObject_Data(const OUTPUT_OBJECTINFO& data);
 
-	HRESULT Select_ToolObject_Button(int index);
+//	HRESULT Select_ToolObject_Button(int index);
 
 private:
 	CObjectTool_ToolObject* Create_New_ToolObject(wstring name, const _tchar* laytag);
-	CObjectTool_ToolObject* Create_Clone_MapObject(const OUTPUT_OBJECTINFO& protoInfo, _float3 Pos, wstring laytag);
-
-	HRESULT Change_ToolObject(CObjectTool_ToolObject* obj);
+	CObjectTool_ToolObject* Create_New_MapObject(_float3 Pos, const _tchar* laytag);
 
 public:
 
@@ -122,6 +129,8 @@ private:
 
 public:
 	//	void Release_Engine();
+	static E_TOOL_MODE g_MAP_MODE;
+
 	virtual void Free()override;
 };
 

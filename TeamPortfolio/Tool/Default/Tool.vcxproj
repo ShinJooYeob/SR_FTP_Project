@@ -214,6 +214,7 @@
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="MiniView.h" />
     <ClInclude Include="MyForm.h" />
+    <ClInclude Include="ObjectTool_Terrain.h" />
     <ClInclude Include="ObjectTool_ToolObject.h" />
     <ClInclude Include="PathFind.h" />
     <ClInclude Include="Resource.h" />
@@ -231,6 +232,7 @@
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="MiniView.cpp" />
     <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="ObjectTool_Terrain.cpp" />
     <ClCompile Include="ObjectTool_ToolObject.cpp" />
     <ClCompile Include="PathFind.cpp" />
     <ClCompile Include="stdafx.cpp">

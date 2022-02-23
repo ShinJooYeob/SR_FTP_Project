@@ -3,9 +3,12 @@
 #include "GameInstance.h"
 #include "Layer.h"
 #include "ObjectTool_ToolObject.h"
+#include "ObjectTool_Terrain.h"
 #include "Camera_Tool.h"
 
 IMPLEMENT_SINGLETON(CSuperToolSIngleton)
+
+CSuperToolSIngleton::E_TOOL_MODE CSuperToolSIngleton::g_MAP_MODE = CSuperToolSIngleton::E_TOOL_MODE::TOOLMODE_OBJECT;
 
 CSuperToolSIngleton::CSuperToolSIngleton()
 	: m_pGraphicDevice(nullptr), m_pGameInstance(GetSingle(CGameInstance))
@@ -104,14 +107,12 @@ HRESULT CSuperToolSIngleton::Ready_Initalize_Object()
 {
 	FAILED_CHECK(Ready_Object_Component());
 
+
 	// 오브젝트 수정에 사용하는 View 레이어
 	// FAILED_CHECK(Ready_Object_Clone_View(TAG_LAY(Layer_View)));
 
 	// 맵 수정에 사용하는 map 레이어
 	// FAILED_CHECK(Ready_Object_Clone_Map(TAG_LAY(Layer_Map)));
-
-	// 오브젝트 로드
-	//
 
 	FAILED_CHECK(Ready_Object_Camera(TAG_LAY(Layer_Camera_Main)));
 	return S_OK;
@@ -119,13 +120,6 @@ HRESULT CSuperToolSIngleton::Ready_Initalize_Object()
 
 HRESULT CSuperToolSIngleton::Ready_Object_Component()
 {
-	// #Tag 툴 모든 오브젝트의 원형 생성
-
-	// Prototype_GameObject_BackGround
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_BackGround), CObjectTool_ToolObject::Create(m_pGraphicDevice)));
-
-	// 카메라 생성
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Tool::Create(m_pGraphicDevice)));
 
 	// #Tag 툴 모든 컴포넌트의 원형 생성
 
@@ -141,6 +135,14 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
 	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), CVIBuffer_Cube::Create(m_pGraphicDevice)));
+
+	CVIBuffer_Terrain::TERRAINDESC desc;
+	desc.iCol = 3;
+	desc.iRow = 3;
+
+	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Terrain128x128), CVIBuffer_Terrain::Create(m_pGraphicDevice,&desc)));
+
 
 	//Transform 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
@@ -158,12 +160,30 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
 	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Cube), CTexture::Create(m_pGraphicDevice, &TextureDesc)));
 
+	
+
+	// #Tag 툴 모든 오브젝트의 원형 생성
+
+	// Prototype_GameObject_BackGround
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_BackGround), CObjectTool_ToolObject::Create(m_pGraphicDevice)));
+
+	// 카메라 생성
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Tool::Create(m_pGraphicDevice)));
+	
+	// 지형 생성
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainGround), CObjectTool_Terrain::Create(m_pGraphicDevice)));
+
+
+	// 테스트
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainGround)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 HRESULT CSuperToolSIngleton::Ready_Object_Clone_View(const _tchar* layertag)
 {
-	// #Tag 씬에서 사용할 클론 객체 생성
+	// 
 
 	//// BackObj
 	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TAG_OP(Prototype_BackGround)))
@@ -179,7 +199,7 @@ HRESULT CSuperToolSIngleton::Ready_Object_Clone_View(const _tchar* layertag)
 
 HRESULT CSuperToolSIngleton::Ready_Object_Clone_Map(const _tchar* layertag)
 {
-	// #Tag 씬에서 사용할 클론 객체 생성
+	// 
 	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TAG_OP(Prototype_BackGround)))
 	//	return E_FAIL;
 
@@ -337,24 +357,9 @@ HRESULT CSuperToolSIngleton::Create_ToolObject_Data(const OUTPUT_OBJECTINFO& dat
 	CObjectTool_ToolObject* newobj = Create_New_ToolObject(data.strObjectName,TAG_LAY(Layer_View));
 	// 2. 데이터 세팅
 	newobj->LoadData(data);
-	// 3. 정보 업데이트
-	Change_ToolObject(newobj);
+
 	// 리스타 박스 업데이트
 	m_pMyButtomView->Update_ViewListBox();
-	return S_OK;
-}
-
-HRESULT CSuperToolSIngleton::Select_ToolObject_Button(int index)
-{
-	// 버튼을 누르면 새 오브젝트 생성.
-	//CObjectTool_ToolObject* currentObj = (CObjectTool_ToolObject*)m_ViewObjectLayer->Get_GameObject_By_LayerIndex(index);
-	//if (currentObj == nullptr)
-	//	return E_FAIL;
-	//Change_ToolObject(currentObj);
-
-	//Update_Select_Render_None();
-	//Update_Select_Render_Visble(currentObj);
-
 	return S_OK;
 }
 
@@ -370,34 +375,25 @@ CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject(wstring name,
 	return newobj;
 }
 
-CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(const OUTPUT_OBJECTINFO& protoInfo, _float3 Pos, wstring laytag)
+CObjectTool_ToolObject * CSuperToolSIngleton::Create_New_MapObject(_float3 Pos, const _tchar* laytag)
 {
-	// #STOP 삭제 테스트 후에
+	// 현재 선택된 오브젝트를 클론해 맵 레이어에 오브젝트를 제작한다.
+	// 1. 오브젝트 선택
+	CObjectTool_ToolObject* cloneobj = Get_ViewObject_SelectObject();
+	if (cloneobj == nullptr)
+		return nullptr;
 
-	// 기본 오브젝트를 클론한다.
-	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, laytag.c_str(), TAG_OP(Prototype_BackGround)))
-	//	return nullptr;
-	//
-	//// 생성된 오브젝트를 가져옴
-	//CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, laytag.c_str())->back();
+	// 데이터 받아옴
+	const OUTPUT_OBJECTINFO& info = cloneobj->Get_OutputData();
 
-	//// 맵 리스트에 넣어준다.
-	//m_Vec_MapObjects.push_back(newobj);
-	//Safe_AddRef(newobj);
-	//
-	//// 데이터를 변경한다.
-	//newobj->set
-
-	// 위치를 변경한다.
-
-	return nullptr;
-}
-
-HRESULT CSuperToolSIngleton::Change_ToolObject(CObjectTool_ToolObject * obj)
-{
-	// 현재 오브젝트 선택
-
-	return S_OK;
+	// 2. 오브젝트 생성
+	FAILED_CHECK_NONERETURN(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, laytag, TAG_OP(Prototype_BackGround)));
+	
+	// 3. 생성된 오브젝트 가져오기
+	CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, laytag)->back();
+	newobj->LoadData(info);
+	newobj->Set_Position(Pos);
+	return newobj;
 }
 
 CObjectTool_ToolObject * CSuperToolSIngleton::Get_ViewObject_Object(int index)
