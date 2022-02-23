@@ -45,7 +45,8 @@ public:
 private:
 
 	HRESULT Ready_Object_Component();
-	HRESULT Ready_Object_Clone(const _tchar* layertag);
+	HRESULT Ready_Object_Clone_View(const _tchar* layertag);
+	HRESULT Ready_Object_Clone_Map(const _tchar* layertag);
 	HRESULT Ready_Object_Camera(const _tchar* layertag);
 
 
@@ -90,39 +91,22 @@ private:
 
 	HRESULT Change_ToolObject(CObjectTool_ToolObject* obj);
 
-public: // For.ToolView tp ToolObject 
-	HRESULT Add_Vec_ToolObject(CObjectTool_ToolObject* obj);
-	CObjectTool_ToolObject* Find_Vec_ToolObject(_uint index);
+public: 
+	
 	CObjectTool_ToolObject* Get_CurrentToolObject() { return m_Object_Rect; }
 
-//	const vector<CObjectTool_ToolObject*>&  Get_ToolVec() const { return m_Vec_ToolViewObjects; }
-
-//	_uint Get_ToolVec_Size() { return m_Vec_ToolViewObjects.size(); }
-//	_bool Get_ToolVec_isEmpty() { return m_Vec_ToolViewObjects.empty(); }
-
-//	_uint Get_MapVec_Size() { return m_Vec_MapObjects.size(); }
-//	_bool Get_MapVec_isEmpty() { return m_Vec_MapObjects.empty(); }
-
-	CLayer* Get_ViewLayer();
-	CLayer* Get_MapLayer();
+	list<CGameObject*>*	 Get_GameObjectList(const _tchar* laytag);
 
 	// 선택된 것만 랜더링
-	HRESULT Update_Select_Render_None();
-	HRESULT Update_Select_Render_Visble(CObjectTool_ToolObject* visbleobj);
+	HRESULT Update_Select_Render_None(const _tchar* laytag);
+	HRESULT Update_Select_Render_Visble(const _tchar* laytag,CObjectTool_ToolObject* visbleobj);
 
 private:
-	// ToolView에서 오브젝트 리스트들을 맵으로 저장
-//	vector<CObjectTool_ToolObject*> m_Vec_ToolViewObjects;
-	// MapTool 에서 맵 오브젝트 리스트들을 맵으로 저장
-//	vector<CObjectTool_ToolObject*> m_Vec_MapObjects;
-
 
 	// Current Tool View Object
 	// 이건 이제 공통으로 사용하는 것이 아니라 사용할 때 마다 정보를 받아 사용하게 변경
-	CObjectTool_ToolObject*	m_Object_Rect;
 
-	// CObjectTool_ToolObject*	m_Object_ProtoObject;
-
+	CObjectTool_ToolObject*				m_Object_Rect;
 
 private:
 

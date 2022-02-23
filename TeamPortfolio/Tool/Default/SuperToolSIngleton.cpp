@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SuperToolSIngleton.h"
 #include "GameInstance.h"
+#include "Layer.h"
 #include "ObjectTool_ToolObject.h"
 #include "Camera_Tool.h"
 
@@ -50,13 +51,14 @@ HRESULT CSuperToolSIngleton::InitDevice(void)
 	//m_pGraphicDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 	////UV좌표를 1을 넘어가게 작성할 경우 다시 1인 점을 0으로 치환하여 좌표를 찍음
 
-
 	// 오브젝트 정보
 	Ready_Initalize_Object();
+
 
 	// 툴 창 정보
 	Initialize_ToolView();
 
+	
 	return S_OK;
 }
 
@@ -108,8 +110,17 @@ HRESULT CSuperToolSIngleton::Ready_Initalize_Object()
 {
 
 	FAILED_CHECK(Ready_Object_Component());
-	FAILED_CHECK(Ready_Object_Clone(TEXT("Object")));
-	FAILED_CHECK(Ready_Object_Camera(TEXT("Camera")));
+	
+	// 오브젝트 수정에 사용하는 View 레이어
+	// FAILED_CHECK(Ready_Object_Clone_View(TAG_LAY(Layer_View)));
+
+	// 맵 수정에 사용하는 map 레이어
+	// FAILED_CHECK(Ready_Object_Clone_Map(TAG_LAY(Layer_Map)));
+
+	// 오브젝트 로드
+	// 
+
+	FAILED_CHECK(Ready_Object_Camera(TAG_LAY(Layer_Camera_Main)));
 	return S_OK;
 }
 
@@ -160,22 +171,32 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 	return S_OK;
 }
 
-HRESULT CSuperToolSIngleton::Ready_Object_Clone(const _tchar* layertag)
+HRESULT CSuperToolSIngleton::Ready_Object_Clone_View(const _tchar* layertag)
 {
 	// #Tag 씬에서 사용할 클론 객체 생성
 
-	// BackObj
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TAG_OP(Prototype_BackGround)))
-		return E_FAIL;
+	//// BackObj
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TAG_OP(Prototype_BackGround)))
+	//	return E_FAIL;
 
-	// 최초 객체는 0번쨰에 저장한다.
-	m_Object_Rect = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, layertag);
-	m_Object_Rect->Set_Defult(L"DefaultObject");
-	Safe_AddRef(m_Object_Rect);
-	Add_Vec_ToolObject(m_Object_Rect);
-	Safe_AddRef(m_Object_Rect);
+	//// 최초 객체는 0번쨰에 저장한다.
+	//m_Object_Rect = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, layertag);
+	//m_Object_Rect->Set_Defult(L"DefaultObject");
+	//Safe_AddRef(m_Object_Rect);
+
 	return S_OK;
 }
+
+HRESULT CSuperToolSIngleton::Ready_Object_Clone_Map(const _tchar* layertag)
+{
+	// #Tag 씬에서 사용할 클론 객체 생성
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TAG_OP(Prototype_BackGround)))
+	//	return E_FAIL;
+
+
+	return S_OK;
+}
+
 
 
 HRESULT CSuperToolSIngleton::Ready_Object_Camera(const _tchar* layertag)
@@ -206,9 +227,6 @@ HRESULT CSuperToolSIngleton::Ready_Object_Camera(const _tchar* layertag)
 
 HRESULT CSuperToolSIngleton::Initialize_ToolView()
 {
-	m_Vec_ToolViewObjects.reserve(iObjectSize);
-
-
 	m_pMainFrame = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 	m_pToolView = static_cast<CToolView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 1));
 	m_pMiniView = static_cast<CMiniView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 0));
@@ -355,16 +373,17 @@ HRESULT CSuperToolSIngleton::Create_ToolObject_Data(const OUTPUT_OBJECTINFO& dat
 }
 
 
+
 HRESULT CSuperToolSIngleton::Select_ToolObject_Button(int index)
 {
 	// 버튼을 누르면 새 오브젝트 생성.
-	CObjectTool_ToolObject* currentObj = Find_Vec_ToolObject(index);
-	if (currentObj == nullptr)
-		return E_FAIL;
-	Change_ToolObject(currentObj);
+	//CObjectTool_ToolObject* currentObj = (CObjectTool_ToolObject*)m_ViewObjectLayer->Get_GameObject_By_LayerIndex(index);
+	//if (currentObj == nullptr)
+	//	return E_FAIL;
+	//Change_ToolObject(currentObj);
 
-	Update_Select_Render_None();
-	Update_Select_Render_Visble(currentObj);
+	//Update_Select_Render_None();
+	//Update_Select_Render_Visble(currentObj);
 
 	return S_OK;
 }
@@ -377,12 +396,12 @@ CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject(wstring name)
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Object", TAG_OP(Prototype_BackGround)))
 		return nullptr;
 
-	int index = Get_ToolVec_Size();
-	CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC,L"Object", index);
-	newobj->Set_Defult(name);
-	Add_Vec_ToolObject(newobj);
-	Safe_AddRef(newobj);
-	return newobj;
+
+	//CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC,L"Object", index);
+	//newobj->Set_Defult(name);
+	//Add_Vec_ToolObject(newobj);
+	//Safe_AddRef(newobj);
+	return nullptr;
 }
 
 CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(const OUTPUT_OBJECTINFO& protoInfo, _float3 Pos,wstring laytag)
@@ -421,43 +440,39 @@ HRESULT CSuperToolSIngleton::Change_ToolObject(CObjectTool_ToolObject * obj)
 	return S_OK;
 }
 
-HRESULT CSuperToolSIngleton::Add_Vec_ToolObject(CObjectTool_ToolObject * obj)
+list<CGameObject*>* CSuperToolSIngleton::Get_GameObjectList(const _tchar* layertag)
 {
-	m_Vec_ToolViewObjects.push_back(obj);
-	return S_OK;
+	list<CGameObject*>* objlist = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, layertag);
+	return objlist;
 }
 
-CObjectTool_ToolObject * CSuperToolSIngleton::Find_Vec_ToolObject(_uint index)
+HRESULT CSuperToolSIngleton::Update_Select_Render_None(const _tchar* laytag)
 {
-	if (index >= m_Vec_ToolViewObjects.size())
-		return nullptr;
+	list<CGameObject*>* objlist = Get_GameObjectList(laytag);
 
-	return m_Vec_ToolViewObjects[index];
-}
 
-CLayer * CSuperToolSIngleton::Get_ViewLayer()
-{
-	return nullptr;
-}
-
-CLayer * CSuperToolSIngleton::Get_MapLayer()
-{
-	return nullptr;
-}
-
-HRESULT CSuperToolSIngleton::Update_Select_Render_None()
-{
-	for (auto a: m_Vec_ToolViewObjects)
+	for (auto obj: *objlist)
 	{
-		a->Set_Visble(false);
+		((CObjectTool_ToolObject*)obj)->Set_Visble(false);
 	}
 	return S_OK;
 }
 
-HRESULT CSuperToolSIngleton::Update_Select_Render_Visble(CObjectTool_ToolObject * visbleobj)
+HRESULT CSuperToolSIngleton::Update_Select_Render_Visble(const _tchar* laytag, CObjectTool_ToolObject* visbleobj)
 {
-	visbleobj->Set_Visble(true);
-	return S_OK;
+	list<CGameObject*>* objlist = Get_GameObjectList(laytag);
+
+
+	for (auto obj : *objlist)
+	{
+		if (visbleobj == obj)
+		{
+			((CObjectTool_ToolObject*)obj)->Set_Visble(true);
+			return S_OK;
+		}
+	}
+
+	return E_FAIL;
 }
 
 

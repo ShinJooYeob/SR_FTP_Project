@@ -56,6 +56,8 @@ enum LAYERID
 	Layer_Terrain,
 	Layer_Terrain_Cube,
 	Layer_BackGround,
+	Layer_View,
+	Layer_Map,
 	Layer_Shop
 
 };
@@ -78,6 +80,12 @@ static const TCHAR* Tag_Layer(LAYERID eTag)
 		break;
 	case Layer_BackGround:
 		return TEXT("Layer_BackGround");
+		break;
+	case Layer_View:
+		return TEXT("Layer_View");
+		break;
+	case Layer_Map:
+		return TEXT("Layer_Map");
 		break;
 	case Layer_Shop:
 		return TEXT("Layer_Shop");

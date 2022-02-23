@@ -33,15 +33,15 @@ HRESULT CMyForm::Update_ViewListBox()
 
 	m_ListBox_Objects.ResetContent();
 
-	if (GetSingle(CSuperToolSIngleton)->Get_ToolVec_isEmpty())
-		return E_FAIL;
+	//if (GetSingle(CSuperToolSIngleton)->Get_ToolVec_isEmpty())
+	//	return E_FAIL;
 
-	auto Vectors = GetSingle(CSuperToolSIngleton)->Get_ToolVec();
-	
-	for (auto vec : Vectors)
-	{
-		m_ListBox_Objects.AddString(vec->Get_ObjectInfo().strObjectName);
-	}
+	//auto Vectors = nullptr;
+	//
+	//for (auto vec : Vectors)
+	//{
+	//	m_ListBox_Objects.AddString(vec->Get_ObjectInfo().strObjectName);
+	//}
 	UpdateData(TRUE);
 
 	return S_OK;
@@ -240,9 +240,9 @@ void CMyForm::OnBnClickedButton15()
 
 	// Delete Object Å×½ºÆ®
 
-	GetSingle(CSuperToolSIngleton)->DeleteObject();
+//	GetSingle(CSuperToolSIngleton)->DeleteObject();
 
-	GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject()->Texture_CurrentBind();
+//	GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject()->Texture_CurrentBind();
 
 
 

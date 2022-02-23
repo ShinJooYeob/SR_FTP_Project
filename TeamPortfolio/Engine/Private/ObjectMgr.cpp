@@ -183,6 +183,11 @@ list<CGameObject*>* CObjectMgr::Get_ObjectList_from_Layer(_uint iSceneNum, const
 	return Find_Layer(iSceneNum, tagLayer)->Get_ObjectList();
 }
 
+CLayer * CObjectMgr::Get_Layer(_uint iSceneNum, const _tchar * tagLayer)
+{
+	return Find_Layer(iSceneNum, tagLayer);
+}
+
 _int CObjectMgr::Update(_float fDeltaTime)
 {
 	for (_uint eSceneNym = 0 ; eSceneNym < m_iMaxSceneNum; eSceneNym++)
