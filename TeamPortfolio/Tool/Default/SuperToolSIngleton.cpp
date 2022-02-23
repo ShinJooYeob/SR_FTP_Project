@@ -5,15 +5,13 @@
 #include "ObjectTool_ToolObject.h"
 #include "Camera_Tool.h"
 
-
 IMPLEMENT_SINGLETON(CSuperToolSIngleton)
-
 
 CSuperToolSIngleton::CSuperToolSIngleton()
 	: m_pGraphicDevice(nullptr), m_pGameInstance(GetSingle(CGameInstance))
 {
-	m_Object_Rect = nullptr;
 	m_pComRenderer = nullptr;
+	m_ViewObjectSelectIndex = -1;
 	Safe_AddRef(m_pGameInstance);
 }
 
@@ -31,7 +29,6 @@ HRESULT CSuperToolSIngleton::InitDevice(void)
 
 	// IMGUI 라이브러리때문에 IMGUI 초기화 해줘야한다. / 삭제는 자동으로 매니저에서 삭제
 	m_pGameInstance->GetIMGui()->Initialize_IMGUI(desc.hWnd, m_pGraphicDevice);
-
 
 	// 랜더링 설정
 
@@ -54,11 +51,9 @@ HRESULT CSuperToolSIngleton::InitDevice(void)
 	// 오브젝트 정보
 	Ready_Initalize_Object();
 
-
 	// 툴 창 정보
 	Initialize_ToolView();
 
-	
 	return S_OK;
 }
 
@@ -95,7 +90,7 @@ HRESULT CSuperToolSIngleton::Render_Set_Statee()
 {
 	if (m_pGraphicDevice == nullptr)
 		return E_FAIL;
-	
+
 	_bool bWire = (_bool)m_pMyButtomView->m_CheckWirframeEnable.GetCheck();
 	if (bWire)
 		m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
@@ -105,12 +100,10 @@ HRESULT CSuperToolSIngleton::Render_Set_Statee()
 	return S_OK;
 }
 
-
 HRESULT CSuperToolSIngleton::Ready_Initalize_Object()
 {
-
 	FAILED_CHECK(Ready_Object_Component());
-	
+
 	// 오브젝트 수정에 사용하는 View 레이어
 	// FAILED_CHECK(Ready_Object_Clone_View(TAG_LAY(Layer_View)));
 
@@ -118,7 +111,7 @@ HRESULT CSuperToolSIngleton::Ready_Initalize_Object()
 	// FAILED_CHECK(Ready_Object_Clone_Map(TAG_LAY(Layer_Map)));
 
 	// 오브젝트 로드
-	// 
+	//
 
 	FAILED_CHECK(Ready_Object_Camera(TAG_LAY(Layer_Camera_Main)));
 	return S_OK;
@@ -144,29 +137,26 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 
 	//버퍼인덱스 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect) , CVIBuffer_Rect::Create(m_pGraphicDevice)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), CVIBuffer_Rect::Create(m_pGraphicDevice)));
 
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
 	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), CVIBuffer_Cube::Create(m_pGraphicDevice)));
-
 
 	//Transform 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
 	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), CTransform::Create(m_pGraphicDevice)));
 
-	// 블록 디폴트 
+	// 블록 디폴트
 	CTexture::TEXTUREDESC TextureDesc{};
 	TextureDesc.szTextFilePath = g_FileName_Blocktxt;
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
 	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), CTexture::Create(m_pGraphicDevice, &TextureDesc)));
-
 
 	// 큐브 디폴트
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
 	TextureDesc.szTextFilePath = g_Filename_Cubetxt;
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
 	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Cube), CTexture::Create(m_pGraphicDevice, &TextureDesc)));
-
 
 	return S_OK;
 }
@@ -193,11 +183,8 @@ HRESULT CSuperToolSIngleton::Ready_Object_Clone_Map(const _tchar* layertag)
 	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, layertag, TAG_OP(Prototype_BackGround)))
 	//	return E_FAIL;
 
-
 	return S_OK;
 }
-
-
 
 HRESULT CSuperToolSIngleton::Ready_Object_Camera(const _tchar* layertag)
 {
@@ -216,7 +203,6 @@ HRESULT CSuperToolSIngleton::Ready_Object_Camera(const _tchar* layertag)
 
 	CameraDesc.TransformDesc.fMovePerSec = 10.f;
 	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
-
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Main::Create(m_pGraphicDevice, &CameraDesc))))
 
@@ -238,11 +224,9 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView()
 	return S_OK;
 }
 
-
 HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd)
 {
 	// 선택한 오브젝트를 저장한다.
-
 
 	// 1. 클릭시 다이얼 로그 생성.
 	CFileDialog		Dlg(FALSE,
@@ -255,7 +239,6 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* 
 	TCHAR	szPath[MAX_PATH] = L"";
 	GetCurrentDirectory(MAX_PATH, szPath);
 	PathRemoveFileSpec(szPath);
-	
 
 	lstrcat(szPath, g_FilePath_ObjectPathData_Save.c_str());
 	Dlg.m_ofn.lpstrInitialDir = szPath;
@@ -281,19 +264,9 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* 
 		DWORD	dwByte = 0;
 
 		// 저장
-		// WriteFile(hFile, &infoObj.strObjectName, sizeof(wstring), &dwByte, nullptr);
-		// WriteFile(hFile, &infoObj.StateIndex, sizeof(int), &dwByte, nullptr);
-		// WriteFile(hFile, &infoObj.TexDesc.eTextureType, sizeof(int), &dwByte, nullptr);
-		// WriteFile(hFile, &infoObj.TexDesc.szTextFilePath, sizeof(wstring), &dwByte, nullptr);
-		// WriteFile(hFile, &infoObj.WorldMatData, sizeof(D3DXMATRIX), &dwByte, nullptr);
-
 		WriteFile(hFile, &obj->Get_ObjectInfo(), sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
 
-		
-		
-
 		CloseHandle(hFile);
-
 	}
 	return S_OK;
 }
@@ -304,7 +277,6 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 
 	//	static TCHAR BASED_CODE szFilter[] = _T("이미지 파일(*.BMP, *.GIF, *.JPG) | *.BMP;*.GIF;*.JPG;*.bmp;*.jpg;*.gif |모든파일(*.*)|*.*||");
 
-
 	static TCHAR BASED_CODE szFilter[] = _T("데이터 파일(*.dat) | *.dat; | 모든파일(*.*)|*.*||");
 
 	CFileDialog dlg(TRUE, _T("*.dat"), _T(""), OFN_HIDEREADONLY, szFilter);
@@ -313,10 +285,8 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 
 	if (IDOK == dlg.DoModal())
 	{
-
 		CString pathName = dlg.GetPathName();
 
-		
 		// 이름
 		CString				str = dlg.GetPathName().GetString();
 		const TCHAR*		pGetPath = str.GetString();
@@ -326,18 +296,10 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 		if (INVALID_HANDLE_VALUE == hFile)
 			return E_FAIL;
 
-		// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.		
+		// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.
 		DWORD	dwByte = 0;
 
-
 		// 로드
-
-		//ReadFile(hFile, &infoObj.strObjectName, sizeof(wstring), &dwByte, nullptr);
-		//ReadFile(hFile, &infoObj.StateIndex, sizeof(int), &dwByte, nullptr);
-		//ReadFile(hFile, &infotex.eTextureType, sizeof(int), &dwByte, nullptr);
-		//ReadFile(hFile, &infotex.szTextFilePath, sizeof(wstring), &dwByte, nullptr);
-		//ReadFile(hFile, &infoObj.WorldMatData, sizeof(D3DXMATRIX), &dwByte, nullptr);
-
 		ReadFile(hFile, &infoObj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
 
 		// 새 오브젝트 생성
@@ -352,8 +314,11 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 HRESULT CSuperToolSIngleton::Create_ToolObject_Button(wstring name)
 {
 	// 버튼을 누르면 새 오브젝트 생성.
-	FAILED_CHECK(Change_ToolObject(Create_New_ToolObject(name)));
-	// 리스타 박스 업데이트
+	//FAILED_CHECK(Change_ToolObject(Create_New_ToolObject(name)));
+
+	Create_New_ToolObject(name,TAG_LAY(Layer_View));
+
+	// 리스트 박스 업데이트
 	m_pMyButtomView->Update_ViewListBox();
 	return S_OK;
 }
@@ -362,7 +327,7 @@ HRESULT CSuperToolSIngleton::Create_ToolObject_Data(const OUTPUT_OBJECTINFO& dat
 {
 	// 새 오브젝트 생성뒤 넣기
 	// 1. 디폴트 오브젝트 생성
-	CObjectTool_ToolObject* newobj = Create_New_ToolObject(data.strObjectName);
+	CObjectTool_ToolObject* newobj = Create_New_ToolObject(data.strObjectName,TAG_LAY(Layer_View));
 	// 2. 데이터 세팅
 	newobj->Set_NewOutputData(data);
 	// 3. 정보 업데이트
@@ -371,8 +336,6 @@ HRESULT CSuperToolSIngleton::Create_ToolObject_Data(const OUTPUT_OBJECTINFO& dat
 	m_pMyButtomView->Update_ViewListBox();
 	return S_OK;
 }
-
-
 
 HRESULT CSuperToolSIngleton::Select_ToolObject_Button(int index)
 {
@@ -388,25 +351,21 @@ HRESULT CSuperToolSIngleton::Select_ToolObject_Button(int index)
 	return S_OK;
 }
 
-
-CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject(wstring name)
+CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject(wstring name,const _tchar* laytag)
 {
 	// 현재 오브젝트를 저장하고 새 큐브 오브젝트를 만든다.
 	// 새로 만든 객체는 여기 클래스의 Vector에 넣는다.
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Object", TAG_OP(Prototype_BackGround)))
-		return nullptr;
+	FAILED_CHECK_NONERETURN(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, laytag, TAG_OP(Prototype_BackGround)));
 
+	CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, laytag)->back();
+	newobj->Set_Defult(name);
 
-	//CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC,L"Object", index);
-	//newobj->Set_Defult(name);
-	//Add_Vec_ToolObject(newobj);
-	//Safe_AddRef(newobj);
-	return nullptr;
+	return newobj;
 }
 
-CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(const OUTPUT_OBJECTINFO& protoInfo, _float3 Pos,wstring laytag)
+CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(const OUTPUT_OBJECTINFO& protoInfo, _float3 Pos, wstring laytag)
 {
-	// #STOP 삭제 테스트 후에 
+	// #STOP 삭제 테스트 후에
 
 	// 기본 오브젝트를 클론한다.
 	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, laytag.c_str(), TAG_OP(Prototype_BackGround)))
@@ -422,7 +381,6 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(const OUTPU
 	//// 데이터를 변경한다.
 	//newobj->set
 
-	
 	// 위치를 변경한다.
 
 	return nullptr;
@@ -430,28 +388,67 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(const OUTPU
 
 HRESULT CSuperToolSIngleton::Change_ToolObject(CObjectTool_ToolObject * obj)
 {
-	// 현재 오브젝트 릴리스
-	Safe_Release(m_Object_Rect);
-	// 새 오브젝트 대입
-	m_Object_Rect = obj;
+	// 현재 오브젝트 선택
 
-	// Safe_AddRef
-	Safe_AddRef(m_Object_Rect);
 	return S_OK;
+}
+
+CObjectTool_ToolObject * CSuperToolSIngleton::Get_ViewObject_Object(int index)
+{
+	auto list  = Get_GameObjectList(TAG_LAY(Layer_View));
+
+	if (list->empty())
+		return nullptr;
+
+	if(index == 0)
+		return static_cast<CObjectTool_ToolObject*>(list->front());
+	else
+	{
+		int count = 0;
+		for (auto iter :*list)
+		{
+			if (index == count)
+				return static_cast<CObjectTool_ToolObject*>(iter);
+			count++;
+		}
+	}
+	return nullptr;
+}
+
+CObjectTool_ToolObject * CSuperToolSIngleton::Get_ViewObject_SelectObject()
+{
+	if (m_ViewObjectSelectIndex == -1)
+		return nullptr;
+
+	auto gameobj = GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, TAG_LAY(Layer_View), m_ViewObjectSelectIndex);
+
+	if (gameobj == nullptr)
+		return nullptr;
+
+	return static_cast<CObjectTool_ToolObject*>(gameobj);
+}
+
+void CSuperToolSIngleton::Set_ViewObject_Index(int index)
+{
+	int viewObjSize = Get_GameObjectList(TAG_LAY(Layer_View))->size();
+
+	if (m_ViewObjectSelectIndex >= viewObjSize)
+		index = -1;
+	else
+		m_ViewObjectSelectIndex = index;
+
 }
 
 list<CGameObject*>* CSuperToolSIngleton::Get_GameObjectList(const _tchar* layertag)
 {
-	list<CGameObject*>* objlist = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, layertag);
-	return objlist;
+	 return  GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, layertag);
 }
 
 HRESULT CSuperToolSIngleton::Update_Select_Render_None(const _tchar* laytag)
 {
 	list<CGameObject*>* objlist = Get_GameObjectList(laytag);
 
-
-	for (auto obj: *objlist)
+	for (auto obj : *objlist)
 	{
 		((CObjectTool_ToolObject*)obj)->Set_Visble(false);
 	}
@@ -461,7 +458,6 @@ HRESULT CSuperToolSIngleton::Update_Select_Render_None(const _tchar* laytag)
 HRESULT CSuperToolSIngleton::Update_Select_Render_Visble(const _tchar* laytag, CObjectTool_ToolObject* visbleobj)
 {
 	list<CGameObject*>* objlist = Get_GameObjectList(laytag);
-
 
 	for (auto obj : *objlist)
 	{
@@ -475,17 +471,9 @@ HRESULT CSuperToolSIngleton::Update_Select_Render_Visble(const _tchar* laytag, C
 	return E_FAIL;
 }
 
-
-
 void CSuperToolSIngleton::Free()
 {
-	//for (auto vec : m_Vec_ToolViewObjects)
-	//	Safe_Release(vec);
-
-	//for (auto vec : m_Vec_MapObjects)
-	//	Safe_Release(vec);
-
-	Safe_Release(m_Object_Rect);
+	
 
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pComRenderer);

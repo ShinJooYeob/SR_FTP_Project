@@ -33,15 +33,19 @@ HRESULT CMyForm::Update_ViewListBox()
 
 	m_ListBox_Objects.ResetContent();
 
-	//if (GetSingle(CSuperToolSIngleton)->Get_ToolVec_isEmpty())
-	//	return E_FAIL;
+	list<CGameObject*>* list = nullptr;
 
-	//auto Vectors = nullptr;
-	//
-	//for (auto vec : Vectors)
-	//{
-	//	m_ListBox_Objects.AddString(vec->Get_ObjectInfo().strObjectName);
-	//}
+	list = GetSingle(CSuperToolSIngleton)->Get_GameObjectList(TAG_LAY(Layer_View));
+	if (list == nullptr)
+		return E_FAIL;
+
+	for (auto vec : *list)
+	{
+		m_ListBox_Objects.AddString(static_cast<CObjectTool_ToolObject*>(vec)->Get_ObjectInfo().strObjectName);
+	}
+	// 가장 하단 선택
+	m_ListBox_Objects.SetCurSel(m_ListBox_Objects.GetCount()-1);
+
 	UpdateData(TRUE);
 
 	return S_OK;
@@ -104,8 +108,6 @@ void CMyForm::OnInitialUpdate()
 	GetDlgItem(IDC_BUTTON13)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON14)->SetFont(&m_Font);
 
-	Update_ViewListBox();
-
 	
 }
 
@@ -135,7 +137,7 @@ void CMyForm::OnTransform()
 void CMyForm::OnObjectSave()
 {
 	// 현재 선택된 오브젝트 
-	GetSingle(CSuperToolSIngleton)->SaveData_Object(GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject(), this);
+	GetSingle(CSuperToolSIngleton)->SaveData_Object(GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject(), this);
 }
 
 
@@ -179,22 +181,8 @@ void CMyForm::OnBnClickedButtonCube()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// 큐브 컴포넌트로 바꾸기
-	GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject()->Set_ViBuffer_Change();
+	GetSingle(CSuperToolSIngleton)->Get_ViewObject_Object()->Set_ViBuffer_Change();
 
-}
-
-
-void CMyForm::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	//_tchar PickMouseText[64] = L"";
-	//wsprintf(PickMouseText, L"MousePos (%d,%d)", ptMouse.x, ptMouse.y);
-
-	//SetDlgItemText(IDC_STATIC1, MFCMouseText);
-	//SetDlgItemText(IDC_STATIC2, PickMouseText);
-
-	CFormView::OnLButtonDown(nFlags, point);
 }
 
 void CMyForm::OnBnClickedButton_CreateObject()
@@ -215,8 +203,8 @@ void CMyForm::OnLbnSelchangeList_ObjectSelect()
 	// 선택한 오브젝트만 렌더링
 	int index = m_ListBox_Objects.GetCurSel();
 	
+	GetSingle(CSuperToolSIngleton)->Set_ViewObject_Index(index);
 
-	GetSingle(CSuperToolSIngleton)->Select_ToolObject_Button(index);
 	// 텍스처와 위치 업데이트
 	if (nullptr != m_TransformDialog.GetSafeHwnd())
 		m_TransformDialog.Set_CurrentUpdate_WorldMat(); // 현재 오브젝트 데이터로 업데이트
@@ -226,7 +214,7 @@ void CMyForm::OnLbnSelchangeList_ObjectSelect()
 		m_TransformDialog.Create(IDD_CTrans_Dialog);	
 		m_TransformDialog.Set_CurrentUpdate_WorldMat(); 
 	}
-	GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject()->Texture_CurrentBind();
+	GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject()->Texture_CurrentBind();
 
 
 

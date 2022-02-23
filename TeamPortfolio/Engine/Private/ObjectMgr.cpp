@@ -179,13 +179,11 @@ list<CGameObject*>* CObjectMgr::Get_ObjectList_from_Layer(_uint iSceneNum, const
 {
 	if (iSceneNum >= m_iMaxSceneNum || m_mapLayer == nullptr)
 		return nullptr;
-
-	return Find_Layer(iSceneNum, tagLayer)->Get_ObjectList();
-}
-
-CLayer * CObjectMgr::Get_Layer(_uint iSceneNum, const _tchar * tagLayer)
-{
-	return Find_Layer(iSceneNum, tagLayer);
+	CLayer* layer = Find_Layer(iSceneNum, tagLayer);
+	if (!layer)
+		return nullptr;
+	else
+		return layer->Get_ObjectList();
 }
 
 _int CObjectMgr::Update(_float fDeltaTime)
