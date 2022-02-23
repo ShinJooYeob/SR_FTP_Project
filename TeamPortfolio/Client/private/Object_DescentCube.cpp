@@ -60,7 +60,7 @@ _int CObject_DescentCube::Update(_float fTimeDelta)
 	{
 		m_bCollisionSwitch = false;
 	}
-	else if ((_uint)m_fTempPos.y != (_uint)RisingPos.y)
+	else if (m_fTempPos.y > RisingPos.y)
 	{
 		//속도조절 가능
 		m_fTimer = fTimeDelta * 1.2f;

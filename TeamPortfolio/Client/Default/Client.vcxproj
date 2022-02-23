@@ -177,6 +177,7 @@
     <ClInclude Include="..\public\Object_RightCube.h" />
     <ClInclude Include="..\public\Object_RisingCube.h" />
     <ClInclude Include="..\public\Object_SelfRotationCube.h" />
+    <ClInclude Include="..\public\Object_VanishCube.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\Scene_IMGUI.h" />
     <ClInclude Include="..\public\Scene_Stage2.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="..\private\Object_RightCube.cpp" />
     <ClCompile Include="..\private\Object_RisingCube.cpp" />
     <ClCompile Include="..\private\Object_SelfRotationCube.cpp" />
+    <ClCompile Include="..\private\Object_VanishCube.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\Scene_IMGUI.cpp" />
     <ClCompile Include="..\private\Scene_Stage2.cpp" />

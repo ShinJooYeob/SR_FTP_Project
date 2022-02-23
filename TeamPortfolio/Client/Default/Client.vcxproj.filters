@@ -127,6 +127,9 @@
     <Filter Include="01.GameObject\SubObject\Object_escalatorCube\Object_RightCube">
       <UniqueIdentifier>{295f6142-2639-40e7-8244-a6ba976936eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_VanishCube">
+      <UniqueIdentifier>{35bac829-0c7d-4ab0-baff-1e01acb744b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -239,6 +242,9 @@
     <ClInclude Include="..\public\Object_RightCube.h">
       <Filter>01.GameObject\SubObject\Object_escalatorCube\Object_RightCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_VanishCube.h">
+      <Filter>01.GameObject\SubObject\Object_VanishCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -338,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_RightCube.cpp">
       <Filter>01.GameObject\SubObject\Object_escalatorCube\Object_RightCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_VanishCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_VanishCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -56,17 +56,17 @@ _int CObject_LeftCube::Update(_float fTimeDelta)
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	//원래 자리로 돌아가기 위한 템프 포지션
-	_float3 RisingPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+	_float3 LeftPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 	if (m_bCollisionSwitch == true)
 	{
 		m_bCollisionSwitch = false;
 	}
-	else if ((_uint)m_fTempPos.x != (_uint)RisingPos.x)
+	else if (m_fTempPos.x > LeftPos.x)
 	{
 		//속도조절 가능
 		m_fTimer = fTimeDelta * 1.2f;
-		_float3 RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x + m_fTimer, RisingCubePos.y, RisingCubePos.z));
+		_float3 LeftCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(LeftCubePos.x + m_fTimer, LeftCubePos.y, LeftCubePos.z));
 	}
 
 	RELEASE_INSTANCE(CGameInstance);

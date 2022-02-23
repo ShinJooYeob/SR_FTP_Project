@@ -55,17 +55,17 @@ _int CObject_RightCube::Update(_float fTimeDelta)
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	_float3 RisingPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+	_float3 RightPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 	if (m_bCollisionSwitch == true)
 	{
 		m_bCollisionSwitch = false;
 	}
-	else if ((_uint)m_fTempPos.x != (_uint)RisingPos.x)
+	else if (m_fTempPos.x < RightPos.x)
 	{
 		//속도조절 가능
 		m_fTimer = fTimeDelta * 1.2f;
-		_float3 RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x - m_fTimer, RisingCubePos.y , RisingCubePos.z));
+		_float3 RightCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RightCubePos.x - m_fTimer, RightCubePos.y , RightCubePos.z));
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
