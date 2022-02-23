@@ -176,6 +176,14 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), CTexture::Create(m_pGraphicDevice,&TextureDesc))))
 		return E_FAIL;
 
+	//플레이어 텍스처 생성
+	//Player Texture
+	TextureDesc.szTextFilePath = TEXT("Player.txt");
+
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Player), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+
 	TextureDesc.szTextFilePath = TEXT("Mouse.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 

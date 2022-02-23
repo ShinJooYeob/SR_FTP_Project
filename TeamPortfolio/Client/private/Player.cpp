@@ -38,7 +38,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	//m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
 
 	
-	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))));
+	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main))));
 	
 	if (m_pCamera_Main == nullptr)
 		return E_FAIL;
@@ -64,6 +64,8 @@ _int CPlayer::Update(_float fDeltaTime)
 		if (m_fDeadTime > 5.f) {
 			m_bIsDead = false;
 			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0, 1.f, 0));
+			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
+			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
 		}
 
 	}
@@ -199,7 +201,7 @@ HRESULT CPlayer::SetUp_Components()
 	
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), TAG_COM(Com_Transform), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_Player), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Player), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	_int iMaxSkillNum;
@@ -457,7 +459,7 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 	if (Time < 0)
 		fGravity = (m_fNowJumpPower - Time * Time * m_fJumpPower) * fDeltaTime;
 	
-	 list<CGameObject*>* pTerrainLayer= pGameInstance->Get_ObjectList_from_Layer(SCENEID::SCENE_STAGESELECT, TAG_LAY(Layer_Terrain));
+	 list<CGameObject*>* pTerrainLayer= pGameInstance->Get_ObjectList_from_Layer(m_eNowSceneNum, TAG_LAY(Layer_Terrain));
 
 	 if (pTerrainLayer == nullptr)
 		 return E_FAIL;
@@ -731,7 +733,9 @@ HRESULT CPlayer::SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 130);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 	if (m_bIsShdow)
 	{
@@ -746,9 +750,11 @@ HRESULT CPlayer::SetUp_RenderState()
 
 HRESULT CPlayer::Release_RenderState()
 {
-	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	if (m_bTextureReverse)
 		m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

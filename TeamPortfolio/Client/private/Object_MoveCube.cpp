@@ -42,9 +42,9 @@ _int CObject_MoveCube::Update(_float fTimeDelta)
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
-	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FLEXIBLE, this);
-
 	m_ComTransform->MovetoDir(_float3(0, -1, 0), fTimeDelta);
+	m_Temp = false;
+	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FLEXIBLE, this);
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
@@ -68,7 +68,7 @@ _int CObject_MoveCube::Update(_float fTimeDelta)
 		m_ComTransform->Move_Right(fTimeDelta);
 	}
 
-	if (pGameInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
+	if (pGameInstance->Get_DIKeyState(DIK_SPACE) & DIS_Press)
 	{
 		m_fNowJumpPower = m_fJumpPower;
 		m_bIsJumped = true;
@@ -91,7 +91,6 @@ _int CObject_MoveCube::LateUpdate(_float fTimeDelta)
 
 	//if (FAILED(SetUp_OnTerrain(fTimeDelta)))
 	//	return -1;
-
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
@@ -128,24 +127,32 @@ _int CObject_MoveCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCo
 {
 	const _tchar* test = pDestObjects->Get_Layer_Tag();
 
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
+	if (!m_Temp && !lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
 	{
 		//Collision_Not_Moving(pDestObjects, fCollision_Distance,fDeltaTime);
 		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
+		if (abs(fCollision_Distance.x) > abs(fCollision_Distance.y) && abs(fCollision_Distance.z) > abs(fCollision_Distance.y))
+		{
+			m_Temp = true;
+			_float3 vPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+			vPos.y = ((CTransform*)(pDestObjects->Get_Component(TAG_COM(Com_Transform))))->Get_MatrixState(CTransform::STATE_POS).y + 1.f;
+			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vPos);
+		}
 	}
-
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_PushCube")))
+	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_PushCube")))
 	{
+
 		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_GravityCube")))
+	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_GravityCube")))
 	{
 		//플레이어 3초 전으로 돌아가겠끔
 		int i = 0;
 		//m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 		//m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
+
 	
 
 

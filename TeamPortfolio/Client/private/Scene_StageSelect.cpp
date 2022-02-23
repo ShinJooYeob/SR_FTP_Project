@@ -112,7 +112,7 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	CCamera::CAMERADESC CameraDesc;
 
 	CameraDesc.bIsOrtho = true;
-	CameraDesc.vWorldRotAxis =  _float3(5.f, 3.f, 5.f);
+	CameraDesc.vWorldRotAxis = _float3(5.f, 3.f, 5.f);
 	CameraDesc.vAxisY = _float3(0, 1, 0);
 	CameraDesc.fFovy = D3DXToRadian(60.0f);
 	CameraDesc.fAspect = _float(g_iWinCX) / g_iWinCY;
@@ -122,17 +122,29 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	CameraDesc.TransformDesc.fMovePerSec = 10.f;
 	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Camera_Main),&CameraDesc))
+	CCamera_Main* pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+
+	if (pMainCam == nullptr)
 		return E_FAIL;
+
+	if(FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
+		return E_FAIL;
+
+	pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
+
+	
 	return S_OK;
 }
 
 HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 {
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Player)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Player)))
 		return E_FAIL;
 	
+	GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGESELECT);
+
+
 	return S_OK;
 }
 

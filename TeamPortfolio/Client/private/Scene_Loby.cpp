@@ -3,6 +3,7 @@
 #include "Scene_Loading.h"
 
 #include "BackGround.h"
+#include "Camera_Main.h"
 
 
 
@@ -24,6 +25,8 @@ HRESULT CScene_Loby::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -96,9 +99,24 @@ HRESULT CScene_Loby::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	return S_OK;
 }
 
+
+
 HRESULT CScene_Loby::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TAG_OP(Prototype_Camera_Main)))
+	CCamera::CAMERADESC CameraDesc;
+
+	CameraDesc.bIsOrtho = true;
+	CameraDesc.vWorldRotAxis = _float3(5.f, 3.f, 5.f);
+	CameraDesc.vAxisY = _float3(0, 1, 0);
+	CameraDesc.fFovy = D3DXToRadian(60.0f);
+	CameraDesc.fAspect = _float(g_iWinCX) / g_iWinCY;
+	CameraDesc.fNear = 0.2f;
+	CameraDesc.fFar = 300.f;
+
+	CameraDesc.TransformDesc.fMovePerSec = 10.f;
+	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Camera_Main), &CameraDesc))
 		return E_FAIL;
 	return S_OK;
 }

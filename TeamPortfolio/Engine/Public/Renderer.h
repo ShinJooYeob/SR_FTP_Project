@@ -41,7 +41,6 @@ private:
 	class CCamera*				m_MainCamera = nullptr; 
 
 
-	const UINT MAP_SIZE = 256;
 
 
 	LPDIRECT3DTEXTURE9			m_pMinmapTex = nullptr;

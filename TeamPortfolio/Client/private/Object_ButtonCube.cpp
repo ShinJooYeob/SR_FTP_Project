@@ -134,9 +134,9 @@ _int CObject_ButtonCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 f
 		}
 		else
 		{
-			TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + Angle, seconds, 2.0f);
+			TempAngle = GetSingle(CGameInstance)->Easing(TYPE_ElasticInOut, m_RotAngle, m_RotAngle + Angle, seconds);
 			
-			if (seconds > 2.f)
+			if (seconds > 1.f)
 			{
 				m_RotAngle = m_RotAngle + Angle;
 

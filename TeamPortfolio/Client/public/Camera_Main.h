@@ -41,6 +41,7 @@ public:
 	HRESULT Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelta);
 	HRESULT Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDelta);
 
+	HRESULT			Reset_LookAtAxis(void* pArg);
 public:
 	_bool	Get_bIsTuring() { return m_IsTurning; };
 

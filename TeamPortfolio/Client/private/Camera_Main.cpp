@@ -97,7 +97,7 @@ _int CCamera_Main::LateUpdate(_float fDeltaTime)
 
 		m_MapOpenTime += fDeltaTime;
 
-		_float EsaingValue = pInstace->Easing(TYPE_BounceOut, 0, g_iWinCY, m_MapOpenTime, 2);
+		_float EsaingValue = pInstace->Easing(TYPE_BounceOut, 0, (_float)g_iWinCY, m_MapOpenTime, 2.f);
 
 		if (m_MapOpenTime > 2.f)
 			EsaingValue = g_iWinCY;
@@ -177,7 +177,7 @@ HRESULT CCamera_Main::Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelt
 	
 	vCameraPos.y = 0;
 
-	_float fRadianAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_fStartAngle, m_fTargetAngle, m_fPassedTime);
+	_float fRadianAngle = GetSingle(CGameInstance)->Easing(TYPE_ExpoInOut, m_fStartAngle, m_fTargetAngle, m_fPassedTime);
 
 	if (m_fPassedTime >= 1.f) 
 	{
@@ -208,6 +208,41 @@ HRESULT CCamera_Main::Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDel
 {
 	if (FAILED(Revolution_Turn_AxisY_CW(vRevPos, -fTimeDelta)))
 		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CCamera_Main::Reset_LookAtAxis(void * pArg)
+{
+	if (pArg == nullptr && m_pGraphicDevice == nullptr && m_pTransform == nullptr)
+		return E_FAIL;
+
+
+	memcpy(&m_CameraDesc, pArg, sizeof(CAMERADESC));
+
+	
+
+	m_pTransform->Set_TransformDesc(m_CameraDesc.TransformDesc);
+
+
+	m_CameraDesc.vEye = m_CameraDesc.vWorldRotAxis;
+	m_CameraDesc.vEye.z -= 20;
+	m_CameraDesc.vAt = m_CameraDesc.vWorldRotAxis;
+
+	_float3 vRight, vUp, vLook;
+
+	vLook = (m_CameraDesc.vAt - m_CameraDesc.vEye).Get_Nomalize();
+
+	vRight = m_CameraDesc.vAxisY.Get_Cross(vLook).Get_Nomalize();
+
+	vUp = vLook.Get_Cross(vRight).Get_Nomalize();
+
+	m_pTransform->Set_MatrixState(CTransform::STATE_RIGHT, vRight);
+	m_pTransform->Set_MatrixState(CTransform::STATE_UP, vUp);
+	m_pTransform->Set_MatrixState(CTransform::STATE_LOOK, vLook);
+	m_pTransform->Set_MatrixState(CTransform::STATE_POS, m_CameraDesc.vEye);
+
+
+
 	return S_OK;
 }
 

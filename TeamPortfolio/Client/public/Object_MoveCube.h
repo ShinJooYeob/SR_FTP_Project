@@ -50,6 +50,7 @@ private:
 	_float					m_fJumpPower = 5.f;
 	_float					m_fNowJumpPower = 0.f;
 
+	_bool					m_Temp = false;
 
 public:
 	static CObject_MoveCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device , void* pArg = nullptr);

@@ -67,8 +67,8 @@ _int CObject_GravityCube::LateUpdate(_float fTimeDelta)
 
 	//객체에게 중력을 적용하기 위한 값
 
-	//if (FAILED(Collision_Gravity(fTimeDelta)))
-	//	return -1;
+	if (FAILED(Collision_Gravity(fTimeDelta)))
+		return -1;
 
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
@@ -116,12 +116,10 @@ _int CObject_GravityCube::Collision_Gravity(_float fDeltaTime)
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	//객체에게 중력을 적용하기 위한 값
-	CTransform* Player = nullptr;
-	//if (m_eNowSceneNum == SCENE_STAGESELECT)
-	//	Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(m_eNowSceneNum, TAG_LAY(Layer_Player), TAG_COM(Com_Transform));
-	//else
-	//	Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(m_eNowSceneNum, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
+	CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform));
 
+	if (Player == nullptr)
+		return E_FAIL;
 
 
 	_float3& PlayerPos = Player->Get_MatrixState(CTransform::STATE_POS);
@@ -130,7 +128,7 @@ _int CObject_GravityCube::Collision_Gravity(_float fDeltaTime)
 
 	_float Distance = GravityCubePos.Get_Distance(PlayerPos);
 
-	if (Distance < 4) //거리 조절 가능
+	if (Distance < 2.5f) //거리 조절 가능
 	{
 		fDeltaTime *= 0.5f; // 속도 조절 가능
 		Player->MovetoTarget(GravityCubePos, fDeltaTime);
