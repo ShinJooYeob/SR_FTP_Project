@@ -47,6 +47,7 @@ private:
 	_float					Seconds = 0.f;
 
 	_bool					m_bCollisionSwitch = false;
+	_float3					m_fTempPos;
 
 
 public:

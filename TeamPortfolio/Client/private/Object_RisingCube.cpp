@@ -47,6 +47,8 @@ _int CObject_RisingCube::Update(_float fTimeDelta)
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
+	//if(m_bCollisionSwitch == false &&)
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	return _int();
@@ -108,11 +110,21 @@ _int CObject_RisingCube::Collision_Rising(CGameObject * pDestObjects, _float3 fC
 {
 	_float3 RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 
+	//if()
+	//m_fTempPos
+
 	//속도 조절 가능
 	fDeltaTime *= 0.5f;
 	//_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds - 3.f, 2.0f);
 
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y+ fDeltaTime, RisingCubePos.z));
+
+	CTransform* DestTransform = (CTransform*)pDestObjects->Get_Component(TAG_COM(Com_Transform));
+
+	_float3 DestPos = DestTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	DestTransform->Set_MatrixState(CTransform::STATE_POS, _float3(DestPos.x, RisingCubePos.y + fDeltaTime, DestPos.z));
+
 
 	//pDestObjects의 y값을 높이면 됨
 	//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y + fDeltaTime, RisingCubePos.z));
