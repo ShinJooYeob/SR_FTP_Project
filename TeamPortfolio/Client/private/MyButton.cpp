@@ -34,11 +34,12 @@ HRESULT CMyButton::Initialize_Clone(void * pArg)
 
 	_float4 vUIDesc;
 	vUIDesc = *(_float4*)pArg;
+	m_vUIDesc = vUIDesc;
 	m_rcRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
 	m_rcRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
 	m_rcRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
 	m_rcRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
-
+	
 	if (FAILED(Set_UI_Transform(m_ComTransform, vUIDesc)))
 		return E_FAIL;
 
@@ -96,6 +97,23 @@ _int CMyButton::Update(_float fDeltaTime)
 				MSGBOX("판매 완료");
 				return SHOP_SELL;
 			}
+			////////////////////////////////퀘스트버튼///////////////////
+			else if (!lstrcmp(L"Quest_Button1", m_pButtonName))
+			{
+				m_bBigger = !m_bBigger;
+					
+			}
+			if (m_bBigger == true && m_rcRect.right<300)
+			{
+				_float4 vUIDesc;
+
+				m_vUIDesc.w += 1;
+				m_rcRect.right += 1;
+				if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+					return E_FAIL;
+			}
+
+			
 		}
 	}
 	return SHOP_END;
@@ -221,6 +239,11 @@ void CMyButton::Set_ButtonName(TCHAR * pButtonName)
 	else if (!lstrcmp(L"POTION", m_pButtonName))
 	{
 		m_ComTexture->Change_TextureLayer(L"POTION");
+	}
+	//////////////////////퀘스트용/////////////////////
+	else if (!lstrcmp(L"Quest_Button1", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Quest_Button1");
 	}
 }
 

@@ -23,6 +23,8 @@ private:
 	HRESULT Ready_Layer_Player(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Shop(const _tchar* pLayerTag);
 
+	HRESULT Ready_Layer_Quest(const _tchar * pLayerTag);
+
 	HRESULT Ready_Layer_Cube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_FixCube(const _tchar* pLayerTag);
 

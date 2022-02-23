@@ -14,3 +14,5 @@ UI|manual_Speedup|1|../bin/Resources/Textures/UI/manual_Speedup.png
 UI|manual_DJ|1|../bin/Resources/Textures/UI/manual_DJ.png
 UI|manual_Dash|1|../bin/Resources/Textures/UI/manual_Dash.png
 UI|manual_Potion|1|../bin/Resources/Textures/UI/manual_Potion.png
+UI|Quest_1|1|../bin/Resources/Textures/UI/common_popup.png
+UI|Quest_Button1|1|../bin/Resources/Textures/UI/Quest_Button1.png
