@@ -58,14 +58,6 @@ _int CObjectTool_ToolObject::LateUpdate(_float fDeltaTime)
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this)))
 		return E_FAIL;
 
-	//if (GetKeyState(VK_LBUTTON) & 0x8000)
-	{
-		_float3	vOut;
-
-		
-		if (true == m_ComVIBuffer->Pick(m_ComTransform->Get_InverseWorldMatrix(), &vOut))
-			int a = 10;
-	}
 
 
 	return 0;
@@ -254,6 +246,15 @@ void CObjectTool_ToolObject::LoadData(const OUTPUT_OBJECTINFO& data)
 void CObjectTool_ToolObject::Set_NewName(const _tchar* newname)
 {
 	lstrcpy(m_tOutputData.strObjectName, newname);
+}
+
+bool CObjectTool_ToolObject::PickObject()
+{
+	_float3 vOut;
+	if (true == m_ComVIBuffer->Pick(m_ComTransform->Get_InverseWorldMatrix(), &vOut))
+		return true;
+	
+	return false;
 }
 
 HRESULT CObjectTool_ToolObject::SetUp_Components()

@@ -86,9 +86,7 @@ public:
 	HRESULT Create_ToolObject_Button(wstring name);
 	HRESULT Create_ToolObject_Data(const OUTPUT_OBJECTINFO& data);
 
-//	HRESULT Select_ToolObject_Button(int index);
-
-private:
+public:
 	CObjectTool_ToolObject* Create_New_ToolObject(wstring name, const _tchar* laytag);
 	CObjectTool_ToolObject* Create_New_MapObject(_float3 Pos, const _tchar* laytag);
 

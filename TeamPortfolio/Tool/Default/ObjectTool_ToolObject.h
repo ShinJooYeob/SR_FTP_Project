@@ -52,6 +52,7 @@ public: // For. OutputData , 로드랑 세이브시에만 사용
 	void LoadData(const OUTPUT_OBJECTINFO& data);
 	void Set_NewName(const _tchar* newname);
 
+	_bool PickObject();
 private:
 	HRESULT			SetUp_Components();
 	HRESULT			Set_ViBuffer_Change(); // 나중에 다시 쓸 듯 
@@ -70,7 +71,6 @@ private:
 
 	OUTPUT_OBJECTINFO		m_tOutputData;
 
-	
 
 public:
 	static CObjectTool_ToolObject* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

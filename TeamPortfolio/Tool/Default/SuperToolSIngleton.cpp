@@ -137,9 +137,8 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), CVIBuffer_Cube::Create(m_pGraphicDevice)));
 
 	CVIBuffer_Terrain::TERRAINDESC desc;
-	desc.iCol = 3;
-	desc.iRow = 3;
-
+	desc.iCol = 129;
+	desc.iRow = 129;
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
 	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Terrain128x128), CVIBuffer_Terrain::Create(m_pGraphicDevice,&desc)));
 
@@ -175,8 +174,8 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 
 
 	// Å×½ºÆ®
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainGround)))
-		return E_FAIL;
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainGround)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -476,7 +475,6 @@ HRESULT CSuperToolSIngleton::Update_Select_Render_Visble(const _tchar* laytag, C
 
 void CSuperToolSIngleton::Free()
 {
-	
 
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pComRenderer);

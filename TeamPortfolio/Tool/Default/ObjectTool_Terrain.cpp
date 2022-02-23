@@ -104,8 +104,8 @@ HRESULT CObjectTool_Terrain::SetUp_Components()
 		return E_FAIL;
 
 	// #Bug Terrain¸¸ ¾È±×·ÁÁü
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Terrain128x128), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
-		return E_FAIL;
+	//if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Terrain128x128), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
+	//	return E_FAIL;
 	//if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 	//	return E_FAIL;	
 	//if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))

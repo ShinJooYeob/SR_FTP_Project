@@ -16,6 +16,9 @@
 
 #include "Renderer.h"
 
+#include "GameObject.h"
+#include "ObjectTool_ToolObject.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -35,6 +38,7 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_TIMER()
+	ON_WM_INPUT()
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -237,31 +241,20 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	// #Tag 툴창에서 마우스 피킹
 
-	//Invalidate : 호출 시 윈도우 wm_paint와 wm_erasebkgnd 메세지를 발생시킴
-	// ondraw 함수를 다시 한 번 호출
-	// 인자값이 FALSE일때는 wm_paint만 메시지만 발생
-	// 인자값이 true일때 wm_paint와 wm_erasebkgnd 두 메세지를 동시에 발생
-	// wm_erasebkgnd 메세지 : 배경을 지우라는 메시지
+	GetSingle(CGameInstance)->Update_Transform_ToWorldSpace(point);
+	
+	list<CGameObject*>* list =  GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
+	if (list == nullptr)
+		return;
+	for (CGameObject* obj : *list)
+	{
+		if (static_cast<CObjectTool_ToolObject*>(obj)->PickObject())
+			int A = 0;
+	}
 
-	Invalidate(FALSE);
-
-	// CMainFrame*	pMain = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	//CMainFrame*	pMain = dynamic_cast<CMainFrame*>(GetParentFrame());
-
-	//CMiniView*	pMiniView = dynamic_cast<CMiniView*>(pMain->m_SecondSplitter.GetPane(0, 0));
-
-	//CMyForm*	pMyForm = dynamic_cast<CMyForm*>(pMain->m_SecondSplitter.GetPane(1, 0));
-
-	//CMapTool*	pMapTool = &pMyForm->m_MapTool;
-
-	//m_pTerrain->TileChange(D3DXVECTOR3(point.x + GetScrollPos(0),
-	//	point.y + GetScrollPos(1),
-	//	0.f), pMapTool->m_iDrawID);
-
-	// pMiniView->Invalidate(FALSE);
 	
 
-	Invalidate(FALSE);
+
 }
 
 void CToolView::OnMouseMove(UINT nFlags, CPoint point)
@@ -271,11 +264,7 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	
 
 	// 피킹 클래스 툴용으로 수정
-	GetSingle(CGameInstance)->Update_Transform_ToWorldSpace(point);
 
-
-
-	CScrollView::OnMouseMove(nFlags, point);
 
 }
 
@@ -299,3 +288,4 @@ BOOL CToolView::DestroyWindow()
 
 	return CScrollView::DestroyWindow();
 }
+
