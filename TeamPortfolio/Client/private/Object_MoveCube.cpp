@@ -44,7 +44,6 @@ _int CObject_MoveCube::Update(_float fTimeDelta)
 
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FLEXIBLE, this);
 
-	m_ComTransform->MovetoDir(_float3(0, -1, 0), fTimeDelta);
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\Scene_Stage2.h"
 #include "Object_OrbitCube.h"
+#include "Camera_Main.h""
+
 
 CScene_Stage2::CScene_Stage2(LPDIRECT3DDEVICE9 GraphicDevice)
 	:CScene(GraphicDevice)
@@ -12,6 +14,8 @@ HRESULT CScene_Stage2::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
+		return E_FAIL;
 	////////////////////////////은혁이 테스트
 	if (FAILED(Ready_Layer_Cube(TEXT("Layer_Cube"))))
 		return E_FAIL;
@@ -96,7 +100,20 @@ HRESULT CScene_Stage2::Ready_Layer_Terrain(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage2::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TAG_OP(Prototype_Camera_Main)))
+	CCamera::CAMERADESC CameraDesc;
+
+	CameraDesc.bIsOrtho = true;
+	CameraDesc.vWorldRotAxis = _float3(5.f, 3.f, 5.f);
+	CameraDesc.vAxisY = _float3(0, 1, 0);
+	CameraDesc.fFovy = D3DXToRadian(60.0f);
+	CameraDesc.fAspect = _float(g_iWinCX) / g_iWinCY;
+	CameraDesc.fNear = 0.2f;
+	CameraDesc.fFar = 300.f;
+
+	CameraDesc.TransformDesc.fMovePerSec = 10.f;
+	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Camera_Main), &CameraDesc))
 		return E_FAIL;
 	return S_OK;
 }
