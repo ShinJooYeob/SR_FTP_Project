@@ -32,6 +32,7 @@ public:
 	virtual HRESULT Initialize_Clone(void* pArg)override;
 
 	virtual _int Update(_float fDeltaTime)override;
+	_int Manual_Render(_int eSkill);
 	virtual _int LateUpdate(_float fDeltaTime)override;
 
 	virtual _int Render()override;
@@ -40,7 +41,9 @@ public:
 
 public:
 	CUI * Find_UI(const _tchar * tagUI);
+	CUI * Find_Image(const _tchar * tagUIList);
 	HRESULT Ready_Layer_UI_Image(const _tchar * pLayerTag);
+	HRESULT Set_Image_Render(const _tchar * tagUIList, _bool bCheck);
 	HRESULT Ready_Layer_Button(const _tchar * pLayerTag);
 
 
@@ -64,7 +67,8 @@ private:	_float			m_fFrame = 0.f;
 			_float4			m_vUIDesc;
 public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
-	
+	HRESULT			Update_UIList(_float fTimeDelta);
+
 	
 	HRESULT			LateUpdate_UIList(_float fTimeDelta);
 	HRESULT			LateUpdate_UIButtonList(_float fTimeDelta);

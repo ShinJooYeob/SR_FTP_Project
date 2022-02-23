@@ -10,3 +10,7 @@ UI|Button2|1|../bin/Resources/Textures/UI/Button2.png
 UI|Price1|1|../bin/Resources/Textures/UI/500G.png
 UI|Price2|1|../bin/Resources/Textures/UI/1000G.png
 UI|Price3|1|../bin/Resources/Textures/UI/3000G.png
+UI|manual_Speedup|1|../bin/Resources/Textures/UI/manual_Speedup.png
+UI|manual_DJ|1|../bin/Resources/Textures/UI/manual_DJ.png
+UI|manual_Dash|1|../bin/Resources/Textures/UI/manual_Dash.png
+UI|manual_Potion|1|../bin/Resources/Textures/UI/manual_Potion.png

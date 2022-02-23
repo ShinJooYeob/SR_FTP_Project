@@ -46,8 +46,11 @@ private:
 private:
 	_float			m_fFrame = 0.f;
 	TCHAR*			m_pImageName;
+	_bool			m_bRender = true;
 public:
 	void			Set_ImageName(TCHAR* pImageName);
+	void			Set_ImageRenderFalse() { m_bRender=false; }
+	void			Set_ImageRenderTrue() { m_bRender = true; }
 private:
 	HRESULT			SetUp_Components();
 

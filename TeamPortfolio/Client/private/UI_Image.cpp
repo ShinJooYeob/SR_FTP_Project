@@ -104,8 +104,11 @@ _int CUI_Image::LateUpdate(_float fDeltaTime)
 
 
 	//렌더링 그룹에 넣어주는 역활
-	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
-		return E_FAIL;
+	if (m_bRender==true)
+	{
+		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
+			return E_FAIL;
+	}
 	return _int();
 }
 
@@ -164,6 +167,26 @@ void CUI_Image::Set_ImageName(TCHAR * pImageName)
 	else if (!lstrcmp(L"Price3", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"Price3");
+	}
+	else if (!lstrcmp(L"manual_Speedup", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"manual_Speedup");
+		m_bRender = false;
+	}
+	else if (!lstrcmp(L"manual_DJ", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"manual_DJ");
+		m_bRender = false;
+	}
+	else if (!lstrcmp(L"manual_Dash", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"manual_Dash");
+		m_bRender = false;
+	}
+	else if (!lstrcmp(L"manual_Potion", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"manual_Potion");
+		m_bRender = false;
 	}
 	
 }
