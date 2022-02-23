@@ -33,7 +33,15 @@ HRESULT CObject_DescentCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-1.f, 2.f, 2.f));
+	if (pArg != nullptr) {
+		_float3 vSettingPoint;
+		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		memcpy(&m_fTempPos, pArg, sizeof(_float3)); //원래 자리로 돌아가기 위한 템프 포지션
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+	}
+
+
+	//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-1.f, 2.f, 2.f));
 
 	return S_OK;
 }
@@ -46,6 +54,19 @@ _int CObject_DescentCube::Update(_float fTimeDelta)
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	_float3 RisingPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+	if (m_bCollisionSwitch == true)
+	{
+		m_bCollisionSwitch = false;
+	}
+	else if ((_uint)m_fTempPos.y != (_uint)RisingPos.y)
+	{
+		//속도조절 가능
+		m_fTimer = fTimeDelta * 1.2f;
+		_float3 RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y + m_fTimer, RisingCubePos.z));
+	}
 
 	RELEASE_INSTANCE(CGameInstance);
 
@@ -97,8 +118,30 @@ _int CObject_DescentCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3
 {
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
-
+		Collision_Descent(pDestObjects, fCollision_Distance, fDeltaTime);
 	}
+
+	return _int();
+}
+
+_int CObject_DescentCube::Collision_Descent(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
+{
+	m_bCollisionSwitch = true;
+
+	_float3 RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	//속도 조절 가능
+	m_fTimer = fDeltaTime * 1.2f;
+	//_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds - 3.f, 2.0f);
+
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y - m_fTimer, RisingCubePos.z));
+
+	CTransform* DestTransform = (CTransform*)pDestObjects->Get_Component(TAG_COM(Com_Transform));
+
+	_float3 DestPos = DestTransform->Get_MatrixState(CTransform::STATE_POS);
+
+
+	DestTransform->Set_MatrixState(CTransform::STATE_POS, _float3(DestPos.x, RisingCubePos.y - m_fTimer, DestPos.z));
 
 	return _int();
 }

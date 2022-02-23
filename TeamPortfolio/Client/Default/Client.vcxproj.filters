@@ -112,14 +112,20 @@
     <Filter Include="01.GameObject\SubObject\Object_PortalCube\PortalCube_B">
       <UniqueIdentifier>{cb516f59-73dd-40db-9faf-09098f7ca4b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube">
+    <Filter Include="01.GameObject\SubObject\Object_escalatorCube">
       <UniqueIdentifier>{ea8faaeb-792c-45b4-bc38-ba3a10ecf987}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube\Object_DescentCube">
+    <Filter Include="01.GameObject\SubObject\Object_escalatorCube\Object_DescentCube">
       <UniqueIdentifier>{c67859c4-976d-4dd8-8a00-2e6aae3515c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube">
+    <Filter Include="01.GameObject\SubObject\Object_escalatorCube\Object_RisingCube">
       <UniqueIdentifier>{fa90b281-ed72-4735-9712-4db6007ced48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_escalatorCube\Object_LeftCube">
+      <UniqueIdentifier>{97565d35-2f09-4110-8835-68131e2c74e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_escalatorCube\Object_RightCube">
+      <UniqueIdentifier>{295f6142-2639-40e7-8244-a6ba976936eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -220,10 +226,18 @@
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Object_DescentCube.h">
-      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_DescentCube</Filter>
+      <Filter>01.GameObject\SubObject\Object_escalatorCube\Object_DescentCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Object_RisingCube.h">
-      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube</Filter>
+      <Filter>01.GameObject\SubObject\Object_escalatorCube\Object_RisingCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Inventory_Main.h" />
+    <ClInclude Include="..\public\Item.h" />
+    <ClInclude Include="..\public\Object_LeftCube.h">
+      <Filter>01.GameObject\SubObject\Object_escalatorCube\Object_LeftCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_RightCube.h">
+      <Filter>01.GameObject\SubObject\Object_escalatorCube\Object_RightCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -312,10 +326,18 @@
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Object_DescentCube.cpp">
-      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_DescentCube</Filter>
+      <Filter>01.GameObject\SubObject\Object_escalatorCube\Object_DescentCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Object_RisingCube.cpp">
-      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube</Filter>
+      <Filter>01.GameObject\SubObject\Object_escalatorCube\Object_RisingCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Inventory_Main.cpp" />
+    <ClCompile Include="..\private\Item.cpp" />
+    <ClCompile Include="..\private\Object_LeftCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_escalatorCube\Object_LeftCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_RightCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_escalatorCube\Object_RightCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

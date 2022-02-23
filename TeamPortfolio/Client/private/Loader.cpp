@@ -18,6 +18,8 @@
 #include "Object_PortalCube_B.h"
 #include "Object_RisingCube.h"
 #include "Object_DescentCube.h"
+#include "Object_RightCube.h"
+#include "Object_LeftCube.h"
 #include "MyButton.h"
 
 _uint CALLBACK LoadingThread(void* _Prameter)
@@ -152,8 +154,6 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_FixCube"), CObject_FixCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	//////////////////////////////////////////////큐브로 충돌처리 테스트중입니다. -은혁
-
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
@@ -235,7 +235,20 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_DescentCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//왼쪽으로 가는 큐브
+	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_RightCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
+	//오른쪽으로 가는 큐브
+	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_LeftCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+
+	//무브 큐브
 	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Sky"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
@@ -274,6 +287,10 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_RisingCube"), CObject_RisingCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_DescentCube"), CObject_DescentCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_LeftCube"), CObject_LeftCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_RightCube"), CObject_RightCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 

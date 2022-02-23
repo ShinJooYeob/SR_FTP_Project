@@ -1,19 +1,18 @@
 #include "stdafx.h"
-#include "..\public\Object_RisingCube.h"
+#include "..\public\Object_LeftCube.h"
 
-
-CObject_RisingCube::CObject_RisingCube(LPDIRECT3DDEVICE9 pGraphic_Device)
+CObject_LeftCube::CObject_LeftCube(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 {
 
 }
 
-CObject_RisingCube::CObject_RisingCube(const CObject_RisingCube & rhs)
+CObject_LeftCube::CObject_LeftCube(const CObject_LeftCube & rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT CObject_RisingCube::Initialize_Prototype(void * pArg)
+HRESULT CObject_LeftCube::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
@@ -22,7 +21,7 @@ HRESULT CObject_RisingCube::Initialize_Prototype(void * pArg)
 	return S_OK;
 }
 
-HRESULT CObject_RisingCube::Initialize_Clone(void * pArg)
+HRESULT CObject_LeftCube::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
@@ -33,19 +32,21 @@ HRESULT CObject_RisingCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 
+	//원래 자리로 돌아가기 위한 템프 포지션
 	if (pArg != nullptr) {
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
-		memcpy(&m_fTempPos, pArg, sizeof(_float3)); //원래 자리로 돌아가기 위한 템프 포지션
+		memcpy(&m_fTempPos, pArg, sizeof(_float3));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
-	//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(1.f, -1.f, 2.f));
+
+	//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-1.f, 2.f, 2.f));
 
 	return S_OK;
 }
 
-_int CObject_RisingCube::Update(_float fTimeDelta)
+_int CObject_LeftCube::Update(_float fTimeDelta)
 {
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
@@ -54,17 +55,18 @@ _int CObject_RisingCube::Update(_float fTimeDelta)
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
+	//원래 자리로 돌아가기 위한 템프 포지션
 	_float3 RisingPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 	if (m_bCollisionSwitch == true)
 	{
 		m_bCollisionSwitch = false;
 	}
-	else if ((_uint)m_fTempPos.y != (_uint)RisingPos.y)
+	else if ((_uint)m_fTempPos.x != (_uint)RisingPos.x)
 	{
 		//속도조절 가능
 		m_fTimer = fTimeDelta * 1.2f;
 		_float3 RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y - m_fTimer, RisingCubePos.z));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x + m_fTimer, RisingCubePos.y, RisingCubePos.z));
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -72,7 +74,7 @@ _int CObject_RisingCube::Update(_float fTimeDelta)
 	return _int();
 }
 
-_int CObject_RisingCube::LateUpdate(_float fTimeDelta)
+_int CObject_LeftCube::LateUpdate(_float fTimeDelta)
 {
 	if (0 > __super::LateUpdate(fTimeDelta))
 		return -1;
@@ -85,7 +87,7 @@ _int CObject_RisingCube::LateUpdate(_float fTimeDelta)
 	return _int();
 }
 
-_int CObject_RisingCube::Render()
+_int CObject_LeftCube::Render()
 {
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
@@ -105,7 +107,7 @@ _int CObject_RisingCube::Render()
 	return _int();
 }
 
-_int CObject_RisingCube::LateRender()
+_int CObject_LeftCube::LateRender()
 {
 	if (FAILED(__super::LateRender()))
 		return E_FAIL;
@@ -113,43 +115,41 @@ _int CObject_RisingCube::LateRender()
 	return _int();
 }
 
-_int CObject_RisingCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
+_int CObject_LeftCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
-		Collision_Rising(pDestObjects, fCollision_Distance, fDeltaTime);
-		
+		//왼쪽으로 움직임
+		Collision_LeftMoving(pDestObjects, fCollision_Distance, fDeltaTime);
 	}
 
 	return _int();
 }
 
-_int CObject_RisingCube::Collision_Rising(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
+_int CObject_LeftCube::Collision_LeftMoving(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
 	m_bCollisionSwitch = true;
 
-	_float3 RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+	_float3 LeftCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 
 	//속도 조절 가능
 	m_fTimer = fDeltaTime * 1.2f;
 	//_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds - 3.f, 2.0f);
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y+ m_fTimer, RisingCubePos.z));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(LeftCubePos.x - m_fTimer, LeftCubePos.y, LeftCubePos.z));
 
 	CTransform* DestTransform = (CTransform*)pDestObjects->Get_Component(TAG_COM(Com_Transform));
 
 	_float3 DestPos = DestTransform->Get_MatrixState(CTransform::STATE_POS);
-																	
-	DestTransform->Set_MatrixState(CTransform::STATE_POS, _float3(DestPos.x, RisingCubePos.y + m_fTimer, DestPos.z));
 
 
-	//pDestObjects의 y값을 높이면 됨
-	//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y + fDeltaTime, RisingCubePos.z));
+	DestTransform->Set_MatrixState(CTransform::STATE_POS, _float3(LeftCubePos.x - m_fTimer, DestPos.y, DestPos.z));
+
 	return _int();
 }
 
 
-HRESULT CObject_RisingCube::SetUp_Components()
+HRESULT CObject_LeftCube::SetUp_Components()
 {
 	/* For.Com_Transform */
 	CTransform::TRANSFORMDESC		TransformDesc;
@@ -161,8 +161,8 @@ HRESULT CObject_RisingCube::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
 
-	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_RisingCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	///* For. 텍스쳐*/
+	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_LeftCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
@@ -182,7 +182,7 @@ HRESULT CObject_RisingCube::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CObject_RisingCube::SetUp_RenderState()
+HRESULT CObject_LeftCube::SetUp_RenderState()
 {
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
@@ -194,7 +194,7 @@ HRESULT CObject_RisingCube::SetUp_RenderState()
 	return S_OK;
 }
 
-HRESULT CObject_RisingCube::Release_RenderState()
+HRESULT CObject_LeftCube::Release_RenderState()
 {
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
@@ -206,13 +206,13 @@ HRESULT CObject_RisingCube::Release_RenderState()
 	return S_OK;
 }
 
-CObject_RisingCube * CObject_RisingCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)
+CObject_LeftCube * CObject_LeftCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)
 {
-	CObject_RisingCube* pInstance = new CObject_RisingCube(pGraphic_Device);
+	CObject_LeftCube* pInstance = new CObject_LeftCube(pGraphic_Device);
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CObject_RisingCube");
+		MSGBOX("Fail to Create CObject_DescentCube");
 		Safe_Release(pInstance);
 
 	}
@@ -221,13 +221,13 @@ CObject_RisingCube * CObject_RisingCube::Create(LPDIRECT3DDEVICE9 pGraphic_Devic
 	return pInstance;
 }
 
-CGameObject * CObject_RisingCube::Clone(void * pArg)
+CGameObject * CObject_LeftCube::Clone(void * pArg)
 {
-	CObject_RisingCube* pInstance = new CObject_RisingCube((*this));
+	CObject_LeftCube* pInstance = new CObject_LeftCube((*this));
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CObject_RisingCube");
+		MSGBOX("Fail to Create CObject_DescentCube");
 		Safe_Release(pInstance);
 
 	}
@@ -236,7 +236,7 @@ CGameObject * CObject_RisingCube::Clone(void * pArg)
 	return pInstance;
 }
 
-void CObject_RisingCube::Free()
+void CObject_LeftCube::Free()
 {
 	__super::Free();
 
@@ -246,4 +246,3 @@ void CObject_RisingCube::Free()
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComRenderer);
 }
-

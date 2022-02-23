@@ -13,12 +13,12 @@ END
 
 BEGIN(Client)
 
-class CObject_DescentCube final : public CGameObject
+class CObject_RightCube final : public CGameObject
 {
 private:
-	explicit CObject_DescentCube(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CObject_DescentCube(const CObject_DescentCube& rhs);
-	virtual ~CObject_DescentCube() = default;
+	explicit CObject_RightCube(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CObject_RightCube(const CObject_RightCube& rhs);
+	virtual ~CObject_RightCube() = default;
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
 	virtual HRESULT Initialize_Clone(void* pArg)override;
@@ -28,7 +28,7 @@ public:
 	virtual _int LateRender()override;
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
-	virtual _int Collision_Descent(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime);
+	virtual _int Collision_RightMoving(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime);
 
 private:
 	HRESULT SetUp_Components();
@@ -45,7 +45,6 @@ private:
 	CCollision*				m_pCollisionCom = nullptr;
 
 
-
 	_float					m_fTimer = 0.f;
 	_float					Seconds = 0.f;
 	_float3					m_fTempPos;
@@ -53,7 +52,7 @@ private:
 
 
 public:
-	static CObject_DescentCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	static CObject_RightCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };
