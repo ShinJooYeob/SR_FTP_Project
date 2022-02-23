@@ -127,11 +127,16 @@ _int CObject_AppearCube::Cube_Appears(_float fDeltaTime)
 
 	if (Distance < 4)
 	{
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_fTempPos);
+		m_fTimer += fDeltaTime;
+		if (m_fTimer > 3.f)
+		{
+			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_fTempPos);
+		}
 	}
 	else
 	{
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(999.f,999.f,999.f));
+		m_fTimer = 0;
 	}
 
 	RELEASE_INSTANCE(CGameInstance);
