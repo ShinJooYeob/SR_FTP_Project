@@ -36,10 +36,10 @@ HRESULT CScene_Stage2::Initialize()
 	if (FAILED(Ready_Layer_OrbitCube(TEXT("Layer_OrbitCube"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Object_PortalCube_A(TEXT("Layer_PortalCube_A"))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_Object_PortalCube_B(TEXT("Layer_PortalCube_B"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Object_PortalCube_A(TEXT("Layer_PortalCube_A"))))
+	//	return E_FAIL;
+	//if (FAILED(Ready_Layer_Object_PortalCube_B(TEXT("Layer_PortalCube_B"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Object_RisingCube(TEXT("Layer_RisingCube"))))
 		return E_FAIL;

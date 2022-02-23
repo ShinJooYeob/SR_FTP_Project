@@ -71,18 +71,18 @@ _int CPlayer::Update(_float fDeltaTime)
 	}
 	else {
 
-	if (FAILED(Input_Keyboard(fDeltaTime)))
-		return E_FAIL;
+		if (FAILED(Input_Keyboard(fDeltaTime)))
+			return E_FAIL;
 
-	if (FAILED(Animation_Change(fDeltaTime)))
-		return E_FAIL;
+		if (FAILED(Animation_Change(fDeltaTime)))
+			return E_FAIL;
 
-	if (FAILED(Find_FootHold_Object(fDeltaTime))) 
-		return E_FAIL;
+		if (FAILED(Find_FootHold_Object(fDeltaTime)))
+			return E_FAIL;
 
 
-	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
-		return E_FAIL;
+		//if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
+		//	return E_FAIL;
 
 
 	}
@@ -97,8 +97,14 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
 
-	if (FAILED(Set_CamY(fDeltaTime)))
+	if (!m_bIsDead) 
+	{
+		if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
+			return E_FAIL;
+	}
+	if (FAILED(Set_CamPosXY(fDeltaTime)))
 		return E_FAIL;
+
 
 
 	//렌더링 그룹에 넣어주는 역활
@@ -686,7 +692,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 	return S_OK;
 }
 
-HRESULT CPlayer::Set_CamY(_float fDeltaTime)
+HRESULT CPlayer::Set_CamPosXY(_float fDeltaTime)
 {
 	CTransform* pCamTransform = m_pCamera_Main->Get_Camera_Transform();
 	_Matrix matCamWorld = pCamTransform->Get_WorldMatrix();

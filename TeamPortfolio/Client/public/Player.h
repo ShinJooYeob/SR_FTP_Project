@@ -78,7 +78,7 @@ private:
 
 	HRESULT			Find_FootHold_Object(_float fDeltaTime);
 	HRESULT			Set_PosOnFootHoldObject(_float fDeltaTime);
-	HRESULT			Set_CamY(_float fDeltaTime);
+	HRESULT			Set_CamPosXY(_float fDeltaTime);
 
 
 	HRESULT SetUp_RenderState();

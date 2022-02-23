@@ -15,6 +15,13 @@ BEGIN(Client)
 
 class CObject_PortalCube_A final : public CGameObject
 {
+public:
+	typedef struct tagPotalCubeDesc{
+		_float3 vPos_A_Cube;
+		_float3 vPos_B_Cube;
+		_uint  iNowScene;
+	}POTALDESC;
+
 private:
 	explicit CObject_PortalCube_A(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CObject_PortalCube_A(const CObject_PortalCube_A& rhs);
@@ -29,7 +36,9 @@ public:
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
 
-	virtual _int Object_Transfer(_float fDeltaTime);
+	virtual _int Object_Transfer(CGameObject * pDestObjects, _float fDeltaTime);
+
+	void UsedPotal(_float fTimeDelta) { m_Seconds += fTimeDelta; }
 
 private:
 	HRESULT SetUp_Components();
@@ -45,13 +54,14 @@ private:
 
 	CCollision*				m_pCollisionCom = nullptr;
 
-	_float					Seconds = 0.f;
-	bool					Collision = false;
+	_float					m_Seconds = 0.f;
 
+
+	class CObject_PortalCube_B*		m_pTargetCube = nullptr;
 
 public:
 	static CObject_PortalCube_A* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
-	virtual CGameObject* Clone(void* pArg) override;
+	virtual CGameObject* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;
 };
 

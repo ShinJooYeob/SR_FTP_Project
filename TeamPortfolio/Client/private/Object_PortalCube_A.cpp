@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\public\Object_PortalCube_A.h"
+#include "Object_PortalCube_B.h"
 
 
 CObject_PortalCube_A::CObject_PortalCube_A(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -27,13 +28,36 @@ HRESULT CObject_PortalCube_A::Initialize_Clone(void * pArg)
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
 
+	if (pArg == nullptr)
+		return E_FAIL;
+
 	/* 현재 객체에게 추가되어야할 컴포넌트들을 복제(or 참조)하여 멤버변수에 보관한다.  */
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-5.f, 0.f, 1.f));
+
+	POTALDESC tDesc;
+	memcpy(&tDesc, pArg, sizeof(POTALDESC));
+
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, tDesc.vPos_A_Cube);
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(tDesc.iNowScene, TEXT("Layer_Potal"), TEXT("Prototype_GameObject_Object_PortalCube_B"), &tDesc.vPos_B_Cube))
+		return E_FAIL;
+
+
+	CObject_PortalCube_B* pTargetCube = (CObject_PortalCube_B*)(GetSingle(CGameInstance)->Get_ObjectList_from_Layer(m_eNowSceneNum, TEXT("Layer_Potal"))->back());
+
+	if (pTargetCube == nullptr || lstrcmp(TEXT("Layer_Potal"), pTargetCube->Get_Layer_Tag()))
+		return E_FAIL;
+
+	m_pTargetCube = pTargetCube;
+	if(FAILED(pTargetCube->Set_TargetCube(this)))
+		return E_FAIL;
+
+
+	m_Layer_Tag = TEXT("Layer_Potal");
 
 	return S_OK;
 }
@@ -45,10 +69,12 @@ _int CObject_PortalCube_A::Update(_float fTimeDelta)
 
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
 
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-
-	RELEASE_INSTANCE(CGameInstance);
+	if (m_Seconds > 0 && m_Seconds < 3)
+	{
+		m_Seconds += fTimeDelta;
+		if (m_Seconds > 3.f)
+			m_Seconds = 0;
+	}
 
 	return _int();
 }
@@ -96,38 +122,31 @@ _int CObject_PortalCube_A::LateRender()
 
 _int CObject_PortalCube_A::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
+	if (!m_Seconds &&!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Player")))
 	{
-		Object_Transfer(fDeltaTime);
-
-
+		Object_Transfer(pDestObjects, fDeltaTime);
 	}
 
 	return _int();
 }
 
-_int CObject_PortalCube_A::Object_Transfer(_float fDeltaTime)
+_int CObject_PortalCube_A::Object_Transfer(CGameObject * pDestObjects, _float fDeltaTime)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 
-	Seconds += fDeltaTime;
+		if (m_pTargetCube == nullptr || pDestObjects == nullptr)
+			return -1;
 
-	if (Seconds > 2)
-	{
+		m_Seconds += fDeltaTime;
+		m_pTargetCube->UsedPotal(fDeltaTime);
 
-		CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(m_eNowSceneNum, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
-
-		CTransform* PortalCube_B = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(m_eNowSceneNum, TEXT("Layer_PortalCube_B"), TAG_COM(Com_Transform));
-
+		CTransform* Player = (CTransform*)(pDestObjects->Get_Component(TAG_COM(Com_Transform)));
+		CTransform* PortalCube_B = (CTransform*)(m_pTargetCube->Get_Component(TAG_COM(Com_Transform)));
 		_float3 PortalCube_B_Pos = PortalCube_B->Get_MatrixState(CTransform::STATE_POS);
-
-		PortalCube_B_Pos.y += 1.f;
-
+		//PortalCube_B_Pos.y += 1.f;
 		Player->Set_MatrixState(CTransform::STATE_POS, PortalCube_B_Pos);
 
-		Seconds = 0;
-	};
 
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -149,7 +168,7 @@ HRESULT CObject_PortalCube_A::SetUp_Components()
 		return E_FAIL;
 
 	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Object_PortalCube_A_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TAG_CP(Prototype_Texture_Shop), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
@@ -226,6 +245,7 @@ CGameObject * CObject_PortalCube_A::Clone(void * pArg)
 void CObject_PortalCube_A::Free()
 {
 	__super::Free();
+
 
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComTexture);
