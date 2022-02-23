@@ -35,14 +35,14 @@ private:
 	HRESULT Ready_Layer_Object_PortalCube_A(const _tchar* pLayerTag); //포탈 A
 	HRESULT Ready_Layer_Object_PortalCube_B(const _tchar* pLayerTag); //포탈 B
 
-	//움직이는 큐브
+	//움직이는 큐브들
 	HRESULT Ready_Layer_Object_RisingCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Object_DescentCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Object_LeftCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Object_RightCube(const _tchar* pLayerTag);
 
-
 	HRESULT Ready_Layer_Object_VanishCube(const _tchar* pLayerTag);//사라지는 큐브
+	HRESULT Ready_Layer_Object_AppearCube(const _tchar* pLayerTag);//나타나는 큐브
 
 	HRESULT Ready_Layer_OrbitCube(const _tchar* pLayerTag);// 공전을 위한 큐브
 

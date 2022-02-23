@@ -130,6 +130,9 @@
     <Filter Include="01.GameObject\SubObject\Object_VanishCube">
       <UniqueIdentifier>{35bac829-0c7d-4ab0-baff-1e01acb744b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_AppearCube">
+      <UniqueIdentifier>{b81f1d2c-9b3e-4e8c-b149-812e445acf7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -245,6 +248,9 @@
     <ClInclude Include="..\public\Object_VanishCube.h">
       <Filter>01.GameObject\SubObject\Object_VanishCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_AppearCube.h">
+      <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -347,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_VanishCube.cpp">
       <Filter>01.GameObject\SubObject\Object_VanishCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_AppearCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

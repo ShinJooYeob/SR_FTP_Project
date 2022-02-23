@@ -211,7 +211,7 @@ CObject_RightCube * CObject_RightCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device,
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CObject_DescentCube");
+		MSGBOX("Fail to Create CObject_RightCube");
 		Safe_Release(pInstance);
 
 	}
@@ -226,7 +226,7 @@ CGameObject * CObject_RightCube::Clone(void * pArg)
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CObject_DescentCube");
+		MSGBOX("Fail to Create CObject_RightCube");
 		Safe_Release(pInstance);
 
 	}

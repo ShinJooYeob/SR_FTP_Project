@@ -217,7 +217,7 @@ CObject_VanishCube * CObject_VanishCube::Create(LPDIRECT3DDEVICE9 pGraphic_Devic
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CObject_PortalCube_A");
+		MSGBOX("Fail to Create CObject_VanishCube");
 		Safe_Release(pInstance);
 
 	}
@@ -232,7 +232,7 @@ CGameObject * CObject_VanishCube::Clone(void * pArg)
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CObject_PortalCube_A");
+		MSGBOX("Fail to Create CObject_VanishCube");
 		Safe_Release(pInstance);
 
 	}
