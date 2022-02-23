@@ -27,40 +27,41 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
-public:
-	HRESULT Set_Defult(wstring objectName);
+public: // For. Transform
+	HRESULT Set_WorldMat(_Matrix world);
+	HRESULT Set_Default(wstring name);
+
 	HRESULT Set_Scaled(_float3 scale);
 	HRESULT Set_Rotation(_float3 rot);
 	HRESULT Set_Position(_float3 Position);
-	HRESULT Set_Texture(wstring pathdata);
+
+	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS); }
+	_float3 Get_Scale() { return m_ComTransform->Get_MatrixScale(); }
+
+public:	// For. Texture
 	HRESULT Set_TextureNum_Bind(int num = 0);
 
-	HRESULT	Set_NewOutputData(const OUTPUT_OBJECTINFO& data);
-
-	// 각 정보 동기화
-	HRESULT	Set_Output2Component();
-	HRESULT	Set_Component2Output();
-
-
-
-	HRESULT Set_ViBuffer_Change();
 	void	Set_Visble(_bool b) { m_isVisble = b; }
-
-	const OUTPUT_OBJECTINFO& Get_ObjectInfo() { Set_Component2Output(); return m_tOutputData; }
-	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS);  }
-	_float3 Get_Scale() { return m_ComTransform->Get_MatrixScale(); }
 
 	HRESULT Texture_CurrentBind();
 
+public: // For. OutputData , 로드랑 세이브시에만 사용
+
+	void Set_OUTPUTData_Save();
+	const OUTPUT_OBJECTINFO& Get_OutputData() const { return m_tOutputData; }
+	void LoadData(const OUTPUT_OBJECTINFO& data);
+	void Set_NewName(const _tchar* newname);
+
 private:
 	HRESULT			SetUp_Components();
+	HRESULT			Set_ViBuffer_Change(); // 나중에 다시 쓸 듯 
+
 private:
 	_bool					m_isRect = true;
 	_bool					m_isCubeRot = false;
 	_bool					m_isVisble = true; // 랜더링 유무
 
 
-	_float3					m_Rot3;// 회전값 일단 생략
 
 	CTransform*				m_ComTransform = nullptr;
 	CVIBuffer*				m_ComVIBuffer = nullptr;

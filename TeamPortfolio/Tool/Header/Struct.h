@@ -123,9 +123,9 @@ typedef struct tagOutputObject
 
 
 	TCHAR			strObjectName[STR_MAX];	// 오브젝트 이름 / 파일 이름
-	unsigned int	StateIndex;		// 어떤 종류의 큐브인지 판단 
-	OUTPUT_TETURE	TexDesc;			// 텍스처 정보
-	D3DXMATRIX		WorldMatData;		// 월드 행렬 정보 // 
+	unsigned int	StateIndex;				// 어떤 종류의 큐브인지 판단 
+	OUTPUT_TETURE	TexDesc;				// 텍스처 정보
+	D3DXMATRIX		WorldMatData;			// 월드 행렬 정보 // 
 
 }OUTPUT_OBJECTINFO;
 

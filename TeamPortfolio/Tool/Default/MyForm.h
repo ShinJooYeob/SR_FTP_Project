@@ -55,8 +55,7 @@ public:
 	afx_msg void OnMapSave();
 	afx_msg void OnBnClickedButtonLoad();
 	afx_msg void OnBnClickedButtonCube();
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnBnClickedButton_CreateObject();
 	afx_msg void OnLbnSelchangeList_ObjectSelect();
-	afx_msg void OnBnClickedButton15();
+	afx_msg void OnBnClickedButton_Delete();
 };

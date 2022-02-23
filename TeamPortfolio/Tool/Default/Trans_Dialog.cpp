@@ -64,7 +64,7 @@ HRESULT CTrans_Dialog::EditToObjectUpdate(CEdit* edit,_uint editCount)
 	// Edit 값을 현재 오브젝트와 동기화.
 
 	// 실제 게임 오브젝트의 크기를 변경.
-	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject();
+	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject();
 	if (CurrentToolObject == nullptr)
 		return E_FAIL;
 
@@ -99,8 +99,8 @@ END_MESSAGE_MAP()
 
 HRESULT CTrans_Dialog::ResetTexture()
 {
-	// 텍스처 릭스트 업데이트
-	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject();
+	// 텍스처 리스트 업데이트
+	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_ViewObject_Object();
 
 	if (CurrentToolObject)
 	{
@@ -121,12 +121,13 @@ HRESULT CTrans_Dialog::ResetTexture()
 HRESULT CTrans_Dialog::Set_CurrentUpdate_WorldMat()
 {
 	// 현재 선택된 값으로 데이터 업데이트
-	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject();
+	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject();
+	if (CurrentToolObject == nullptr)
+		return E_FAIL;
 
 	_float3 scale = CurrentToolObject->Get_Scale();
 	_float3 pos = CurrentToolObject->Get_Pos();
-
-
+	
 
 	_tchar buf[32] = L"";
 
@@ -168,7 +169,7 @@ BOOL CTrans_Dialog::OnInitDialog()
 	}
 
 	// 현재 선택된 오브젝트가 있다면 그 값으로 초기화한다.
-	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject();
+	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject();
 	if (CurrentToolObject == nullptr)
 	{
 		_tchar buf[10] = L"";
@@ -182,18 +183,13 @@ BOOL CTrans_Dialog::OnInitDialog()
 		m_InputNumber[7].SetWindowText(buf);
 		m_InputNumber[8].SetWindowText(buf);
 
-
 		// 텍스처 리스트 업데이트
 		ResetTexture();
-
 	}
 	else
 	{
-
-		Set_CurrentUpdate_WorldMat();
-		
+		Set_CurrentUpdate_WorldMat();		
 		ResetTexture();
-
 	}
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -217,7 +213,7 @@ void CTrans_Dialog::OnBnClickedButton1()
 void CTrans_Dialog::OnLbnSelchangeList1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_CurrentToolObject();
+	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject();
 	_uint index = m_TextureListBox.GetCurSel();
 	CurrentToolObject->Set_TextureNum_Bind(index);
 	

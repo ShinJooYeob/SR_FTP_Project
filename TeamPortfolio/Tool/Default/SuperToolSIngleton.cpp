@@ -249,7 +249,13 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* 
 
 		CString				str = Dlg.GetPathName().GetString();
 		CString				Filename = PathFindFileName(str);
-
+		
+		TCHAR				newName[64] = L"";
+	
+		lstrcpy(newName, Filename);
+		PathRemoveExtension(newName);		
+		obj->Set_NewName(newName);
+		
 		const TCHAR*		pGetPath = str.GetString();
 
 		HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
@@ -264,7 +270,8 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* 
 		DWORD	dwByte = 0;
 
 		// 저장
-		WriteFile(hFile, &obj->Get_ObjectInfo(), sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+		obj->Set_OUTPUTData_Save();
+		WriteFile(hFile, &obj->Get_OutputData(), sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
 
 		CloseHandle(hFile);
 	}
@@ -329,7 +336,7 @@ HRESULT CSuperToolSIngleton::Create_ToolObject_Data(const OUTPUT_OBJECTINFO& dat
 	// 1. 디폴트 오브젝트 생성
 	CObjectTool_ToolObject* newobj = Create_New_ToolObject(data.strObjectName,TAG_LAY(Layer_View));
 	// 2. 데이터 세팅
-	newobj->Set_NewOutputData(data);
+	newobj->LoadData(data);
 	// 3. 정보 업데이트
 	Change_ToolObject(newobj);
 	// 리스타 박스 업데이트
@@ -358,7 +365,7 @@ CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject(wstring name,
 	FAILED_CHECK_NONERETURN(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, laytag, TAG_OP(Prototype_BackGround)));
 
 	CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, laytag)->back();
-	newobj->Set_Defult(name);
+	newobj->Set_Default(name);
 
 	return newobj;
 }

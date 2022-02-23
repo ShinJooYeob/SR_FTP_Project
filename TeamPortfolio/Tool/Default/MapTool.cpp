@@ -39,7 +39,7 @@ void CMapTool::ListBoxUpdate()
 
 	for (auto map: m_StageMapList)
 	{
-		m_ListBox_Map.AddString(map->Get_ObjectInfo().strObjectName);
+		m_ListBox_Map.AddString(map->Get_OutputData().strObjectName);
 	}
 
 }
