@@ -367,7 +367,7 @@ HRESULT CSuperToolSIngleton::SaveData_Map(list<CGameObject*> objlist, CWnd* cwnd
 		for (auto& iter : objlist)
 		{
 			((CObjectTool_ToolObject*)iter)->Set_OUTPUTData_Save();
-			WriteFile(hFile, &iter, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+			WriteFile(hFile, &((CObjectTool_ToolObject*)iter)->Get_OutputData(), sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
 		}
 		CloseHandle(hFile);
 	}
@@ -386,8 +386,7 @@ HRESULT CSuperToolSIngleton::LoadData_Data(CWnd * cwnd)
 	CFileDialog dlg(TRUE, _T("*.dat"), _T(""), OFN_HIDEREADONLY, szFilter);
 
 	OUTPUT_ID			infoid;
-
-	OUTPUT_OBJECTINFO infoObj;
+	OUTPUT_OBJECTINFO	infoObj;
 
 
 	if (IDOK == dlg.DoModal())
@@ -416,35 +415,19 @@ HRESULT CSuperToolSIngleton::LoadData_Data(CWnd * cwnd)
 			Create_ToolObject_Data(infoid.strObjectName,infoObj);
 			break;
 		case OUTPUT_MAP:
-
-			DWORD	dwByte = 0;
-			OUTPUT_OBJECTINFO*	pObjInfo = nullptr;
-
 			while (true)
 			{
-				//pTile = new TILE;
+				ReadFile(hFile, &infoObj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
 
-				//ReadFile(hFile, pTile, sizeof(TILE), &dwByte, NULL);
-
-				//if (0 == dwByte)
-				//{
-				//	Safe_Delete(pTile);
-				//	break;
-				//}
-
-				//m_vecTile.push_back(pTile);
+				if (0 == dwByte)
+				{
+					// Safe_Delete(pObjInfo);
+					break;
+				}
+				GetSingle(CSuperToolSIngleton)->Create_Load_MapObject(infoObj, TAG_LAY(Layer_Map));
 			}
-
-
-			// ReadFile(hFile, &infoObj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
-			// // 새 오브젝트 생성
-			// Create_ToolObject_Data(infoid.strObjectName, infoObj);
-
-
 			break;
 		}
-
-		
 
 		CloseHandle(hFile);
 	}
@@ -489,7 +472,19 @@ CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject(wstring name,
 	return newobj;
 }
 
-CObjectTool_ToolObject * CSuperToolSIngleton::Create_New_MapObject(_float3 Pos, const _tchar* laytag)
+CObjectTool_ToolObject * CSuperToolSIngleton::Create_Load_MapObject(const OUTPUT_OBJECTINFO& info, const _tchar* laytag)
+{
+	// 데이터로 오브젝트 생성 생성
+	FAILED_CHECK_NONERETURN(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, laytag, TAG_OP(Prototype_BackGround)));
+
+	// 3. 생성된 오브젝트 가져오기
+	CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, laytag)->back();
+	newobj->LoadData(info);
+	return newobj;
+}
+
+
+CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(_float3 Pos, const _tchar* laytag)
 {
 	// 현재 선택된 오브젝트를 클론해 맵 레이어에 오브젝트를 제작한다.
 	// 1. 오브젝트 선택

@@ -89,7 +89,7 @@ void CMapTool::CreateNewMap(_uint x, _uint y, _uint z, E_BUILDINGTYPE type)
 					if (isDraw)
 					{
 						_float3 newfloat = _float3(x, y, z);
-						GetSingle(CSuperToolSIngleton)->Create_New_MapObject(newfloat, TAG_LAY(Layer_Map));
+						GetSingle(CSuperToolSIngleton)->Create_Clone_MapObject(newfloat, TAG_LAY(Layer_Map));
 					}
 
 					break;
@@ -98,7 +98,7 @@ void CMapTool::CreateNewMap(_uint x, _uint y, _uint z, E_BUILDINGTYPE type)
 					if (isDraw)
 					{
 						_float3 newfloat = _float3(x, y, z);
-						GetSingle(CSuperToolSIngleton)->Create_New_MapObject(newfloat, TAG_LAY(Layer_Map));
+						GetSingle(CSuperToolSIngleton)->Create_Clone_MapObject(newfloat, TAG_LAY(Layer_Map));
 					}
 
 					break;
@@ -108,7 +108,7 @@ void CMapTool::CreateNewMap(_uint x, _uint y, _uint z, E_BUILDINGTYPE type)
 					if (isDraw)
 					{
 						_float3 newfloat = _float3(x, y, z);
-						GetSingle(CSuperToolSIngleton)->Create_New_MapObject(newfloat, TAG_LAY(Layer_Map));
+						GetSingle(CSuperToolSIngleton)->Create_Clone_MapObject(newfloat, TAG_LAY(Layer_Map));
 					}
 
 					break;
@@ -235,7 +235,6 @@ void CMapTool::OnBnClickedButton3()
 		{
 			obj->DIED();
 		}
-		objlist->clear();
 	}
 
 	GetSingle(CSuperToolSIngleton)->LoadData_Data(this);

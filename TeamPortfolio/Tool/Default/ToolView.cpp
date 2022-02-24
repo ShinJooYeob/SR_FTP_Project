@@ -287,7 +287,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 		return;
 
 	// 선택한 오브젝트 생성
-	GetSingle(CSuperToolSIngleton)->Create_New_MapObject(m_NextPos, TAG_LAY(Layer_Map));
+	GetSingle(CSuperToolSIngleton)->Create_Clone_MapObject(m_NextPos, TAG_LAY(Layer_Map));
 }
 void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
 {

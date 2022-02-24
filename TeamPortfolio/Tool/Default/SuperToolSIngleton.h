@@ -97,7 +97,9 @@ public: //For. Data
 
 public:// For Create
 	CObjectTool_ToolObject* Create_New_ToolObject(wstring name, const _tchar* laytag);
-	CObjectTool_ToolObject* Create_New_MapObject(_float3 Pos, const _tchar* laytag);
+	CObjectTool_ToolObject* Create_Load_MapObject(const OUTPUT_OBJECTINFO& info, const _tchar* laytag);
+
+	CObjectTool_ToolObject* Create_Clone_MapObject(_float3 Pos, const _tchar* laytag);
 
 public:// For Object
 	_float3					Get_Center_MapPosition();

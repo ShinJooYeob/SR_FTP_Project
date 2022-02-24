@@ -37,10 +37,6 @@ HRESULT CObjectTool_ToolObject::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	// 텍스처 여러개 갈아 끼울 수 있게 하자.
-
-	m_ComTexture->Bind_Texture();
-
 	return S_OK;
 }
 
