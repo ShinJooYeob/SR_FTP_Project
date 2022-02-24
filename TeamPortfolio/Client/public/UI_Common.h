@@ -53,10 +53,12 @@ private:
 
 
 private:	_float			m_fFrame = 0.f;
+			_float			m_temp = 0.f;
 			map<const _tchar*, CUI*>			m_UIButtonList;
 			map<const _tchar*, CUI*>			m_UIList;
 			map<const _tchar*, CUI*>			m_UIPrototypes;
-			bool			m_bIsPress = false;
+			_bool			m_bIsPress = false;
+			_bool			m_MouseOn = false;
 			_float4			m_vUIDesc;
 			_tchar*			m_BiggerTag;
 public:

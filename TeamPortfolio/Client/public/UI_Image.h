@@ -58,6 +58,7 @@ private:
 public:
 	_int			Get_ImageBigger() { return m_iBigger; }
 
+	void			Set_ImageUIDesc(_float vUIDescx) { m_vUIDesc.x = m_vUIDesc.x + vUIDescx; }
 	void			Set_ImageName(TCHAR* pImageName);
 	void			Set_ImageRenderFalse() { m_bRender = false; }
 	void			Set_ImageRenderTrue() { m_bRender = true; }

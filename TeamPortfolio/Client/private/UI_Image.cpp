@@ -51,8 +51,11 @@ _int CUI_Image::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-
-	
+	if (!lstrcmp(L"Common_1", m_pImageName))
+	{
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+			return E_FAIL;
+	}
 
 	if (m_iBigger == BIGGER_ON && m_vUIDesc.w < 200)
 	{

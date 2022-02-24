@@ -35,17 +35,17 @@ HRESULT CUI_Common::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
-	
+
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	/*m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(90));*/
-	m_vUIDesc = _float4((g_iWinCX>>1)-300, 690, 800, 100);
+	m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(90));
+	m_vUIDesc = _float4((g_iWinCX >> 1) - 750, 360, 800, 100);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Button(TEXT("Layer_Button"))))
 		return E_FAIL;
-	
+
 	if (FAILED(Ready_Layer_UI_Image(TEXT("Layer_UI_Image"))))
 		return E_FAIL;
 
@@ -60,15 +60,44 @@ _int CUI_Common::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-	if (m_bIsPress == true)
+
+	POINT ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	m_rcRect.top = (LONG)0;
+	m_rcRect.left = (LONG)0;
+	m_rcRect.bottom = (LONG)720;
+	m_rcRect.right = (LONG)50;
+	if (PtInRect(&m_rcRect, ptMouse))
+		m_MouseOn = true;
+
+	else
+		m_MouseOn = false;
+
+	if (m_MouseOn == true && m_vUIDesc.x<(g_iWinCX >> 1) - 600)
 	{
-		if (FAILED(Update_UIList(fDeltaTime)))
+		m_temp += 10;
+		m_vUIDesc = _float4((g_iWinCX >> 1) - 750 + m_temp, 360, 800, 100);
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 			return E_FAIL;
-		if (FAILED(Update_UIButtonList(fDeltaTime)))
-			return E_FAIL;
-
-
+		for (auto pair : m_UIList)
+			((CUI_Image*)(pair.second))->Set_ImageUIDesc(10);
 	}
+	else if (m_MouseOn == false && m_vUIDesc.x>-40)
+	{
+		m_temp -= 10;
+		m_vUIDesc = _float4((g_iWinCX >> 1) - 750 + m_temp, 360, 800, 100);
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+			return E_FAIL;
+		for (auto pair : m_UIList)
+			((CUI_Image*)(pair.second))->Set_ImageUIDesc(-10);
+	}
+	if (FAILED(Update_UIList(fDeltaTime)))
+		return E_FAIL;
+	if (FAILED(Update_UIButtonList(fDeltaTime)))
+		return E_FAIL;
+
+
 
 	return _int();
 }
@@ -85,14 +114,14 @@ _int CUI_Common::LateUpdate(_float fDeltaTime)
 
 
 	//렌더링 그룹에 넣어주는 역활
-	
-		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
-			return E_FAIL;
-		if (FAILED(LateUpdate_UIList(fDeltaTime)))
-			return E_FAIL;
-		if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
-			return E_FAIL;
-	
+
+	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
+		return E_FAIL;
+	if (FAILED(LateUpdate_UIList(fDeltaTime)))
+		return E_FAIL;
+	if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
+		return E_FAIL;
+
 
 	return _int();
 }
@@ -153,35 +182,35 @@ HRESULT CUI_Common::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 {
 
 
-	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x-300, m_vUIDesc.y , 64, 64)));
+	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 280, 64, 64)));
 	temp->Set_ImageName(L"Common_1");
 	m_UIList.emplace(L"Common_Image_1", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 220, m_vUIDesc.y , 64, 64)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 200, 64, 64)));
 	temp->Set_ImageName(L"Common_1");
 	m_UIList.emplace(L"Common_Image_2", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 140, m_vUIDesc.y , 64, 64)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 120, 64, 64)));
 	temp->Set_ImageName(L"Common_1");
 	m_UIList.emplace(L"Common_Image_3", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 60, m_vUIDesc.y , 64, 64)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 40, 64, 64)));
 	temp->Set_ImageName(L"Common_1");
 	m_UIList.emplace(L"Common_Image_4", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 20, m_vUIDesc.y , 64, 64)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 40, 64, 64)));
 	temp->Set_ImageName(L"Common_1");
 	m_UIList.emplace(L"Common_Image_5", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 100, m_vUIDesc.y , 64, 64)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 120, 64, 64)));
 	temp->Set_ImageName(L"Common_1");
 	m_UIList.emplace(L"Common_Image_6", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 180, m_vUIDesc.y , 64, 64)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 200, 64, 64)));
 	temp->Set_ImageName(L"Common_1");
 	m_UIList.emplace(L"Common_Image_7", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 260, m_vUIDesc.y , 64, 64)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 280, 64, 64)));
 	temp->Set_ImageName(L"Common_1");
 	m_UIList.emplace(L"Common_Image_8", (CUI*)temp);
 
@@ -353,7 +382,7 @@ CUI_Common * CUI_Common::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CQuest_ProtoType");
+		MSGBOX("Fail to Create CUI_Common_ProtoType");
 		Safe_Release(pInstance);
 
 	}
@@ -368,7 +397,7 @@ CGameObject * CUI_Common::Clone(void * pArg)
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CQuest_Clone");
+		MSGBOX("Fail to Create CUI_Common_Clone");
 		Safe_Release(pInstance);
 
 	}
