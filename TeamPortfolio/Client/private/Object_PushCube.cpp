@@ -35,6 +35,8 @@ HRESULT CObject_PushCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(5.f, 0.f, 5.f));
 
+	m_ComTexture->Change_TextureLayer(TEXT("FixedCube"));
+
 	return S_OK;
 }
 
@@ -192,7 +194,7 @@ HRESULT CObject_PushCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_PushCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

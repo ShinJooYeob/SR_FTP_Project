@@ -201,14 +201,7 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 		return E_FAIL;
 
 	TextureDesc.szTextFilePath = TEXT("SkyBoxTexture.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_SkyBox"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-
-	TextureDesc.szTextFilePath = TEXT("Cubetest.txt");
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 

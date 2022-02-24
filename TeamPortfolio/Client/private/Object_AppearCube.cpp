@@ -41,6 +41,8 @@ HRESULT CObject_AppearCube::Initialize_Clone(void * pArg)
 		m_Layer_Tag = (TEXT("Layer_AppearCube"));
 	}
 
+	m_ComTexture->Change_TextureLayer(TEXT("AppearCube"));
+
 	return S_OK;
 }
 
@@ -160,7 +162,7 @@ HRESULT CObject_AppearCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_AppearCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

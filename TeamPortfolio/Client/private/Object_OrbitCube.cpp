@@ -43,6 +43,7 @@ HRESULT CObject_OrbitCube::Initialize_Clone(void * pArg)
 	{
 		MSGBOX("Fail to Clone CObject_OrbitCube");
 	}
+	m_ComTexture->Change_TextureLayer(TEXT("OrbitCube"));
 
 
 
@@ -229,7 +230,7 @@ HRESULT CObject_OrbitCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.렌더러 */

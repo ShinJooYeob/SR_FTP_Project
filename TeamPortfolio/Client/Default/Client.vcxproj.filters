@@ -262,8 +262,11 @@
       <Filter>01.GameObject\UI\UI_Loby</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI_Mouse.h" />
+    </ClInclude>
     <ClInclude Include="..\public\SkyBox.h">
       <Filter>01.GameObject\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_Mouse.h" />
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -342,9 +345,6 @@
     <ClCompile Include="..\private\Object_InteractiveCube.cpp">
       <Filter>01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Object_OrbitCube.cpp">
-      <Filter>01.GameObject\SubObject\Object_OrbitCube</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Object_PortalCube_A.cpp">
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_A</Filter>
     </ClCompile>
@@ -376,8 +376,12 @@
       <Filter>01.GameObject\UI\UI_Loby</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI_Mouse.cpp" />
+    </ClCompile>
     <ClCompile Include="..\private\SkyBox.cpp">
       <Filter>01.GameObject\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_OrbitCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_OrbitCube\Object_OrbitCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

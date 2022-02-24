@@ -125,19 +125,20 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_VIBuffer_Terrain128x128), CVIBuffer_Terrain::Create(m_pGraphicDevice, &TerrainDesc))))
 		return E_FAIL;
 
-	//Player Texture
-	CTexture::TEXTUREDESC TextureDesc;
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Terrain), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
 	//UI Texture
+	CTexture::TEXTUREDESC TextureDesc;
 	TextureDesc.szTextFilePath = TEXT("UI.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_UI), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//Player Texture
+	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Cube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	TextureDesc.szTextFilePath = TEXT("GravityTexture.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_GravityTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
@@ -211,94 +212,9 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 
 	//미는 큐브
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_PushCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//중력 큐브
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_GravityCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//자전 큐브
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_SelfRotationCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//상호작용 큐브
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_ButtonCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_InteractiveCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//공전 큐브
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_OrbitCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//포탈 큐브 A
-	TextureDesc.szTextFilePath = TEXT("UI.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_PortalCube_A_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-	//포탈 큐브 B
-	TextureDesc.szTextFilePath = TEXT("UI.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_PortalCube_B_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//상승 큐브
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
+	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_RisingCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//하강 큐브
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_EscalatorCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//왼쪽으로 가는 큐브
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_RightCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//오른쪽으로 가는 큐브
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_LeftCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//사라지는 큐브
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_VanishCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//나타나는 큐브
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_AppearCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//접근을 차단하는 큐브
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_BlockCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//무브 큐브
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Sky"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	//고정되어 있는 큐브
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_FixCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Cube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 #pragma endregion
