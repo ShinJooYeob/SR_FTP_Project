@@ -285,7 +285,7 @@ HRESULT CQuest_Image::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
+	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
 
 	if (m_Player_Inventory == nullptr)
 		return E_FAIL;
@@ -330,7 +330,7 @@ CQuest_Image * CQuest_Image::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pAr
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CShop_ProtoType");
+		MSGBOX("Fail to Create CQuest_ProtoType");
 		Safe_Release(pInstance);
 
 	}
@@ -345,7 +345,7 @@ CGameObject * CQuest_Image::Clone(void * pArg)
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CShop_Clone");
+		MSGBOX("Fail to Create CQuest_Clone");
 		Safe_Release(pInstance);
 
 	}
