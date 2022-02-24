@@ -236,6 +236,47 @@ void CToolView::OnInitialUpdate()
 	return;
 }
 
+_float3 CToolView::OneVector(_float3 nomalVec)
+{
+	bool bMinX= false;
+	bool bMinY= false;
+	bool bMinZ = false;
+	if (nomalVec.x < 0)
+		bMinX = true;
+	if (nomalVec.y < 0)
+		bMinY = true;
+	if (nomalVec.z < 0)
+		bMinZ = true;
+	
+	_float3 newNomal(abs(nomalVec.x), abs(nomalVec.y), abs(nomalVec.z));
+	float max = newNomal.x > newNomal.y ? newNomal.x : newNomal.y;
+	max = max > newNomal.z ? max : newNomal.z;
+
+	if (newNomal.x == max)
+	{
+		if (bMinX)
+			return _float3(-1, 0, 0);
+		else
+			return _float3(1, 0, 0);
+
+	}
+	if (newNomal.y == max)
+	{
+		if (bMinY)
+			return _float3(0, -1, 0);
+		else
+			return _float3(0, 1, 0);
+	}
+	if (newNomal.z == max)
+	{
+		if (bMinZ)
+			return _float3(0, 0, -1);
+		else
+			return _float3(0, 0, 1);
+	}
+
+}
+
 void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
@@ -318,19 +359,22 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	// 노말이 없어서 직접 계산 / 일단 나중에
 
 	m_NextPos = m_Nearobj->Get_Pos();
-	m_NextPos.y += 1;
+//	m_NextPos.y += 1;
 
-	//_float3* vertex = nearobj->GetPickVertex3();
-	//
-	//_float3 a = vertex[1] - vertex[0];
-	//_float3 b = vertex[2] - vertex[0];	
-	//_float3 nomalVec = _float3(0,0,0);
+	_float3* vertex = m_Nearobj->GetPickVertex3();
 
-	//
-	//D3DXVec3Cross(&nomalVec, &a, &b);
-	//nomalVec.z *= -1;
-	//D3DXVec3Normalize(&nomalVec, &nomalVec);
+	_float3 a = vertex[1] - vertex[0];
+	_float3 b = vertex[2] - vertex[0];
+	_float3 nomalVec = _float3(0, 0, 0);
 
+
+	D3DXVec3Cross(&nomalVec, &a, &b);
+	nomalVec.z *= -1;
+	
+	D3DXVec3Normalize(&nomalVec, &nomalVec);
+
+	_float3 AddVec = OneVector(nomalVec);
+	m_NextPos += AddVec;
 	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_NextPos);
 
 }

@@ -48,7 +48,8 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 
-
+private:
+	_float3 OneVector(_float3 nomalVec);
 	
 private:
 	CObjectTool_ToolObject* m_Nearobj;

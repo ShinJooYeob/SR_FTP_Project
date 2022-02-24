@@ -85,8 +85,6 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 			m_pTransform->Set_Matrix(m_StartMat);
 		}
 	}
-	
-	
 
 	if(FAILED(__super::Update(fDeltaTime)))
 		return -1;
