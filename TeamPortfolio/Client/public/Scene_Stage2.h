@@ -45,7 +45,6 @@ private:
 	HRESULT Ready_Layer_Object_AppearCube(const _tchar* pLayerTag);//나타나는 큐브
 
 	HRESULT Ready_Layer_Object_BlockCube(const _tchar* pLayerTag);//접근을 막는 큐브
-	HRESULT Ready_Layer_Object_EscalatorCube(const _tchar* pLayerTag);//에스컬레이터 큐브
 
 
 	HRESULT Ready_Layer_OrbitCube(const _tchar* pLayerTag);// 공전을 위한 큐브

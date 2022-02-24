@@ -23,7 +23,6 @@
 #include "Object_VanishCube.h"
 #include "Object_AppearCube.h"
 #include "Object_BlockCube.h"
-#include "Object_EscalatorCube.h"
 #include "MyButton.h"
 
 _uint CALLBACK LoadingThread(void* _Prameter)
@@ -269,12 +268,6 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_BlockCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-	//에스컬레이터 큐브
-	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
-	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_EscalatorCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
 	//무브 큐브
 	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
@@ -325,8 +318,6 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_AppearCube"), CObject_AppearCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_BlockCube"), CObject_BlockCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_EscalatorCube"), CObject_EscalatorCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 

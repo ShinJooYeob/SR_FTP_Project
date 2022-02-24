@@ -257,9 +257,6 @@
     <ClInclude Include="..\public\Object_BlockCube.h">
       <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Object_EscalatorCube.h">
-      <Filter>01.GameObject\SubObject\Object_escalatorCube</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -368,9 +365,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_BlockCube.cpp">
       <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Object_EscalatorCube.cpp">
-      <Filter>01.GameObject\SubObject\Object_escalatorCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
