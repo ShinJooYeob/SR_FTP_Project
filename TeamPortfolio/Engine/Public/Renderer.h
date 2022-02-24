@@ -12,7 +12,7 @@ class ENGINE_DLL CRenderer final :public CComponent
 public:
 	enum RENDERGROUP 
 	{
-		RENDER_PRIORITY, RENDER_NONALPHA, RENDER_ALPHA, RENDER_UI, RENDER_END
+		RENDER_PRIORITY, RENDER_NONALPHA, RENDER_ALPHA, RENDER_AFTEROBJ, RENDER_UI, RENDER_END
 	};
 
 private:
@@ -53,6 +53,7 @@ private:
 	HRESULT Render_Priority();
 	HRESULT Render_NonAlpha();
 	HRESULT Render_Alpha();
+	HRESULT Render_AfterObj();
 	HRESULT Render_UI();
 
 public:

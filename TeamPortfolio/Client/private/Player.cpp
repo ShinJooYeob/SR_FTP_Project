@@ -108,7 +108,7 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 
 
 	//렌더링 그룹에 넣어주는 역활
-	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this)))
+	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_AFTEROBJ, this)))
 		return E_FAIL;
 
 	return _int();

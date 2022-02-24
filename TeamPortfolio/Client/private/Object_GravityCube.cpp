@@ -36,7 +36,10 @@ HRESULT CObject_GravityCube::Initialize_Clone(void * pArg)
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 		m_Layer_Tag = TEXT("Layer_GravityCube");
-		m_ComTexture->Change_TextureLayer(L"GravityCube");
+
+		m_ComTransform->Scaled({ 3.f,3.f,3.f });
+		m_ComTexture->Change_TextureLayer(L"none", 15.f);
+		m_ComTexture->Change_TextureLayer(L"Gravity",15.f);
 	}
 
 	return S_OK;
@@ -48,10 +51,8 @@ _int CObject_GravityCube::Update(_float fTimeDelta)
 		return -1;
 
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
+	m_fFrame = fTimeDelta;
 
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-	RELEASE_INSTANCE(CGameInstance);
 
 	return _int();
 }
@@ -71,18 +72,18 @@ _int CObject_GravityCube::LateUpdate(_float fTimeDelta)
 	if (FAILED(Collision_Gravity(fTimeDelta)))
 		return -1;
 
-	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
+	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
 
 	return _int();
 }
 
 _int CObject_GravityCube::Render()
 {
-	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera()))
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(m_fFrame)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -155,7 +156,7 @@ HRESULT CObject_GravityCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_GravityTexture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
@@ -163,7 +164,7 @@ HRESULT CObject_GravityCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_VIBuffer_Cube */
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 
 
@@ -185,21 +186,29 @@ HRESULT CObject_GravityCube::SetUp_RenderState()
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 30);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(180, 255, 255, 255));
 
 	return S_OK;
 }
 
 HRESULT CObject_GravityCube::Release_RenderState()
 {
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
-	///////////////////////////
-	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	///////////////////////////////
 
 	return S_OK;
 }

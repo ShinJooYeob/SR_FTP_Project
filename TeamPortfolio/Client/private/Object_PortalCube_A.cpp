@@ -59,7 +59,9 @@ HRESULT CObject_PortalCube_A::Initialize_Clone(void * pArg)
 
 	m_Layer_Tag = TEXT("Layer_Potal");
 
-	m_ComTexture->Change_TextureLayer(L"PotalCube",1.f);
+	m_ComTransform->Scaled({ 1.5f,2.f,2.f });
+	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("Potal_B"), 6.f));
+	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("Potal_A"),15.f));
 
 	return S_OK;
 }
@@ -91,14 +93,14 @@ _int CObject_PortalCube_A::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
-	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
+	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
 
 	return _int();
 }
 
 _int CObject_PortalCube_A::Render()
 {
-	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera()))
 		return E_FAIL;
 
 
@@ -172,7 +174,7 @@ HRESULT CObject_PortalCube_A::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_PotalTexture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
@@ -180,7 +182,7 @@ HRESULT CObject_PortalCube_A::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_VIBuffer_Cube */
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 
 
@@ -197,21 +199,28 @@ HRESULT CObject_PortalCube_A::SetUp_RenderState()
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 30);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(180, 255, 255, 255));
 	return S_OK;
 }
 
 HRESULT CObject_PortalCube_A::Release_RenderState()
 {
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
-	///////////////////////////
-	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	///////////////////////////////
 
 	return S_OK;
 }

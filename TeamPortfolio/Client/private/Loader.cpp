@@ -2,6 +2,7 @@
 #include "..\Public\Loader.h"
 
 #include "BackGround.h"
+#include "SkyBox.h"
 #include "TerrainGround.h"
 #include "Player.h"
 #include "Shop.h"
@@ -94,12 +95,17 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (FAILED(GetSingle(CGameInstance)->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_UI), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	if (FAILED(GetSingle(CGameInstance)->Add_GameObject_Prototype(TEXT("Prototype_GameObject_SkyBox"), CSkyBox::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
 	if (FAILED(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_BackGround), CBackGround::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_UI_Loby), CUI_Loby::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI"))
 		return E_FAIL;
+
+
 	m_bIsLoadingFinished = true;
 
 	return S_OK;
@@ -127,11 +133,19 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 		return E_FAIL;
 
 	//UI Texture
-
 	TextureDesc.szTextFilePath = TEXT("UI.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_UI), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("GravityTexture.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_GravityTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("PotalTexture.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 
 	
 

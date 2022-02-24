@@ -196,13 +196,19 @@ HRESULT CTransform::Bind_WorldMatrix_Look_Camera()
 	_Matrix TempWorldMat;
 	memcpy(&TempWorldMat, &m_WorldMatrix, sizeof(_Matrix));
 
+	_float3 vCamPos = (*(_float3*)(&vCamMatirx.m[3][0]));
+	_float3 vObjPos = Get_MatrixState(CTransform::STATE_POS);
+
+	_float3 vLook = (vCamPos - vObjPos).Get_Nomalize();
+
+	_float3 vNewPos = vObjPos + (vLook *0.55f) - m_TransforDesc.vPivot;
+
 	_float3 vScale = Get_MatrixScale();
-
-
 
 	memcpy(&(TempWorldMat.m[0][0]), &((*((_float3*)(&vCamMatirx.m[0][0])))*vScale.x), sizeof(_float3));
 	memcpy(&(TempWorldMat.m[1][0]), &((*((_float3*)(&vCamMatirx.m[1][0])))*vScale.y), sizeof(_float3));
 	memcpy(&(TempWorldMat.m[2][0]), &((*((_float3*)(&vCamMatirx.m[2][0])))*vScale.z), sizeof(_float3));
+	memcpy(&(TempWorldMat.m[3][0]), &(vNewPos), sizeof(_float3));
 
 
 

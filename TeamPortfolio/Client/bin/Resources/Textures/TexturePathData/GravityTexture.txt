@@ -1,0 +1,2 @@
+Gravity|Gravity|22|../bin/Resources/Textures/Gravity/Gravity/GravityTexture_%d.png
+Gravity|none|1|../bin/Resources/Textures/Gravity/Gravity/GravityTexture_%d.png

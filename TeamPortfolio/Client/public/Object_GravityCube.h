@@ -45,6 +45,8 @@ private:
 
 	CCollision*				m_pCollisionCom = nullptr;
 
+	
+	_float					m_fFrame = 0;
 public:
 	static CObject_GravityCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg) override;

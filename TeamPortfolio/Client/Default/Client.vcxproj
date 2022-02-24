@@ -186,6 +186,7 @@
     <ClInclude Include="..\public\Scene_Loby.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\public\Shop.h" />
+    <ClInclude Include="..\public\SkyBox.h" />
     <ClInclude Include="..\public\TerrainCube.h" />
     <ClInclude Include="..\public\TerrainGround.h" />
     <ClInclude Include="..\public\UI_Image.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="..\private\Scene_Loby.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\private\Shop.cpp" />
+    <ClCompile Include="..\private\SkyBox.cpp" />
     <ClCompile Include="..\private\TerrainCube.cpp" />
     <ClCompile Include="..\private\TerrainGround.cpp" />
     <ClCompile Include="..\private\UI_Image.cpp" />

@@ -17,8 +17,12 @@ HRESULT CScene_StageSelect::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+
 	if (FAILED(Ready_Layer_Player(TAG_LAY(Layer_Player))))
 		return E_FAIL;
+
+	FAILED_CHECK(Ready_Layer_SkyBox(TEXT("Layer_SkyBox")))
+
 	if (FAILED(Ready_Layer_Terrain(TAG_LAY(Layer_Terrain))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
@@ -73,6 +77,16 @@ _int CScene_StageSelect::LateRender()
 		return -1;
 
 	return 0;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_SkyBox(const _tchar * pLayerTag)
+{
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TEXT("Prototype_GameObject_SkyBox")))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)

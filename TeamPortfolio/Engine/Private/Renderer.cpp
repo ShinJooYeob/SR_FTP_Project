@@ -57,8 +57,6 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderID, CGameObject * pGameObj
 
 HRESULT CRenderer::Render_RenderGroup()
 {
-	m_RenderObjectList[RENDER_NONALPHA].reverse();
-
 	if (m_MainCamera) 
 	{
 		if (FAILED(Update_MinmapTexture()))
@@ -73,6 +71,8 @@ HRESULT CRenderer::Render_RenderGroup()
 
 	if (FAILED(Render_Alpha()))
 		return E_FAIL;
+
+	FAILED_CHECK(Render_AfterObj())
 
 	if (FAILED(Render_UI()))
 		return E_FAIL;
@@ -141,6 +141,23 @@ HRESULT CRenderer::Render_Alpha()
 	return S_OK;
 }
 
+HRESULT CRenderer::Render_AfterObj()
+{
+
+	for (auto& RenderObject : m_RenderObjectList[RENDER_AFTEROBJ])
+	{
+		if (RenderObject != nullptr)
+		{
+			if (FAILED(RenderObject->Render()))
+				return E_FAIL;
+		}
+		Safe_Release(RenderObject);
+	}
+	m_RenderObjectList[RENDER_AFTEROBJ].clear();
+
+	return S_OK;
+}
+
 HRESULT CRenderer::Update_MinmapTexture()
 {
 
@@ -161,10 +178,33 @@ HRESULT CRenderer::Update_MinmapTexture()
 		, 0x00000000, 1.0f, 0L);
 
 
-
+	for (auto& RenderObject : m_RenderObjectList[RENDER_PRIORITY])
+	{
+		if (RenderObject != nullptr)
+		{
+			if (FAILED(RenderObject->Render()))
+				return E_FAIL;
+		}
+	}
 
 
 	for (auto& RenderObject : m_RenderObjectList[RENDER_NONALPHA])
+	{
+		if (RenderObject != nullptr)
+		{
+			if (FAILED(RenderObject->Render()))
+				return E_FAIL;
+		}
+	}
+	for (auto& RenderObject : m_RenderObjectList[RENDER_ALPHA])
+	{
+		if (RenderObject != nullptr)
+		{
+			if (FAILED(RenderObject->Render()))
+				return E_FAIL;
+		}
+	}
+	for (auto& RenderObject : m_RenderObjectList[RENDER_AFTEROBJ])
 	{
 		if (RenderObject != nullptr)
 		{
