@@ -20,8 +20,10 @@ HRESULT CScene_Loby::Initialize()
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
-
+	
 	if (FAILED(Ready_Layer_BackGround(TAG_LAY(Layer_BackGround))))
+		return E_FAIL;
+	if (FAILED(Ready_Layer_UI_Loby(TAG_LAY(Layer_UI_Loby))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
@@ -99,7 +101,13 @@ HRESULT CScene_Loby::Ready_Layer_BackGround(const _tchar * pLayerTag)
 	return S_OK;
 }
 
+HRESULT CScene_Loby::Ready_Layer_UI_Loby(const _tchar * pLayerTag)
+{
 
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TAG_OP(Prototype_UI_Loby)))
+		return E_FAIL;
+	return S_OK;
+}
 
 HRESULT CScene_Loby::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {

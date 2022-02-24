@@ -15,6 +15,11 @@ END
 
 class CUI_Image final :public CUI
 {
+public:
+	enum BIGGER
+	{
+		BIGGER_DEFAULT, BIGGER_ON, BIGGER_OFF, BIGGER_END
+	};
 
 private:
 	explicit CUI_Image(LPDIRECT3DDEVICE9 pGraphicDevice);
@@ -46,8 +51,17 @@ private:
 private:
 	_float			m_fFrame = 0.f;
 	TCHAR*			m_pImageName;
+	_bool			m_bRender = true;
+	_int			m_iBigger = BIGGER_DEFAULT;
+	_float4			m_vUIDesc;
+	_float			m_fSeconds = 0;
 public:
+	_int			Get_ImageBigger() { return m_iBigger; }
+
 	void			Set_ImageName(TCHAR* pImageName);
+	void			Set_ImageRenderFalse() { m_bRender = false; }
+	void			Set_ImageRenderTrue() { m_bRender = true; }
+	void			Set_ImageBigger(BIGGER eBigger) { m_iBigger = eBigger; }
 private:
 	HRESULT			SetUp_Components();
 

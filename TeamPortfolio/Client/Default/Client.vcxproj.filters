@@ -133,6 +133,12 @@
     <Filter Include="01.GameObject\SubObject\Object_BlockCube">
       <UniqueIdentifier>{53eefef9-201e-4082-8aa6-fe282b4a6188}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\Quest_Image">
+      <UniqueIdentifier>{afe7a243-c029-45ff-9d5d-1db6db6ab580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI\UI_Loby">
+      <UniqueIdentifier>{c35c93ed-b3d0-41a7-a4c4-02d59285a920}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -236,7 +242,7 @@
     <ClInclude Include="..\public\Object_AppearCube.h">
       <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\UI_Mouse.h" />
+
     <ClInclude Include="..\public\Object_EscalatorCube.h">
       <Filter>01.GameObject\SubObject\Object_escalatorCube</Filter>
     </ClInclude>
@@ -248,6 +254,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Object_BlockCube.h">
       <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Quest_Image.h">
+      <Filter>01.GameObject\UI\Quest_Image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_Loby.h">
+      <Filter>01.GameObject\UI\UI_Loby</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -326,6 +338,9 @@
     <ClCompile Include="..\private\Object_InteractiveCube.cpp">
       <Filter>01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Object_OrbitCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_OrbitCube</Filter>
+    </ClCompile>
     <ClCompile Include="..\private\Object_PortalCube_A.cpp">
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_A</Filter>
     </ClCompile>
@@ -340,7 +355,7 @@
     <ClCompile Include="..\private\Object_AppearCube.cpp">
       <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\UI_Mouse.cpp" />
+
     <ClCompile Include="..\private\Object_EscalatorCube.cpp">
       <Filter>01.GameObject\SubObject\Object_escalatorCube</Filter>
     </ClCompile>
@@ -352,6 +367,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_BlockCube.cpp">
       <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Quest_Image.cpp">
+      <Filter>01.GameObject\UI\Quest_Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Loby.cpp">
+      <Filter>01.GameObject\UI\UI_Loby</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

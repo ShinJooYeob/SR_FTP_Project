@@ -48,6 +48,8 @@ private:
 	_float			m_fFrame = 0.f;
 	_bool			m_isClicked = false;
 	TCHAR*			m_pButtonName;
+	_float4			m_vUIDesc;
+	_bool			m_bBigger;
 public:
 	void			Set_ButtonName(TCHAR* pButtonName);
 private:

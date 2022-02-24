@@ -25,6 +25,8 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
 		return E_FAIL;
+	if (FAILED(Ready_Layer_Quest(TAG_LAY(Layer_Quest))))
+		return E_FAIL;
 
 
 
@@ -188,6 +190,17 @@ HRESULT CScene_StageSelect::Ready_Layer_GravityCube(const _tchar * pLayerTag)
 
 	return S_OK;
 }
+
+
+HRESULT CScene_StageSelect::Ready_Layer_Quest(const _tchar * pLayerTag)
+{
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Quest)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 HRESULT CScene_StageSelect::Ready_Layer_JumpCube(const _tchar * pLayerTag)
 {

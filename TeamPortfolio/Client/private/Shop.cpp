@@ -64,9 +64,49 @@ _int CShop::Update(_float fDeltaTime)
 	{
 		if (FAILED(Update_UIButtonList(fDeltaTime)))
 			return E_FAIL;
+
+
 	}
 
 	return _int();
+}
+
+_int CShop::Manual_Render(_int eSkill)
+{
+
+
+	if (eSkill == SHOP_SPEEDUP)
+	{
+		Set_Image_Render(L"Image_5.0", true);
+		Set_Image_Render(L"Image_5.1", false);
+		Set_Image_Render(L"Image_5.2", false);
+		Set_Image_Render(L"Image_5.3", false);
+	}
+	else if (eSkill == SHOP_DUBBLEJUMP)
+	{
+		Set_Image_Render(L"Image_5.0", false);
+		Set_Image_Render(L"Image_5.1", true);
+		Set_Image_Render(L"Image_5.2", false);
+		Set_Image_Render(L"Image_5.3", false);
+	}
+	else if (eSkill == SHOP_DASH)
+	{
+		Set_Image_Render(L"Image_5.0", false);
+		Set_Image_Render(L"Image_5.1", false);
+		Set_Image_Render(L"Image_5.2", true);
+		Set_Image_Render(L"Image_5.3", false);
+	}
+	else if (eSkill == SHOP_POTION)
+	{
+		Set_Image_Render(L"Image_5.0", false);
+		Set_Image_Render(L"Image_5.1", false);
+		Set_Image_Render(L"Image_5.2", false);
+		Set_Image_Render(L"Image_5.3", true);
+	}
+
+
+
+	return 0;
 }
 
 _int CShop::LateUpdate(_float fDeltaTime)
@@ -140,9 +180,18 @@ CUI * CShop::Find_UI(const _tchar * tagUI)
 	return iter->second;
 }
 
+CUI * CShop::Find_Image(const _tchar * tagUIList)
+{
+	auto iter = find_if(m_UIList.begin(), m_UIList.end(), CTagFinder(tagUIList));
+
+	if (iter == m_UIList.end())
+		return nullptr;
+
+	return iter->second;
+}
 HRESULT CShop::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 {
-	
+
 
 	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y - 140, 100, 100)));
 	temp->Set_ImageName(L"Button2");
@@ -160,9 +209,22 @@ HRESULT CShop::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 	temp->Set_ImageName(L"Button2");
 	m_UIList.emplace(L"Image_4", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x +150, m_vUIDesc.y - 50, 300, 180)));
-	temp->Set_ImageName(L"Button1");
-	m_UIList.emplace(L"Image_5", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 150, m_vUIDesc.y - 50, 300, 180)));
+	temp->Set_ImageName(L"manual_Speedup");
+	m_UIList.emplace(L"Image_5.0", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 150, m_vUIDesc.y - 50, 300, 180)));
+	temp->Set_ImageName(L"manual_DJ");
+	m_UIList.emplace(L"Image_5.1", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 150, m_vUIDesc.y - 50, 300, 180)));
+	temp->Set_ImageName(L"manual_Dash");
+	m_UIList.emplace(L"Image_5.2", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 150, m_vUIDesc.y - 50, 300, 180)));
+	temp->Set_ImageName(L"manual_Potion");
+	m_UIList.emplace(L"Image_5.3", (CUI*)temp);
 
 	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 185, m_vUIDesc.y - 140, 100, 100)));
 	temp->Set_ImageName(L"Price2");
@@ -181,6 +243,17 @@ HRESULT CShop::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 	m_UIList.emplace(L"Image_9", (CUI*)temp);
 	return S_OK;
 }
+HRESULT CShop::Set_Image_Render(const _tchar * tagUIList, _bool bCheck)
+{
+	CUI_Image* temp = (CUI_Image*)Find_Image(tagUIList);
+	if (bCheck == true)
+		temp->Set_ImageRenderTrue();
+	else if (bCheck == false)
+		temp->Set_ImageRenderFalse();
+
+	return S_OK;
+}
+
 HRESULT CShop::Ready_Layer_Button(const _tchar * pLayerTag)
 {
 
@@ -209,7 +282,10 @@ HRESULT CShop::Ready_Layer_Button(const _tchar * pLayerTag)
 	m_UIButtonList.emplace(L"Button_POTION", (CUI*)temp);
 	return S_OK;
 }
-
+HRESULT CShop::Update_UIList(_float fTimeDelta)
+{
+	return S_OK;
+}
 HRESULT CShop::Update_UIButtonList(_float fTimeDelta)
 {
 	int hr;
@@ -225,15 +301,19 @@ HRESULT CShop::Update_UIButtonList(_float fTimeDelta)
 			{
 			case SHOP_SPEEDUP:
 				m_iChosenSkill = SHOP_SPEEDUP;
+				Manual_Render(m_iChosenSkill);
 				break;
 			case SHOP_DUBBLEJUMP:
 				m_iChosenSkill = SHOP_DUBBLEJUMP;
+				Manual_Render(m_iChosenSkill);
 				break;
 			case SHOP_DASH:
 				m_iChosenSkill = SHOP_DASH;
+				Manual_Render(m_iChosenSkill);
 				break;
 			case SHOP_POTION:
 				m_iChosenSkill = SHOP_POTION;
+				Manual_Render(m_iChosenSkill);
 				break;
 			case SHOP_BUY:
 				if (m_iChosenSkill > SKILL_END + 9)//스킬인덱스 초과 방지용
@@ -248,6 +328,7 @@ HRESULT CShop::Update_UIButtonList(_float fTimeDelta)
 			default:/*m_iChosenSkill = SKILL_END;*/
 				break;
 			}
+
 		}
 	}
 
@@ -286,13 +367,13 @@ HRESULT CShop::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Shop"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
-	
+
 	if (m_Player_Inventory == nullptr)
 		return E_FAIL;
-	
+
 	Safe_AddRef(m_Player_Inventory);
 
 
