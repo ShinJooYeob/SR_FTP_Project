@@ -106,8 +106,6 @@ _int CObject_BlockCube::LateRender()
 
 _int CObject_BlockCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	_uint I = 0;
-
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
 

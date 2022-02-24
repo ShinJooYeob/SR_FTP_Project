@@ -262,12 +262,10 @@
       <Filter>01.GameObject\UI\UI_Loby</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI_Mouse.h" />
-    </ClInclude>
     <ClInclude Include="..\public\SkyBox.h">
       <Filter>01.GameObject\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI_Mouse.h" />
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -376,7 +374,6 @@
       <Filter>01.GameObject\UI\UI_Loby</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI_Mouse.cpp" />
-    </ClCompile>
     <ClCompile Include="..\private\SkyBox.cpp">
       <Filter>01.GameObject\SkyBox</Filter>
     </ClCompile>
