@@ -37,6 +37,13 @@ HRESULT CTerrainCube::Initialize_Clone(void * pArg)
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 		m_ComTexture->Change_TextureLayer(L"PotalCube");
+
+		m_PlayerTransform = nullptr;
+		m_PlayerTransform = (CTransform*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform)));
+		if (m_PlayerTransform == nullptr)
+			return E_FAIL;
+
+		Safe_AddRef(m_PlayerTransform);
 	}
 
 	return S_OK;
@@ -44,7 +51,8 @@ HRESULT CTerrainCube::Initialize_Clone(void * pArg)
 
 _int CTerrainCube::Update(_float fTimeDelta)
 {
-	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
+	if (m_PlayerTransform->Get_MatrixState(CTransform::STATE_POS).Get_Distance(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)) < 3.f)
+		m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
 
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
@@ -205,6 +213,7 @@ void CTerrainCube::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_PlayerTransform);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_pCollisionCom);

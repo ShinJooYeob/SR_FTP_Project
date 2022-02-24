@@ -17,11 +17,11 @@ HRESULT CScene_StageSelect::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Player(TAG_LAY(Layer_Player))))
+		return E_FAIL;
 	if (FAILED(Ready_Layer_Terrain(TAG_LAY(Layer_Terrain))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_Player(TAG_LAY(Layer_Player))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
 		return E_FAIL;
@@ -229,7 +229,7 @@ HRESULT CScene_StageSelect::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLay
 {
 	CObject_OrbitButton::ORBITDESC tDesc;
 
-	tDesc.vButtonPos = _float3(1,10,2);
+	tDesc.vButtonPos = _float3(1,10,1);
 	tDesc.vOrbitRotAxis = _float3(5, 0, 5);
 	tDesc.vOribitCubeStartPos = _float3(-3, 10, 5);
 	tDesc.vOribitTotalXYZ = _float3(2, 2, 2);

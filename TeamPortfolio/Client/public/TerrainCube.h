@@ -46,7 +46,7 @@ private:
 	CCollision*		m_pCollisionCom = nullptr;
 	CVIBuffer_Cube*		m_ComColiisionBuffer = nullptr;
 
-
+	CTransform*			m_PlayerTransform = nullptr;
 
 public:
 	static CTerrainCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

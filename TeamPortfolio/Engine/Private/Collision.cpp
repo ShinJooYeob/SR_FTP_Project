@@ -139,7 +139,7 @@ HRESULT CCollision::Collision_Obsever(_float fDeltaTime)
 
 				//COLLISION_FLEXIBLE 오브젝트와 일정거리(루트 2) 이상라면 굳이 충돌연산을 하지 않음
 				_float3&	DestPosition = DestObject->Get_MatrixState(CTransform::STATE_POS);
-				if(SourcePosition.Get_Distance(DestPosition) > 1.5f)
+				if(SourcePosition.Get_Distance(DestPosition) > 1.42f)
 					continue;
 
 				//_float3&		SourcePosition = SourceObject->Get_MatrixState(CTransform::STATE_POS); //SourceObject의 포지션

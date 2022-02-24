@@ -79,9 +79,6 @@ _bool CFrustumMgr::IsNeedToRender(_float3 vWorldPosition, _float fLenth)
 
 	for (_uint i = 0; i < 6; i++)
 	{
-		//_float temp = tWorldFrustumPlane[i].a * vWorldPosition.x + tWorldFrustumPlane[i].b * vWorldPosition.y +
-		//	tWorldFrustumPlane[i].c * vWorldPosition.z + tWorldFrustumPlane[i].d;
-
 		if (tWorldFrustumPlane[i].a * vWorldPosition.x + tWorldFrustumPlane[i].b * vWorldPosition.y +
 			tWorldFrustumPlane[i].c * vWorldPosition.z + tWorldFrustumPlane[i].d > fLenth)
 			return false;
