@@ -47,6 +47,8 @@ protected:
 	CAMERADESC					m_CameraDesc;
 	_Matrix						m_OrthoMatrix;
 
+	_float						m_fOrthoZoomInOut = 16.f;
+
 private:
 	_float						m_fTempDeltaTime = 0;
 	_float						m_fTotalEftFrame = 0;

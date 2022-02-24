@@ -81,6 +81,7 @@ private:
 	_uint					m_ARGB[4] = { 0 };
 	_float					m_fTimeDelta = 0;
 	_Matrix					m_CamEffectMatricx;
+	_float					m_fZoomInTime = 0;
 private:
 	HRESULT			SetUp_DefaultLookAtAxis(void* pArg);
 	HRESULT			SetUp_Components();

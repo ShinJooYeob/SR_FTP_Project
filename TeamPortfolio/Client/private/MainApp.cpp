@@ -200,7 +200,7 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_MiniMap), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
+	TextureDesc.szTextFilePath = TEXT("Cubetest.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
 
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))

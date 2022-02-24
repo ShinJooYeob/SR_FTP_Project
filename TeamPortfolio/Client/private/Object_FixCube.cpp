@@ -38,6 +38,7 @@ HRESULT CObject_FixCube::Initialize_Clone(void * pArg)
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 		m_Layer_Tag = TEXT("Layer_FixCube");
+		m_ComTexture->Change_TextureLayer(L"FixedCube");
 	}
 
 	return S_OK;
@@ -48,7 +49,7 @@ _int CObject_FixCube::Update(_float fTimeDelta)
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
-	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
+	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FLEXIBLE, this);
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	RELEASE_INSTANCE(CGameInstance);
@@ -66,8 +67,7 @@ _int CObject_FixCube::LateUpdate(_float fTimeDelta)
 
 	//if (FAILED(SetUp_OnTerrain(fTimeDelta)))
 	//	return -1;
-
-	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
+		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
 }
@@ -79,7 +79,7 @@ _int CObject_FixCube::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture(1)))
+	if (FAILED(m_ComTexture->Bind_Texture()))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -108,10 +108,7 @@ _int CObject_FixCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCol
 {
 	const _tchar* test = pDestObjects->Get_Layer_Tag();
 
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
-	{
-		int t = 0;
-	}
+
 
 	return _int();
 }

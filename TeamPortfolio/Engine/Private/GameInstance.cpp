@@ -8,6 +8,7 @@
 #include "ComponentMgr.h"
 #include "EasingMgr.h"
 #include "Picking.h"
+#include "FrustumMgr.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -21,7 +22,8 @@ CGameInstance::CGameInstance()
 	m_pInputDevice(GetSingle(CInput_Device)),
 	m_pImguiMgr(GetSingle(CImguiMgr)),
 	m_pEasingMgr(GetSingle(CEasingMgr)),
-	m_pPickingMgr(GetSingle(CPicking))
+	m_pPickingMgr(GetSingle(CPicking)),
+	m_pFrustumMgr(GetSingle(CFrustumMgr))
 {
 	m_pThreadMgr->AddRef();
 	m_pTimerMgr->AddRef();
@@ -33,12 +35,14 @@ CGameInstance::CGameInstance()
 	m_pEasingMgr->AddRef();
 	m_pImguiMgr->AddRef();
 	m_pPickingMgr->AddRef();
+	m_pFrustumMgr->AddRef();
 }
 
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst,const CGraphic_Device::GRAPHICDESC & GraphicDesc, _uint iMaxSceneNum, LPDIRECT3DDEVICE9 * ppOut, _float fDoubleInterver)
 {
-	if (m_pGraphicDevice == nullptr || m_pObjectMgr == nullptr || m_pComponenetMgr == nullptr || m_pSceneMgr == nullptr)
+	if (m_pGraphicDevice == nullptr || m_pObjectMgr == nullptr || m_pComponenetMgr == nullptr || 
+		m_pSceneMgr == nullptr || m_pPickingMgr == nullptr || m_pFrustumMgr == nullptr)
 		return E_FAIL;
 
 	//if (FAILED(m_pSeverMgr->ConnectSever()))
@@ -60,7 +64,9 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst,const CGraphic_Device::
 
 	if (FAILED(m_pPickingMgr->Initialize(*ppOut,GraphicDesc.hWnd,nullptr)))
 		return E_FAIL;
+
 	
+	FAILED_CHECK(m_pFrustumMgr->Initialize_FrustumMgr(*ppOut))
 
 	return S_OK;
 }
@@ -100,7 +106,7 @@ _int CGameInstance::Update_Engine(_float fDeltaTime)
 	if (m_pObjectMgr->Update(fDeltaTime) < 0)
 		return -1;
 
-
+	FAILED_CHECK(SetUp_WorldFrustumPlane());
 
 
 	return 0;
@@ -346,6 +352,21 @@ _float CGameInstance::Easing(_uint eEasingType, _float fStartPoint, _float fTarg
 	return m_pEasingMgr->Easing(eEasingType, fStartPoint, fTargetPoint, fPassedTime, fTotalTime);
 }
 
+HRESULT CGameInstance::SetUp_WorldFrustumPlane()
+{
+	if (m_pFrustumMgr == nullptr)
+		return E_FAIL;
+
+	return m_pFrustumMgr->SetUp_WorldFrustumPlane();
+}
+
+_bool CGameInstance::IsNeedToRender(_float3 vWorldPosition, _float fLenth)
+{
+	NULL_CHECK_MSG(m_pFrustumMgr,L"Not Have FrustumMgr");
+
+	return m_pFrustumMgr->IsNeedToRender(vWorldPosition, fLenth);
+}
+
 
 
 
@@ -392,6 +413,9 @@ void CGameInstance::Release_Engine()
 	if (0 != GetSingle(CComponentMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com ComponentMgr");
 
+	if (0 != GetSingle(CFrustumMgr)->DestroyInstance())
+		MSGBOX("Failed to Release Com FrustumMgr ");
+
 	if (0 != GetSingle(CInput_Device)->DestroyInstance())
 		MSGBOX("Failed to Release Com CInput_Device "); 
 
@@ -418,4 +442,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pTimerMgr);
 	Safe_Release(m_pEasingMgr);
 	Safe_Release(m_pPickingMgr);
+	Safe_Release(m_pFrustumMgr);
+
+	
 }

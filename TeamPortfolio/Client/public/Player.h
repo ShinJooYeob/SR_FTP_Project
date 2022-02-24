@@ -63,7 +63,7 @@ private:
 
 	_float3					m_vDownstairsNear;
 	_float3					m_vClimingBlock;
-	_float3					m_vReturnStair = _float3(0,0,0);
+	_float3					m_vReturnStair = NOT_EXIST_BLOCK;
 
 	CGameObject*			m_pCarryObject = nullptr;
 	CTransform*				m_pCarryObjectTransform = nullptr;

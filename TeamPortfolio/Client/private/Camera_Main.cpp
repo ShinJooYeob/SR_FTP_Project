@@ -557,6 +557,30 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 	}
 
 
+	if (pInstance->Get_DIKeyState(DIK_W)& DIS_Press)
+	{
+		if (pInstance->Get_DIKeyState(DIK_W)& DIS_Down)
+		{
+			m_fZoomInTime = 0;
+		}
+		else if (pInstance->Get_DIKeyState(DIK_W)& DIS_Up) 
+		{
+
+			m_fOrthoZoomInOut = 16.0f;
+		}
+		else {
+			m_fZoomInTime += fDeltaTime;
+			m_fOrthoZoomInOut = pInstance->Easing(TYPE_ElasticInOut, 16, 3, m_fZoomInTime, 2.5f);
+
+
+			if (m_fZoomInTime > 2.5f) 
+			{
+				m_fZoomInTime = 2.5f;
+				m_fOrthoZoomInOut = 3.f;
+			}
+		}
+	}
+
 
 
 

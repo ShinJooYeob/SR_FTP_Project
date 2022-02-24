@@ -37,7 +37,7 @@ private:
 
 	//움직이는 큐브들
 	HRESULT Ready_Layer_Object_RisingCube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Object_DescentCube(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Object_EscalatorCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Object_LeftCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Object_RightCube(const _tchar* pLayerTag);
 

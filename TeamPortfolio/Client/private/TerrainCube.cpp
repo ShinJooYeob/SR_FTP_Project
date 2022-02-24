@@ -36,6 +36,7 @@ HRESULT CTerrainCube::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+		m_ComTexture->Change_TextureLayer(L"PotalCube");
 	}
 
 	return S_OK;
@@ -61,7 +62,8 @@ _int CTerrainCube::LateUpdate(_float fTimeDelta)
 		return -1;
 
 
-	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
+		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 
 	return _int();

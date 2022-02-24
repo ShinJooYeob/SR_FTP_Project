@@ -18,6 +18,7 @@ class CGameObject;
 class CLayer;
 class CImguiMgr;
 class CPicking;
+class CFrustumMgr;
 
 class ENGINE_DLL CGameInstance final :public CBase
 {
@@ -78,6 +79,12 @@ public: /* For.Input_Device */
 public:
 	_float Easing(_uint eEasingType,_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime = 1.0f);
 	
+public:
+	//이 함수는 매 프레임 당 한번만 실행 어차피 매 프레임 같은 투영, 뷰 행렬일테니까 
+	HRESULT SetUp_WorldFrustumPlane();
+	//이 함수를 이제 객체별로 전달해서 그려야할지 여부를 판단
+	_bool IsNeedToRender(_float3 vWorldPosition, _float fLenth = 1.4142135623f);
+
 public: /* For. IMGUI Interface */
 	CImguiMgr* GetIMGui();
 
@@ -96,7 +103,7 @@ private:
 	CEasingMgr*			m_pEasingMgr = nullptr;
 	CImguiMgr*			m_pImguiMgr = nullptr;
 	CPicking*			m_pPickingMgr = nullptr;
-
+	CFrustumMgr*		m_pFrustumMgr = nullptr;
 public:
 	static void Release_Engine();
 	virtual void Free() override;

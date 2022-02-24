@@ -2,6 +2,8 @@
 #include "..\Public\Scene_StageSelect.h"
 #include "Camera_Main.h"
 #include "Object_PortalCube_A.h"
+#include "Object_EscalatorCube.h"
+#include "Object_OrbitButton.h"
 
 
 
@@ -97,24 +99,34 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 		}
 	}
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube"), &_float3((_float)6, (_float)1, (_float)0)))
-		return E_FAIL;
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_GravityCube"), TEXT("Prototype_GameObject_Object_GravityCube"), &_float3((_float)6, (_float)10, (_float)3)))
-		return E_FAIL;
-
-
 
 	for (_uint i = 0; i < 6; i++)
 	{
 		for (_uint j = 0; j < 6; j++) {
 
-			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i , (_float)-6, (_float)j)))
+			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)-6, (_float)j)))
 				return E_FAIL;
 		}
 	}
-		
-	if (FAILED(Ready_Layer_Object_PortalCube(TEXT("Layer_Potal"))))
+
+
+
+	if (FAILED(Ready_Layer_JumpCube(pLayerTag)))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_GravityCube(pLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Object_PortalCube(pLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_ElevetorCube(pLayerTag)))
+		return E_FAIL;
+	if (FAILED(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton"))))
+		return E_FAIL;
+	
+
+
 
 	return S_OK;
 }
@@ -169,30 +181,70 @@ HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CScene_StageSelect::Ready_Layer_Object_PortalCube(const _tchar * pLayerTag)
+HRESULT CScene_StageSelect::Ready_Layer_GravityCube(const _tchar * pLayerTag)
 {
-
-	CObject_PortalCube_A::POTALDESC tagDesc;
-
-	tagDesc.vPos_A_Cube = _float3(2,3,0);
-	tagDesc.vPos_B_Cube = _float3(5,-3.f,0);
-	tagDesc.iNowScene = SCENEID::SCENE_STAGESELECT;
-
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_PortalCube_A"),&tagDesc))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_GravityCube"), TEXT("Prototype_GameObject_Object_GravityCube"), &_float3((_float)6, (_float)10, (_float)3)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-
-
-
-HRESULT CScene_StageSelect::Ready_Layer_FixCube(const _tchar * pLayerTag)
+HRESULT CScene_StageSelect::Ready_Layer_JumpCube(const _tchar * pLayerTag)
 {
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube"), &_float3((_float)6, (_float)1, (_float)0)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_Object_PortalCube(const _tchar * pLayerTag)
+{
+
+	CObject_PortalCube_A::POTALDESC tagDesc;
+
+	tagDesc.vPos_A_Cube = _float3(3,3,0);
+	tagDesc.vPos_B_Cube = _float3(5,-3.f,0);
+	tagDesc.iNowScene = SCENEID::SCENE_STAGESELECT;
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_Potal"), TEXT("Prototype_GameObject_Object_PortalCube_A"),&tagDesc))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_ElevetorCube(const _tchar * pLayerTag)
+{
+	CObject_EscalatorCube::ESCALATORDESC tDesc;
+
+	tDesc.vStartPos = _float3(-2.f, 0.f, 0.f);
+	tDesc.vEndPos = _float3(2.f, -5.f, -5.f);
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_EscalatorCube"), &tDesc))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag)
+{
+	CObject_OrbitButton::ORBITDESC tDesc;
+
+	tDesc.vButtonPos = _float3(1,10,2);
+	tDesc.vOrbitRotAxis = _float3(5, 0, 5);
+	tDesc.vOribitCubeStartPos = _float3(-3, 10, 5);
+	tDesc.vOribitTotalXYZ = _float3(2, 2, 2);
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_OrbitButton"), &tDesc))
+		return E_FAIL;
+
+
 
 
 	return S_OK;
 }
+
+
 
 
 

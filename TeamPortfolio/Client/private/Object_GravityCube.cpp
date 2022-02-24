@@ -36,6 +36,7 @@ HRESULT CObject_GravityCube::Initialize_Clone(void * pArg)
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 		m_Layer_Tag = TEXT("Layer_GravityCube");
+		m_ComTexture->Change_TextureLayer(L"GravityCube");
 	}
 
 	return S_OK;
@@ -81,7 +82,7 @@ _int CObject_GravityCube::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture(2)))
+	if (FAILED(m_ComTexture->Bind_Texture()))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))

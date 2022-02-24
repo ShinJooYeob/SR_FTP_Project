@@ -127,6 +127,9 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\UI\Effect">
       <UniqueIdentifier>{c3a92765-f683-4802-8710-d0b4b0fad03f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\08.FustumMgr">
+      <UniqueIdentifier>{18d8e6c9-48ed-4ce4-a9e6-953b857d70ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -242,6 +245,9 @@
     </ClCompile>
     <ClCompile Include="..\private\TextureLayer.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Texture\TextureLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FrustumMgr.cpp">
+      <Filter>01.Utility\08.FustumMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Renderer.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FrustumMgr.h">
+      <Filter>01.Utility\08.FustumMgr</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

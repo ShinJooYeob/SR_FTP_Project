@@ -59,6 +59,8 @@ HRESULT CObject_PortalCube_A::Initialize_Clone(void * pArg)
 
 	m_Layer_Tag = TEXT("Layer_Potal");
 
+	m_ComTexture->Change_TextureLayer(L"PotalCube",1.f);
+
 	return S_OK;
 }
 
@@ -66,6 +68,8 @@ _int CObject_PortalCube_A::Update(_float fTimeDelta)
 {
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
+
+	m_fTimeDelta = fTimeDelta;
 
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
 
@@ -98,7 +102,7 @@ _int CObject_PortalCube_A::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(m_fTimeDelta)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -168,7 +172,7 @@ HRESULT CObject_PortalCube_A::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(m_eNowSceneNum, TAG_CP(Prototype_Texture_Shop), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

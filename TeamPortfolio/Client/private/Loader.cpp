@@ -6,20 +6,20 @@
 #include "Player.h"
 #include "Shop.h"
 #include "TerrainCube.h"
-#include "Object_MoveCube.h"
 #include "Object_FixCube.h"
-#include "Object_PushCube.h"
 #include "Object_GravityCube.h"
-#include "Object_SelfRotationCube.h"
-#include "Object_ButtonCube.h"
-#include "Object_InteractiveCube.h"
+#include "Object_OrbitButton.h"
 #include "Object_OrbitCube.h"
 #include "Object_PortalCube_A.h"
 #include "Object_PortalCube_B.h"
-#include "Object_RisingCube.h"
-#include "Object_DescentCube.h"
-#include "Object_RightCube.h"
-#include "Object_LeftCube.h"
+#include "Object_EscalatorCube.h"
+
+
+#include "Object_MoveCube.h"
+#include "Object_PushCube.h"
+#include "Object_SelfRotationCube.h"
+#include "Object_ButtonCube.h"
+#include "Object_InteractiveCube.h"
 #include "Object_VanishCube.h"
 #include "Object_AppearCube.h"
 #include "MyButton.h"
@@ -123,15 +123,6 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Shop), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
-	
-
-
-	//TestCubeFixObject
-
-	TextureDesc.szTextFilePath = TEXT("Player.txt");
-
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_FixObject_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
 
 	
 
@@ -160,7 +151,13 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_EscalatorCube"), CObject_EscalatorCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_OrbitButton"), CObject_OrbitButton::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_OrbitCube"), CObject_OrbitCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
 #pragma endregion
 
 
@@ -235,7 +232,7 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	//하강 큐브
 	TextureDesc.szTextFilePath = TEXT("SkyBox.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_DescentCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Object_EscalatorCube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 	//왼쪽으로 가는 큐브
@@ -279,6 +276,9 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 	//프로토타입_게임 오브젝트@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #pragma  region PROTOTYPE_GAMEOBJECT
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_MoveCube"), CObject_MoveCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_FixCube"), CObject_FixCube::Create(m_pGraphicDevice))))
@@ -293,19 +293,12 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_InteractiveCube"), CObject_InteractiveCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_OrbitCube"), CObject_OrbitCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
+
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_PortalCube_A"), CObject_PortalCube_A::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_PortalCube_B"), CObject_PortalCube_B::Create(m_pGraphicDevice))))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_RisingCube"), CObject_RisingCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_DescentCube"), CObject_DescentCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_LeftCube"), CObject_LeftCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_RightCube"), CObject_RightCube::Create(m_pGraphicDevice))))
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_EscalatorCube"), CObject_EscalatorCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_VanishCube"), CObject_VanishCube::Create(m_pGraphicDevice))))
 		return E_FAIL;

@@ -13,12 +13,22 @@ END
 
 BEGIN(Client)
 
-class CObject_DescentCube final : public CGameObject
+class CObject_OrbitButton final : public CGameObject
 {
+public:
+	typedef struct tagOribitDesc
+	{
+		_float3 vButtonPos;
+		_float3 vOribitTotalXYZ;
+
+		_float3 vOribitCubeStartPos;
+		_float3 vOrbitRotAxis;
+
+	}ORBITDESC;
 private:
-	explicit CObject_DescentCube(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CObject_DescentCube(const CObject_DescentCube& rhs);
-	virtual ~CObject_DescentCube() = default;
+	explicit CObject_OrbitButton(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CObject_OrbitButton(const CObject_OrbitButton& rhs);
+	virtual ~CObject_OrbitButton() = default;
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
 	virtual HRESULT Initialize_Clone(void* pArg)override;
@@ -27,8 +37,9 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
-	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
-	virtual _int Collision_Descent(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime);
+	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)override;
+
+	_bool Get_IsButtonActive() { return m_bSwitch; }
 
 private:
 	HRESULT SetUp_Components();
@@ -36,24 +47,23 @@ private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
+	HRESULT Clone_OrbitCube();
+
 private:
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;
-	CVIBuffer_Cube*			m_ComVIBuffer = nullptr;
+	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
 
 	CCollision*				m_pCollisionCom = nullptr;
 
 
+	_float					m_fPassedTime = 0;
 
-	_float					m_fTimer = 0.f;
-	_float					Seconds = 0.f;
-	_float3					m_fTempPos;
-	_bool					m_bCollisionSwitch = false;
-
-
+	_bool					m_bSwitch = false;
+	ORBITDESC				m_tOrbitDesc;
 public:
-	static CObject_DescentCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	static CObject_OrbitButton* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

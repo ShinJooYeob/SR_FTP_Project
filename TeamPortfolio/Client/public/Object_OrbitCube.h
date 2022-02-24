@@ -31,6 +31,7 @@ public:
 	virtual _int LateRender()override;
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)override;
+	void	Set_ButtonCube(class CObject_OrbitButton* pButtonCube) {m_pButtonCube = pButtonCube	;}
 
 private:
 	HRESULT SetUp_Components();
@@ -49,8 +50,6 @@ private:
 
 	_Matrix					parentMatrix;
 
-	_float3					m_RotAxis = _float3(0,0,0);
-
 	_float					seconds = 0;
 	_float					m_RotAngle = 0;
 
@@ -60,6 +59,8 @@ private:
 	_float				m_TargetAngle;
 	_float				m_PassedTime;
 	_bool				m_bIsTurning = false;
+
+	class CObject_OrbitButton* m_pButtonCube = nullptr;
 
 public:
 	static CObject_OrbitCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

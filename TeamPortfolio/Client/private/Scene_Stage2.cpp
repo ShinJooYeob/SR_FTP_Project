@@ -36,23 +36,23 @@ HRESULT CScene_Stage2::Initialize()
 		return E_FAIL;
 
 
-	if (FAILED(Ready_Layer_OrbitCube(TEXT("Layer_OrbitCube"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_OrbitCube(TEXT("Layer_OrbitCube"))))
+	//	return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Object_PortalCube_A(TEXT("Layer_PortalCube_A"))))
 	//	return E_FAIL;
 	//if (FAILED(Ready_Layer_Object_PortalCube_B(TEXT("Layer_PortalCube_B"))))
 	//	return E_FAIL;
 
-	if (FAILED(Ready_Layer_Object_RisingCube(TEXT("Layer_RisingCube"))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_Object_DescentCube(TEXT("Layer_DescentCube"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Object_RisingCube(TEXT("Layer_RisingCube"))))
+	//	return E_FAIL;
+	//if (FAILED(Ready_Layer_Object_EscalatorCube(TEXT("Layer_EscalatorCube"))))
+	//	return E_FAIL;
 
-	if (FAILED(Ready_Layer_Object_LeftCube(TEXT("Layer_LeftCube"))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_Object_RightCube(TEXT("Layer_RightCube"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Object_LeftCube(TEXT("Layer_LeftCube"))))
+	//	return E_FAIL;
+	//if (FAILED(Ready_Layer_Object_RightCube(TEXT("Layer_RightCube"))))
+	//	return E_FAIL;
 	if (FAILED(Ready_Layer_Object_VanishCube(TEXT("Layer_VanishCube"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Object_AppearCube(TEXT("Layer_AppearCube"))))
@@ -150,7 +150,8 @@ HRESULT CScene_Stage2::Ready_Layer_FixCube(const _tchar * pLayerTag)
 	{
 		for (_uint z = 0; z < 20; ++z)
 		{
-			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube"), &_float3(-10.f+(_float)x, (_float)-1, (_float)z)))
+
+			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3(-10.f + (_float)x, (_float)-1, (_float)z)))
 				return E_FAIL;
 		}
 	}
@@ -215,9 +216,9 @@ HRESULT CScene_Stage2::Ready_Layer_Object_RisingCube(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CScene_Stage2::Ready_Layer_Object_DescentCube(const _tchar * pLayerTag)
+HRESULT CScene_Stage2::Ready_Layer_Object_EscalatorCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_DescentCube"),&_float3(-1.f, 2.f, 2.f)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_EscalatorCube"),&_float3(-1.f, 2.f, 2.f)))
 		return E_FAIL;
 	return S_OK;
 }

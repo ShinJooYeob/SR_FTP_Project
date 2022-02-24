@@ -56,6 +56,7 @@ private:
 
 	_float					m_Seconds = 0.f;
 
+	_float					m_fTimeDelta;
 
 	class CObject_PortalCube_B*		m_pTargetCube = nullptr;
 

@@ -13,12 +13,22 @@ END
 
 BEGIN(Client)
 
-class CObject_LeftCube final : public CGameObject
+class CObject_EscalatorCube final : public CGameObject
 {
+public:
+	typedef struct tagEscalatorDesc
+	{
+
+		_float3 vStartPos;
+		_float3 vEndPos;
+
+	}ESCALATORDESC;
+
+
 private:
-	explicit CObject_LeftCube(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CObject_LeftCube(const CObject_LeftCube& rhs);
-	virtual ~CObject_LeftCube() = default;
+	explicit CObject_EscalatorCube(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CObject_EscalatorCube(const CObject_EscalatorCube& rhs);
+	virtual ~CObject_EscalatorCube() = default;
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
 	virtual HRESULT Initialize_Clone(void* pArg)override;
@@ -28,7 +38,7 @@ public:
 	virtual _int LateRender()override;
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
-	virtual _int Collision_LeftMoving(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime);
+	virtual _int Collision_Descent(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime);
 
 private:
 	HRESULT SetUp_Components();
@@ -45,14 +55,16 @@ private:
 	CCollision*				m_pCollisionCom = nullptr;
 
 
+
 	_float					m_fTimer = 0.f;
 	_float					Seconds = 0.f;
-	_float3					m_fTempPos;
 	_bool					m_bCollisionSwitch = false;
 
 
+	ESCALATORDESC			m_EscalatorDesc;
+
 public:
-	static CObject_LeftCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	static CObject_EscalatorCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

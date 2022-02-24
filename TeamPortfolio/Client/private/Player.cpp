@@ -624,7 +624,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 				else
 					m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
 
-				vResultPos.y = m_vDownstairsNear.y + 1.f;
+				vResultPos.y = m_vDownstairsNear.y + 0.9f;
 				m_fNowJumpPower = 0;
 				m_bIsJumped = 0;
 
@@ -632,7 +632,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 
 
 		}
-		else if (Time > 3.f && m_vReturnStair != _float3(0, 0, 0))
+		else if (Time > 3.f && m_vReturnStair != NOT_EXIST_BLOCK)
 		{
 			//피격 이미지 넣어주기/////////////////////////
 			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"),8.f);
