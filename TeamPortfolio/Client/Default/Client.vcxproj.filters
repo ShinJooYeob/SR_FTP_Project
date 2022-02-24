@@ -133,11 +133,8 @@
     <Filter Include="01.GameObject\SubObject\Object_AppearCube">
       <UniqueIdentifier>{b81f1d2c-9b3e-4e8c-b149-812e445acf7d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube">
-      <UniqueIdentifier>{fa90b281-ed72-4735-9712-4db6007ced48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\UI\Mouse_Image">
-      <UniqueIdentifier>{998ea89d-2d88-4455-99f7-04fbeeb5464c}</UniqueIdentifier>
+    <Filter Include="01.GameObject\SubObject\Object_BlockCube">
+      <UniqueIdentifier>{53eefef9-201e-4082-8aa6-fe282b4a6188}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -257,12 +254,8 @@
     <ClInclude Include="..\public\Object_AppearCube.h">
       <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
     </ClInclude>
-      <Filter>01.GameObject\SubObject\Object_RisingAndDescentCube\Object_RisingCube</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Inventory_Main.h" />
-    <ClInclude Include="..\public\Item.h" />
-    <ClInclude Include="..\public\UI_Mouse.h">
-      <Filter>01.GameObject\UI\Mouse_Image</Filter>
+    <ClInclude Include="..\public\Object_BlockCube.h">
+      <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -370,10 +363,8 @@
     <ClCompile Include="..\private\Object_AppearCube.cpp">
       <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Inventory_Main.cpp" />
-    <ClCompile Include="..\private\Item.cpp" />
-    <ClCompile Include="..\private\UI_Mouse.cpp">
-      <Filter>01.GameObject\UI\Mouse_Image</Filter>
+    <ClCompile Include="..\private\Object_BlockCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
