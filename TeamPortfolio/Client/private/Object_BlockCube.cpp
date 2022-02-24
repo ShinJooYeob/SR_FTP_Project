@@ -119,7 +119,7 @@ _int CObject_BlockCube::Collision_Block(_float fDeltaTime)
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	//객체에게 중력을 적용하기 위한 값
-	CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
+	CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform));
 
 	_float3& PlayerPos = Player->Get_MatrixState(CTransform::STATE_POS);
 
