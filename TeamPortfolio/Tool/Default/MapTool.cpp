@@ -89,9 +89,9 @@ void CMapTool::OnBnClickedButton2()
 
 	// 맵 오브젝트 추가
 	int Length, Floor, Depth;
-	Length = 5;
-	Floor = 20;
-	Depth = 5;
+	Length = 3;
+	Floor = 8;
+	Depth = 3;
 
 
 
@@ -109,16 +109,17 @@ void CMapTool::OnBnClickedButton2()
 				// 모서리 판단하기
 				if (x == 0 || y == 0 || z == 0)
 					isDraw = true;
-				if(x==Length-1||y== Floor -1||z== Depth -1)
+				if(
+					x==Length-1 ||
+					y== Floor -1||
+					z== Depth -1)
 					isDraw = true;
 
 				if (isDraw)
 				{
 					_float3 newfloat = _float3(x, y, z);
 					GetSingle(CSuperToolSIngleton)->Create_New_MapObject(newfloat, TAG_LAY(Layer_Map));
-
 				}
-
 			}
 		}
 	}

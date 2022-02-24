@@ -4,6 +4,8 @@
 #include "Layer.h"
 #include "ObjectTool_ToolObject.h"
 #include "ObjectTool_Terrain.h"
+#include "ObjectTool_ToolWire.h"
+
 #include "Camera_Tool.h"
 
 IMPLEMENT_SINGLETON(CSuperToolSIngleton)
@@ -165,6 +167,9 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 
 	// Prototype_GameObject_BackGround
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_BackGround), CObjectTool_ToolObject::Create(m_pGraphicDevice)));
+	// 와이어 큐브
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_WIRECUBE), CObjectTool_ToolWire::Create(m_pGraphicDevice)));
+
 
 	// 카메라 생성
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_Camera_Main), CCamera_Tool::Create(m_pGraphicDevice)));
@@ -173,9 +178,13 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainGround), CObjectTool_Terrain::Create(m_pGraphicDevice)));
 
 
-	// 테스트
-	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainGround)))
-	//	return E_FAIL;
+	// #Tag 지형 테스트 까는 것
+//	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainGround)))
+//		return E_FAIL;
+
+	// 와이어 큐브는 한개만 생성
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, TAG_LAY(Layer_WireCube), TAG_OP(Prototype_WIRECUBE)))
+	return E_FAIL;
 
 	return S_OK;
 }
@@ -501,6 +510,13 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Get_ViewObject_SelectObject()
 		return nullptr;
 
 	return static_cast<CObjectTool_ToolObject*>(gameobj);
+}
+
+CObjectTool_ToolWire * CSuperToolSIngleton::Get_WireCube()
+{
+	CGameObject* cubeobj = m_pGameInstance->Get_GameObject_By_LayerIndex(0, TAG_LAY(Layer_WireCube), 0);
+
+	return static_cast<CObjectTool_ToolWire*>(cubeobj);
 }
 
 void CSuperToolSIngleton::Set_ViewObject_Index(int index)

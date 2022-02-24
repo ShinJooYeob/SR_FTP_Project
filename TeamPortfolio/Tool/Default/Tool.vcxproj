@@ -216,6 +216,7 @@
     <ClInclude Include="MyForm.h" />
     <ClInclude Include="ObjectTool_Terrain.h" />
     <ClInclude Include="ObjectTool_ToolObject.h" />
+    <ClInclude Include="ObjectTool_ToolWire.h" />
     <ClInclude Include="PathFind.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SuperToolSIngleton.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="ObjectTool_Terrain.cpp" />
     <ClCompile Include="ObjectTool_ToolObject.cpp" />
+    <ClCompile Include="ObjectTool_ToolWire.cpp" />
     <ClCompile Include="PathFind.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

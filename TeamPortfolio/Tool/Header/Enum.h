@@ -7,6 +7,7 @@ enum OBJECTPROTOTYPEID
 	Prototype_Camera_Main,
 	Prototype_Player,
 	Prototype_BackGround,
+	Prototype_WIRECUBE,
 	Prototype_TerrainGround,
 	Prototype_TerrainCube,
 	Prototype_Shop,
@@ -25,6 +26,9 @@ static const TCHAR* Tag_Object_Prototype(OBJECTPROTOTYPEID eTag)
 		break;
 	case Prototype_BackGround:
 		return TEXT("Prototype_GameObject_BackGround");
+		break;
+	case Prototype_WIRECUBE:
+		return TEXT("Prototype_GameObject_WireCube");
 		break;
 	case Prototype_TerrainGround:
 		return TEXT("Prototype_GameObject_TerrainGround");
@@ -56,6 +60,7 @@ enum LAYERID
 	Layer_Terrain,
 	Layer_Terrain_Cube,
 	Layer_BackGround,
+	Layer_WireCube,
 	Layer_View,
 	Layer_Map,
 	Layer_Shop
@@ -83,6 +88,9 @@ static const TCHAR* Tag_Layer(LAYERID eTag)
 		break;
 	case Layer_View:
 		return TEXT("Layer_View");
+		break;
+	case Layer_WireCube:
+		return TEXT("Layer_WireCube");
 		break;
 	case Layer_Map:
 		return TEXT("Layer_Map");

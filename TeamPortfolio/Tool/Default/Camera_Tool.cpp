@@ -29,7 +29,7 @@ HRESULT CCamera_Tool::Initialize_Clone(void * pArg)
 		return E_FAIL;
 
 	m_StartMat = m_pTransform->Get_WorldMatrix();
-
+	Change_Camera_Demension();
 	return S_OK;
 }
 

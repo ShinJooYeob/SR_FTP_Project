@@ -21,6 +21,7 @@ END
 BEGIN(Tool)
 
 class CObjectTool_ToolObject;
+class CObjectTool_ToolWire;
 class CSuperToolSIngleton : public CBase
 {
 	DECLARE_SINGLETON(CSuperToolSIngleton)
@@ -98,6 +99,7 @@ public:
 
 	CObjectTool_ToolObject* Get_ViewObject_Object(int index = 0);
 	CObjectTool_ToolObject* Get_ViewObject_SelectObject();
+	CObjectTool_ToolWire*	Get_WireCube();
 	void					Set_ViewObject_Index(int index);
 
 	list<CGameObject*>*	 Get_GameObjectList(const _tchar* laytag);

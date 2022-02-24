@@ -58,6 +58,7 @@ public:
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	virtual BOOL DestroyWindow();
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전

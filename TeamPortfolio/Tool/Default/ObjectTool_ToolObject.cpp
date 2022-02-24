@@ -80,8 +80,8 @@ _int CObjectTool_ToolObject::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-//	if (FAILED(m_ComTexture->Bind_Texture()))
-//		return E_FAIL;
+	if (FAILED(m_ComTexture->Bind_Texture(m_tOutputData.StateIndex)))
+		return E_FAIL;
 
 	//렌더링 그룹에 들어가면 순서에 맞게 이 랜더가 호출되고 호출이 됬으면 버텍스 버퍼를 그려줘라
 	if (FAILED(m_ComVIBuffer->Render()))

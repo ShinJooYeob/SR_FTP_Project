@@ -18,6 +18,7 @@
 
 #include "GameObject.h"
 #include "ObjectTool_ToolObject.h"
+#include "ObjectTool_ToolWire.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -39,6 +40,7 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_TIMER()
 	ON_WM_INPUT()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -241,31 +243,52 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	// #Bug 툴창에서 마우스 피킹
 
-	GetSingle(CGameInstance)->Update_Transform_ToWorldSpace(point);
-	
-	list<CGameObject*>* list =  GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
-	if (list == nullptr)
-		return;
-	for (CGameObject* obj : *list)
-	{
-		if (static_cast<CObjectTool_ToolObject*>(obj)->PickObject())
-			int A = 0;
-	}
-
-	
-
+	//GetSingle(CGameInstance)->Update_Transform_ToWorldSpace(point);
+	//
+	//list<CGameObject*>* list =  GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
+	//if (list == nullptr)
+	//	return;
+	//for (CGameObject* obj : *list)
+	//{
+	//	if (static_cast<CObjectTool_ToolObject*>(obj)->PickObject())
+	//		int A = 0;
+	//}
 
 }
+
+void CToolView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CScrollView::OnLButtonUp(nFlags, point);
+}
+
+
 
 void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 {	
 	// 이벤트로 들어오는 걸로 피킹수행하자..
 	// DX 랜더된 곳의 윈도우 좌표가 들어온다.
-	
 
 	// 피킹 클래스 툴용으로 수정
 
+	GetSingle(CGameInstance)->Update_Transform_ToWorldSpace(point);
 
+	list<CGameObject*>* list = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
+	if (list == nullptr)
+		return;
+
+	for (CGameObject* obj : *list)
+	{
+		CObjectTool_ToolObject* toolobj = static_cast<CObjectTool_ToolObject*>(obj);
+		if (toolobj->PickObject())
+		{
+			_float3 pos = toolobj->Get_Pos();
+			pos.x += 1;
+			GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(pos);
+
+		}
+	}
 }
 
 void CToolView::OnTimer(UINT_PTR nIDEvent)
@@ -288,4 +311,6 @@ BOOL CToolView::DestroyWindow()
 
 	return CScrollView::DestroyWindow();
 }
+
+
 

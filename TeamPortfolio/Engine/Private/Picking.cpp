@@ -77,6 +77,8 @@ HRESULT CPicking::Transform_ToWorldSpace(POINT mousePos)
 	D3DXMatrixInverse(&ViewMatrixInverse, nullptr, &ViewMatrixInverse);
 	D3DXVec3TransformNormal(&m_vRayDir, &m_vRayDir, &ViewMatrixInverse);
 	D3DXVec3TransformCoord(&m_vRayPos, &m_vRayPos, &ViewMatrixInverse);
+	D3DXVec3Normalize(&m_vRayDir, &m_vRayDir);
+
 	return S_OK;
 }
 

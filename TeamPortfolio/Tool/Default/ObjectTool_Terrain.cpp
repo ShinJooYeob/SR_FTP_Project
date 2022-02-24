@@ -67,10 +67,10 @@ _int CObjectTool_Terrain::Render()
 		return E_FAIL;
 
 
-//	RenderState_Begin();
+	RenderState_Begin();
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
-//	RenderState_End();
+	RenderState_End();
 
 	return 0;
 }
@@ -103,9 +103,8 @@ HRESULT CObjectTool_Terrain::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), TAG_COM(Com_Transform), (CComponent**)&m_ComTransform)))
 		return E_FAIL;
 
-	// #Bug Terrain¸¸ ¾È±×·ÁÁü
-	//if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Terrain128x128), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
-	//	return E_FAIL;
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Terrain128x128), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
+		return E_FAIL;
 	//if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 	//	return E_FAIL;	
 	//if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
