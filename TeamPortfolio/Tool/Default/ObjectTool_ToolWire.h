@@ -33,7 +33,7 @@ public:
 	HRESULT Set_Pos(_float3 pos);
 
 public:
-	_bool PickObject();
+
 
 private:
 	HRESULT			RenderState_Begin();

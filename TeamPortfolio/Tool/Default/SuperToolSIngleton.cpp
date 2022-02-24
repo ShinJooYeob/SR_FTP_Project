@@ -18,6 +18,8 @@ CSuperToolSIngleton::CSuperToolSIngleton()
 	m_pComRenderer = nullptr;
 	m_ViewObjectSelectIndex = -1;
 	Safe_AddRef(m_pGameInstance);
+	GetSingle(CKeyMgr);
+
 }
 
 HRESULT CSuperToolSIngleton::InitDevice(void)
@@ -477,6 +479,28 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Create_New_MapObject(_float3 Pos, 
 	return newobj;
 }
 
+_float3 CSuperToolSIngleton::Get_Center_MapPosition()
+{
+	// 생성된 맵의 중심위치 반환
+	_float3 newCenterPos = _float3(0, 0, 0);
+	auto maplist =  Get_GameObjectList(TAG_LAY(Layer_Map));
+	if (maplist == nullptr)
+		return newCenterPos;
+
+	
+	for (auto object : *maplist)
+	{
+		CTransform* trans = (CTransform*) object->Get_Component(TAG_COM(Com_Transform));
+		_float3 pos = trans->Get_MatrixState(CTransform::STATE_POS);
+		newCenterPos.x = (newCenterPos.x < pos.x) ? pos.x : newCenterPos.x;
+		newCenterPos.y = (newCenterPos.y < pos.y) ? pos.y : newCenterPos.y;
+		newCenterPos.z = (newCenterPos.z < pos.z) ? pos.z : newCenterPos.z;
+	}
+
+	newCenterPos *= 0.5f;
+	return newCenterPos;
+}
+
 CObjectTool_ToolObject * CSuperToolSIngleton::Get_ViewObject_Object(int index)
 {
 	auto list  = Get_GameObjectList(TAG_LAY(Layer_View));
@@ -568,5 +592,6 @@ void CSuperToolSIngleton::Free()
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pComRenderer);
 	Safe_Release(m_pGameInstance);
+	GetSingle(CKeyMgr)->DestroyInstance();
 	m_pGameInstance->Release_Engine();
 }

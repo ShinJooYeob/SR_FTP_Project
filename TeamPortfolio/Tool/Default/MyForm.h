@@ -41,7 +41,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-
+private:
+	CObjectTool_ToolObject* m_MouseSelesctObject;
 
 public:
 

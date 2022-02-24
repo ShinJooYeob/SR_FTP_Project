@@ -210,6 +210,7 @@
     <ClInclude Include="..\Header\Tool_Define.h" />
     <ClInclude Include="Camera_Tool.h" />
     <ClInclude Include="FileInfo.h" />
+    <ClInclude Include="KeyMgr.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="MiniView.h" />
@@ -229,6 +230,7 @@
   <ItemGroup>
     <ClCompile Include="Camera_Tool.cpp" />
     <ClCompile Include="FileInfo.cpp" />
+    <ClCompile Include="KeyMgr.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="MiniView.cpp" />

@@ -26,7 +26,8 @@ public:
 	void* Get_Vtxtex();
 	void* Get_CubeVtxtex();
 
-	_bool Pick(const _Matrix & WorldMatrixInverse, _float3 * pOut);
+//	_bool Pick(const _Matrix & WorldMatrixInverse, _float3 * pOut, _float2* pOutUV);
+	_bool Pick(const _Matrix& WorldMatrixInverse, _float3 * pOut, _float2* pOutUV, _float3* ppout);
 
 protected:
 	LPDIRECT3DVERTEXBUFFER9			m_pVB = nullptr;

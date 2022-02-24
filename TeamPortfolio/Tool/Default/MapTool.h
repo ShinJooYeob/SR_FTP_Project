@@ -26,12 +26,13 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 private:
 	void ListBoxUpdate();
-
+	void CreateNewMap(_uint  x, _uint  y, _uint z);
 
 
 	CListBox m_ListBox_Map;
-
-	// 스테이지의 
+	
+	// XYZ 입력창
+	CEdit m_EditBox[3];
 
 	DECLARE_MESSAGE_MAP()
 public:

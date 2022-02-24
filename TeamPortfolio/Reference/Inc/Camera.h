@@ -40,6 +40,7 @@ public:
 	void Change_Camera_Demension() { m_bIsOrtho = !m_bIsOrtho; };
 	HRESULT Set_ProjectMatrix(_bool bIsOrtho);
 
+	HRESULT Set_NewLookPoint(_float3 lookat);
 
 protected:
 	_bool						m_bIsOrtho = true;

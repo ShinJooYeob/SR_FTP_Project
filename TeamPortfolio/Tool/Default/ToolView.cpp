@@ -41,6 +41,7 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_WM_TIMER()
 	ON_WM_INPUT()
 	ON_WM_LBUTTONUP()
+	ON_WM_RBUTTONDOWN()
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -229,7 +230,7 @@ void CToolView::OnInitialUpdate()
 
 	SetTimer(TIMER_UPDATE, 30, NULL);
 
-	
+	m_Nearobj = nullptr;
 
 
 	return;
@@ -240,27 +241,30 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 	CScrollView::OnLButtonDown(nFlags, point);
+	if (m_Nearobj == nullptr)
+		return;
 
-	// #Bug 툴창에서 마우스 피킹
-
-	//GetSingle(CGameInstance)->Update_Transform_ToWorldSpace(point);
-	//
-	//list<CGameObject*>* list =  GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
-	//if (list == nullptr)
-	//	return;
-	//for (CGameObject* obj : *list)
-	//{
-	//	if (static_cast<CObjectTool_ToolObject*>(obj)->PickObject())
-	//		int A = 0;
-	//}
-
+	// 선택한 오브젝트 생성
+	GetSingle(CSuperToolSIngleton)->Create_New_MapObject(m_NextPos, TAG_LAY(Layer_Map));
 }
+void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CScrollView::OnRButtonDown(nFlags, point);
+	if (m_Nearobj == nullptr)
+		return;
+
+	m_Nearobj->DIED();
+}
+
 
 void CToolView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 	CScrollView::OnLButtonUp(nFlags, point);
+
 }
 
 
@@ -274,21 +278,61 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 
 	GetSingle(CGameInstance)->Update_Transform_ToWorldSpace(point);
 
-	list<CGameObject*>* list = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
-	if (list == nullptr)
+	list<CGameObject*>* maplist = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
+	if (maplist == nullptr)
 		return;
 
-	for (CGameObject* obj : *list)
+	CTransform* tr =  (CTransform*)GetSingle(CSuperToolSIngleton)->Get_WireCube()->Get_Component(TAG_COM(Com_Transform));
+	tr->Scaled(_float3(1.1f, 1.1f, 1.1f));
+
+	// 피킹된 오브젝트들을 가져와서 카메라와 비교한 뒤에 가장 가까운 한개만 반환하게 하자.
+	list<CObjectTool_ToolObject*> picklist;
+
+
+	for (CGameObject* obj : *maplist)
 	{
 		CObjectTool_ToolObject* toolobj = static_cast<CObjectTool_ToolObject*>(obj);
 		if (toolobj->PickObject())
 		{
-			_float3 pos = toolobj->Get_Pos();
-			pos.x += 1;
-			GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(pos);
-
+			picklist.push_back(toolobj);
+			toolobj->Set_MyCamDistance();
 		}
 	}
+
+	if (picklist.empty())
+		return;
+
+	m_Nearobj = picklist.front();
+	float CurDistance = m_Nearobj->Get_CamDistance();
+	for (CObjectTool_ToolObject* obj : picklist)
+	{
+		if (CurDistance > obj->Get_CamDistance())
+		{
+			CurDistance = obj->Get_CamDistance();
+			m_Nearobj = obj;
+		}
+		
+	}
+	
+	// 피킹된 오브젝트의 면기준으로 다음 생성될 타일 위치 결정
+	// 노말이 없어서 직접 계산 / 일단 나중에
+
+	m_NextPos = m_Nearobj->Get_Pos();
+	m_NextPos.y += 1;
+
+	//_float3* vertex = nearobj->GetPickVertex3();
+	//
+	//_float3 a = vertex[1] - vertex[0];
+	//_float3 b = vertex[2] - vertex[0];	
+	//_float3 nomalVec = _float3(0,0,0);
+
+	//
+	//D3DXVec3Cross(&nomalVec, &a, &b);
+	//nomalVec.z *= -1;
+	//D3DXVec3Normalize(&nomalVec, &nomalVec);
+
+	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_NextPos);
+
 }
 
 void CToolView::OnTimer(UINT_PTR nIDEvent)
@@ -311,6 +355,4 @@ BOOL CToolView::DestroyWindow()
 
 	return CScrollView::DestroyWindow();
 }
-
-
 

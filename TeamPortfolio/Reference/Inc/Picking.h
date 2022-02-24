@@ -17,6 +17,8 @@ public:
 	 HRESULT Transform_ToWorldSpace(POINT mousePos);
 	 HRESULT Transform_ToLocalSpace(_Matrix WorldMatrixinverse);
 	 _bool isPick(_float3 * pLocalPoint, _float3 * pOut);
+	 _bool isPick_UV(_float3 * pLocalPoint, _float3 * pOut, _float2 * pOutUV);
+
 private:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
 	HWND					m_hWnd;

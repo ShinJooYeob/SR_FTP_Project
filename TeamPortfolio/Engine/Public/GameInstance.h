@@ -87,7 +87,7 @@ public: /* For. IMGUI Interface */
 
 public:
 	HRESULT Update_Transform_ToWorldSpace(POINT p);
-	_bool isPick(_float3 * pLocalPoint, _float3 * pOut);
+	_bool isPick(_float3 * pLocalPoint, _float3 * pOut, _float2* pUV);
 
 private:
 	CGraphic_Device*	m_pGraphicDevice = nullptr;

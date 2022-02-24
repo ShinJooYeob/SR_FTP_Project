@@ -40,56 +40,53 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 
 	if (isKey)
 	{
-		if (GetKeyState(VK_UP) & 0x8000)
+		_float3 newCenter = GetSingle(CSuperToolSIngleton)->Get_Center_MapPosition();
+
+		if (GetSingle(CKeyMgr)->Key_Pressing(VK_UP))
 		{
 			m_pTransform->Move_Up(fDeltaTime);
 		}
-		if (GetKeyState(VK_DOWN) & 0x8000)
+		if (GetSingle(CKeyMgr)->Key_Pressing(VK_DOWN))
 		{
 			m_pTransform->Move_Down(fDeltaTime);
 		}
 
-		if (GetKeyState(VK_LEFT) & 0x8000)
+		if (GetSingle(CKeyMgr)->Key_Pressing(VK_LEFT))
 		{
 			m_pTransform->Move_Left(fDeltaTime);
+		//	Set_NewLookPoint(newCenter);
 		}
-		if (GetKeyState(VK_RIGHT) & 0x8000)
+		if (GetSingle(CKeyMgr)->Key_Pressing(VK_RIGHT))
 		{
 			m_pTransform->Move_Right(fDeltaTime);
+		// Set_NewLookPoint(newCenter);
+			
 		}
+		Set_NewLookPoint(newCenter);
 
 
-		if (GetKeyState('W') & 0x8000)
+		if (GetSingle(CKeyMgr)->Key_Pressing('W'))
 		{
 			m_pTransform->Move_Forward(fDeltaTime);
 		}
-		if (GetKeyState('S') & 0x8000)
+		if (GetSingle(CKeyMgr)->Key_Pressing('S'))
 		{
 			m_pTransform->Move_Backward(fDeltaTime);
 		}
 
-		if (GetKeyState('E') & 0x8000)
-		{
-			m_pTransform->Turn_CW(_float3(0,1,0),fDeltaTime);
-		}
-		if (GetKeyState('Q') & 0x8000)
-		{
-			m_pTransform->Turn_CCW(_float3(0, 1, 0), fDeltaTime);
-		}
-
-		if (GetKeyState('T') & 0x8000)
+		if (GetSingle(CKeyMgr)->Key_Down('T'))
 		{
 			// 직교 투영	
 			Change_Camera_Demension();
 		}
 
-		if (GetKeyState('R') & 0x8000)
+		if (GetSingle(CKeyMgr)->Key_Pressing('R'))
 		{
 			m_pTransform->Set_Matrix(m_StartMat);
 		}
 	}
 	
-
+	
 
 	if(FAILED(__super::Update(fDeltaTime)))
 		return -1;

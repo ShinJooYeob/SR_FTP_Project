@@ -367,10 +367,10 @@ HRESULT CGameInstance::Update_Transform_ToWorldSpace(POINT p)
 	return m_pPickingMgr->Transform_ToWorldSpace(p);
 }
 
-_bool CGameInstance::isPick(_float3 * pLocalPoint, _float3 * pOut)
+_bool CGameInstance::isPick(_float3 * pLocalPoint, _float3 * pOut,_float2* pUV)
 {
 	NULL_CHECK_BREAK(m_pPickingMgr);
-	return m_pPickingMgr->isPick(pLocalPoint,pOut);
+	return m_pPickingMgr->isPick_UV(pLocalPoint,pOut, pUV);
 }
 
 

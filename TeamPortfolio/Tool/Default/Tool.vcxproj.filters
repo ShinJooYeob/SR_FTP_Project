@@ -144,6 +144,9 @@
     <ClInclude Include="ObjectTool_ToolWire.h">
       <Filter>04.Object\01.Object\WireCube</Filter>
     </ClInclude>
+    <ClInclude Include="KeyMgr.h">
+      <Filter>00. Special\01. View\01. MyButton\03. MapTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -193,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="ObjectTool_ToolWire.cpp">
       <Filter>04.Object\01.Object\WireCube</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyMgr.cpp">
+      <Filter>00. Special\01. View\01. MyButton\03. MapTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

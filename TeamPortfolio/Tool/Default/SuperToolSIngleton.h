@@ -62,7 +62,7 @@ private:
 private:
 	HRESULT Initialize_ToolView();
 
-public:
+public: // Get Set
 	CGameInstance* GetGameInstance()
 	{
 		return m_pGameInstance;
@@ -70,6 +70,10 @@ public:
 	CRenderer* Get_Component_Renderer()
 	{
 		return m_pComRenderer;
+	}
+	LPDIRECT3DDEVICE9 Get_Graohics_Device()
+	{
+		return m_pGraphicDevice;
 	}
 
 	CMainFrame* GetMainFrm() { return m_pMainFrame; }
@@ -81,7 +85,7 @@ public:
 	CTrans_Dialog* GetTransTool() { return m_pTransDialog; }
 	CMapTool* GetMapTool() { return m_pMapToolDialog; }
 
-public:
+public: //For. Data
 	HRESULT SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd);
 	HRESULT SaveData_Map(list<CObjectTool_ToolObject*> objlist, CWnd* cwnd);
 
@@ -91,12 +95,12 @@ public:
 	HRESULT Create_ToolObject_Button(wstring name);
 	HRESULT Create_ToolObject_Data(const _tchar* str, const OUTPUT_OBJECTINFO& data);
 
-public:
+public:// For Create
 	CObjectTool_ToolObject* Create_New_ToolObject(wstring name, const _tchar* laytag);
 	CObjectTool_ToolObject* Create_New_MapObject(_float3 Pos, const _tchar* laytag);
 
-public:
-
+public:// For Object
+	_float3					Get_Center_MapPosition();
 	CObjectTool_ToolObject* Get_ViewObject_Object(int index = 0);
 	CObjectTool_ToolObject* Get_ViewObject_SelectObject();
 	CObjectTool_ToolWire*	Get_WireCube();
@@ -127,6 +131,7 @@ private:
 
 private:
 	_int						m_ViewObjectSelectIndex;
+
 	// ±‚≈∏ COM ∞¥√º
 	// LPD3DXSPRITE				m_pSprite;
 	// LPD3DXFONT				m_pFont;

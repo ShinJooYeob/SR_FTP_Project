@@ -108,6 +108,8 @@ void CMyForm::OnInitialUpdate()
 	GetDlgItem(IDC_BUTTON13)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON14)->SetFont(&m_Font);
 
+	m_MouseSelesctObject = nullptr;
+
 	
 }
 

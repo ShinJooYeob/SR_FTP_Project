@@ -5,5 +5,6 @@
 #include "Struct.h"
 #include "Functor.h"
 #include "SuperToolSIngleton.h"
+#include "KeyMgr.h"
 
 

@@ -247,12 +247,21 @@ void CObjectTool_ToolObject::LoadData(const OUTPUT_OBJECTINFO& data)
 
 bool CObjectTool_ToolObject::PickObject()
 {
-	_float3 vOut;
-	if (true == m_ComVIBuffer->Pick(m_ComTransform->Get_InverseWorldMatrix(), &vOut))
+	_float2 uv;
+	if (true == m_ComVIBuffer->Pick(m_ComTransform->Get_InverseWorldMatrix(), &m_PickOut, &uv, m_PickVertex))
 		return true;
 	
 	return false;
 }
+_bool CObjectTool_ToolObject::PickObject(_float3 * pOut, _float3 * pVertex)
+{
+	_float2 uv;
+	if (true == m_ComVIBuffer->Pick(m_ComTransform->Get_InverseWorldMatrix(), pOut, &uv,pVertex))
+		return true;
+
+	return false;
+}
+
 
 HRESULT CObjectTool_ToolObject::SetUp_Components()
 {

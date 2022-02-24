@@ -185,6 +185,32 @@ HRESULT CCamera::Set_ProjectMatrix(_bool bIsOrtho)
 	return S_OK;
 }
 
+HRESULT CCamera::Set_NewLookPoint(_float3 lookat)
+{
+
+	if (m_pGraphicDevice == nullptr)
+		return E_FAIL;
+
+	if (nullptr == m_pTransform)
+		return E_FAIL;
+
+	m_CameraDesc.vAt = lookat;
+	m_CameraDesc.vEye = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	_float3 vRight, vUp, vLook;
+
+	vLook = (m_CameraDesc.vAt - m_CameraDesc.vEye).Get_Nomalize();
+
+	vRight = m_CameraDesc.vAxisY.Get_Cross(vLook).Get_Nomalize();
+
+	vUp = vLook.Get_Cross(vRight).Get_Nomalize();
+
+	m_pTransform->Set_MatrixState(CTransform::STATE_RIGHT, vRight);
+	m_pTransform->Set_MatrixState(CTransform::STATE_UP, vUp);
+	m_pTransform->Set_MatrixState(CTransform::STATE_LOOK, vLook);
+
+}
+
 void CCamera::Free()
 {
 	__super::Free();

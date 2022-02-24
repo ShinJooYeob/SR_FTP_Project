@@ -97,14 +97,7 @@ HRESULT CObjectTool_ToolWire::Set_Pos(_float3 pos)
 	return S_OK;
 }
 
-bool CObjectTool_ToolWire::PickObject()
-{
-	_float3 vOut;
-	if (true == m_ComVIBuffer->Pick(m_ComTransform->Get_InverseWorldMatrix(), &vOut))
-		return true;
-	
-	return false;
-}
+
 
 HRESULT CObjectTool_ToolWire::RenderState_Begin()
 {
@@ -165,7 +158,8 @@ CGameObject * CObjectTool_ToolWire::Clone(void * pArg)
 
 void CObjectTool_ToolWire::Free()
 {
-	__super::Free();
+	__super::Free();	
+	Safe_Release(m_ComTexture);
 
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);
