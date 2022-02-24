@@ -56,11 +56,12 @@ private:
 	HRESULT Ready_Object_Clone_Map(const _tchar* layertag);
 	HRESULT Ready_Object_Camera(const _tchar* layertag);
 
-	HRESULT		Render_Set_Statee();
+	HRESULT		Render_Set_State();
 
 	// 창 초기화
 private:
 	HRESULT Initialize_ToolView();
+
 
 public: // Get Set
 	CGameInstance* GetGameInstance()
@@ -127,7 +128,7 @@ private:
 private:
 	LPDIRECT3DDEVICE9			m_pGraphicDevice;
 	CGameInstance*				m_pGameInstance;
-	CRenderer*					m_pComRenderer;
+	CRenderer*					m_pComRenderer;	
 
 private:
 	_int						m_ViewObjectSelectIndex;

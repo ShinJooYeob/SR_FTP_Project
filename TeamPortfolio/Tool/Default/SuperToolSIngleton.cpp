@@ -12,6 +12,7 @@ IMPLEMENT_SINGLETON(CSuperToolSIngleton)
 
 CSuperToolSIngleton::E_TOOL_MODE CSuperToolSIngleton::g_MAP_MODE = CSuperToolSIngleton::E_TOOL_MODE::TOOLMODE_OBJECT;
 
+
 CSuperToolSIngleton::CSuperToolSIngleton()
 	: m_pGraphicDevice(nullptr), m_pGameInstance(GetSingle(CGameInstance))
 {
@@ -55,6 +56,7 @@ HRESULT CSuperToolSIngleton::InitDevice(void)
 	//m_pGraphicDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 	////UV좌표를 1을 넘어가게 작성할 경우 다시 1인 점을 0으로 치환하여 좌표를 찍음
 
+
 	// 오브젝트 정보
 	Ready_Initalize_Object();
 
@@ -78,9 +80,9 @@ HRESULT CSuperToolSIngleton::Render_Begin(void)
 {
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
-	Render_Set_Statee();
+	Render_Set_State();
 
-	m_pGameInstance->Render_Begin();
+	m_pGameInstance->Render_Begin();	
 	return S_OK;
 }
 
@@ -89,11 +91,12 @@ HRESULT CSuperToolSIngleton::Render_End(HWND hWnd)
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
 	m_pGraphicDevice->EndScene();
-	m_pGraphicDevice->Present(nullptr, nullptr, hWnd, nullptr);
+	m_pGraphicDevice->Present(NULL, NULL, hWnd, NULL);
+
 	return S_OK;
 }
 
-HRESULT CSuperToolSIngleton::Render_Set_Statee()
+HRESULT CSuperToolSIngleton::Render_Set_State()
 {
 	if (m_pGraphicDevice == nullptr)
 		return E_FAIL;
@@ -253,6 +256,7 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView()
 
 	return S_OK;
 }
+
 
 HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd)
 {

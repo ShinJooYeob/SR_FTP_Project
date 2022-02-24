@@ -62,6 +62,11 @@ public: // For. OutputData , 로드랑 세이브시에만 사용
 	}
 	_float3* GetPickVertex3()
 	{
+		for (int i=0;i<3;i++)
+		{
+			D3DXVec3TransformNormal(&m_PickVertex[i], &m_PickVertex[i], &m_ComTransform->Get_WorldMatrix());
+		}
+
 		return m_PickVertex;
 	}
 

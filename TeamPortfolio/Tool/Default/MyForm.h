@@ -59,4 +59,5 @@ public:
 	afx_msg void OnBnClickedButton_CreateObject();
 	afx_msg void OnLbnSelchangeList_ObjectSelect();
 	afx_msg void OnBnClickedButton_Delete();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
