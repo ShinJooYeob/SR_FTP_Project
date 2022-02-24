@@ -23,7 +23,8 @@ private:
 	HRESULT Ready_Layer_Player(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Shop(const _tchar* pLayerTag);
 
-	HRESULT Ready_Layer_Cube(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Object_PortalCube(const _tchar* pLayerTag); //Æ÷Å» A
+
 	HRESULT Ready_Layer_FixCube(const _tchar* pLayerTag);
 
 	D3DLIGHT9		m_Light;

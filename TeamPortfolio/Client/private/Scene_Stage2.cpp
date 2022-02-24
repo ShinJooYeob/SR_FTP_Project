@@ -24,8 +24,8 @@ HRESULT CScene_Stage2::Initialize()
 	if (FAILED(Ready_Layer_PushCube(TEXT("Layer_PushCube"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_SelfRotationCube(TEXT("Layer_SelfRotationCube"))))
 		return E_FAIL;
@@ -35,13 +35,14 @@ HRESULT CScene_Stage2::Initialize()
 	if (FAILED(Ready_Layer_Object_InteractiveCube(TEXT("Layer_InteractiveCube"))))
 		return E_FAIL;
 
+
 	if (FAILED(Ready_Layer_OrbitCube(TEXT("Layer_OrbitCube"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Object_PortalCube_A(TEXT("Layer_PortalCube_A"))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_Object_PortalCube_B(TEXT("Layer_PortalCube_B"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Object_PortalCube_A(TEXT("Layer_PortalCube_A"))))
+	//	return E_FAIL;
+	//if (FAILED(Ready_Layer_Object_PortalCube_B(TEXT("Layer_PortalCube_B"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Object_RisingCube(TEXT("Layer_RisingCube"))))
 		return E_FAIL;
@@ -123,8 +124,16 @@ HRESULT CScene_Stage2::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	CameraDesc.TransformDesc.fMovePerSec = 10.f;
 	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Camera_Main), &CameraDesc))
+	CCamera_Main* pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+
+	if (pMainCam == nullptr)
 		return E_FAIL;
+
+	if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
+		return E_FAIL;
+
+	pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
+
 	return S_OK;
 }
 

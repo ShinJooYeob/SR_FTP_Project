@@ -18,19 +18,15 @@ HRESULT CRenderer::Initialize_Prototype(void * pArg)
 	D3DXMatrixOrthoLH(&m_ProjMatrix, (_float)iWinCX, (_float)iWinCY, 0.0f, 1.f);
 
 
-	m_pMinmapTex;
-	m_pMinmapSurf;
-	m_pMinmapTexZ;
-
 	// 그림자 텍스처 생성
-	if (FAILED(m_pGraphicDevice->CreateTexture(MAP_SIZE, MAP_SIZE, 1,
+	if (FAILED(m_pGraphicDevice->CreateTexture(iWinCX, iWinCY, 1,
 		D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8,
 		D3DPOOL_DEFAULT, &m_pMinmapTex, NULL)))
 		return E_FAIL;
 	if (FAILED(m_pMinmapTex->GetSurfaceLevel(0, &m_pMinmapSurf)))
 		return E_FAIL;
 	if (FAILED(m_pGraphicDevice->CreateDepthStencilSurface(
-		MAP_SIZE, MAP_SIZE, D3DFMT_D24S8,
+		iWinCX, iWinCY, D3DFMT_D24S8,
 		D3DMULTISAMPLE_NONE, 0, TRUE,
 		&m_pMinmapTexZ, NULL)))
 		return E_FAIL;
@@ -61,12 +57,13 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderID, CGameObject * pGameObj
 
 HRESULT CRenderer::Render_RenderGroup()
 {
+	m_RenderObjectList[RENDER_NONALPHA].reverse();
+
 	if (m_MainCamera) 
 	{
 		if (FAILED(Update_MinmapTexture()))
 			return E_FAIL;
 	}
-
 
 	if (FAILED(Render_Priority()))
 		return E_FAIL;
@@ -109,6 +106,7 @@ HRESULT CRenderer::Render_Priority()
 
 HRESULT CRenderer::Render_NonAlpha()
 {
+
 	for (auto& RenderObject : m_RenderObjectList[RENDER_NONALPHA])
 	{
 		if (RenderObject != nullptr)
@@ -118,6 +116,7 @@ HRESULT CRenderer::Render_NonAlpha()
 		}
 		Safe_Release(RenderObject);
 	}
+
 	m_RenderObjectList[RENDER_NONALPHA].clear();
 	return S_OK;
 }
@@ -214,6 +213,11 @@ HRESULT CRenderer::Render_UI()
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+
+	m_RenderObjectList[RENDER_UI].sort([](CGameObject* pSour, CGameObject* pDest)->_bool
+	{
+		return pSour->Get_CamDistance() > pDest->Get_CamDistance();
+	});
 
 	for (auto& RenderObject : m_RenderObjectList[RENDER_UI])
 	{

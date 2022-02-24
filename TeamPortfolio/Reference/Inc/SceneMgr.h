@@ -15,9 +15,9 @@ private:
 
 
 public:
-	HRESULT Scene_Chage(CScene * _pScene, _int iNextSceneIndex);
-	_uint	Get_NowSceneNum() {	return (_uint)m_iCurrentSceneIdx;}
-
+	HRESULT Scene_Chage(CScene * _pScene, _int iNextSceneIndex, _bool bIsNotLoadingScene = false);
+	_uint	Get_NowSceneNum() {	return (_uint)m_iNowSceneIndx_ExceptLoad;}
+	void	Set_iNowSceneIndx_ExceptLoad(_int iSceneNum) {  m_iNowSceneIndx_ExceptLoad= iSceneNum; }
 public:
 	_int Update(_float fDeltaTime);
 	_int LateUpdate(_float fDeltaTime);
@@ -25,6 +25,7 @@ public:
 	_int LateRender();
 
 private:
+	_int				m_iNowSceneIndx_ExceptLoad = 0;
 	_int				m_iCurrentSceneIdx = 0;
 	CScene*				m_pScene = nullptr;
 

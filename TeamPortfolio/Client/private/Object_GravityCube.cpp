@@ -31,9 +31,12 @@ HRESULT CObject_GravityCube::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
-
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-7.f, 0.f, 7.f));
+	if (pArg != nullptr) {
+		_float3 vSettingPoint;
+		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+		m_Layer_Tag = TEXT("Layer_GravityCube");
+	}
 
 	return S_OK;
 }
@@ -60,8 +63,6 @@ _int CObject_GravityCube::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
-	//if (FAILED(SetUp_OnTerrain(fTimeDelta)))
-	//	return -1;
 
 
 	//객체에게 중력을 적용하기 위한 값
@@ -80,13 +81,15 @@ _int CObject_GravityCube::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture(2)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
-	m_ComVIBuffer->Render();
+	if (FAILED(m_ComVIBuffer->Render()))
+		return E_FAIL;
+
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
@@ -104,13 +107,6 @@ _int CObject_GravityCube::LateRender()
 
 _int CObject_GravityCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	_uint I = 0;
-
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
-	{
-		//
-		int t = 1;
-	}
 
 	return _int();
 }
@@ -120,7 +116,11 @@ _int CObject_GravityCube::Collision_Gravity(_float fDeltaTime)
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	//객체에게 중력을 적용하기 위한 값
-	CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_Cube"), TAG_COM(Com_Transform));
+	CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform));
+
+	if (Player == nullptr)
+		return E_FAIL;
+
 
 	_float3& PlayerPos = Player->Get_MatrixState(CTransform::STATE_POS);
 
@@ -128,7 +128,7 @@ _int CObject_GravityCube::Collision_Gravity(_float fDeltaTime)
 
 	_float Distance = GravityCubePos.Get_Distance(PlayerPos);
 
-	if (Distance < 4) //거리 조절 가능
+	if (Distance < 2.5f) //거리 조절 가능
 	{
 		fDeltaTime *= 0.5f; // 속도 조절 가능
 		Player->MovetoTarget(GravityCubePos, fDeltaTime);
@@ -154,7 +154,7 @@ HRESULT CObject_GravityCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_GravityCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

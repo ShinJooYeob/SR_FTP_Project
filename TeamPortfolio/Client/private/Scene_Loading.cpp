@@ -46,15 +46,16 @@ _int CScene_Loading::LateUpdate(_float fDeltaTime)
 	//로딩이 끝낫을 경우
 	if ( m_pLoader->IsLoadFinished())
 	{
+		GetSingle(CGameInstance)->Set_iNowSceneIndx_ExceptLoad(m_eNextSceneIndex);
 		switch (m_eNextSceneIndex)
 		{
 		case SCENEID::SCENE_LOBY:
-			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loby::Create(m_pGraphicDevice), m_eNextSceneIndex)))
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loby::Create(m_pGraphicDevice), m_eNextSceneIndex ,true )))
 				return E_FAIL;
 			break;
 
 		case SCENEID::SCENE_STAGESELECT:
-			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_StageSelect::Create(m_pGraphicDevice), m_eNextSceneIndex)))
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_StageSelect::Create(m_pGraphicDevice), m_eNextSceneIndex, true)))
 				return E_FAIL;
 			break;
 
@@ -63,7 +64,7 @@ _int CScene_Loading::LateUpdate(_float fDeltaTime)
 			break;
 
 		case SCENEID::SCENE_STAGE2:
-			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Stage2::Create(m_pGraphicDevice), m_eNextSceneIndex)))
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Stage2::Create(m_pGraphicDevice), m_eNextSceneIndex, true)))
 				return E_FAIL;
 			break;
 
@@ -72,7 +73,7 @@ _int CScene_Loading::LateUpdate(_float fDeltaTime)
 			break;
 
 		case SCENEID::SCENE_IMGUISCENE:
-			FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_IMGUI::Create(m_pGraphicDevice), m_eNextSceneIndex));			
+			FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_IMGUI::Create(m_pGraphicDevice), m_eNextSceneIndex,true));			
 			break;
 
 		default:

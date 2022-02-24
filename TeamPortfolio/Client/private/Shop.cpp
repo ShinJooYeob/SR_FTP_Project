@@ -37,7 +37,7 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	m_vUIDesc = _float4(g_iWinCX >> 1, g_iWinCY >> 1, g_iWinCX, g_iWinCY);
+	m_vUIDesc = _float4(g_iWinCX >> 1, g_iWinCY >> 1, 800, 600);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
 
@@ -144,43 +144,67 @@ HRESULT CShop::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 {
 	
 
-	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 215, m_vUIDesc.y - 60, 100, 100)));
-	temp->Set_ImageName(L"Button1");
-	m_UIList.emplace(L"Button_1", (CUI*)temp);
-
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 115, m_vUIDesc.y - 60, 100, 100)));
-	temp->Set_ImageName(L"Button1");
-	m_UIList.emplace(L"Button_2", (CUI*)temp);
-
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x + 605, m_vUIDesc.y + 75, 100, 100)));
+	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y - 140, 100, 100)));
 	temp->Set_ImageName(L"Button2");
-	m_UIList.emplace(L"Button_3", (CUI*)temp);
+	m_UIList.emplace(L"Image_1", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y - 40, 100, 100)));
+	temp->Set_ImageName(L"Button2");
+	m_UIList.emplace(L"Image_2", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y + 60, 100, 100)));
+	temp->Set_ImageName(L"Button2");
+	m_UIList.emplace(L"Image_3", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y + 160, 100, 100)));
+	temp->Set_ImageName(L"Button2");
+	m_UIList.emplace(L"Image_4", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x +150, m_vUIDesc.y - 50, 300, 180)));
+	temp->Set_ImageName(L"Button1");
+	m_UIList.emplace(L"Image_5", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 185, m_vUIDesc.y - 140, 100, 100)));
+	temp->Set_ImageName(L"Price2");
+	m_UIList.emplace(L"Image_6", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 185, m_vUIDesc.y - 40, 100, 100)));
+	temp->Set_ImageName(L"Price3");
+	m_UIList.emplace(L"Image_7", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 185, m_vUIDesc.y + 60, 100, 100)));
+	temp->Set_ImageName(L"Price3");
+	m_UIList.emplace(L"Image_8", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x - 185, m_vUIDesc.y + 160, 100, 100)));
+	temp->Set_ImageName(L"Price1");
+	m_UIList.emplace(L"Image_9", (CUI*)temp);
 	return S_OK;
 }
 HRESULT CShop::Ready_Layer_Button(const _tchar * pLayerTag)
 {
 
-	CMyButton* temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x + 115, m_vUIDesc.y + 75, 100, 100)));
+	CMyButton* temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x + 95, m_vUIDesc.y + 100, 250, 100)));
 	temp->Set_ButtonName(L"Buy");
 	m_UIButtonList.emplace(L"Button_Buy", (CUI*)temp);
 
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x + 215, m_vUIDesc.y + 75, 100, 100)));
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x + 265, m_vUIDesc.y + 100, 100, 100)));
 	temp->Set_ButtonName(L"Exit");
 	m_UIButtonList.emplace(L"Button_Exit", (CUI*)temp);
 
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 215, m_vUIDesc.y - 60, 60, 60)));
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y - 140, 50, 50)));
 	temp->Set_ButtonName(L"SPEEDUP");
 	m_UIButtonList.emplace(L"Button_SPEEDUP", (CUI*)temp);
 
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 115, m_vUIDesc.y - 60, 60, 60)));
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y - 40, 50, 50)));
 	temp->Set_ButtonName(L"DUBBLEJUMP");
 	m_UIButtonList.emplace(L"Button_DUBBLEJUMP", (CUI*)temp);
 
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 15, m_vUIDesc.y - 60, 100, 100)));
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y + 60, 50, 50)));
 	temp->Set_ButtonName(L"DASH");
 	m_UIButtonList.emplace(L"Button_DASH", (CUI*)temp);
 
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x + 85, m_vUIDesc.y - 60, 100, 100)));
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y + 160, 50, 50)));
 	temp->Set_ButtonName(L"POTION");
 	m_UIButtonList.emplace(L"Button_POTION", (CUI*)temp);
 	return S_OK;
@@ -264,7 +288,7 @@ HRESULT CShop::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Shop"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
+	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
 	
 	if (m_Player_Inventory == nullptr)
 		return E_FAIL;

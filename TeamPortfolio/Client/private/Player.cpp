@@ -38,7 +38,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	//m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
 
 	
-	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGESELECT, TAG_LAY(Layer_Camera_Main))));
+	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main))));
 	
 	if (m_pCamera_Main == nullptr)
 		return E_FAIL;
@@ -58,23 +58,34 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 
+	if (m_bIsDead) {
+		m_fDeadTime += fDeltaTime;
 
-	if (FAILED(Input_Keyboard(fDeltaTime)))
-		return E_FAIL;
+		if (m_fDeadTime > 3.f) {
+			m_bIsDead = false;
+			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0, 1.f, 0));
+			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
+			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
+		}
 
-	if (FAILED(Animation_Change(fDeltaTime)))
-		return E_FAIL;
+	}
+	else {
 
-	if (FAILED(Find_FootHold_Object(fDeltaTime))) 
-		return E_FAIL;
+		if (FAILED(Input_Keyboard(fDeltaTime)))
+			return E_FAIL;
 
-	if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
-		return E_FAIL;
+		if (FAILED(Animation_Change(fDeltaTime)))
+			return E_FAIL;
+
+		if (FAILED(Find_FootHold_Object(fDeltaTime)))
+			return E_FAIL;
 
 
-	if (FAILED(Set_CamY(fDeltaTime)))
-		return E_FAIL;
+		//if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
+		//	return E_FAIL;
 
+
+	}
 
 	return _int();
 }
@@ -84,6 +95,14 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 
 
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
+		return E_FAIL;
+
+	if (!m_bIsDead) 
+	{
+		if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
+			return E_FAIL;
+	}
+	if (FAILED(Set_CamPosXY(fDeltaTime)))
 		return E_FAIL;
 
 
@@ -154,6 +173,17 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 			m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 
 	}
+	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_GravityCube")))
+	{
+		if (!m_bIsDead)
+		{
+			m_bIsDead = true;
+			m_fDeadTime = 0;
+			m_ComTexture->Change_TextureLayer_Wait(TEXT("suckIn"));
+		}
+		if (m_fDeadTime < 4.0f)
+			m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
+	}
 	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Terrain)))
 	{
 		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
@@ -177,7 +207,7 @@ HRESULT CPlayer::SetUp_Components()
 	
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), TAG_COM(Com_Transform), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_Player), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Player), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	_int iMaxSkillNum;
@@ -435,7 +465,7 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 	if (Time < 0)
 		fGravity = (m_fNowJumpPower - Time * Time * m_fJumpPower) * fDeltaTime;
 	
-	 list<CGameObject*>* pTerrainLayer= pGameInstance->Get_ObjectList_from_Layer(SCENEID::SCENE_STAGESELECT, TAG_LAY(Layer_Terrain));
+	 list<CGameObject*>* pTerrainLayer= pGameInstance->Get_ObjectList_from_Layer(m_eNowSceneNum, TAG_LAY(Layer_Terrain));
 
 	 if (pTerrainLayer == nullptr)
 		 return E_FAIL;
@@ -662,16 +692,26 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 	return S_OK;
 }
 
-HRESULT CPlayer::Set_CamY(_float fDeltaTime)
+HRESULT CPlayer::Set_CamPosXY(_float fDeltaTime)
 {
 	CTransform* pCamTransform = m_pCamera_Main->Get_Camera_Transform();
-	_float3 vCamPos = pCamTransform->Get_MatrixState(CTransform::STATE_POS);
+	_Matrix matCamWorld = pCamTransform->Get_WorldMatrix();
 
-	vCamPos.y = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, vCamPos.y,
-		m_ComTransform->Get_MatrixState(CTransform::STATE_POS).y + 3.f, fDeltaTime, fDeltaTime * 2.5f);
+	_float3 vPlayerViewPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS).PosVector_Matrix(matCamWorld.InverseMatrix());
 
 
-	pCamTransform->Set_MatrixState(CTransform::STATE_POS, vCamPos);
+	_float3 vNewCamPos = { 0,0,0 };
+
+
+	vNewCamPos.x = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
+		vPlayerViewPos.x + 3.f, fDeltaTime, fDeltaTime * 2.5f);
+	vNewCamPos.y = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
+		vPlayerViewPos.y + 3.f, fDeltaTime, fDeltaTime * 2.5f);
+
+	vNewCamPos = vNewCamPos.PosVector_Matrix(matCamWorld);
+
+
+	pCamTransform->Set_MatrixState(CTransform::STATE_POS, vNewCamPos);
 	return S_OK;
 }
 
@@ -709,7 +749,9 @@ HRESULT CPlayer::SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 130);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 	if (m_bIsShdow)
 	{
@@ -724,9 +766,11 @@ HRESULT CPlayer::SetUp_RenderState()
 
 HRESULT CPlayer::Release_RenderState()
 {
-	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	if (m_bTextureReverse)
 		m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

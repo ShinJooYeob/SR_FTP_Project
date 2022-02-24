@@ -7,11 +7,11 @@
 IMPLEMENT_SINGLETON(CSceneMgr)
 
 CSceneMgr::CSceneMgr()
-	:m_pScene(nullptr), m_iCurrentSceneIdx(0)
+	:m_pScene(nullptr), m_iCurrentSceneIdx(0), m_iNowSceneIndx_ExceptLoad(0)
 {
 }
 
-HRESULT CSceneMgr::Scene_Chage(CScene * _pScene , _int iNextSceneIndex)
+HRESULT CSceneMgr::Scene_Chage(CScene * _pScene , _int iNextSceneIndex, _bool bIsNotLoadingScene )
 {
 	if (_pScene == nullptr)
 		return E_FAIL;
@@ -25,6 +25,8 @@ HRESULT CSceneMgr::Scene_Chage(CScene * _pScene , _int iNextSceneIndex)
 	Safe_Release(m_pScene);
 	m_pScene = _pScene;
 	m_iCurrentSceneIdx = iNextSceneIndex;
+	if (bIsNotLoadingScene)
+		m_iNowSceneIndx_ExceptLoad = m_iCurrentSceneIdx;
 
 	return S_OK;
 }

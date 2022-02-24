@@ -51,11 +51,14 @@ private:
 	_float					m_fNowJumpPower = 0.f;
 	_uint					m_bIsJumped = 0;
 
-	_bool					m_bIsCliming = false;
-	_bool					m_bIsShdow = false;
+
+	_bool					m_bIsDead = false;
+	_float					m_fDeadTime = 0;
 
 	_bool					m_bTextureReverse = false;
+	_bool					m_bIsShdow = false;
 
+	_bool					m_bIsCliming = false;
 	_bool					m_bIsRunning = false;
 
 	_float3					m_vDownstairsNear;
@@ -75,7 +78,7 @@ private:
 
 	HRESULT			Find_FootHold_Object(_float fDeltaTime);
 	HRESULT			Set_PosOnFootHoldObject(_float fDeltaTime);
-	HRESULT			Set_CamY(_float fDeltaTime);
+	HRESULT			Set_CamPosXY(_float fDeltaTime);
 
 
 	HRESULT SetUp_RenderState();

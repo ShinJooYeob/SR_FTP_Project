@@ -7,6 +7,14 @@ BEGIN(Client)
 
 class CCamera_Main :public CCamera
 {
+	enum CameraLookStateID
+	{
+		Look_Left_Axis,
+		Look_Back_Axis,
+		Look_Right_Axis,
+		Look_Front_Axis
+	};
+
 public:
 	enum CameraEffectID
 	{
@@ -41,6 +49,7 @@ public:
 	HRESULT Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelta);
 	HRESULT Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDelta);
 
+	HRESULT			Reset_LookAtAxis(void* pArg);
 public:
 	_bool	Get_bIsTuring() { return m_IsTurning; };
 
@@ -52,10 +61,11 @@ public:
 	void HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec);
 
 private:
-	_float			m_fPassedTime = 0;
-	_float			m_fStartAngle = 0;
-	_float			m_fTargetAngle = 0;
-	_bool			m_IsTurning = false;
+	_int						m_eLoookState = Look_Front_Axis;
+	_float						m_fPassedTime = 0;
+	_float						m_fStartAngle = 0;
+	_float						m_fTargetAngle = 0;
+	_bool						m_IsTurning = false;
 
 
 	CTexture*				m_ComTexture = nullptr;

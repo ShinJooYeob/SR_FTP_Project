@@ -74,7 +74,7 @@ HRESULT CUI_Image::SetUp_RenderState()
 	//
 	//
 	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
-
+	
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 20);
@@ -152,6 +152,18 @@ void CUI_Image::Set_ImageName(TCHAR * pImageName)
 	else if (!lstrcmp(L"Button2", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"Button2");
+	}
+	else if (!lstrcmp(L"Price1", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Price1");
+	}
+	else if (!lstrcmp(L"Price2", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Price2");
+	}
+	else if (!lstrcmp(L"Price3", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Price3");
 	}
 	
 }

@@ -1,0 +1,1 @@
+UI|Shop1|1|../bin/Resources/Textures/UI/cursor_pointer.png

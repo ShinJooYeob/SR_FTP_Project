@@ -173,7 +173,7 @@ HRESULT CCamera::Set_ProjectMatrix(_bool bIsOrtho)
 	_Matrix matProj;
 
 	if (bIsOrtho)
-		D3DXMatrixOrthoLH(&matProj, 16.f * m_CameraDesc.fAspect, 16.f, m_CameraDesc.fNear, m_CameraDesc.fFar);
+		D3DXMatrixOrthoLH(&matProj, 16.f * m_CameraDesc.fAspect, 16.f, -m_CameraDesc.fFar, m_CameraDesc.fFar);
 
 	else
 		D3DXMatrixPerspectiveFovLH(&matProj, m_CameraDesc.fFovy, m_CameraDesc.fAspect, m_CameraDesc.fNear, m_CameraDesc.fFar);

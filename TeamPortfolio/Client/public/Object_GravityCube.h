@@ -45,11 +45,6 @@ private:
 
 	CCollision*				m_pCollisionCom = nullptr;
 
-	_bool					m_bIsJumped = false;
-	_float					m_fJumpPower = 5.f;
-	_float					m_fNowJumpPower = 0.f;
-
-
 public:
 	static CObject_GravityCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg) override;

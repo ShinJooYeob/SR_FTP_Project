@@ -22,6 +22,7 @@ HRESULT CGameObject::Initialize_Prototype(void * pArg)
 
 HRESULT CGameObject::Initialize_Clone(void * pArg)
 {
+	m_eNowSceneNum = GetSingle(CGameInstance)->Get_NowSceneNum();
 	return S_OK;
 }
 

@@ -241,13 +241,13 @@ void CGameInstance::Render_End()
 	m_pGraphicDevice->Render_End();
 }
 
-HRESULT CGameInstance::Scene_Change(CScene * pScene, _int iNextSceneIdx)
+HRESULT CGameInstance::Scene_Change(CScene * pScene, _int iNextSceneIdx, _bool bIsNotLoadingScene)
 {
 
 	if (m_pSceneMgr == nullptr || m_pObjectMgr == nullptr)
 		return E_FAIL;
 
-	if(FAILED(m_pSceneMgr->Scene_Chage(pScene, iNextSceneIdx)))
+	if(FAILED(m_pSceneMgr->Scene_Chage(pScene, iNextSceneIdx, bIsNotLoadingScene)))
 		return E_FAIL;
 
 	if(FAILED(m_pObjectMgr->Set_StaticGameObject_NowSceneNum(iNextSceneIdx)))
@@ -277,6 +277,16 @@ _uint CGameInstance::Get_NowSceneNum()
 
 
 	return m_pSceneMgr->Get_NowSceneNum();
+}
+
+void CGameInstance::Set_iNowSceneIndx_ExceptLoad(_int iSceneNum)
+{
+
+	if (m_pSceneMgr == nullptr)
+		return;
+
+
+	return m_pSceneMgr->Set_iNowSceneIndx_ExceptLoad(iSceneNum);
 }
 
 HRESULT CGameInstance::Add_Component_Prototype(_uint eSceneIdx, const _tchar * tagPrototypeComponent, CComponent * pComponenet)

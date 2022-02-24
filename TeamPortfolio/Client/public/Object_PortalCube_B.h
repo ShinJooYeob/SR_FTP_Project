@@ -26,10 +26,13 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
+	HRESULT Set_TargetCube(class CObject_PortalCube_A* pCube) { 	m_pTargetCube = pCube;		return S_OK; }
+
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
 
-	virtual _int Object_Transfer(_float fDeltaTime);
+	virtual _int Object_Transfer(CGameObject * pDestObjects, _float fDeltaTime);
 
+	void UsedPotal(_float fTimeDelta) { m_Seconds += fTimeDelta; }
 private:
 	HRESULT SetUp_Components();
 
@@ -44,12 +47,14 @@ private:
 
 	CCollision*				m_pCollisionCom = nullptr;
 
-	_float					Seconds = 0.f;
-	_bool					Collision = false;
+	_float					m_Seconds = 0.f;
 
+
+	class CObject_PortalCube_A*		m_pTargetCube = nullptr;
+	
 public:
 	static CObject_PortalCube_B* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
-	virtual CGameObject* Clone(void* pArg) override;
+	virtual CGameObject* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;
 };
 

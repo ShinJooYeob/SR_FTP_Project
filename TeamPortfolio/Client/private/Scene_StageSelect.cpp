@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Scene_StageSelect.h"
 #include "Camera_Main.h"
+#include "Object_PortalCube_A.h"
 
 
 
@@ -22,8 +23,7 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
 		return E_FAIL;
-	//if (FAILED(Ready_Layer_Cube(TEXT("Layer_CarryCube"))))
-	//	return E_FAIL;
+
 
 
 	return S_OK;
@@ -85,9 +85,9 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 	{
 		for (_uint i = 1; i < 10; i++)
 		{
-			for (_uint j = 1; j < 10; j++) 
+			for (_uint j = 1; j < 10; j++)
 			{
-				if (i == 1 || i == 9 || j == 3 || j == 7) 
+				if (i == 1 || i == 9 || j == 3 || j == 7)
 				{
 
 					if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)k, (_float)j)))
@@ -99,7 +99,22 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube"), &_float3((_float)6, (_float)1, (_float)0)))
 		return E_FAIL;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_GravityCube"), TEXT("Prototype_GameObject_Object_GravityCube"), &_float3((_float)6, (_float)10, (_float)3)))
+		return E_FAIL;
 
+
+
+	for (_uint i = 0; i < 6; i++)
+	{
+		for (_uint j = 0; j < 6; j++) {
+
+			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i , (_float)-6, (_float)j)))
+				return E_FAIL;
+		}
+	}
+		
+	if (FAILED(Ready_Layer_Object_PortalCube(TEXT("Layer_Potal"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -109,7 +124,7 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	CCamera::CAMERADESC CameraDesc;
 
 	CameraDesc.bIsOrtho = true;
-	CameraDesc.vWorldRotAxis =  _float3(5.f, 3.f, 5.f);
+	CameraDesc.vWorldRotAxis = _float3(5.f, 3.f, 5.f);
 	CameraDesc.vAxisY = _float3(0, 1, 0);
 	CameraDesc.fFovy = D3DXToRadian(60.0f);
 	CameraDesc.fAspect = _float(g_iWinCX) / g_iWinCY;
@@ -119,17 +134,29 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	CameraDesc.TransformDesc.fMovePerSec = 10.f;
 	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Camera_Main),&CameraDesc))
+	CCamera_Main* pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+
+	if (pMainCam == nullptr)
 		return E_FAIL;
+
+	if(FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
+		return E_FAIL;
+
+	pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
+
+	
 	return S_OK;
 }
 
 HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 {
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_Player)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Player)))
 		return E_FAIL;
 	
+	GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGESELECT);
+
+
 	return S_OK;
 }
 
@@ -142,16 +169,23 @@ HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-
-HRESULT CScene_StageSelect::Ready_Layer_Cube(const _tchar * pLayerTag)
+HRESULT CScene_StageSelect::Ready_Layer_Object_PortalCube(const _tchar * pLayerTag)
 {
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube"), &_float3((_float)6, (_float)1, (_float)0)))
-		return E_FAIL;
+	CObject_PortalCube_A::POTALDESC tagDesc;
 
+	tagDesc.vPos_A_Cube = _float3(2,3,0);
+	tagDesc.vPos_B_Cube = _float3(5,-3.f,0);
+	tagDesc.iNowScene = SCENEID::SCENE_STAGESELECT;
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_PortalCube_A"),&tagDesc))
+		return E_FAIL;
 
 	return S_OK;
 }
+
+
+
 
 HRESULT CScene_StageSelect::Ready_Layer_FixCube(const _tchar * pLayerTag)
 {
