@@ -35,6 +35,14 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 
 
+
+	CCamera_Main* m_MainCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+	if (m_MainCamera == nullptr)
+		return E_FAIL;
+
+	m_MainCamera->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT,0.016f);
+
+
 	return S_OK;
 }
 
