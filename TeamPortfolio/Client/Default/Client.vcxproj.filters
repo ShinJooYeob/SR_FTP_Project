@@ -133,6 +133,9 @@
     <Filter Include="01.GameObject\SubObject\Object_AppearCube">
       <UniqueIdentifier>{b81f1d2c-9b3e-4e8c-b149-812e445acf7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_BlockCube">
+      <UniqueIdentifier>{53eefef9-201e-4082-8aa6-fe282b4a6188}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -251,6 +254,12 @@
     <ClInclude Include="..\public\Object_AppearCube.h">
       <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_BlockCube.h">
+      <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_EscalatorCube.h">
+      <Filter>01.GameObject\SubObject\Object_escalatorCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -356,6 +365,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_AppearCube.cpp">
       <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_BlockCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_EscalatorCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_escalatorCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

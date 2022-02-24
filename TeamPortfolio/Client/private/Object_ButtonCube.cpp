@@ -102,97 +102,106 @@ _int CObject_ButtonCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 f
 
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
 	{
-		CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-		//객체에게 중력을 적용하기 위한 값
-		CTransform* TransformCube = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_InteractiveCube"), TAG_COM(Com_Transform));
-
-		_float3& CubePos = TransformCube->Get_MatrixState(CTransform::STATE_POS);
-
-		CGameInstance* pInstance = GetSingle(CGameInstance);
-
-
-		seconds += fDeltaTime;
-		_float TempAngle;
-
-		if (!m_bSwitch)
-		{
-			if (!m_bSwitch && pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
-			{
-				Angle += 90;
-				m_bSwitch = true;
-				seconds = 0;
-			}
-
-			if (!m_bSwitch && pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
-			{
-				Angle -= 90;
-				m_bSwitch = true;
-				seconds = 0;
-			}
-
-		}
-		else
-		{
-			TempAngle = GetSingle(CGameInstance)->Easing(TYPE_ElasticInOut, m_RotAngle, m_RotAngle + Angle, seconds);
-			
-			if (seconds > 1.f)
-			{
-				m_RotAngle = m_RotAngle + Angle;
-
-				TempAngle = m_RotAngle;
-
-				seconds = 0;
-				Angle = 0;
-				m_bSwitch = false;
-			}
-
-			TransformCube->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
-		}
-
-		//if ( pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
-		//{
-		//	Switch_Q = true;
-		//}
-
-		//if (Switch_Q)
-		//{
-		//	_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds, 2.0f);
-
-		//	if (seconds > 2.f)
-		//	{
-		//		seconds = 0;
-
-		//		m_RotAngle = m_RotAngle + 90;
-		//		TempAngle = m_RotAngle;
-
-		//		Switch_Q = false;
-		//	}
-		//	TransformCube->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
-		//}
-
-		//if ( pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
-		//{
-		//	Switch_E = true;
-		//}
-		//if(Switch_E)
-		//{
-		//	_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle - 90, seconds, 2.0f);
-
-		//	if (seconds > 2.f)
-		//	{
-		//		seconds = 0;
-
-		//		m_RotAngle = m_RotAngle - 90;
-		//		TempAngle = m_RotAngle;
-
-		//		Switch_E = false;
-		//	}
-		//	TransformCube->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
-		//}
-
-		RELEASE_INSTANCE(CGameInstance);
+		Collision_Interactive(fDeltaTime);
 	}
+
+	return _int();
+}
+
+_int CObject_ButtonCube::Collision_Interactive(_float fDeltaTime)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	//객체에게 중력을 적용하기 위한 값
+	CTransform* TransformCube = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_InteractiveCube"), TAG_COM(Com_Transform));
+
+	_float3& CubePos = TransformCube->Get_MatrixState(CTransform::STATE_POS);
+
+	CGameInstance* pInstance = GetSingle(CGameInstance);
+
+
+	seconds += fDeltaTime;
+	_float TempAngle;
+
+	if (!m_bSwitch)
+	{
+		if (!m_bSwitch && pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
+		{
+			Angle += 90;
+			m_bSwitch = true;
+			seconds = 0;
+		}
+
+		if (!m_bSwitch && pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
+		{
+			Angle -= 90;
+			m_bSwitch = true;
+			seconds = 0;
+		}
+
+	}
+	else
+	{
+		TempAngle = GetSingle(CGameInstance)->Easing(TYPE_ElasticInOut, m_RotAngle, m_RotAngle + Angle, seconds);
+
+		if (seconds > 1.f)
+		{
+			m_RotAngle = m_RotAngle + Angle;
+
+			TempAngle = m_RotAngle;
+
+			seconds = 0;
+			Angle = 0;
+			m_bSwitch = false;
+		}
+
+		TransformCube->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
+	}
+
+	//if ( pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
+	//{
+	//	Switch_Q = true;
+	//}
+
+	//if (Switch_Q)
+	//{
+	//	_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds, 2.0f);
+
+	//	if (seconds > 2.f)
+	//	{
+	//		seconds = 0;
+
+	//		m_RotAngle = m_RotAngle + 90;
+	//		TempAngle = m_RotAngle;
+
+	//		Switch_Q = false;
+	//	}
+	//	TransformCube->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
+	//}
+
+	//if ( pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
+	//{
+	//	Switch_E = true;
+	//}
+	//if(Switch_E)
+	//{
+	//	_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle - 90, seconds, 2.0f);
+
+	//	if (seconds > 2.f)
+	//	{
+	//		seconds = 0;
+
+	//		m_RotAngle = m_RotAngle - 90;
+	//		TempAngle = m_RotAngle;
+
+	//		Switch_E = false;
+	//	}
+	//	TransformCube->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
+	//}
+
+
+	RELEASE_INSTANCE(CGameInstance);
+
 
 	return _int();
 }

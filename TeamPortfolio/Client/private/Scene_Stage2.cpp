@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Scene_Stage2.h"
 #include "Object_OrbitCube.h"
+#include "Object_EscalatorCube.h"
 #include "Camera_Main.h""
 
 
@@ -55,6 +56,10 @@ HRESULT CScene_Stage2::Initialize()
 	if (FAILED(Ready_Layer_Object_VanishCube(TEXT("Layer_VanishCube"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Object_AppearCube(TEXT("Layer_AppearCube"))))
+		return E_FAIL;
+	if (FAILED(Ready_Layer_Object_BlockCube(TEXT("Layer_BlockCube"))))
+		return E_FAIL;
+	if (FAILED(Ready_Layer_Object_EscalatorCube(TEXT("Layer_EscalatorCube"))))
 		return E_FAIL;
 
 
@@ -237,6 +242,24 @@ HRESULT CScene_Stage2::Ready_Layer_Object_VanishCube(const _tchar * pLayerTag)
 HRESULT CScene_Stage2::Ready_Layer_Object_AppearCube(const _tchar * pLayerTag)
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_AppearCube"), &_float3(10.f, -1.f, -1.f)))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CScene_Stage2::Ready_Layer_Object_BlockCube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_BlockCube")))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CScene_Stage2::Ready_Layer_Object_EscalatorCube(const _tchar * pLayerTag)
+{
+	CObject_EscalatorCube::ESCALATORCUBEDESC EscalatorDesc;
+
+	EscalatorDesc.EscalatorCubePos = _float3(2.f, 0.f, -1.f);
+	EscalatorDesc.DestPos = _float3(4.f, 4.f, -2.f);
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_EscalatorCube"),&EscalatorDesc))
 		return E_FAIL;
 	return S_OK;
 }

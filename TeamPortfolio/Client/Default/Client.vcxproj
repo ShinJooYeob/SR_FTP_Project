@@ -163,8 +163,10 @@
     <ClInclude Include="..\public\Item.h" />
     <ClInclude Include="..\public\MiniMapUI.h" />
     <ClInclude Include="..\public\Object_AppearCube.h" />
+    <ClInclude Include="..\public\Object_BlockCube.h" />
     <ClInclude Include="..\public\Object_ButtonCube.h" />
     <ClInclude Include="..\public\Object_DescentCube.h" />
+    <ClInclude Include="..\public\Object_EscalatorCube.h" />
     <ClInclude Include="..\public\Object_FixCube.h" />
     <ClInclude Include="..\public\Object_GravityCube.h" />
     <ClInclude Include="..\public\Object_InteractiveCube.h" />
@@ -203,8 +205,10 @@
     <ClCompile Include="..\private\Item.cpp" />
     <ClCompile Include="..\private\MiniMapUI.cpp" />
     <ClCompile Include="..\private\Object_AppearCube.cpp" />
+    <ClCompile Include="..\private\Object_BlockCube.cpp" />
     <ClCompile Include="..\private\Object_ButtonCube.cpp" />
     <ClCompile Include="..\private\Object_DescentCube.cpp" />
+    <ClCompile Include="..\private\Object_EscalatorCube.cpp" />
     <ClCompile Include="..\private\Object_FixCube.cpp" />
     <ClCompile Include="..\private\Object_GravityCube.cpp" />
     <ClCompile Include="..\private\Object_InteractiveCube.cpp" />
