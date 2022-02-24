@@ -216,6 +216,10 @@ void CUI_Image::Set_ImageName(TCHAR * pImageName)
 	{
 		m_ComTexture->Change_TextureLayer(L"Quest_2");
 	}
+	else if (!lstrcmp(L"Common_1", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Common_1");
+	}
 
 }
 
