@@ -30,15 +30,10 @@ private:
 	// Edit에 값에 따라 
 	HRESULT EditToObjectUpdate(CEdit* edit,_uint count=9);
 
-private:
-//	const _tchar*	m_LoadFileName = L"Blocks.txt";
-//	const _tchar*	m_LoadFileName2 = L"Blocks.txt";
-
 public:
-	 
-	CObjectTool_ToolObject* m_GameObject_Rect_Tool;
-
 	HRESULT ResetTexture();
+	HRESULT Set_CurrentUpdate_WorldMat();
+
 
 private:
 
@@ -54,9 +49,9 @@ private:
 
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
-	afx_msg void OnBnClickedButton1();
-	
+	afx_msg void OnBnClickedButton1();	
 	afx_msg void OnLbnSelchangeList1();
+
 public:
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);

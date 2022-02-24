@@ -26,7 +26,14 @@ public:
 	CComponent* Get_Commponent_By_LayerIndex(const _tchar* tagComponet, _uint iLayerIndex);
 	CGameObject* Get_GameObject_By_LayerIndex(_uint iLayerIndex);
 
+	HRESULT		Delete_GameObject_By_LayerIndex(_uint iIndex);
+	HRESULT		Delete_GameObject_By_LayerObject(CGameObject* obj);
+
+
 	HRESULT Set_NowSceneNum(_uint eScene);
+
+private:
+	HRESULT		Release_DeadObejct();
 
 private:
 	list< CGameObject*>			m_ObjectList;

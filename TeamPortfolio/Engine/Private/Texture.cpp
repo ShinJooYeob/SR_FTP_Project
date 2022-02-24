@@ -10,7 +10,8 @@ CTexture::CTexture(LPDIRECT3DDEVICE9 pGraphicDevice)
 
 CTexture::CTexture(const CTexture & rhs)
 	: CComponent(rhs),
-	m_mapTextureLayers(rhs.m_mapTextureLayers)
+	m_mapTextureLayers(rhs.m_mapTextureLayers),
+	m_TextureDesc(rhs.m_TextureDesc)
 {
 
 	for (auto& Pair : m_mapTextureLayers) 
@@ -37,8 +38,11 @@ HRESULT CTexture::Initialize_Prototype(void * pArg)
 		return E_FAIL;
 
 	TEXTUREDESC tTextureDesc{};
-	memcpy(&tTextureDesc, pArg, sizeof(TEXTUREDESC));
-	
+	memcpy(&tTextureDesc, pArg, sizeof(TEXTUREDESC));	
+
+	memcpy(&m_TextureDesc, &tTextureDesc, sizeof(TEXTUREDESC));
+
+
 	if (FAILED(Read_TextFile(tTextureDesc.eTextureType,tTextureDesc.szTextFilePath)))
 		return E_FAIL;
 	
@@ -48,6 +52,7 @@ HRESULT CTexture::Initialize_Prototype(void * pArg)
 
 HRESULT CTexture::Initialize_Clone(void * pArg)
 {
+
 	return S_OK;
 }
 

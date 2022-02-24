@@ -65,6 +65,7 @@ public:
 	_float3 Get_MatrixScale() { return _float3(Get_MatrixState(STATE_RIGHT).Get_Lenth(), Get_MatrixState(STATE_UP).Get_Lenth(), Get_MatrixState(STATE_LOOK).Get_Lenth()); };
 
 	void Set_MatrixState(TransformState eState, const _float3& vRow) { memcpy(m_WorldMatrix.m[eState], &vRow, sizeof(_float3)); };
+	void Set_Matrix(const _Matrix& mat) { memcpy(m_WorldMatrix, mat, sizeof(_Matrix)); };
 
 	_Matrix Get_InverseWorldMatrix() { return m_WorldMatrix.InverseMatrix(); };
 

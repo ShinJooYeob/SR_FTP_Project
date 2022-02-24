@@ -48,6 +48,10 @@ public:/* For.ObjectMgr */
 	CGameObject*	Get_GameObject_By_LayerIndex(_uint eSceneNum, const _tchar* tagLayer, _uint iLayerIndex = 0);
 	list<CGameObject*>*	Get_ObjectList_from_Layer(_uint eSceneNum, const _tchar* tagLayer);
 	CGameObject*	Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, const _tchar* tagLayer, _uint iLayerIndex = 0);
+	HRESULT			Delete_GameObject_To_Layer_Index(_uint eSceneNum, const _tchar* tagLayer, _uint index);
+	HRESULT			Delete_GameObject_To_Layer_Object(_uint eSceneNum, const _tchar* tagLayer, CGameObject* obj);
+
+
 
 public: /*For.ComMgr*/
 	HRESULT			Add_Component_Prototype(_uint eSceneIdx, const _tchar* tagPrototypeComponent, CComponent* pComponenet);
@@ -90,7 +94,7 @@ public: /* For. IMGUI Interface */
 
 public:
 	HRESULT Update_Transform_ToWorldSpace(POINT p);
-	_bool isPick(_float3 * pLocalPoint, _float3 * pOut);
+	_bool isPick(_float3 * pLocalPoint, _float3 * pOut, _float2* pUV);
 
 private:
 	CGraphic_Device*	m_pGraphicDevice = nullptr;

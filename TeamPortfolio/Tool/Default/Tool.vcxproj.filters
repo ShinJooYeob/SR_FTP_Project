@@ -55,20 +55,23 @@
     <Filter Include="00. Special\01. View\01. MyButton\02. TransTool">
       <UniqueIdentifier>{5c49c64e-0ae7-4028-a54d-36d6666cdffb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. Special\01. View\01. MyButton\03. ObjSave">
-      <UniqueIdentifier>{8e31c024-8cc6-47b0-a27f-2e985e24241b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. Special\01. View\01. MyButton\04. MapSave">
-      <UniqueIdentifier>{52600aed-d715-4e4e-8848-b598b83524dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.Object\02.Map">
       <UniqueIdentifier>{43e204ab-2fb0-4c3d-abe2-1bc45cf68fea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Object\01.VertexObject">
-      <UniqueIdentifier>{1201a88a-e146-4927-8566-7bdc4bf2f444}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Special\01. View\00. MyForm">
       <UniqueIdentifier>{d0f404f4-2cb0-4783-a654-0fe0ea5db640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Special\01. View\01. MyButton\03. MapTool">
+      <UniqueIdentifier>{52600aed-d715-4e4e-8848-b598b83524dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Object\02.Map\Terrain">
+      <UniqueIdentifier>{36437ae7-eb50-48f0-910c-2c914d0deb38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Object\01.Object">
+      <UniqueIdentifier>{1201a88a-e146-4927-8566-7bdc4bf2f444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Object\01.Object\WireCube">
+      <UniqueIdentifier>{31640831-3b60-4d10-a9a0-ea877069d6a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +133,19 @@
       <Filter>99.Header</Filter>
     </ClInclude>
     <ClInclude Include="ObjectTool_ToolObject.h">
-      <Filter>04.Object\01.VertexObject</Filter>
+      <Filter>04.Object\01.Object</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool.h">
+      <Filter>00. Special\01. View\01. MyButton\03. MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTool_Terrain.h">
+      <Filter>04.Object\02.Map\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTool_ToolWire.h">
+      <Filter>04.Object\01.Object\WireCube</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyMgr.h">
+      <Filter>00. Special\01. View\01. MyButton\03. MapTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -171,7 +186,19 @@
       <Filter>00. Special\01. View\00. MyForm</Filter>
     </ClCompile>
     <ClCompile Include="ObjectTool_ToolObject.cpp">
-      <Filter>04.Object\01.VertexObject</Filter>
+      <Filter>04.Object\01.Object</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTool.cpp">
+      <Filter>00. Special\01. View\01. MyButton\03. MapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTool_Terrain.cpp">
+      <Filter>04.Object\02.Map\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTool_ToolWire.cpp">
+      <Filter>04.Object\01.Object\WireCube</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyMgr.cpp">
+      <Filter>00. Special\01. View\01. MyButton\03. MapTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -27,42 +27,65 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
-public:
-	HRESULT Set_Defult(wstring objectName);
+public: // For. Transform
+	HRESULT Set_WorldMat(_Matrix world);
+	HRESULT Set_Default(wstring name);
+
 	HRESULT Set_Scaled(_float3 scale);
 	HRESULT Set_Rotation(_float3 rot);
 	HRESULT Set_Position(_float3 Position);
-	HRESULT Set_Texture(const _tchar* pathdata);
-	HRESULT Set_Data(OUTPUT_OBJECTINFO data);
 
-	HRESULT Set_ViBuffer_Change();
-	void	Set_Visble(_bool b) { m_isVisble = b; }
+	HRESULT Set_MyCamDistance() { Compute_CamDistance(m_ComTransform); return S_OK; }
 
-	const OUTPUT_OBJECTINFO& Get_ObjectInfo()const { return m_tOutputData; }
-	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS);  }
+	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS); }
 	_float3 Get_Scale() { return m_ComTransform->Get_MatrixScale(); }
 
+public:	// For. Texture
+	HRESULT Set_TextureNum_Bind(int num = 0);
+	void	Set_Visble(_bool b) { m_isVisble = b; }
+
+	HRESULT Texture_CurrentBind();
+
+public: // For. OutputData , 로드랑 세이브시에만 사용
+
+	void Set_OUTPUTData_Save();
+	const OUTPUT_OBJECTINFO& Get_OutputData() const { return m_tOutputData; }
+	const _tchar* GetName() const {return m_ObjName;}
+	void LoadData(const OUTPUT_OBJECTINFO& data);
+
+	_bool PickObject();
+	_bool PickObject(_float3* pOut, _float3* pVertex);
+
+	_float3 GetPickPos()
+	{
+		return m_PickOut;
+	}
+	_float3* GetPickVertex3()
+	{
+		return m_PickVertex;
+	}
 
 
 private:
 	HRESULT			SetUp_Components();
+	HRESULT			Set_ViBuffer_Change(); // 나중에 다시 쓸 듯 
 
 private:
 	_bool					m_isRect = true;
 	_bool					m_isCubeRot = false;
 	_bool					m_isVisble = true; // 랜더링 유무
 
-
-	float					mYDegree = 0;
+	_float3					m_PickOut;
+	_float3					m_PickVertex[3];
 
 	CTransform*				m_ComTransform = nullptr;
 	CVIBuffer*				m_ComVIBuffer = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;
 
+	TCHAR					m_ObjName[64];
 	OUTPUT_OBJECTINFO		m_tOutputData;
 
-	
 
 public:
 	static CObjectTool_ToolObject* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

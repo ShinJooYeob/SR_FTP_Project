@@ -74,6 +74,7 @@ using namespace std;
 #include "Include.h"
 #include <afxwin.h>
 #include <afxwin.h>
+#include <afxwin.h>
 
 #pragma warning(disable : 4005)
 

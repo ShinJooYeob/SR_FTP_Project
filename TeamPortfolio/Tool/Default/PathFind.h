@@ -46,7 +46,6 @@ private:
 
 private:
 	// 경로와 확장자 저장
-	const wstring FilePath = L"../bin/Resources/textures/TexturePathData/";
 	const wstring Extension = L".txt";
 	CEdit mEditBox; // 파일이름 박스
 

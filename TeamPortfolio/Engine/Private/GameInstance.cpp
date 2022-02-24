@@ -213,6 +213,23 @@ CGameObject * CGameInstance::Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, 
 	return m_pObjectMgr->Change_Camera_Ortho_By_LayerIndex(eSceneNum, tagLayer, iLayerIndex);
 }
 
+HRESULT CGameInstance::Delete_GameObject_To_Layer_Index(_uint eSceneNum, const _tchar * tagLayer, _uint index)
+{
+	if (tagLayer == nullptr || m_pObjectMgr == nullptr)
+		return E_FAIL;
+	
+
+	return Delete_GameObject_To_Layer_Index(eSceneNum, tagLayer, index);
+}
+
+HRESULT CGameInstance::Delete_GameObject_To_Layer_Object(_uint eSceneNum, const _tchar * tagLayer, CGameObject * obj)
+{
+	if (tagLayer == nullptr || m_pObjectMgr == nullptr)
+		return E_FAIL;
+
+	return Delete_GameObject_To_Layer_Object(eSceneNum, tagLayer, obj);
+}
+
 
 
 _float CGameInstance::Get_DeltaTime(const _tchar * tagTimer)
@@ -381,10 +398,10 @@ HRESULT CGameInstance::Update_Transform_ToWorldSpace(POINT p)
 	return m_pPickingMgr->Transform_ToWorldSpace(p);
 }
 
-_bool CGameInstance::isPick(_float3 * pLocalPoint, _float3 * pOut)
+_bool CGameInstance::isPick(_float3 * pLocalPoint, _float3 * pOut,_float2* pUV)
 {
 	NULL_CHECK_BREAK(m_pPickingMgr);
-	return m_pPickingMgr->isPick(pLocalPoint,pOut);
+	return m_pPickingMgr->isPick_UV(pLocalPoint,pOut, pUV);
 }
 
 

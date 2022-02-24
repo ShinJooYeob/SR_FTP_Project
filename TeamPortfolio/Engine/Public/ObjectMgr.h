@@ -20,6 +20,9 @@ public:
 
 	HRESULT Add_GameObject_Prototype(const _tchar* tagPrototype, CGameObject* pPrototype);
 	HRESULT Add_GameObject_To_Layer(_uint eSceneNum, const _tchar* tagLayer, const _tchar* tagPrototype, void* pArg);
+	HRESULT Delete_GameObject_To_Layer_Index(_uint eSceneNum, const _tchar* tagLayer, int index);
+	HRESULT Delete_GameObject_To_Layer_Object(_uint eSceneNum, const _tchar* tagLayer, CGameObject* obj);
+
 	HRESULT Clear_Scene_GameObjects(_uint eSceneNum);
 	HRESULT Set_StaticGameObject_NowSceneNum(_uint eSceneNum);
 
@@ -27,7 +30,6 @@ public:
 	CGameObject*	Get_GameObject_By_LayerIndex(_uint eSceneNum, const _tchar* tagLayer, _uint iLayerIndex);
 	CGameObject*	Change_Camera_Ortho_By_LayerIndex(_uint eSceneNum, const _tchar* tagLayer, _uint iLayerIndex);
 	list<CGameObject*>*			Get_ObjectList_from_Layer(_uint iSceneNum, const _tchar* tagLayer);
-
 
 public:
 	_int Update(_float fDeltaTime);

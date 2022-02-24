@@ -48,16 +48,20 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 
-
+private:
+	_float3 OneVector(_float3 nomalVec);
+	
+private:
+	CObjectTool_ToolObject* m_Nearobj;
+	_float3					m_NextPos;
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-
-
-public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	virtual BOOL DestroyWindow();
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전

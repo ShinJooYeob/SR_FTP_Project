@@ -85,6 +85,8 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(void * pArg)
 
 	VTXNORMTEX* pVertices = nullptr;
 	m_pVertices = new VTXNORMTEX[m_iNumVertices];
+	ZeroMemory(m_pVertices, sizeof(VTXCUBETEX) * m_iNumVertices);
+
 
 	m_pVB->Lock(0, 0, (void**)(&pVertices), 0);
 
@@ -126,7 +128,11 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(void * pArg)
 	if (FAILED(__super::Create_IndexBuffer()))
 		return E_FAIL;
 
+	m_pIndices = new FACEINDICES32[m_iNumPrimitive];
+	ZeroMemory(m_pIndices, sizeof(FACEINDICES32) * m_iNumPrimitive);
+
 	FACEINDICES32* pIndices = nullptr;
+
 	m_pIB->Lock(0, 0, (void**)&pIndices, 0);
 
 	for (_uint i = 0;i < m_iNumPrimitive; i++)
@@ -153,6 +159,8 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(void * pArg)
 		}
 	}
 	m_pIB->Unlock();
+	memcpy(m_pIndices, pIndices, sizeof(FACEINDICES32) * m_iNumPrimitive);
+
 
 
 

@@ -8,9 +8,11 @@ CObjectTool_ToolObject::CObjectTool_ToolObject(LPDIRECT3DDEVICE9 pGraphicDevice)
 	m_ComRenderer(nullptr),
 	m_ComVIBuffer(nullptr),
 	m_ComTransform(nullptr),
-	m_ComTexture(nullptr)
+	m_ComTexture(nullptr),
+	m_ObjName(L"")
 {
 	m_isVisble = true;
+
 }
 
 CObjectTool_ToolObject::CObjectTool_ToolObject(const CObjectTool_ToolObject & rhs)
@@ -22,6 +24,7 @@ HRESULT CObjectTool_ToolObject::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -57,14 +60,6 @@ _int CObjectTool_ToolObject::LateUpdate(_float fDeltaTime)
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this)))
 		return E_FAIL;
 
-	//if (GetKeyState(VK_LBUTTON) & 0x8000)
-	{
-		_float3	vOut;
-
-		
-		if (true == m_ComVIBuffer->Pick(m_ComTransform->Get_InverseWorldMatrix(), &vOut))
-			int a = 10;
-	}
 
 
 	return 0;
@@ -85,8 +80,8 @@ _int CObjectTool_ToolObject::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-//	if (FAILED(m_ComTexture->Bind_Texture()))
-//		return E_FAIL;
+	if (FAILED(m_ComTexture->Bind_Texture(m_tOutputData.StateIndex)))
+		return E_FAIL;
 
 	//렌더링 그룹에 들어가면 순서에 맞게 이 랜더가 호출되고 호출이 됬으면 버텍스 버퍼를 그려줘라
 	if (FAILED(m_ComVIBuffer->Render()))
@@ -102,19 +97,21 @@ _int CObjectTool_ToolObject::LateRender()
 	return 0;
 }
 
-HRESULT CObjectTool_ToolObject::Set_Defult(wstring objectName)
-{
-	OUTPUT_OBJECTINFO info;
-	
-	Set_Position(_float3(0,0,0));
-	Set_Rotation(_float3(0, 0, 0));
-	Set_Scaled(_float3(1, 1, 1));
-	info.StateIndex = 0;
-	lstrcpy(info.strObjectName, objectName.c_str());
-	lstrcpy(info.strStrTextureFullPath, L"");
-	lstrcpy(info.strStrTextureFileName, L"");	
+HRESULT CObjectTool_ToolObject::Set_Default(wstring objectName)
+{	
+	OUTPUT_OBJECTINFO info;	
 	m_tOutputData = info;
-	return E_NOTIMPL;
+	lstrcpy(m_ObjName, objectName.c_str());
+	m_tOutputData.TexDesc.eTextureType = (_uint)m_ComTexture->Get_TextureDESC().eTextureType;
+	lstrcpy(m_tOutputData.TexDesc.szTextFilePath, m_ComTexture->Get_TextureDESC().szTextFilePath);
+
+	return S_OK;
+}
+
+HRESULT CObjectTool_ToolObject::Set_WorldMat(_Matrix world)
+{
+	m_ComTransform->Set_Matrix(world);
+	return S_OK;
 }
 
 HRESULT CObjectTool_ToolObject::Set_Scaled(_float3 scale)
@@ -166,38 +163,18 @@ HRESULT CObjectTool_ToolObject::Set_Position(_float3 Position)
 	return S_OK;
 }
 
-HRESULT CObjectTool_ToolObject::Set_Texture(const _tchar* pathdata)
+HRESULT CObjectTool_ToolObject::Set_TextureNum_Bind(int num)
 {
-	// 기존에 있던 텍스쳐 날림
 	NULL_CHECK_BREAK(m_ComTexture);
 
-	m_ComTexture->ClearTexture();
-	lstrcpy(m_tOutputData.strStrTextureFullPath, pathdata);
-
-
-	CTexture::tagTextureDesc desc = {};
-	desc.szTextFilePath = m_tOutputData.strStrTextureFullPath;
-
-	if (FAILED(m_ComTexture->Initialize_Prototype(&desc)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CObjectTool_ToolObject::Set_Data(OUTPUT_OBJECTINFO data)
-{
-	m_tOutputData = data;
-
-	Set_Position(m_tOutputData.fPos);
-	Set_Scaled(m_tOutputData.fScale);
-	Set_Texture(m_tOutputData.strStrTextureFullPath);
+	m_tOutputData.StateIndex = num;
 	m_ComTexture->Bind_Texture(m_tOutputData.StateIndex);
 	return S_OK;
 }
 
 HRESULT CObjectTool_ToolObject::Set_ViBuffer_Change()
 {
-	// #STOP 잠깐 스탑
+	// #STOP 아마 안쓸듯
 	return S_OK;
 
 	m_isRect = !m_isRect;
@@ -232,6 +209,59 @@ HRESULT CObjectTool_ToolObject::Set_ViBuffer_Change()
 	}
 	return S_OK;
 }
+
+
+HRESULT CObjectTool_ToolObject::Texture_CurrentBind()
+{
+	NULL_CHECK_BREAK(m_ComTexture);
+	m_ComTexture->Bind_Texture(m_tOutputData.StateIndex);
+	return S_OK;
+}
+
+void CObjectTool_ToolObject::Set_OUTPUTData_Save()
+{
+	// 외부 저장전에 한번 호출
+	// 현재 모든 데이터를 OUTPUT 데이터로 옮김
+
+	// Trans
+	m_tOutputData.WorldMatData = m_ComTransform->Get_WorldMatrix();
+	
+	// Texture
+	m_tOutputData.TexDesc.eTextureType = m_ComTexture->Get_TextureDESC().eTextureType;
+	lstrcpy(m_tOutputData.TexDesc.szTextFilePath, m_ComTexture->Get_TextureDESC().szTextFilePath);
+}
+
+void CObjectTool_ToolObject::LoadData(const OUTPUT_OBJECTINFO& data)
+{
+	// OUTPUT 데이터를 받고 모든 컴포넌트에 업로드 한다.
+	m_tOutputData = data;
+
+	// For Transform	
+	Set_WorldMat(m_tOutputData.WorldMatData);
+
+	// For Texture
+	Set_TextureNum_Bind(m_tOutputData.StateIndex);
+
+}
+
+
+bool CObjectTool_ToolObject::PickObject()
+{
+	_float2 uv;
+	if (true == m_ComVIBuffer->Pick(m_ComTransform->Get_InverseWorldMatrix(), &m_PickOut, &uv, m_PickVertex))
+		return true;
+	
+	return false;
+}
+_bool CObjectTool_ToolObject::PickObject(_float3 * pOut, _float3 * pVertex)
+{
+	_float2 uv;
+	if (true == m_ComVIBuffer->Pick(m_ComTransform->Get_InverseWorldMatrix(), pOut, &uv,pVertex))
+		return true;
+
+	return false;
+}
+
 
 HRESULT CObjectTool_ToolObject::SetUp_Components()
 {

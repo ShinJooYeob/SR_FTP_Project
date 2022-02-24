@@ -36,6 +36,7 @@
 #define IDC_CHECK1                      1011
 #define IDC_CHECK2                      1012
 #define IDC_CHECK3                      1013
+#define IDC_BUTTON15                    1013
 #define IDC_BUTTON3                     1014
 #define IDC_BUTTON4                     1015
 #define IDC_BUTTON5                     1016
@@ -58,6 +59,6 @@
 #define _APS_NEXT_RESOURCE_VALUE        326
 #define _APS_NEXT_COMMAND_VALUE         32775
 #define _APS_NEXT_CONTROL_VALUE         1035
-#define _APS_NEXT_SYMED_VALUE           317
+#define _APS_NEXT_SYMED_VALUE           319
 #endif
 #endif

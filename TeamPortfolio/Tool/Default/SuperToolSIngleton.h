@@ -16,15 +16,26 @@ END
 #include "PathFind.h"
 #include "Trans_Dialog.h"
 #include "ToolView.h"
+#include "MapTool.h"
 
 BEGIN(Tool)
 
 class CObjectTool_ToolObject;
+class CObjectTool_ToolWire;
 class CSuperToolSIngleton : public CBase
 {
 	DECLARE_SINGLETON(CSuperToolSIngleton)
+public:
+	// 툴 모드들
+	enum E_TOOL_MODE
+	{
+		TOOLMODE_OBJECT,	// 오브젝트 모드
+		TOOLMODE_MAP,		// 맵모드
+		TOOLMODE_END
+	};
 
 	const int iObjectSize = 20;
+
 private:
 	explicit CSuperToolSIngleton();
 	virtual ~CSuperToolSIngleton() = default;
@@ -35,18 +46,15 @@ public: // For. Device
 	HRESULT		Render_Begin(void);
 	HRESULT		Render_End(HWND hWnd = NULL);
 
-
-
-
 	// 오브젝트 초기화
 public:
 	HRESULT Ready_Initalize_Object();
 private:
 
 	HRESULT Ready_Object_Component();
-	HRESULT Ready_Object_Clone(const _tchar* layertag);
+	HRESULT Ready_Object_Clone_View(const _tchar* layertag);
+	HRESULT Ready_Object_Clone_Map(const _tchar* layertag);
 	HRESULT Ready_Object_Camera(const _tchar* layertag);
-
 
 	HRESULT		Render_Set_Statee();
 
@@ -54,8 +62,7 @@ private:
 private:
 	HRESULT Initialize_ToolView();
 
-
-public:
+public: // Get Set
 	CGameInstance* GetGameInstance()
 	{
 		return m_pGameInstance;
@@ -64,47 +71,46 @@ public:
 	{
 		return m_pComRenderer;
 	}
+	LPDIRECT3DDEVICE9 Get_Graohics_Device()
+	{
+		return m_pGraphicDevice;
+	}
 
 	CMainFrame* GetMainFrm() { return m_pMainFrame; }
 	CMyForm* GetMyButtonView() { return m_pMyButtomView; }
 	CToolView*  GetToolView() { return m_pToolView; }
 	CMiniView* GetMiniView() { return m_pMiniView; }
 
-	CPathFind*  GetPathTool() {	return m_pPathDialog; }
+	CPathFind*  GetPathTool() { return m_pPathDialog; }
 	CTrans_Dialog* GetTransTool() { return m_pTransDialog; }
+	CMapTool* GetMapTool() { return m_pMapToolDialog; }
 
-	CObjectTool_ToolObject* GetObjectRect() { return m_Object_Rect; }
-
-public:
+public: //For. Data
 	HRESULT SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd);
+	HRESULT SaveData_Map(list<CObjectTool_ToolObject*> objlist, CWnd* cwnd);
+
 	HRESULT LoadData_Object(CWnd * cwnd);
+	HRESULT LoadData_Map(CWnd* cwnd);
+
 	HRESULT Create_ToolObject_Button(wstring name);
-private:
-	CObjectTool_ToolObject* Create_New_ToolObject();
-	HRESULT Change_ToolObject(CObjectTool_ToolObject* obj, wstring name);
+	HRESULT Create_ToolObject_Data(const _tchar* str, const OUTPUT_OBJECTINFO& data);
 
-public: // For.ToolView tp ToolObject 
-	HRESULT Add_Vec_ToolObject(CObjectTool_ToolObject* obj);
-	CObjectTool_ToolObject* Find_Vec_ToolObject(_uint index);
-	CObjectTool_ToolObject* Get_CurrentToolObject() { return m_Object_Rect; }
+public:// For Create
+	CObjectTool_ToolObject* Create_New_ToolObject(wstring name, const _tchar* laytag);
+	CObjectTool_ToolObject* Create_New_MapObject(_float3 Pos, const _tchar* laytag);
 
-	const vector<CObjectTool_ToolObject*>&  Get_ToolVec() const { return m_Vec_ToolViewObjects; }
+public:// For Object
+	_float3					Get_Center_MapPosition();
+	CObjectTool_ToolObject* Get_ViewObject_Object(int index = 0);
+	CObjectTool_ToolObject* Get_ViewObject_SelectObject();
+	CObjectTool_ToolWire*	Get_WireCube();
+	void					Set_ViewObject_Index(int index);
 
-	_uint Get_ToolVec_Size() { return m_Vec_ToolViewObjects.size(); }
-	_bool Get_ToolVec_isEmpty() { return m_Vec_ToolViewObjects.empty(); }
+	list<CGameObject*>*	 Get_GameObjectList(const _tchar* laytag);
 
 	// 선택된 것만 랜더링
-	HRESULT Update_Select_Render_None();
-	HRESULT Update_Select_Render_Visble(CObjectTool_ToolObject* visbleobj);
-
-private:
-	// ToolView에서 오브젝트 리스트들을 맵으로 저장
-	vector<CObjectTool_ToolObject*> m_Vec_ToolViewObjects;
-
-	// Current Tool View Object
-	CObjectTool_ToolObject*	m_Object_Rect;
-
-	// CObjectTool_ToolObject*	m_Object_ProtoObject;
+	HRESULT Update_Select_Render_None(const _tchar* laytag);
+	HRESULT Update_Select_Render_Visble(const _tchar* laytag, CObjectTool_ToolObject* visbleobj);
 
 
 private:
@@ -116,25 +122,25 @@ private:
 	CToolView*			m_pToolView;	// 툴 뷰
 	CPathFind*			m_pPathDialog;	// 경로 창
 	CTrans_Dialog*		m_pTransDialog;	// 위치 조정 창
-
-
-
-
-
+	CMapTool*			m_pMapToolDialog;
 
 private:
 	LPDIRECT3DDEVICE9			m_pGraphicDevice;
 	CGameInstance*				m_pGameInstance;
 	CRenderer*					m_pComRenderer;
 
+private:
+	_int						m_ViewObjectSelectIndex;
+
 	// 기타 COM 객체
 	// LPD3DXSPRITE				m_pSprite;
 	// LPD3DXFONT				m_pFont;
 
 public:
-//	void Release_Engine();
-	virtual void Free()override;
+	//	void Release_Engine();
+	static E_TOOL_MODE g_MAP_MODE;
 
+	virtual void Free()override;
 };
 
 END

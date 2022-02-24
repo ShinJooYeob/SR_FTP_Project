@@ -105,7 +105,7 @@ HRESULT CVIBuffer::Create_VertexBuffer()
 	return S_OK;
 }
 
-_bool CVIBuffer::Pick(const _Matrix& WorldMatrixInverse, _float3 * pOut)
+_bool CVIBuffer::Pick(const _Matrix& WorldMatrixInverse, _float3 * pOut,_float2* pOutUV,_float3* ppout)
 {
 	CPicking*		pPicking = GET_INSTANCE(CPicking);
 
@@ -138,11 +138,14 @@ _bool CVIBuffer::Pick(const _Matrix& WorldMatrixInverse, _float3 * pOut)
 			*(_float3*)(((_byte*)m_pVertices) + m_iStride * iIndices[2])
 		};
 
-		if (isPick = pPicking->isPick(vPoint, pOut))
+		if (isPick = pPicking->isPick_UV(vPoint, pOut, pOutUV))
 		{
 			_Matrix		WorldMatrix;
 			D3DXMatrixInverse(&WorldMatrix, nullptr, &WorldMatrixInverse);
 			D3DXVec3TransformCoord(pOut, pOut, &WorldMatrix);
+			ppout[0] = vPoint[0];
+			ppout[1] = vPoint[1];
+			ppout[2] = vPoint[2];
 
 			break;
 		}

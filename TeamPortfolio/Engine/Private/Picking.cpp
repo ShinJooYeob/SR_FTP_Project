@@ -77,6 +77,8 @@ HRESULT CPicking::Transform_ToWorldSpace(POINT mousePos)
 	D3DXMatrixInverse(&ViewMatrixInverse, nullptr, &ViewMatrixInverse);
 	D3DXVec3TransformNormal(&m_vRayDir, &m_vRayDir, &ViewMatrixInverse);
 	D3DXVec3TransformCoord(&m_vRayPos, &m_vRayPos, &ViewMatrixInverse);
+	D3DXVec3Normalize(&m_vRayDir, &m_vRayDir);
+
 	return S_OK;
 }
 
@@ -95,6 +97,20 @@ _bool CPicking::isPick(_float3* pLocalPoint, _float3 *pOut)
 	if (true == D3DXIntersectTri(&pLocalPoint[0], &pLocalPoint[1], &pLocalPoint[2], &m_vLocalRayPos, &m_vLocalRayDir, &fU, &fV, &fDist))
 	{
 		*pOut = m_vLocalRayPos + m_vLocalRayDir*fDist;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+_bool CPicking::isPick_UV(_float3 * pLocalPoint, _float3 * pOut, _float2 * pOutUV)
+{
+	_float fDist;
+	if (true == D3DXIntersectTri(&pLocalPoint[0], &pLocalPoint[1], &pLocalPoint[2], &m_vLocalRayPos, &m_vLocalRayDir, &pOutUV->x, &pOutUV->y, &fDist))
+	{
+		*pOut = m_vLocalRayPos + m_vLocalRayDir * fDist;
 		return true;
 	}
 	else

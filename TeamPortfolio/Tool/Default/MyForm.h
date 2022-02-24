@@ -2,6 +2,7 @@
 
 #include "PathFind.h"
 #include "Trans_Dialog.h"
+#include "MapTool.h"
 
 // CMyForm Æû ºäÀÔ´Ï´Ù.
 
@@ -28,6 +29,7 @@ public:
 	CFont			m_Font;
 	CPathFind		m_PathFind;
 	CTrans_Dialog	m_TransformDialog;
+	CMapTool		m_MapToolDialog;
 
 	CButton m_CheckCameraEnable;
 	CButton m_CheckWirframeEnable;
@@ -39,7 +41,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-
+private:
+	CObjectTool_ToolObject* m_MouseSelesctObject;
 
 public:
 
@@ -53,7 +56,7 @@ public:
 	afx_msg void OnMapSave();
 	afx_msg void OnBnClickedButtonLoad();
 	afx_msg void OnBnClickedButtonCube();
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnBnClickedButton_CreateObject();
 	afx_msg void OnLbnSelchangeList_ObjectSelect();
+	afx_msg void OnBnClickedButton_Delete();
 };

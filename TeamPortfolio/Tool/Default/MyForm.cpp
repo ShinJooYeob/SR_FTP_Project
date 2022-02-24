@@ -33,15 +33,19 @@ HRESULT CMyForm::Update_ViewListBox()
 
 	m_ListBox_Objects.ResetContent();
 
-	if (GetSingle(CSuperToolSIngleton)->Get_ToolVec_isEmpty())
+	list<CGameObject*>* list = nullptr;
+
+	list = GetSingle(CSuperToolSIngleton)->Get_GameObjectList(TAG_LAY(Layer_View));
+	if (list == nullptr)
 		return E_FAIL;
 
-	auto Vectors = GetSingle(CSuperToolSIngleton)->Get_ToolVec();
-	
-	for (auto vec : Vectors)
+	for (auto vec : *list)
 	{
-		m_ListBox_Objects.AddString(vec->Get_ObjectInfo().strObjectName);
+		m_ListBox_Objects.AddString(static_cast<CObjectTool_ToolObject*>(vec)->GetName());
 	}
+	// 가장 하단 선택
+	m_ListBox_Objects.SetCurSel(m_ListBox_Objects.GetCount()-1);
+
 	UpdateData(TRUE);
 
 	return S_OK;
@@ -67,6 +71,7 @@ BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_WM_LBUTTONDOWN()
 	ON_BN_CLICKED(IDC_BUTTON14, &CMyForm::OnBnClickedButton_CreateObject)
 	ON_LBN_SELCHANGE(IDC_LIST3, &CMyForm::OnLbnSelchangeList_ObjectSelect)
+	ON_BN_CLICKED(IDC_BUTTON15, &CMyForm::OnBnClickedButton_Delete)
 END_MESSAGE_MAP()
 
 // CMyForm 진단입니다.
@@ -103,7 +108,7 @@ void CMyForm::OnInitialUpdate()
 	GetDlgItem(IDC_BUTTON13)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON14)->SetFont(&m_Font);
 
-	Update_ViewListBox();
+	m_MouseSelesctObject = nullptr;
 
 	
 }
@@ -133,20 +138,24 @@ void CMyForm::OnTransform()
 
 void CMyForm::OnObjectSave()
 {
-	GetSingle(CSuperToolSIngleton)->SaveData_Object(GetSingle(CSuperToolSIngleton)->GetObjectRect(), this);
-}
-
-void CMyForm::OnMapSave()
-{
-
+	// 현재 선택된 오브젝트 
+	GetSingle(CSuperToolSIngleton)->SaveData_Object(GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject(), this);
 }
 
 
 void CMyForm::OnBnClickedButtonLoad()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// 오브젝트 로드 해서 새로 생성
 	GetSingle(CSuperToolSIngleton)->LoadData_Object(this);
 }
+
+void CMyForm::OnMapSave()
+{
+	if (nullptr == m_MapToolDialog.GetSafeHwnd())
+		m_MapToolDialog.Create(IDD_MAPTOOL);	// 해당 id 에 맞는 다이얼로그 생성
+	m_MapToolDialog.ShowWindow(SW_SHOW);
+}
+
 
 //void CMyForm::OnCbnSelchangeCombo2()
 //{
@@ -174,23 +183,9 @@ void CMyForm::OnBnClickedButtonCube()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// 큐브 컴포넌트로 바꾸기
-	GetSingle(CSuperToolSIngleton)->GetObjectRect()->Set_ViBuffer_Change();
+	//GetSingle(CSuperToolSIngleton)->Get_ViewObject_Object()->Set_ViBuffer_Change();
+
 }
-
-
-void CMyForm::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	//_tchar PickMouseText[64] = L"";
-	//wsprintf(PickMouseText, L"MousePos (%d,%d)", ptMouse.x, ptMouse.y);
-
-	//SetDlgItemText(IDC_STATIC1, MFCMouseText);
-	//SetDlgItemText(IDC_STATIC2, PickMouseText);
-
-	CFormView::OnLButtonDown(nFlags, point);
-}
-
 
 void CMyForm::OnBnClickedButton_CreateObject()
 {
@@ -198,9 +193,9 @@ void CMyForm::OnBnClickedButton_CreateObject()
 	num++;
 	TCHAR t[64];
 	wsprintf(t,L"new_%d",num);
-	GetSingle(CSuperToolSIngleton)->Create_ToolObject_Button(t);
+	wstring filename = t;
 
-	
+	GetSingle(CSuperToolSIngleton)->Create_ToolObject_Button(filename);
 }
 
 
@@ -210,11 +205,42 @@ void CMyForm::OnLbnSelchangeList_ObjectSelect()
 	// 선택한 오브젝트만 렌더링
 	int index = m_ListBox_Objects.GetCurSel();
 
-	//GetSingle(CSuperToolSIngleton)->Update_Select_Render_None();
-	//GetSingle(CSuperToolSIngleton)->Update_Select_Render_Visble(m_);
+	GetSingle(CSuperToolSIngleton)->Set_ViewObject_Index(index);
+
+	GetSingle(CSuperToolSIngleton)->Update_Select_Render_None(TAG_LAY(Layer_View));
+	GetSingle(CSuperToolSIngleton)->Update_Select_Render_Visble(TAG_LAY(Layer_View),
+		GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject());
+	
+	if (GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject() == nullptr)
+		return;
+
+	// 텍스처와 위치 업데이트
+	if (nullptr != m_TransformDialog.GetSafeHwnd())
+		m_TransformDialog.Set_CurrentUpdate_WorldMat(); // 현재 오브젝트 데이터로 업데이트
+
+	else
+	{
+		m_TransformDialog.Create(IDD_CTrans_Dialog);	
+		m_TransformDialog.Set_CurrentUpdate_WorldMat(); 
+	}
+	GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject()->Texture_CurrentBind();
+
+}
 
 
-	//Update_Select_Render_Visble
+void CMyForm::OnBnClickedButton_Delete()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// Delete Object 테스트
 
-
+	// 1. 선택된 오브젝트가 있어야한다.
+	
+	CObjectTool_ToolObject* obj = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject();
+	if (obj == nullptr)
+		return;
+	// 2. 오브젝트 삭제 명령후 다음 오브젝트로 선택포커스 변경
+	int index = m_ListBox_Objects.GetCurSel();
+	obj->DIED();
+	m_ListBox_Objects.DeleteString(index);
+	m_ListBox_Objects.SetCurSel(index);
 }
