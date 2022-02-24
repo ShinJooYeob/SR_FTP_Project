@@ -39,7 +39,7 @@ HRESULT CMyButton::Initialize_Clone(void * pArg)
 	m_rcRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
 	m_rcRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
 	m_rcRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
-	
+
 	if (FAILED(Set_UI_Transform(m_ComTransform, vUIDesc)))
 		return E_FAIL;
 
@@ -100,22 +100,42 @@ _int CMyButton::Update(_float fDeltaTime)
 			////////////////////////////////퀘스트버튼///////////////////
 			else if (!lstrcmp(L"Quest_Button1", m_pButtonName))
 			{
-				m_bBigger = !m_bBigger;
-					
+				return 101;
 			}
-			if (m_bBigger == true && m_rcRect.right<300)
+			else if (!lstrcmp(L"Quest_Button2", m_pButtonName))
 			{
-				_float4 vUIDesc;
-
-				m_vUIDesc.w += 1;
-				m_rcRect.right += 1;
-				if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-					return E_FAIL;
+				return 102;
+			}
+			else if (!lstrcmp(L"Quest_Button3", m_pButtonName))
+			{
+				return 103;
+			}
+			else if (!lstrcmp(L"Quest_Button4", m_pButtonName))
+			{
+				return 104;
 			}
 
-			
 		}
 	}
+	//////////로비///////
+	/*POINT ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	if (PtInRect(&m_rcRect, ptMouse))
+	{
+		if (!lstrcmp(L"Loby_Button1", m_pButtonName))
+			{
+				m_ComTexture->Change_TextureLayer(L"Loby_Button2");
+			}
+
+		else if (!lstrcmp(L"Loby_Button3", m_pButtonName))
+			{
+				m_ComTexture->Change_TextureLayer(L"Loby_Button4");
+			}
+
+	}*/
+
+
 	return SHOP_END;
 
 }
@@ -128,7 +148,7 @@ HRESULT CMyButton::SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-	
+
 	if (m_isClicked)
 	{
 		m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
@@ -245,6 +265,37 @@ void CMyButton::Set_ButtonName(TCHAR * pButtonName)
 	{
 		m_ComTexture->Change_TextureLayer(L"Quest_Button1");
 	}
+	else if (!lstrcmp(L"Quest_Button2", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Quest_Button2");
+	}
+	else if (!lstrcmp(L"Quest_Button3", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Quest_Button3");
+	}
+	else if (!lstrcmp(L"Quest_Button4", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Quest_Button4");
+	}
+	/////////////////////로비///////////////////////////
+	/*else if (!lstrcmp(L"Loby_Button1", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Loby_Button1");
+	}
+
+	else if (!lstrcmp(L"Loby_Button3", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Loby_Button3");
+	}
+
+	else if (!lstrcmp(L"Loby_Button2", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Loby_Button2");
+	}
+	else if (!lstrcmp(L"Loby_Button4", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Loby_Button4");
+	}*/
 }
 
 HRESULT CMyButton::SetUp_Components()
@@ -259,9 +310,10 @@ HRESULT CMyButton::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Shop"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-
+	/*if (FAILED(__super::Add_Component(SCENEID::SCENE_LOBY, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+		return E_FAIL;*/
 
 	return S_OK;
 }
@@ -276,7 +328,7 @@ CMyButton * CMyButton::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CShop_ProtoType");
+		MSGBOX("Fail to Create CMyButton_ProtoType");
 		Safe_Release(pInstance);
 
 	}
@@ -291,7 +343,7 @@ CGameObject * CMyButton::Clone(void * pArg)
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CShop_Clone");
+		MSGBOX("Fail to Create CMyButton_Clone");
 		Safe_Release(pInstance);
 
 	}

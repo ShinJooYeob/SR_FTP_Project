@@ -22,7 +22,8 @@ enum OBJECTPROTOTYPEID
 	Prototype_TerrainGround,
 	Prototype_TerrainCube,
 	Prototype_Shop,
-	Prototype_Quest
+	Prototype_Quest,
+	Prototype_UI_Loby
 };
 
 static const _tchar* Tag_Object_Prototype(OBJECTPROTOTYPEID eTag)
@@ -50,6 +51,9 @@ static const _tchar* Tag_Object_Prototype(OBJECTPROTOTYPEID eTag)
 	case Prototype_Quest:
 		return TEXT("Prototype_GameObject_Quest");
 		break;
+	case Prototype_UI_Loby:
+		return TEXT("Prototype_GameObject_UI_Loby");
+		break;
 		//////////////////////////////////////////////////////////////////////////
 	default:
 		MSGBOX("Wrong Type Object Prototype");
@@ -69,7 +73,8 @@ enum LAYERID
 	Layer_Terrain_Cube,
 	Layer_BackGround,
 	Layer_Shop,
-	Layer_Quest
+	Layer_Quest,
+	Layer_UI_Loby
 };
 
 static const _tchar* Tag_Layer(LAYERID eTag)
@@ -97,6 +102,10 @@ static const _tchar* Tag_Layer(LAYERID eTag)
 	case Layer_Quest:
 		return TEXT("Layer_Quest");
 		break;
+	case Layer_UI_Loby:
+		return TEXT("Layer_Loby");
+		break;
+		
 		//////////////////////////////////////////////////////////////////////////
 	default:
 		MSGBOX("Wrong Type Layer");
@@ -124,8 +133,7 @@ enum COMPONENTPROTOTYPEID
 	Prototype_Texture_Default,
 	Prototype_Texture_Player, 
 	Prototype_Texture_Terrain,
-	Prototype_Texture_Shop,
-	Prototype_Texture_Quest
+	Prototype_Texture_UI
 
 };
 static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
@@ -171,12 +179,10 @@ static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 	case Prototype_Texture_Terrain:
 		return TEXT("Prototype_Component_Texture_Terrain");
 		break;
-	case Prototype_Texture_Shop:
-		return TEXT("Prototype_Component_Texture_Shop");
+	case Prototype_Texture_UI:
+		return TEXT("Prototype_Component_Texture_UI");
 		break;
-	case Prototype_Texture_Quest:
-		return TEXT("Prototype_Component_Texture_Quest");
-		break;
+	
 		//////////////////////////////////////////////////////////////////////////
 	default:
 		MSGBOX("Wrong Type Layer");

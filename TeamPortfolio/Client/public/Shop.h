@@ -69,7 +69,7 @@ public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
 	HRESULT			Update_UIList(_float fTimeDelta);
 
-	
+
 	HRESULT			LateUpdate_UIList(_float fTimeDelta);
 	HRESULT			LateUpdate_UIButtonList(_float fTimeDelta);
 private:

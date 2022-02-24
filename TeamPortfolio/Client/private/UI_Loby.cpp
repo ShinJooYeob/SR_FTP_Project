@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include "MyButton.h"
 #include "UI_Image.h"
-#include "../public/Quest_Image.h"
+#include "../public/UI_Loby.h"
 
 
-CQuest_Image::CQuest_Image(LPDIRECT3DDEVICE9 pGraphicDevice)
+CUI_Loby::CUI_Loby(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CUI(pGraphicDevice)
 {
 }
 
-CQuest_Image::CQuest_Image(const CQuest_Image & rhs)
+CUI_Loby::CUI_Loby(const CUI_Loby & rhs)
 	: CUI(rhs), m_UIPrototypes(rhs.m_UIPrototypes)
 {
 
@@ -20,7 +20,7 @@ CQuest_Image::CQuest_Image(const CQuest_Image & rhs)
 
 }
 
-HRESULT CQuest_Image::Initialize_Prototype(void * pArg)
+HRESULT CUI_Loby::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
@@ -31,14 +31,14 @@ HRESULT CQuest_Image::Initialize_Prototype(void * pArg)
 	return S_OK;
 }
 
-HRESULT CQuest_Image::Initialize_Clone(void * pArg)
+HRESULT CUI_Loby::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	m_vUIDesc = _float4(150, g_iWinCY >> 1, 300, 437);
+	m_vUIDesc = _float4(g_iWinCX>>1, g_iWinCY >> 1, g_iWinCX, g_iWinCX);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
 
@@ -47,14 +47,14 @@ HRESULT CQuest_Image::Initialize_Clone(void * pArg)
 	if (FAILED(Ready_Layer_UI_Image(TEXT("Layer_UI_Image"))))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Change_TextureLayer(TEXT("Quest_1"))))
+	if (FAILED(m_ComTexture->Change_TextureLayer(TEXT("Loby"))))
 		return E_FAIL;
 
 
 	return S_OK;
 }
 
-_int CQuest_Image::Update(_float fDeltaTime)
+_int CUI_Loby::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
@@ -64,7 +64,7 @@ _int CQuest_Image::Update(_float fDeltaTime)
 			return E_FAIL;
 		if (FAILED(Update_UIButtonList(fDeltaTime)))
 			return E_FAIL;
-		
+
 
 	}
 
@@ -73,7 +73,7 @@ _int CQuest_Image::Update(_float fDeltaTime)
 
 
 
-_int CQuest_Image::LateUpdate(_float fDeltaTime)
+_int CUI_Loby::LateUpdate(_float fDeltaTime)
 {
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
@@ -83,25 +83,27 @@ _int CQuest_Image::LateUpdate(_float fDeltaTime)
 
 
 	//렌더링 그룹에 넣어주는 역활
+
+	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
+		return E_FAIL;
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 
-	if (pInstance->Get_DIKeyState(DIK_U) & DIS_Down)
+	/*if (pInstance->Get_DIKeyState(DIK_U) & DIS_Down)
 		m_bIsPress = !m_bIsPress;
 
 	if (m_bIsPress == true)
-	{
-		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
-			return E_FAIL;
+	{*/
+		
 		if (FAILED(LateUpdate_UIList(fDeltaTime)))
 			return E_FAIL;
 		if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
 			return E_FAIL;
-	}
+	
 
 	return _int();
 }
 
-_int CQuest_Image::Render()
+_int CUI_Loby::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -126,7 +128,7 @@ _int CQuest_Image::Render()
 	return _int();
 }
 
-_int CQuest_Image::LateRender()
+_int CUI_Loby::LateRender()
 {
 	if (FAILED(__super::LateRender()))
 		return E_FAIL;
@@ -134,7 +136,7 @@ _int CQuest_Image::LateRender()
 	return _int();
 }
 
-CUI * CQuest_Image::Find_UI(const _tchar * tagUI)
+CUI * CUI_Loby::Find_UI(const _tchar * tagUI)
 {
 	auto iter = find_if(m_UIPrototypes.begin(), m_UIPrototypes.end(), CTagFinder(tagUI));
 
@@ -144,7 +146,7 @@ CUI * CQuest_Image::Find_UI(const _tchar * tagUI)
 	return iter->second;
 }
 
-CUI * CQuest_Image::Find_Image(const _tchar * tagUIList)
+CUI * CUI_Loby::Find_Image(const _tchar * tagUIList)
 {
 	auto iter = find_if(m_UIList.begin(), m_UIList.end(), CTagFinder(tagUIList));
 
@@ -153,66 +155,51 @@ CUI * CQuest_Image::Find_Image(const _tchar * tagUIList)
 
 	return iter->second;
 }
-HRESULT CQuest_Image::Ready_Layer_UI_Image(const _tchar * pLayerTag)
+HRESULT CUI_Loby::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 {
 
 
-	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 50, 0.01, 0.01)));
-	temp->Set_ImageName(L"Quest_2");
-	m_UIList.emplace(L"Quest_Image_1", (CUI*)temp);
+	//CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 50, 0.01, 0.01)));
+	//temp->Set_ImageName(L"Quest_2");
+	//m_UIList.emplace(L"Quest_Image_1", (CUI*)temp);
 
 
 	return S_OK;
 }
-HRESULT CQuest_Image::Set_Image_Render(const _tchar * tagUIList, _bool bCheck)
+
+
+HRESULT CUI_Loby::Ready_Layer_Button(const _tchar * pLayerTag)
 {
-	CUI_Image* temp = (CUI_Image*)Find_Image(tagUIList);
-	if (bCheck == true)
-		temp->Set_ImageRenderTrue();
-	else if (bCheck == false)
-		temp->Set_ImageRenderFalse();
+
+	/*CMyButton* temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x , m_vUIDesc.y + 100, 128, 72)));
+	temp->Set_ButtonName(L"Loby_Button1");
+	m_UIButtonList.emplace(L"Loby_Button_1", (CUI*)temp);
+
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x , m_vUIDesc.y +100, 128, 72)));
+	temp->Set_ButtonName(L"Loby_Button2");
+	m_UIButtonList.emplace(L"Loby_Button_2", (CUI*)temp);
+
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 172, 128, 72)));
+	temp->Set_ButtonName(L"Loby_Button3");
+	m_UIButtonList.emplace(L"Loby_Button_3", (CUI*)temp);
+
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 172, 128, 72)));
+	temp->Set_ButtonName(L"Loby_Button4");
+	m_UIButtonList.emplace(L"Loby_Button_4", (CUI*)temp);*/
+
+	
+
 
 	return S_OK;
 }
 
-HRESULT CQuest_Image::Ready_Layer_Button(const _tchar * pLayerTag)
-{
-
-	CMyButton* temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 76, m_vUIDesc.y - 115, 32, 32)));
-	temp->Set_ButtonName(L"Quest_Button1");
-	m_UIButtonList.emplace(L"Quest_Button_1", (CUI*)temp);
-
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 44, m_vUIDesc.y - 115, 32, 32)));
-	temp->Set_ButtonName(L"Quest_Button2");
-	m_UIButtonList.emplace(L"Quest_Button_2", (CUI*)temp);
-
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 12, m_vUIDesc.y - 115, 32, 32)));
-	temp->Set_ButtonName(L"Quest_Button3");
-	m_UIButtonList.emplace(L"Quest_Button_3", (CUI*)temp);
-
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x + 20, m_vUIDesc.y - 115, 32, 32)));
-	temp->Set_ButtonName(L"Quest_Button4");
-	m_UIButtonList.emplace(L"Quest_Button_4", (CUI*)temp);
-
-
-	return S_OK;
-}
-HRESULT CQuest_Image::Make_Bigger(const _tchar * pLayerTag)
-{
-	CUI_Image* temp=(CUI_Image*)Find_Image(pLayerTag);
-	if(temp->Get_ImageBigger()== CUI_Image::BIGGER_ON)
-		temp->Set_ImageBigger(CUI_Image::BIGGER_OFF);
-	else if (!(temp->Get_ImageBigger() == CUI_Image::BIGGER_ON))
-		temp->Set_ImageBigger(CUI_Image::BIGGER_ON);
-	return S_OK;
-}
-HRESULT CQuest_Image::Update_UIList(_float fTimeDelta)
+HRESULT CUI_Loby::Update_UIList(_float fTimeDelta)
 {
 	for (auto pair : m_UIList)
-	 (pair.second->Update(fTimeDelta));
+		(pair.second->Update(fTimeDelta));
 	return S_OK;
 }
-HRESULT CQuest_Image::Update_UIButtonList(_float fTimeDelta)
+HRESULT CUI_Loby::Update_UIButtonList(_float fTimeDelta)
 {
 	int hr;
 
@@ -223,27 +210,27 @@ HRESULT CQuest_Image::Update_UIButtonList(_float fTimeDelta)
 			break;
 	}
 
-	switch (hr)
-	{
-	case 101:
-		m_BiggerTag = (L"Quest_Image_1");
-		Make_Bigger(m_BiggerTag);
-		break;
-	case 102:
-		m_BiggerTag = (L"Quest_Image_1");
-		Make_Bigger(m_BiggerTag);
-		break;
-	case 103:
-		m_BiggerTag = (L"Quest_Image_1");
-		Make_Bigger(m_BiggerTag);
-		break;
-	case 104:
-		m_BiggerTag = (L"Quest_Image_1");
-		Make_Bigger(m_BiggerTag);
-		break;
-	default:/*m_iChosenSkill = SKILL_END;*/
-		break;
-	}
+	//switch (hr)
+	//{
+	//case 101:
+	//	m_BiggerTag = (L"Quest_Image_1");
+	//	Make_Bigger(m_BiggerTag);
+	//	break;
+	//case 102:
+	//	m_BiggerTag = (L"Quest_Image_1");
+	//	Make_Bigger(m_BiggerTag);
+	//	break;
+	//case 103:
+	//	m_BiggerTag = (L"Quest_Image_1");
+	//	Make_Bigger(m_BiggerTag);
+	//	break;
+	//case 104:
+	//	m_BiggerTag = (L"Quest_Image_1");
+	//	Make_Bigger(m_BiggerTag);
+	//	break;
+	//default:/*m_iChosenSkill = SKILL_END;*/
+	//	break;
+	//}
 
 
 
@@ -251,7 +238,7 @@ HRESULT CQuest_Image::Update_UIButtonList(_float fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CQuest_Image::LateUpdate_UIList(_float fTimeDelta)
+HRESULT CUI_Loby::LateUpdate_UIList(_float fTimeDelta)
 {
 	for (auto pair : m_UIList)
 	{
@@ -261,7 +248,7 @@ HRESULT CQuest_Image::LateUpdate_UIList(_float fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CQuest_Image::LateUpdate_UIButtonList(_float fTimeDelta)
+HRESULT CUI_Loby::LateUpdate_UIButtonList(_float fTimeDelta)
 {
 	for (auto pair : m_UIButtonList)
 	{
@@ -271,7 +258,7 @@ HRESULT CQuest_Image::LateUpdate_UIButtonList(_float fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CQuest_Image::SetUp_Components()
+HRESULT CUI_Loby::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
@@ -283,15 +270,9 @@ HRESULT CQuest_Image::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_LOBY, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STAGESELECT, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
-
-	if (m_Player_Inventory == nullptr)
-		return E_FAIL;
-
-	Safe_AddRef(m_Player_Inventory);
-
+	
 
 	return S_OK;
 }
@@ -299,7 +280,7 @@ HRESULT CQuest_Image::SetUp_Components()
 
 
 
-HRESULT CQuest_Image::SetUp_RenderState()
+HRESULT CUI_Loby::SetUp_RenderState()
 {
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
@@ -315,7 +296,7 @@ HRESULT CQuest_Image::SetUp_RenderState()
 	return S_OK;
 }
 
-HRESULT CQuest_Image::Release_RenderState()
+HRESULT CUI_Loby::Release_RenderState()
 {
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
@@ -324,13 +305,13 @@ HRESULT CQuest_Image::Release_RenderState()
 }
 
 
-CQuest_Image * CQuest_Image::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
+CUI_Loby * CUI_Loby::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 {
-	CQuest_Image* pInstance = new CQuest_Image(pGraphicDevice);
+	CUI_Loby* pInstance = new CUI_Loby(pGraphicDevice);
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CShop_ProtoType");
+		MSGBOX("Fail to Create CUI_Loby_ProtoType");
 		Safe_Release(pInstance);
 
 	}
@@ -339,13 +320,13 @@ CQuest_Image * CQuest_Image::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pAr
 	return pInstance;
 }
 
-CGameObject * CQuest_Image::Clone(void * pArg)
+CGameObject * CUI_Loby::Clone(void * pArg)
 {
-	CQuest_Image* pInstance = new CQuest_Image((*this));
+	CUI_Loby* pInstance = new CUI_Loby((*this));
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CShop_Clone");
+		MSGBOX("Fail to Create CUI_Loby_Clone");
 		Safe_Release(pInstance);
 
 	}
@@ -354,7 +335,7 @@ CGameObject * CQuest_Image::Clone(void * pArg)
 	return pInstance;
 }
 
-void CQuest_Image::Free()
+void CUI_Loby::Free()
 {
 	__super::Free();
 
@@ -380,7 +361,6 @@ void CQuest_Image::Free()
 	m_UIPrototypes.clear();
 
 
-	Safe_Release(m_Player_Inventory);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);

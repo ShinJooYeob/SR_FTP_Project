@@ -34,6 +34,7 @@ HRESULT CUI_Image::Initialize_Clone(void * pArg)
 
 	_float4 vUIDesc;
 	vUIDesc = *(_float4*)pArg;
+	m_vUIDesc = vUIDesc;
 	m_rcRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
 	m_rcRect.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
 	m_rcRect.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
@@ -51,6 +52,28 @@ _int CUI_Image::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 
+	
+
+	if (m_iBigger == BIGGER_ON && m_vUIDesc.w < 200)
+	{
+		m_vUIDesc.z += 20;
+		m_vUIDesc.w += 18;
+
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+			return E_FAIL;
+
+
+	}
+	if (m_iBigger == BIGGER_OFF && m_vUIDesc.z>20)
+	{
+		m_vUIDesc.z -= 20;
+		m_vUIDesc.w -= 18;
+
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+			return E_FAIL;
+
+
+	}
 	return _int();
 
 }
@@ -74,7 +97,7 @@ HRESULT CUI_Image::SetUp_RenderState()
 	//
 	//
 	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
-	
+
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 20);
@@ -104,7 +127,7 @@ _int CUI_Image::LateUpdate(_float fDeltaTime)
 
 
 	//렌더링 그룹에 넣어주는 역활
-	if (m_bRender==true)
+	if (m_bRender == true)
 	{
 		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
 			return E_FAIL;
@@ -188,7 +211,12 @@ void CUI_Image::Set_ImageName(TCHAR * pImageName)
 		m_ComTexture->Change_TextureLayer(L"manual_Potion");
 		m_bRender = false;
 	}
-	
+
+	else if (!lstrcmp(L"Quest_2", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Quest_2");
+	}
+
 }
 
 HRESULT CUI_Image::SetUp_Components()
@@ -203,7 +231,7 @@ HRESULT CUI_Image::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TEXT("Prototype_Component_Texture_Shop"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 

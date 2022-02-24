@@ -5,6 +5,7 @@
 #include "TerrainGround.h"
 #include "Player.h"
 #include "Shop.h"
+#include "UI_Loby.h"
 #include "Quest_Image.h"
 #include "TerrainCube.h"
 #include "Object_MoveCube.h"
@@ -82,9 +83,15 @@ HRESULT CLoader::Initialize(LPDIRECT3DDEVICE9 pGraphicDevice, SCENEID eSceneID)
 
 HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
-
+	CTexture::TEXTUREDESC TextureDesc;
+	TextureDesc.szTextFilePath = TEXT("UI.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	if (FAILED(GetSingle(CGameInstance)->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_UI), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
 	if (FAILED(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_BackGround), CBackGround::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_UI_Loby), CUI_Loby::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI"))
 		return E_FAIL;
@@ -120,11 +127,11 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Terrain), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-	//Shop Texture
+	//UI Texture
 
 	TextureDesc.szTextFilePath = TEXT("UI.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Shop), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_UI), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 	
 

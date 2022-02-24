@@ -127,6 +127,9 @@
     <Filter Include="01.GameObject\UI\Quest_Image">
       <UniqueIdentifier>{afe7a243-c029-45ff-9d5d-1db6db6ab580}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\UI_Loby">
+      <UniqueIdentifier>{c35c93ed-b3d0-41a7-a4c4-02d59285a920}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -237,6 +240,9 @@
     <ClInclude Include="..\public\Quest_Image.h">
       <Filter>01.GameObject\UI\Quest_Image</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_Loby.h">
+      <Filter>01.GameObject\UI\UI_Loby</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -334,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Quest_Image.cpp">
       <Filter>01.GameObject\UI\Quest_Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Loby.cpp">
+      <Filter>01.GameObject\UI\UI_Loby</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
