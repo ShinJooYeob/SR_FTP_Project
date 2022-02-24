@@ -39,6 +39,8 @@ HRESULT CTerrainCube::Initialize_Clone(void * pArg)
 		m_ComTexture->Change_TextureLayer(L"PotalCube");
 
 		m_PlayerTransform = nullptr;
+
+
 		m_PlayerTransform = (CTransform*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform)));
 		if (m_PlayerTransform == nullptr)
 			return E_FAIL;
@@ -185,7 +187,7 @@ CTerrainCube * CTerrainCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pA
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CPlayer_ProtoType");
+		MSGBOX("Fail to Create CTerrainCube");
 		Safe_Release(pInstance);
 
 	}
@@ -200,7 +202,7 @@ CGameObject * CTerrainCube::Clone(void * pArg)
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CTestCubeMove_Clone");
+		MSGBOX("Fail to Create CTerrainCube");
 		Safe_Release(pInstance);
 
 	}

@@ -17,7 +17,7 @@ HRESULT CScene_Stage2::Initialize()
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
 	////////////////////////////은혁이 테스트
-	if (FAILED(Ready_Layer_Cube(TEXT("Layer_Cube"))))
+	if (FAILED(Ready_Layer_Cube(TAG_LAY(Layer_Player))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_FixCube(TEXT("Layer_FixCube"))))
 		return E_FAIL;
@@ -139,7 +139,7 @@ HRESULT CScene_Stage2::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage2::Ready_Layer_Cube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_MoveCube")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TEXT("Prototype_GameObject_Object_MoveCube")))
 		return E_FAIL;
 
 	return S_OK;

@@ -34,6 +34,8 @@ HRESULT CObject_MoveCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0.f, 0.f, 0.f));
 
+	m_Layer_Tag = L"Layer_Cube";
+
 	return S_OK;
 }
 
