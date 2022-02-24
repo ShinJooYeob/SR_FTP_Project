@@ -82,9 +82,13 @@ public:
 
 public:
 	HRESULT SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd);
+	HRESULT SaveData_Map(list<CObjectTool_ToolObject*> objlist, CWnd* cwnd);
+
 	HRESULT LoadData_Object(CWnd * cwnd);
+	HRESULT LoadData_Map(CWnd* cwnd);
+
 	HRESULT Create_ToolObject_Button(wstring name);
-	HRESULT Create_ToolObject_Data(const OUTPUT_OBJECTINFO& data);
+	HRESULT Create_ToolObject_Data(const _tchar* str, const OUTPUT_OBJECTINFO& data);
 
 public:
 	CObjectTool_ToolObject* Create_New_ToolObject(wstring name, const _tchar* laytag);

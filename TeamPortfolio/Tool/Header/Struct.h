@@ -76,8 +76,42 @@ typedef struct tagMyTexturePath
 
 // 오브젝트에 대한 정보
 // 오브젝트 월드 행렬 / 이름 / 텍스처경로 / 키
-enum E_OUTPUTID {OUTPUT_NONE,OUTPUT_OBJECT,OUTPUT_MAP,OUTPUT_AA,OUTPUT_END};
+enum E_OUTPUTID {OUTPUT_NONE,OUTPUT_OBJECT,OUTPUT_MAP,OUTPUT_END};
 #define  STR_MAX 64
+
+typedef struct tagOutputFileidDESC
+{
+	explicit tagOutputFileidDESC(E_OUTPUTID id,const _tchar* str)
+	{
+		FILEID = id;
+		lstrcpy(strObjectName, str);
+
+	}
+	explicit tagOutputFileidDESC()
+	{
+		FILEID = OUTPUT_OBJECT;
+		lstrcpy(strObjectName, L"");
+
+	}
+
+	explicit tagOutputFileidDESC(const tagOutputFileidDESC& rhs)
+	{
+		FILEID = rhs.FILEID;
+		lstrcpy(strObjectName, rhs.strObjectName);
+	}
+
+
+	tagOutputFileidDESC&  operator=(const tagOutputFileidDESC& rhs)
+	{
+		FILEID = rhs.FILEID;
+		lstrcpy(strObjectName, rhs.strObjectName);
+		return *this;
+	}
+
+	E_OUTPUTID		FILEID = OUTPUT_NONE;
+	TCHAR			strObjectName[STR_MAX];	// 파일이름 / 객체 이름
+
+}OUTPUT_ID;
 
 typedef struct tagOutputTetureDESC
 {
@@ -89,7 +123,6 @@ typedef struct tagOutputTetureDESC
 typedef struct tagOutputObject
 {
 	explicit tagOutputObject()
-		:strObjectName(L"")
 	{
 		D3DXMatrixIdentity(&WorldMatData);
 		StateIndex = 0;
@@ -101,7 +134,6 @@ typedef struct tagOutputObject
 		WorldMatData = rhs.WorldMatData;
 
 		StateIndex = rhs.StateIndex;
-		lstrcpy(TexDesc.szTextFilePath, rhs.strObjectName);
 		TexDesc = rhs.TexDesc;
 		lstrcpy(TexDesc.szTextFilePath,rhs.TexDesc.szTextFilePath);
 	}
@@ -113,7 +145,6 @@ typedef struct tagOutputObject
 
 		StateIndex = rhs.StateIndex;
 
-		lstrcpy(TexDesc.szTextFilePath, rhs.strObjectName);
 
 		TexDesc = rhs.TexDesc;
 
@@ -121,29 +152,18 @@ typedef struct tagOutputObject
 		return *this;
 	}
 
-
-	TCHAR			strObjectName[STR_MAX];	// 오브젝트 이름 / 파일 이름
-	unsigned int	StateIndex;				// 어떤 종류의 큐브인지 판단 
-	OUTPUT_TETURE	TexDesc;				// 텍스처 정보
-	D3DXMATRIX		WorldMatData;			// 월드 행렬 정보 // 
+	unsigned int		StateIndex;				// 몇번째 텍스처 
+	unsigned int		CubeID;					// 어떤 종류의 큐브인지 판단 
+	OUTPUT_TETURE		TexDesc;				// 텍스처 정보
+	D3DXMATRIX			WorldMatData;			// 월드 행렬 정보 // 
 
 }OUTPUT_OBJECTINFO;
 
-
-typedef struct tagOutputMap
-{
-	vector<OUTPUT_OBJECTINFO> m_Vec_Map;
-	unsigned int iCount;
-
-}OUTPUT_MAPINFO;
-
-
-//typedef struct tagTestString
+//typedef struct tagOutputMap
 //{
-//	wstring a1;
-//	wstring a2;
-//	wstring a3;
+//	vector<OUTPUT_OBJECTINFO*> m_Vec_Map;
+//	unsigned int iCount;
 //
-//
-//}OUTPUT_WSTRING;
-//
+//}OUTPUT_MAPINFO;
+
+

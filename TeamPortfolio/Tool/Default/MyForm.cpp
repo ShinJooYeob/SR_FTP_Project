@@ -41,7 +41,7 @@ HRESULT CMyForm::Update_ViewListBox()
 
 	for (auto vec : *list)
 	{
-		m_ListBox_Objects.AddString(static_cast<CObjectTool_ToolObject*>(vec)->Get_OutputData().strObjectName);
+		m_ListBox_Objects.AddString(static_cast<CObjectTool_ToolObject*>(vec)->GetName());
 	}
 	// 가장 하단 선택
 	m_ListBox_Objects.SetCurSel(m_ListBox_Objects.GetCount()-1);

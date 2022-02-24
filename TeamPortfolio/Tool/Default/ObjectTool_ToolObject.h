@@ -49,8 +49,8 @@ public: // For. OutputData , 로드랑 세이브시에만 사용
 
 	void Set_OUTPUTData_Save();
 	const OUTPUT_OBJECTINFO& Get_OutputData() const { return m_tOutputData; }
+	const _tchar* GetName() const {return m_ObjName;}
 	void LoadData(const OUTPUT_OBJECTINFO& data);
-	void Set_NewName(const _tchar* newname);
 
 	_bool PickObject();
 private:
@@ -69,6 +69,7 @@ private:
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;
 
+	TCHAR					m_ObjName[64];
 	OUTPUT_OBJECTINFO		m_tOutputData;
 
 

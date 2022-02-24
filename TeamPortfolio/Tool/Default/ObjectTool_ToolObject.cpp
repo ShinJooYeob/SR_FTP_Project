@@ -8,9 +8,11 @@ CObjectTool_ToolObject::CObjectTool_ToolObject(LPDIRECT3DDEVICE9 pGraphicDevice)
 	m_ComRenderer(nullptr),
 	m_ComVIBuffer(nullptr),
 	m_ComTransform(nullptr),
-	m_ComTexture(nullptr)
+	m_ComTexture(nullptr),
+	m_ObjName(L"")
 {
 	m_isVisble = true;
+
 }
 
 CObjectTool_ToolObject::CObjectTool_ToolObject(const CObjectTool_ToolObject & rhs)
@@ -99,7 +101,7 @@ HRESULT CObjectTool_ToolObject::Set_Default(wstring objectName)
 {	
 	OUTPUT_OBJECTINFO info;	
 	m_tOutputData = info;
-	lstrcpy(m_tOutputData.strObjectName, objectName.c_str());
+	lstrcpy(m_ObjName, objectName.c_str());
 	m_tOutputData.TexDesc.eTextureType = (_uint)m_ComTexture->Get_TextureDESC().eTextureType;
 	lstrcpy(m_tOutputData.TexDesc.szTextFilePath, m_ComTexture->Get_TextureDESC().szTextFilePath);
 
@@ -237,16 +239,11 @@ void CObjectTool_ToolObject::LoadData(const OUTPUT_OBJECTINFO& data)
 	// For Transform	
 	Set_WorldMat(m_tOutputData.WorldMatData);
 
-
 	// For Texture
 	Set_TextureNum_Bind(m_tOutputData.StateIndex);
 
 }
 
-void CObjectTool_ToolObject::Set_NewName(const _tchar* newname)
-{
-	lstrcpy(m_tOutputData.strObjectName, newname);
-}
 
 bool CObjectTool_ToolObject::PickObject()
 {

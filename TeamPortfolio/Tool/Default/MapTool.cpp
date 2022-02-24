@@ -39,7 +39,7 @@ void CMapTool::ListBoxUpdate()
 
 	for (auto map: *maplist)
 	{
-		m_ListBox_Map.AddString(static_cast<CObjectTool_ToolObject*>(map)->Get_OutputData().strObjectName);
+		m_ListBox_Map.AddString(static_cast<CObjectTool_ToolObject*>(map)->GetName());
 	}
 
 }
@@ -75,12 +75,24 @@ void CMapTool::OnBnClickedButton2()
 {
 	// 프리셋 버튼
 	GetSingle(CSuperToolSIngleton)->Update_Select_Render_None(TAG_LAY(Layer_View));
+	auto objlist = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0,TAG_LAY(Layer_Map));
+	if (objlist != nullptr)
+	{
+		for (auto obj : *objlist)
+		{
+			obj->DIED();
+		}
+	}
+	
 
 	// 내부가 빈 오브젝트 생성
 
 	// 맵 오브젝트 추가
 	int Length, Floor, Depth;
-	Length = Floor = Depth = 5;
+	Length = 5;
+	Floor = 20;
+	Depth = 5;
+
 
 
 	for (int y = 0; y < Floor; y++)
@@ -112,4 +124,9 @@ void CMapTool::OnBnClickedButton2()
 	}
 
 	
+	auto mapList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
+	
+	// #TODO 가운데로 카메라 변경
+
+
 }

@@ -239,7 +239,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	CScrollView::OnLButtonDown(nFlags, point);
 
-	// #Tag 툴창에서 마우스 피킹
+	// #Bug 툴창에서 마우스 피킹
 
 	GetSingle(CGameInstance)->Update_Transform_ToWorldSpace(point);
 	
