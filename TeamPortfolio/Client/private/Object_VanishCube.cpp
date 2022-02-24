@@ -63,7 +63,7 @@ _int CObject_VanishCube::Update(_float fTimeDelta)
 	{
 		m_bCollisionSwitch = false;
 	}
-	else if(m_bCollisionSwitch = false && m_fTempPos == VanishCubePos)
+	else if(m_bCollisionSwitch == false && m_fTempPos == VanishCubePos)
 	{
 		m_fTimer = 0;
 	}

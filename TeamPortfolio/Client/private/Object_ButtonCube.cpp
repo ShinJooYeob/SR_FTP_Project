@@ -76,7 +76,7 @@ _int CObject_ButtonCube::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture(3)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
