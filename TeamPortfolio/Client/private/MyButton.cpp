@@ -118,24 +118,40 @@ _int CMyButton::Update(_float fDeltaTime)
 		}
 	}
 	//////////로비///////
-	/*POINT ptMouse;
+	POINT ptMouse;
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 	if (PtInRect(&m_rcRect, ptMouse))
+		m_bOnMouse = true;
+	else
+		m_bOnMouse = false;
+
+	if(m_bOnMouse==true)
 	{
 		if (!lstrcmp(L"Loby_Button1", m_pButtonName))
 			{
 				m_ComTexture->Change_TextureLayer(L"Loby_Button2");
 			}
 
-		else if (!lstrcmp(L"Loby_Button3", m_pButtonName))
+		if (!lstrcmp(L"Loby_Button3", m_pButtonName))
 			{
 				m_ComTexture->Change_TextureLayer(L"Loby_Button4");
 			}
 
-	}*/
+	}
+	else if (m_bOnMouse == false)
+	{
+		if (!lstrcmp(L"Loby_Button1", m_pButtonName))
+		{
+			m_ComTexture->Change_TextureLayer(L"Loby_Button1");
+		}
 
+		if (!lstrcmp(L"Loby_Button3", m_pButtonName))
+		{
+			m_ComTexture->Change_TextureLayer(L"Loby_Button3");
+		}
 
+	}
 	return SHOP_END;
 
 }
@@ -278,7 +294,7 @@ void CMyButton::Set_ButtonName(TCHAR * pButtonName)
 		m_ComTexture->Change_TextureLayer(L"Quest_Button4");
 	}
 	/////////////////////로비///////////////////////////
-	/*else if (!lstrcmp(L"Loby_Button1", m_pButtonName))
+	else if (!lstrcmp(L"Loby_Button1", m_pButtonName))
 	{
 		m_ComTexture->Change_TextureLayer(L"Loby_Button1");
 	}
@@ -288,14 +304,6 @@ void CMyButton::Set_ButtonName(TCHAR * pButtonName)
 		m_ComTexture->Change_TextureLayer(L"Loby_Button3");
 	}
 
-	else if (!lstrcmp(L"Loby_Button2", m_pButtonName))
-	{
-		m_ComTexture->Change_TextureLayer(L"Loby_Button2");
-	}
-	else if (!lstrcmp(L"Loby_Button4", m_pButtonName))
-	{
-		m_ComTexture->Change_TextureLayer(L"Loby_Button4");
-	}*/
 }
 
 HRESULT CMyButton::SetUp_Components()
@@ -310,10 +318,9 @@ HRESULT CMyButton::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-	/*if (FAILED(__super::Add_Component(SCENEID::SCENE_LOBY, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
-		return E_FAIL;*/
+	
 
 	return S_OK;
 }

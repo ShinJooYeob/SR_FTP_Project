@@ -50,6 +50,7 @@ private:
 	TCHAR*			m_pButtonName;
 	_float4			m_vUIDesc;
 	_bool			m_bBigger;
+	_bool			m_bOnMouse;
 public:
 	void			Set_ButtonName(TCHAR* pButtonName);
 private:

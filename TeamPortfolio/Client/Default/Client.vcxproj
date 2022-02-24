@@ -159,6 +159,7 @@
     <ClInclude Include="..\public\Camera_Main.h" />
     <ClInclude Include="..\public\Client_Define.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
+    <ClInclude Include="..\public\UI_Common.h" />
     <ClInclude Include="..\public\MiniMapUI.h" />
     <ClInclude Include="..\public\Object_AppearCube.h" />
     <ClInclude Include="..\public\Object_BlockCube.h" />
@@ -200,6 +201,7 @@
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\private\Camera_Main.cpp" />
+    <ClCompile Include="..\private\UI_Common.cpp" />
     <ClCompile Include="..\private\MiniMapUI.cpp" />
     <ClCompile Include="..\private\Object_AppearCube.cpp" />
     <ClCompile Include="..\private\Object_BlockCube.cpp" />

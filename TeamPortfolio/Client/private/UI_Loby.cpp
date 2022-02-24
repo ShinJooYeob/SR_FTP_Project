@@ -58,15 +58,15 @@ _int CUI_Loby::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-	if (m_bIsPress == true)
-	{
+	
 		if (FAILED(Update_UIList(fDeltaTime)))
 			return E_FAIL;
 		if (FAILED(Update_UIButtonList(fDeltaTime)))
 			return E_FAIL;
+	/*if (m_bIsPress == true)
+	{
 
-
-	}
+	}*/
 
 	return _int();
 }
@@ -159,9 +159,9 @@ HRESULT CUI_Loby::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 {
 
 
-	//CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 50, 0.01, 0.01)));
-	//temp->Set_ImageName(L"Quest_2");
-	//m_UIList.emplace(L"Quest_Image_1", (CUI*)temp);
+	/*CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 50, 0.01, 0.01)));
+	temp->Set_ImageName(L"Quest_2");
+	m_UIList.emplace(L"Quest_Image_1", (CUI*)temp);*/
 
 
 	return S_OK;
@@ -171,23 +171,13 @@ HRESULT CUI_Loby::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 HRESULT CUI_Loby::Ready_Layer_Button(const _tchar * pLayerTag)
 {
 
-	/*CMyButton* temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x , m_vUIDesc.y + 100, 128, 72)));
+	CMyButton* temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x , m_vUIDesc.y + 100, 128, 72)));
 	temp->Set_ButtonName(L"Loby_Button1");
 	m_UIButtonList.emplace(L"Loby_Button_1", (CUI*)temp);
-
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x , m_vUIDesc.y +100, 128, 72)));
-	temp->Set_ButtonName(L"Loby_Button2");
-	m_UIButtonList.emplace(L"Loby_Button_2", (CUI*)temp);
 
 	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 172, 128, 72)));
 	temp->Set_ButtonName(L"Loby_Button3");
 	m_UIButtonList.emplace(L"Loby_Button_3", (CUI*)temp);
-
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 172, 128, 72)));
-	temp->Set_ButtonName(L"Loby_Button4");
-	m_UIButtonList.emplace(L"Loby_Button_4", (CUI*)temp);*/
-
-	
 
 
 	return S_OK;
@@ -210,27 +200,7 @@ HRESULT CUI_Loby::Update_UIButtonList(_float fTimeDelta)
 			break;
 	}
 
-	//switch (hr)
-	//{
-	//case 101:
-	//	m_BiggerTag = (L"Quest_Image_1");
-	//	Make_Bigger(m_BiggerTag);
-	//	break;
-	//case 102:
-	//	m_BiggerTag = (L"Quest_Image_1");
-	//	Make_Bigger(m_BiggerTag);
-	//	break;
-	//case 103:
-	//	m_BiggerTag = (L"Quest_Image_1");
-	//	Make_Bigger(m_BiggerTag);
-	//	break;
-	//case 104:
-	//	m_BiggerTag = (L"Quest_Image_1");
-	//	Make_Bigger(m_BiggerTag);
-	//	break;
-	//default:/*m_iChosenSkill = SKILL_END;*/
-	//	break;
-	//}
+	
 
 
 

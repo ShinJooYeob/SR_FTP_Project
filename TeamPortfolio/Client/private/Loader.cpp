@@ -8,6 +8,7 @@
 #include "Shop.h"
 #include "UI_Loby.h"
 #include "Quest_Image.h"
+#include "UI_Common.h"
 #include "TerrainCube.h"
 #include "Object_FixCube.h"
 #include "Object_GravityCube.h"
@@ -163,6 +164,8 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Shop), CShop::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Quest), CQuest_Image::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_UI_Common), CUI_Common::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_FixCube"), CObject_FixCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
