@@ -186,7 +186,8 @@ HRESULT CRenderer::Update_MinmapTexture()
 				return E_FAIL;
 		}
 	}
-
+	if (m_MainCamera && FAILED(m_MainCamera->Set_ProjectMatrix(false)))
+		return E_FAIL;
 
 	for (auto& RenderObject : m_RenderObjectList[RENDER_NONALPHA])
 	{

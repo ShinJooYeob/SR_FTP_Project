@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\public\SkyBox.h"
+#include "Camera_Main.h"
 
 CSkyBox::CSkyBox(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
@@ -41,6 +42,7 @@ _int CSkyBox::Update(_float fTimeDelta)
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
+	m_ComTransform->Turn_CW(_float3(0, 1, 0), fTimeDelta);
 
 	return _int();
 }
@@ -76,7 +78,7 @@ _int CSkyBox::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture()))// 몇번째 인덱스인지 명시 0부터 시작
+	if (FAILED(m_ComTexture->Bind_Texture(4)))// 몇번째 인덱스인지 명시 0부터 시작
 		return E_FAIL;
 
 
@@ -108,7 +110,7 @@ HRESULT CSkyBox::SetUp_Components()
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
 
 	TransformDesc.fMovePerSec = 5.f;
-	TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
+	TransformDesc.fRotationPerSec = D3DXToRadian(3.0f);
 
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
@@ -125,6 +127,11 @@ HRESULT CSkyBox::SetUp_Components()
 		return E_FAIL;
 
 
+	m_MainCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+	if (m_MainCamera == nullptr)
+		return E_FAIL;
+	Safe_AddRef(m_MainCamera);
+
 	return S_OK;
 }
 
@@ -133,6 +140,8 @@ HRESULT CSkyBox::SetUp_RenderState()
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
+
+	m_MainCamera->Set_ProjectMatrix(false);
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -146,6 +155,9 @@ HRESULT CSkyBox::Release_RenderState()
 {
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
+
+
+	m_MainCamera->Set_ProjectMatrix(true);
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
@@ -188,6 +200,7 @@ void CSkyBox::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_MainCamera);
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);

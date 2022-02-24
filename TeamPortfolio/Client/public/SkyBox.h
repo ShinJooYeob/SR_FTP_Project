@@ -12,6 +12,7 @@ class CVIBuffer_Cube;
 END
 
 BEGIN(Client)
+class CCamera_Main;
 
 class CSkyBox final : public CGameObject
 {
@@ -40,7 +41,7 @@ private:
 	CTexture*				m_ComTexture = nullptr;
 	CVIBuffer_Cube*			m_ComVIBuffer = nullptr;
 
-
+	CCamera_Main*			m_MainCamera = nullptr;
 
 public:
 	static CSkyBox* Create(LPDIRECT3DDEVICE9 pGraphic_Device , void* pArg = nullptr);
