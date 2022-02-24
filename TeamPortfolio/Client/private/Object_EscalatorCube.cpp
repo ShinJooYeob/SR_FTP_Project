@@ -43,6 +43,8 @@ HRESULT CObject_EscalatorCube::Initialize_Clone(void * pArg)
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_EscalatorDesc.vStartPos);
 
 		m_Layer_Tag = TEXT("Layer_EscalatorCube");
+
+		m_ComTexture->Change_TextureLayer(TEXT("EscalatorCube"));
 	}
 
 
@@ -100,7 +102,7 @@ _int CObject_EscalatorCube::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture(2)))
+	if (FAILED(m_ComTexture->Bind_Texture(0)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -170,7 +172,7 @@ HRESULT CObject_EscalatorCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_Player), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

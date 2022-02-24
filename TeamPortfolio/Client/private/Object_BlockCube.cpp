@@ -35,6 +35,8 @@ HRESULT CObject_BlockCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-3.f, 1.f, 10.f));
 
+	m_ComTexture->Change_TextureLayer(TEXT("DefaultCube"));
+
 	return S_OK;
 }
 
@@ -153,7 +155,7 @@ HRESULT CObject_BlockCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_BlockCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

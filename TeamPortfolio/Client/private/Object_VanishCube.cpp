@@ -39,6 +39,8 @@ HRESULT CObject_VanishCube::Initialize_Clone(void * pArg)
 		memcpy(&m_fTempPos, pArg, sizeof(_float3)); //원래 자리로 돌아가기 위한 템프 포지션
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 		m_Layer_Tag=(TEXT("Layer_VanishCube"));
+
+		m_ComTexture->Change_TextureLayer(TEXT("AppearCube"));
 	}
 
 	return S_OK;
@@ -167,7 +169,7 @@ HRESULT CObject_VanishCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_VanishCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

@@ -36,6 +36,8 @@ HRESULT CObject_MoveCube::Initialize_Clone(void * pArg)
 
 	m_Layer_Tag = L"Layer_Cube";
 
+	m_ComTexture->Change_TextureLayer(TEXT("TerrainCube"));
+
 	return S_OK;
 }
 
@@ -103,7 +105,7 @@ _int CObject_MoveCube::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture()))// 몇번째 인덱스인지 명시 0부터 시작
+	if (FAILED(m_ComTexture->Bind_Texture(0)))// 몇번째 인덱스인지 명시 0부터 시작
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -218,7 +220,7 @@ HRESULT CObject_MoveCube::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
 
-	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Texture_Sky"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))

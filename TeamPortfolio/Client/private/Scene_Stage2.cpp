@@ -16,17 +16,13 @@ HRESULT CScene_Stage2::Initialize()
 
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
-	////////////////////////////은혁이 테스트
+	////////////////////////////은혁이 테스트Layer_Player
 	if (FAILED(Ready_Layer_Cube(TAG_LAY(Layer_Player))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_FixCube(TEXT("Layer_FixCube"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_PushCube(TEXT("Layer_PushCube"))))
 		return E_FAIL;
-
-	//if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
-	//	return E_FAIL;
-
 	if (FAILED(Ready_Layer_SelfRotationCube(TEXT("Layer_SelfRotationCube"))))
 		return E_FAIL;
 

@@ -36,7 +36,7 @@ HRESULT CObject_GravityCube::Initialize_Clone(void * pArg)
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 		m_Layer_Tag = TEXT("Layer_GravityCube");
-		m_ComTexture->Change_TextureLayer(L"GravityCube");
+		m_ComTexture->Change_TextureLayer(TEXT("TerrainCube"));
 	}
 
 	return S_OK;
@@ -155,7 +155,7 @@ HRESULT CObject_GravityCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

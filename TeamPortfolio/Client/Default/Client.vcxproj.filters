@@ -234,15 +234,12 @@
     <ClInclude Include="..\public\Object_PortalCube_B.h">
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Inventory_Main.h" />
-    <ClInclude Include="..\public\Item.h" />
     <ClInclude Include="..\public\Object_VanishCube.h">
       <Filter>01.GameObject\SubObject\Object_VanishCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Object_AppearCube.h">
       <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
     </ClInclude>
-
     <ClInclude Include="..\public\Object_EscalatorCube.h">
       <Filter>01.GameObject\SubObject\Object_escalatorCube</Filter>
     </ClInclude>
@@ -261,6 +258,7 @@
     <ClInclude Include="..\public\UI_Loby.h">
       <Filter>01.GameObject\UI\UI_Loby</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_Mouse.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -338,24 +336,18 @@
     <ClCompile Include="..\private\Object_InteractiveCube.cpp">
       <Filter>01.GameObject\SubObject\Object_ButtonCube\Object_InteractiveCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Object_OrbitCube.cpp">
-      <Filter>01.GameObject\SubObject\Object_OrbitCube</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Object_PortalCube_A.cpp">
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_A</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Object_PortalCube_B.cpp">
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Inventory_Main.cpp" />
-    <ClCompile Include="..\private\Item.cpp" />
     <ClCompile Include="..\private\Object_VanishCube.cpp">
       <Filter>01.GameObject\SubObject\Object_VanishCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Object_AppearCube.cpp">
       <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
     </ClCompile>
-
     <ClCompile Include="..\private\Object_EscalatorCube.cpp">
       <Filter>01.GameObject\SubObject\Object_escalatorCube</Filter>
     </ClCompile>
@@ -373,6 +365,10 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Loby.cpp">
       <Filter>01.GameObject\UI\UI_Loby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Mouse.cpp" />
+    <ClCompile Include="..\private\Object_OrbitCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_OrbitCube\Object_OrbitCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

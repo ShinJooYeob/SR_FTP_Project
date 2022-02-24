@@ -79,7 +79,7 @@ HRESULT CTexture::Read_TextFile(TYPE eTextureType, const _tchar * szFilePath)
 
 	if (!fin.fail())
 	{
-		_tchar	szPadding[10] = L"";
+		_tchar	szPadding[64] = L"";
 		_tchar	szPath[MAX_PATH] = L"";
 		_tchar	szStateKey[MAX_PATH] = L"";
 		_tchar	szCount[MAX_PATH] = L"";

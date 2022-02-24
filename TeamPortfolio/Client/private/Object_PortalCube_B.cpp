@@ -40,8 +40,9 @@ HRESULT CObject_PortalCube_B::Initialize_Clone(void * pArg)
 	memcpy(&vPos, pArg, sizeof(_float3));
 
 	m_Layer_Tag = TEXT("Layer_Potal");
-	m_ComTexture->Change_TextureLayer(L"PotalCube");
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vPos);
+
+	m_ComTexture->Change_TextureLayer(TEXT("TerrainCube"));
 
 	return S_OK;
 }
@@ -156,7 +157,7 @@ HRESULT CObject_PortalCube_B::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */

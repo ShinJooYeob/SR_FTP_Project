@@ -36,7 +36,7 @@ HRESULT CTerrainCube::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
-		m_ComTexture->Change_TextureLayer(L"PotalCube");
+		m_ComTexture->Change_TextureLayer(L"TerrainCube");
 
 		m_PlayerTransform = nullptr;
 
@@ -87,7 +87,7 @@ _int CTerrainCube::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture(1)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -135,7 +135,7 @@ HRESULT CTerrainCube::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Cube_Default"), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Cube_Texture"), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_pCollisionCom)))

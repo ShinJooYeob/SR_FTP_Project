@@ -35,6 +35,8 @@ HRESULT CObject_InteractiveCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0.f, 5.f, 2.f));
 
+	m_ComTexture->Change_TextureLayer(TEXT("OrbitCube"));
+
 	return S_OK;
 }
 
@@ -95,7 +97,7 @@ _int CObject_InteractiveCube::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture(0)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -143,7 +145,7 @@ HRESULT CObject_InteractiveCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_InteractiveCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.렌더러 */

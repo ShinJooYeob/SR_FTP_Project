@@ -34,6 +34,8 @@ HRESULT CObject_SelfRotationCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-2.f, 4.f, 5.f));
 
+	m_ComTexture->Change_TextureLayer(TEXT("OrbitCube"));
+
 	return S_OK;
 }
 
@@ -94,7 +96,7 @@ _int CObject_SelfRotationCube::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture(0)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -142,7 +144,7 @@ HRESULT CObject_SelfRotationCube::SetUp_Components()
 		return E_FAIL;
 
 	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Object_SelfRotationCube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENE_STAGE2, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.렌더러 */
