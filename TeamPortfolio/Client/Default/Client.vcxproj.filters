@@ -130,6 +130,9 @@
     <Filter Include="01.GameObject\SubObject\Object_OrbitCube\Object_OrbitButton">
       <UniqueIdentifier>{bd8a0774-6f03-4d0c-9b3a-635243ff31da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_BlockCube">
+      <UniqueIdentifier>{53eefef9-201e-4082-8aa6-fe282b4a6188}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="..\public\Object_OrbitButton.h">
       <Filter>01.GameObject\SubObject\Object_OrbitCube\Object_OrbitButton</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_BlockCube.h">
+      <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -343,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_OrbitButton.cpp">
       <Filter>01.GameObject\SubObject\Object_OrbitCube\Object_OrbitButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_BlockCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

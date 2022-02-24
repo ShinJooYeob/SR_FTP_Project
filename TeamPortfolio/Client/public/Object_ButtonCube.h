@@ -22,12 +22,14 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
 	virtual HRESULT Initialize_Clone(void* pArg)override;
-	virtual _int Update(_float fTimeDelta)override;
-	virtual _int LateUpdate(_float fTimeDelta)override;
+	virtual _int Update(_float fDeltaTime)override;
+	virtual _int LateUpdate(_float fDeltaTime)override;
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)override;
+
+	_int	Collision_Interactive(_float fDeltaTime);
 
 private:
 	HRESULT SetUp_Components();
@@ -50,6 +52,8 @@ private:
 	_float					Angle = 0;
 
 	bool					m_bSwitch = false;
+
+	_int					m_RotaionCount = 0;
 
 public:
 	static CObject_ButtonCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
