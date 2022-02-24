@@ -12,6 +12,14 @@ END
 class CMapTool : public CDialog
 {
 	DECLARE_DYNAMIC(CMapTool)
+public:
+	enum E_BUILDINGTYPE
+	{
+		BUILDINGTYPE_EMPTY,
+		BUILDINGTYPE_FULL,
+		BUILDINGTYPE_RAND,
+		BUILDINGTYPE_END
+	};
 
 public:
 	CMapTool(CWnd* pParent = nullptr);   // 표준 생성자입니다.
@@ -26,7 +34,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 private:
 	void ListBoxUpdate();
-	void CreateNewMap(_uint  x, _uint  y, _uint z);
+	void CreateNewMap(_uint  x, _uint  y, _uint z, E_BUILDINGTYPE type);
 
 
 	CListBox m_ListBox_Map;
@@ -39,4 +47,8 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnLbnSelchangeList1();
 	afx_msg void OnBnClickedButton2();
+	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButton3();
+	afx_msg void OnBnClickedButton13();
+	afx_msg void OnBnClickedButton14();
 };

@@ -61,6 +61,7 @@
 #include <algorithm>
 #include <ctime>
 #include <fstream>
+#include <time.h>
 
 
 #include <afxdlgs.h>

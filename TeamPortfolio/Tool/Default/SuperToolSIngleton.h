@@ -88,10 +88,9 @@ public: // Get Set
 
 public: //For. Data
 	HRESULT SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd);
-	HRESULT SaveData_Map(list<CObjectTool_ToolObject*> objlist, CWnd* cwnd);
+	HRESULT SaveData_Map(list<CGameObject*> objlist, CWnd* cwnd);
 
-	HRESULT LoadData_Object(CWnd * cwnd);
-	HRESULT LoadData_Map(CWnd* cwnd);
+	HRESULT LoadData_Data(CWnd * cwnd);
 
 	HRESULT Create_ToolObject_Button(wstring name);
 	HRESULT Create_ToolObject_Data(const _tchar* str, const OUTPUT_OBJECTINFO& data);

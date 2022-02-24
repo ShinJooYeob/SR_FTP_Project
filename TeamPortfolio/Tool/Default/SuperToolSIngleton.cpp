@@ -316,59 +316,66 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* 
 	return S_OK;
 }
 
-HRESULT CSuperToolSIngleton::SaveData_Map(list<CObjectTool_ToolObject*> objlist, CWnd* cwnd)
+HRESULT CSuperToolSIngleton::SaveData_Map(list<CGameObject*> objlist, CWnd* cwnd)
 {
 	// 선택한 오브젝트를 저장한다.
 
 	// 1. 클릭시 다이얼 로그 생성.
-	//CFileDialog		Dlg(FALSE,
-	//	L"dat", // .dat파일로 저장
-	//	L"*.dat",
-	//	OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-	//	L"Data Files(*.dat)|*.dat||",
-	//	cwnd);
+	CFileDialog		Dlg(FALSE,
+		L"dat", // .dat파일로 저장
+		L"*.dat",
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		L"Data Files(*.dat)|*.dat||",
+		cwnd);
 
-	//TCHAR	szPath[MAX_PATH] = L"";
-	//GetCurrentDirectory(MAX_PATH, szPath);
-	//PathRemoveFileSpec(szPath);
+	TCHAR	szPath[MAX_PATH] = L"";
+	GetCurrentDirectory(MAX_PATH, szPath);
+	PathRemoveFileSpec(szPath);
 
-	//lstrcat(szPath, g_FilePath_ObjectPathData_Save.c_str());
-	//Dlg.m_ofn.lpstrInitialDir = szPath;
+	lstrcat(szPath, g_FilePath_ObjectPathData_Save.c_str());
+	Dlg.m_ofn.lpstrInitialDir = szPath;
 
-	//if (IDOK == Dlg.DoModal())
-	//{
-	//	// 이름
+	if (IDOK == Dlg.DoModal())
+	{
+		// 이름
 
-	//	CString				str = Dlg.GetPathName().GetString();
-	//	CString				Filename = PathFindFileName(str);
+		CString				str = Dlg.GetPathName().GetString();
+		CString				Filename = PathFindFileName(str);
 
-	//	TCHAR				newName[64] = L"";
+		TCHAR				newName[64] = L"";
 
-	//	lstrcpy(newName, Filename);
-	//	PathRemoveExtension(newName);
-	//	
+		lstrcpy(newName, Filename);
+		PathRemoveExtension(newName);
+		
 
-	//	const TCHAR*		pGetPath = str.GetString();
+		const TCHAR*		pGetPath = str.GetString();
 
-	//	HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+		HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
-	//	if (INVALID_HANDLE_VALUE == hFile)
-	//		return E_FAIL;
+		if (INVALID_HANDLE_VALUE == hFile)
+			return E_FAIL;
 
+		OUTPUT_ID id;
+		id.FILEID = OUTPUT_MAP;
+		lstrcpy(id.strObjectName, newName);
 
-	//	DWORD	dwByte = 0;
+		// 저장
+		DWORD	dwByte = 0;	
 
-	//	// 저장
-	//	obj->Set_OUTPUTData_Save();
-	//	WriteFile(hFile, &obj->Get_OutputData(), sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+		WriteFile(hFile, &id, sizeof(OUTPUT_ID), &dwByte, nullptr);
 
-	//	CloseHandle(hFile);
-	//}
+		for (auto& iter : objlist)
+		{
+			((CObjectTool_ToolObject*)iter)->Set_OUTPUTData_Save();
+			WriteFile(hFile, &iter, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+		}
+		CloseHandle(hFile);
+	}
 	return S_OK;
 }
 
 
-HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
+HRESULT CSuperToolSIngleton::LoadData_Data(CWnd * cwnd)
 {
 	// 새 오브젝트를 가져온다.
 
@@ -409,6 +416,31 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 			Create_ToolObject_Data(infoid.strObjectName,infoObj);
 			break;
 		case OUTPUT_MAP:
+
+			DWORD	dwByte = 0;
+			OUTPUT_OBJECTINFO*	pObjInfo = nullptr;
+
+			while (true)
+			{
+				//pTile = new TILE;
+
+				//ReadFile(hFile, pTile, sizeof(TILE), &dwByte, NULL);
+
+				//if (0 == dwByte)
+				//{
+				//	Safe_Delete(pTile);
+				//	break;
+				//}
+
+				//m_vecTile.push_back(pTile);
+			}
+
+
+			// ReadFile(hFile, &infoObj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+			// // 새 오브젝트 생성
+			// Create_ToolObject_Data(infoid.strObjectName, infoObj);
+
+
 			break;
 		}
 
@@ -417,11 +449,6 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 		CloseHandle(hFile);
 	}
 
-	return S_OK;
-}
-
-HRESULT CSuperToolSIngleton::LoadData_Map(CWnd * cwnd)
-{
 	return S_OK;
 }
 

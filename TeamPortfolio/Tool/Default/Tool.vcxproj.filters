@@ -145,7 +145,7 @@
       <Filter>04.Object\01.Object\WireCube</Filter>
     </ClInclude>
     <ClInclude Include="KeyMgr.h">
-      <Filter>00. Special\01. View\01. MyButton\03. MapTool</Filter>
+      <Filter>01. Device</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -198,7 +198,7 @@
       <Filter>04.Object\01.Object\WireCube</Filter>
     </ClCompile>
     <ClCompile Include="KeyMgr.cpp">
-      <Filter>00. Special\01. View\01. MyButton\03. MapTool</Filter>
+      <Filter>01. Device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

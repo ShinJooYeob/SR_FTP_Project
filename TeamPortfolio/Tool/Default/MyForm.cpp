@@ -147,7 +147,7 @@ void CMyForm::OnObjectSave()
 void CMyForm::OnBnClickedButtonLoad()
 {
 	// 오브젝트 로드 해서 새로 생성
-	GetSingle(CSuperToolSIngleton)->LoadData_Object(this);
+	GetSingle(CSuperToolSIngleton)->LoadData_Data(this);
 }
 
 void CMyForm::OnMapSave()
