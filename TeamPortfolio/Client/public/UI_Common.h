@@ -27,6 +27,10 @@ public:
 
 	virtual _int Update(_float fDeltaTime)override;
 
+	HRESULT Show_UI(_float fDeltaTime);
+
+	HRESULT Hide_UI(_float fDeltaTime);
+
 	virtual _int LateUpdate(_float fDeltaTime)override;
 
 	virtual _int Render()override;
@@ -41,6 +45,8 @@ public:
 	HRESULT Set_Image_Render(const _tchar * tagUIList, _bool bCheck);
 	HRESULT Ready_Layer_Button(const _tchar * pLayerTag);
 	HRESULT Make_Bigger(const _tchar * pLayerTag);
+
+	void Set_SkillSlot();
 
 
 private:
@@ -61,6 +67,9 @@ private:	_float			m_fFrame = 0.f;
 			_bool			m_MouseOn = false;
 			_float4			m_vUIDesc;
 			_tchar*			m_BiggerTag;
+			_float			m_fPosX = -40.f;
+			_bool			m_bIsClicked=false;
+			
 public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
 	HRESULT			Update_UIList(_float fTimeDelta);

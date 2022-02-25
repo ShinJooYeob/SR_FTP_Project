@@ -39,7 +39,7 @@ HRESULT CUI_Common::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 	m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(90));
-	m_vUIDesc = _float4((g_iWinCX >> 1) - 750, 360, 800, 100);
+	m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
 
@@ -60,8 +60,35 @@ _int CUI_Common::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
+	
 
+	//_float fPosX = GetSingle(CGameInstance)->Easing(TYPE_ExpoInOut, m_fStartPosX, m_fTargetPosx, m_fPassedTime);
 	POINT ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	m_rcRect.top = (LONG)0;
+	m_rcRect.left = (LONG)0;
+	m_rcRect.bottom = (LONG)720;
+	m_rcRect.right = (LONG)50;
+	if (PtInRect(&m_rcRect, ptMouse))
+	{
+		m_MouseOn = true;
+		if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON)&(DIS_Down))
+		{
+			m_bIsClicked = !m_bIsClicked;
+		}
+	}
+	else
+		m_MouseOn = false;
+	if(!m_bIsClicked)
+	{
+		if (m_MouseOn)
+			Show_UI(fDeltaTime);
+
+		if (!m_MouseOn)
+			Hide_UI(fDeltaTime);
+	}
+	/*POINT ptMouse;
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 	m_rcRect.top = (LONG)0;
@@ -72,26 +99,25 @@ _int CUI_Common::Update(_float fDeltaTime)
 		m_MouseOn = true;
 
 	else
-		m_MouseOn = false;
-
-	if (m_MouseOn == true && m_vUIDesc.x<(g_iWinCX >> 1) - 600)
-	{
-		m_temp += 10;
-		m_vUIDesc = _float4((g_iWinCX >> 1) - 750 + m_temp, 360, 800, 100);
-		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-			return E_FAIL;
-		for (auto pair : m_UIList)
-			((CUI_Image*)(pair.second))->Set_ImageUIDesc(10);
-	}
-	else if (m_MouseOn == false && m_vUIDesc.x>-40)
-	{
-		m_temp -= 10;
-		m_vUIDesc = _float4((g_iWinCX >> 1) - 750 + m_temp, 360, 800, 100);
-		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-			return E_FAIL;
-		for (auto pair : m_UIList)
-			((CUI_Image*)(pair.second))->Set_ImageUIDesc(-10);
-	}
+		m_MouseOn = false;*/
+	//if (m_MouseOn == true && m_vUIDesc.x<(g_iWinCX >> 1) - 600)
+	//{
+	//	m_temp += 10;
+	//	m_vUIDesc = _float4((g_iWinCX >> 1) - 750 + m_temp, 360, 800, 100);
+	//	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+	//		return E_FAIL;
+	//	for (auto pair : m_UIList)
+	//		((CUI_Image*)(pair.second))->Set_ImageUIDesc(10);
+	//}
+	//else if (m_MouseOn == false && m_vUIDesc.x>-40)
+	//{
+	//	m_temp -= 10;
+	//	m_vUIDesc = _float4((g_iWinCX >> 1) - 750 + m_temp, 360, 800, 100);
+	//	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+	//		return E_FAIL;
+	//	for (auto pair : m_UIList)
+	//		((CUI_Image*)(pair.second))->Set_ImageUIDesc(-10);
+	//}
 	if (FAILED(Update_UIList(fDeltaTime)))
 		return E_FAIL;
 	if (FAILED(Update_UIButtonList(fDeltaTime)))
@@ -101,8 +127,34 @@ _int CUI_Common::Update(_float fDeltaTime)
 
 	return _int();
 }
+HRESULT CUI_Common::Show_UI(_float fDeltaTime)
+{
+	if(m_fPosX<40)
+	{
+		m_fPosX += fDeltaTime * 320;
+		m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
+			if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+				return E_FAIL;
+			for (auto pair : m_UIList)
+				((CUI_Image*)(pair.second))->Set_ImageUIDesc(fDeltaTime * 320);
+	}
 
 
+}
+HRESULT CUI_Common::Hide_UI(_float fDeltaTime)
+{
+	if (m_fPosX>-40)
+	{
+		m_fPosX -= fDeltaTime * 320;
+		m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+			return E_FAIL;
+		for (auto pair : m_UIList)
+			((CUI_Image*)(pair.second))->Set_ImageUIDesc(-(fDeltaTime * 320));
+	}
+
+
+}
 
 _int CUI_Common::LateUpdate(_float fDeltaTime)
 {
@@ -258,6 +310,22 @@ HRESULT CUI_Common::Make_Bigger(const _tchar * pLayerTag)
 		temp->Set_ImageBigger(CUI_Image::BIGGER_ON);
 	return S_OK;
 }
+
+void CUI_Common::Set_SkillSlot()
+{
+	/*_int* temp=m_Player_Inventory->Get_Skill_Index();
+	for (int i=0; i<SKILL_END;++i)
+		temp[i]*/
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP) == 1)
+		return;//¹öÆ°·»´õ
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_DUBBLEJUMP) == 1)
+		return;
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_DASH) == 1)
+		return;
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_POTION) == 1)
+		return;
+}
+
 HRESULT CUI_Common::Update_UIList(_float fTimeDelta)
 {
 	for (auto pair : m_UIList)

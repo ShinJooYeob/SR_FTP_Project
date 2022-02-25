@@ -38,7 +38,7 @@ HRESULT CUI_Loby::Initialize_Clone(void * pArg)
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	m_vUIDesc = _float4(g_iWinCX>>1, g_iWinCY >> 1, g_iWinCX, g_iWinCX);
+	m_vUIDesc = _float4(g_iWinCX>>1, g_iWinCY >> 1, g_iWinCX, g_iWinCY);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
 

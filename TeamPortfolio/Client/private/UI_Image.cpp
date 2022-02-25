@@ -57,16 +57,66 @@ _int CUI_Image::Update(_float fDeltaTime)
 			return E_FAIL;
 	}
 
-	if (m_iBigger == BIGGER_ON && m_vUIDesc.w < 200)
+	if (m_iBigger == BIGGER_ON)
 	{
-		m_vUIDesc.z += 20;
-		m_vUIDesc.w += 18;
-
-		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-			return E_FAIL;
-
-
+		if (m_bEasingStart == false)
+		{
+			m_vEasingDesc.x = 0.00001f;
+			m_vEasingDesc.y = 200.f;
+			m_vEasingDesc.z = 0.f;
+			m_vEasingDesc.w = 1.f;
+			m_bEasingStart = true;
+		}
+		if (m_bEasingStart == true)
+		{
+			m_vEasingDesc.z += fDeltaTime;
+			if (m_vEasingDesc.z > m_vEasingDesc.w)
+			{
+				
+				
+			}
+			else
+			{
+				
+				m_vUIDesc.z = GetSingle(CGameInstance)->Easing(TYPE_BounceIn, m_vEasingDesc.x, m_vEasingDesc.y, m_vEasingDesc.z, m_vEasingDesc.w);
+				m_vUIDesc.w = m_vUIDesc.z * 18 / 20;
+				if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+					return E_FAIL;
+			}
+		}
 	}
+
+	if (m_iBigger == BIGGER_OFF)
+	{
+		if (m_bEasingStart == false)
+		{
+			m_vEasingDesc.x = 200.f;
+			m_vEasingDesc.y = 0.00001f;
+			m_vEasingDesc.z = 0.f;
+			m_vEasingDesc.w = 2.f;
+			m_bEasingStart = true;
+		}
+		if (m_bEasingStart == true)
+		{
+			m_vEasingDesc.z += fDeltaTime;
+			if (m_vEasingDesc.z > m_vEasingDesc.w)
+			{
+				
+			}
+			else
+			{
+				
+				m_vUIDesc.z = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_vEasingDesc.x, m_vEasingDesc.y, m_vEasingDesc.z, m_vEasingDesc.w);
+				m_vUIDesc.w = m_vUIDesc.z * 18 / 20;
+				if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+					return E_FAIL;
+			}
+		}
+	}
+	
+
+
+	
 	if (m_iBigger == BIGGER_OFF && m_vUIDesc.z>20)
 	{
 		m_vUIDesc.z -= 20;

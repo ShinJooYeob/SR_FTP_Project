@@ -37,15 +37,23 @@ _int CInventory::Get_Skill_Level(_int eSKILL)
 
 
 
-void CInventory::Set_Skill_Level(_int eSKILL, _int Skill_level)
+void CInventory::Set_Skill_LevelUP(_int eSKILL)
 {
 	if (eSKILL > m_iMaxSkill_Index)
 	{
 		MSGBOX("index段引");
 		return;
 	}
-	m_pSkill_Index[eSKILL] += Skill_level;
+	
+	if (m_pSkill_Index[eSKILL] > 1)
+	{
+		MSGBOX("Max level 段引");
+		return;
+	}
+	++m_pSkill_Index[eSKILL];
 }
+
+
 
 
 

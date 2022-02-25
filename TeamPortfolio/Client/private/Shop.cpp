@@ -48,6 +48,7 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 
 	if (FAILED(SetUp_Skills()))
 		return E_FAIL;
+
 	m_Player_Inventory->Set_Gold(10000);
 	if (FAILED(m_ComTexture->Change_TextureLayer(TEXT("Shop1"))))
 		return E_FAIL;
@@ -384,11 +385,10 @@ HRESULT CShop::SetUp_Skills()
 {
 	ZeroMemory(m_Skill, sizeof(_int)*SKILL_END);
 
-	m_Skill[SKILL_SPEEDUP].Move_Speed += 1 * (m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP));
 	m_Skill[SKILL_SPEEDUP].Price = 1000;
 
 	m_Skill[SKILL_DUBBLEJUMP].Price = 3000;
-
+	
 	m_Skill[SKILL_DASH].Price = 3000;
 
 	m_Skill[SKILL_POTION].Price = 500;
@@ -408,12 +408,17 @@ HRESULT CShop::Buy_Skill(_int ChosenSkill)
 
 	if (m_Skill[ChosenSkill].Price <= m_Player_Inventory->Get_Gold())
 	{
-		m_Player_Inventory->Set_Skill_Level(ChosenSkill, 1);
+		m_Player_Inventory->Set_Skill_LevelUP(ChosenSkill);
 		m_Player_Inventory->Set_Gold(-m_Skill[ChosenSkill].Price);
 	}
 
-	else
+	else if (m_Skill[ChosenSkill].Price > m_Player_Inventory->Get_Gold())
+	{
 		MSGBOX("소지금이 부족합니다")
+			return E_FAIL;
+		
+	}
+		
 
 		return S_OK;
 }
