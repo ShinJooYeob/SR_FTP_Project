@@ -251,7 +251,7 @@ HRESULT CScene_Stage2::Ready_Layer_Object_AppearCube(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage2::Ready_Layer_Object_BlockCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_BlockCube")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_BlockCube"), &_float3(-5.f, 0.f, 1.f)))
 		return E_FAIL;
 	return S_OK;
 }
