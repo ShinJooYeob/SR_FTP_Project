@@ -98,12 +98,14 @@ HRESULT CGameInstance::Initialize_Engine_Tool(const CGraphic_Device::GRAPHICDESC
 
 _int CGameInstance::Update_Engine(_float fDeltaTime)
 {
-	if (m_pSceneMgr == nullptr || m_pObjectMgr == nullptr)
+	if (m_pSceneMgr == nullptr || m_pObjectMgr == nullptr || m_pSoundMgr == nullptr)
 		return -1;
 
 
 	if (FAILED(m_pInputDevice->SetUp_InputDeviceState(fDeltaTime)))
 		return -1;
+
+	FAILED_CHECK(m_pSoundMgr->Update_FMOD(fDeltaTime));
 
 	if (m_pSceneMgr->Update(fDeltaTime) < 0)
 		return -1;
@@ -389,68 +391,69 @@ _bool CGameInstance::IsNeedToRender(_float3 vWorldPosition, _float fLenth)
 	return m_pFrustumMgr->IsNeedToRender(vWorldPosition, fLenth);
 }
 
-_int CGameInstance::VolumeUp(CHANNELID eID, _float _vol)
+_int CGameInstance::Channel_VolumeUp(CHANNELID eID, _float _vol)
+{
+
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+	return _int();
+}
+
+_int CGameInstance::Channel_VolumeDown(CHANNELID eID, _float _vol)
 {
 	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
 
-	return m_pSoundMgr->VolumeUp(eID, _vol);
+	return m_pSoundMgr->Channel_VolumeDown(eID,_vol);
 }
 
-_int CGameInstance::VolumeDown(CHANNELID eID, _float _vol)
+_int CGameInstance::Channel_Pause(CHANNELID eID)
 {
 	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
 
-	return m_pSoundMgr->VolumeDown(eID, _vol);
+	return m_pSoundMgr->Channel_Pause(eID);
 }
 
-_int CGameInstance::BGMVolumeUp(_float _vol)
+HRESULT CGameInstance::PlaySound(TCHAR * pSoundKey, CHANNELID eID)
 {
 	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
 
-	return m_pSoundMgr->BGMVolumeUp( _vol);
+	return m_pSoundMgr->PlaySound(pSoundKey, eID);
 }
 
-_int CGameInstance::BGMVolumeDown(_float _vol)
-{
-	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
-
-	return m_pSoundMgr->BGMVolumeDown(_vol);
-}
-
-_int CGameInstance::Pause(CHANNELID eID)
-{
-	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
-
-	return m_pSoundMgr->Pause(eID);
-}
-
-void CGameInstance::PlaySound(TCHAR * pSoundKey, CHANNELID eID, _float _vol)
-{
-	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
-
-	return m_pSoundMgr->PlaySound(pSoundKey, eID, _vol);
-}
-
-void CGameInstance::PlayBGM(TCHAR * pSoundKey)
+HRESULT CGameInstance::PlayBGM(TCHAR * pSoundKey)
 {
 	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
 
 	return m_pSoundMgr->PlayBGM(pSoundKey);
 }
 
-void CGameInstance::StopSound(CHANNELID eID)
+void CGameInstance::Stop_ChannelSound(CHANNELID eID)
 {
 	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
 
-	return m_pSoundMgr->StopSound(eID);
+	m_pSoundMgr->Stop_ChannelSound(eID);
+
+	return;
 }
 
-void CGameInstance::StopAll()
+void CGameInstance::Stop_AllChannel()
 {
 	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
-
-	return m_pSoundMgr->StopAll();
+	m_pSoundMgr->Stop_AllChannel();
+	return;
 }
+
+_float CGameInstance::Get_Channel_Volume(CHANNELID eID)
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+	return 	m_pSoundMgr->Get_Channel_Volume(eID);
+}
+
+_bool CGameInstance::Get_Channel_IsPaused(CHANNELID eID)
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+	return 	m_pSoundMgr->Get_Channel_IsPaused(eID);
+}
+
 
 
 

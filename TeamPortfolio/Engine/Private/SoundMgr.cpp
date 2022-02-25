@@ -14,90 +14,96 @@ HRESULT CSoundMgr::Initialize_FMOD()
 	// 1. 시스템 포인터, 2. 사용할 가상채널 수 , 초기화 방식) 
 	FMOD_System_Init(m_pSystem, 32, FMOD_INIT_NORMAL, NULL);
 
+
+	m_iNumOfEachChannel = _uint( 32 / CHANNEL_MAXCHANNEL);
+
+	for (_uint i = 0; i<CHANNEL_MAXCHANNEL;i++)
+	{
+		m_VolumeArr[i] = SOUND_DEFAULT;
+	}
+
+	ZeroMemory(m_PauseArr, sizeof(_bool)*CHANNEL_MAXCHANNEL);
+	ZeroMemory(m_fPassedTimeArr, sizeof(_float) * 32);
+
 	return LoadSoundFile();
 }
 
-int CSoundMgr::VolumeUp(CHANNELID eID, _float _vol)
+HRESULT CSoundMgr::Update_FMOD(_float fTimeDelta)
 {
-	if (m_volume < SOUND_MAX) {
-		m_volume += _vol;
-	}
-
-	FMOD_Channel_SetVolume(m_pChannelArr[eID], m_volume);
-
-	return 0;
-}
-
-int CSoundMgr::VolumeDown(CHANNELID eID, _float _vol)
-{
-	if (m_volume > SOUND_MIN) {
-		m_volume -= _vol;
-	}
-
-	FMOD_Channel_SetVolume(m_pChannelArr[eID], m_volume);
-
-	return 0;
-}
-
-int CSoundMgr::BGMVolumeUp(_float _vol)
-{
-	if (m_BGMvolume < SOUND_MAX) {
-		m_BGMvolume += _vol;
-	}
-
-	FMOD_Channel_SetVolume(m_pChannelArr[CHANNEL_BGM], m_BGMvolume);
-
-	return 0;
-}
-
-int CSoundMgr::BGMVolumeDown(_float _vol)
-{
-	if (m_BGMvolume > SOUND_MIN) {
-		m_BGMvolume -= _vol;
-	}
-
-	FMOD_Channel_SetVolume(m_pChannelArr[CHANNEL_BGM], m_BGMvolume);
-
-	return 0;
-}
-
-int CSoundMgr::Pause(CHANNELID eID)
-{
-	m_bPause = !m_bPause;
-	FMOD_Channel_SetPaused(m_pChannelArr[eID], m_bPause);
-
-	return 0;
-}
-
-
-
-
-void CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID, _float _vol)
-{
-	map<TCHAR*, FMOD_SOUND*>::iterator iter;
-
-	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)
-	{
-		return !lstrcmp(pSoundKey, iter.first);
-	});
-
-	if (iter == m_mapSound.end())
-		return;
+	FMOD_System_Update(m_pSystem);
 
 	FMOD_BOOL bPlay = FALSE;
-	if (FMOD_Channel_IsPlaying(m_pChannelArr[eID], &bPlay))
+
+	for (_uint i = 0; i< 32; i++)
 	{
-		FMOD_System_PlaySound(m_pSystem, iter->second,nullptr, FALSE, &m_pChannelArr[eID]);
-		if (_vol >= SOUND_MAX)
-			_vol = 1.f;
-		else if (_vol <= SOUND_MIN)
-			_vol = 0.f;
-		FMOD_Channel_SetVolume(m_pChannelArr[eID], _vol);
+		if (m_fPassedTimeArr[i] != 0)
+		{
+			if (FMOD_Channel_IsPlaying(m_pChannelArr[i], &bPlay))
+				m_fPassedTimeArr[i] = 0;
+			else
+				m_fPassedTimeArr[i] += fTimeDelta;
+		}
 	}
-	FMOD_System_Update(m_pSystem);
+
+	return S_OK;
 }
 
-void CSoundMgr::PlayBGM(TCHAR * pSoundKey)
+int CSoundMgr::Channel_VolumeUp(CHANNELID eID, _float _vol)
+{
+	if (m_VolumeArr[eID] < SOUND_MAX) {
+		m_VolumeArr[eID] += _vol;
+	}
+
+	if(eID == CHANNEL_BGM)
+		FMOD_Channel_SetVolume(m_pChannelArr[31], m_VolumeArr[eID]);
+	else 
+	{
+		for (_uint i = eID * m_iNumOfEachChannel; i < (eID + 1)* m_iNumOfEachChannel; i++)
+			FMOD_Channel_SetVolume(m_pChannelArr[i], m_VolumeArr[eID]);
+	}
+
+	return 0;
+}
+
+int CSoundMgr::Channel_VolumeDown(CHANNELID eID, _float _vol)
+{
+	if (m_VolumeArr[eID] > SOUND_MIN) {
+		m_VolumeArr[eID] -= _vol;
+	}
+
+	if (eID == CHANNEL_BGM)
+		FMOD_Channel_SetVolume(m_pChannelArr[31], m_VolumeArr[eID]);
+	else 
+	{
+		for (_uint i = eID * m_iNumOfEachChannel; i < (eID + 1)* m_iNumOfEachChannel; i++)
+			FMOD_Channel_SetVolume(m_pChannelArr[i], m_VolumeArr[eID]);
+	}
+
+	return 0;
+}
+
+
+int CSoundMgr::Channel_Pause(CHANNELID eID)
+{
+	m_PauseArr[eID] = !m_PauseArr[eID];
+
+	if (eID == CHANNEL_BGM)
+		FMOD_Channel_SetVolume(m_pChannelArr[31], m_VolumeArr[eID]);
+	else 
+	{
+		for (_uint i = eID * m_iNumOfEachChannel; i < (eID + 1)* m_iNumOfEachChannel; i++)
+		{
+			FMOD_Channel_SetPaused(m_pChannelArr[i], m_PauseArr[eID]);
+		}
+
+	}
+	return 0;
+}
+
+
+
+
+HRESULT CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID)
 {
 	map<TCHAR*, FMOD_SOUND*>::iterator iter;
 
@@ -107,22 +113,96 @@ void CSoundMgr::PlayBGM(TCHAR * pSoundKey)
 	});
 
 	if (iter == m_mapSound.end())
-		return;
+		return E_FAIL;
 
-	FMOD_System_PlaySound(m_pSystem,  iter->second, nullptr, FALSE, &m_pChannelArr[CHANNEL_BGM]);
-	FMOD_Channel_SetMode(m_pChannelArr[CHANNEL_BGM], FMOD_LOOP_NORMAL);
+	FMOD_BOOL bPlay = FALSE;
+	_uint fOldSoundIndx = -1;
+	_float fOldestTime = -1.f;
+
+	for (_uint i = eID * m_iNumOfEachChannel; i < (eID + 1) * m_iNumOfEachChannel; i++)
+	{
+		//if (FMOD_Channel_IsPlaying(m_pChannelArr[i], &bPlay))
+		if (m_fPassedTimeArr[i] == 0)
+		{
+			FMOD_System_PlaySound(m_pSystem, iter->second, nullptr, FALSE, &m_pChannelArr[i]);
+
+
+			FMOD_Channel_SetVolume(m_pChannelArr[i], m_VolumeArr[eID]);
+			m_fPassedTimeArr[i] = 0.1f;
+			FMOD_System_Update(m_pSystem);
+			return S_OK;
+		}
+
+		if (m_fPassedTimeArr[i] > fOldestTime)
+		{
+			fOldestTime = m_fPassedTimeArr[i];
+			fOldSoundIndx = i;
+		}
+
+	}
+
+
+
+	FMOD_System_PlaySound(m_pSystem, iter->second, nullptr, FALSE, &m_pChannelArr[fOldSoundIndx]);
+
+	FMOD_Channel_SetVolume(m_pChannelArr[fOldSoundIndx], m_VolumeArr[eID]);
+	m_fPassedTimeArr[fOldSoundIndx]  = 0.1f;
 	FMOD_System_Update(m_pSystem);
+	return S_OK;
+
 }
 
-void CSoundMgr::StopSound(CHANNELID eID)
+HRESULT CSoundMgr::PlayBGM(TCHAR * pSoundKey)
 {
-	FMOD_Channel_Stop(m_pChannelArr[eID]);
+	map<TCHAR*, FMOD_SOUND*>::iterator iter;
+
+	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)
+	{
+		return !lstrcmp(pSoundKey, iter.first);
+	});
+
+	if (iter == m_mapSound.end())
+		return E_FAIL;
+
+	FMOD_System_PlaySound(m_pSystem,  iter->second, nullptr, FALSE, &m_pChannelArr[31]);
+	FMOD_Channel_SetMode(m_pChannelArr[31], FMOD_LOOP_NORMAL);
+	FMOD_System_Update(m_pSystem);
+	return S_OK;
 }
 
-void CSoundMgr::StopAll()
+void CSoundMgr::Stop_ChannelSound(CHANNELID eID)
 {
-	for (_uint i = 0; i < CHANNEL_MAXCHANNEL; ++i)
+	if (eID == CHANNEL_BGM)
+		FMOD_Channel_Stop(m_pChannelArr[31]);
+	else
+	{
+		for (_uint i = eID * m_iNumOfEachChannel; i < (eID + 1)* m_iNumOfEachChannel; i++)
+		{
+			FMOD_Channel_Stop(m_pChannelArr[i]);
+			m_fPassedTimeArr[i] = 0;
+		}
+
+	}
+
+}
+
+void CSoundMgr::Stop_AllChannel()
+{
+	for (_uint i = 0; i < 32; ++i) {
+
 		FMOD_Channel_Stop(m_pChannelArr[i]);
+		m_fPassedTimeArr[i] = 0;
+	}
+}
+
+_float CSoundMgr::Get_Channel_Volume(CHANNELID eID)
+{
+	return m_VolumeArr[eID];
+}
+
+_bool CSoundMgr::Get_Channel_IsPaused(CHANNELID eID)
+{
+	return m_PauseArr[eID];
 }
 
 HRESULT CSoundMgr::LoadSoundFile()

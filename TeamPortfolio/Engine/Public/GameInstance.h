@@ -92,15 +92,18 @@ public:
 
 	//SoundMgr
 public:
-	_int  VolumeUp(CHANNELID eID, _float _vol);
-	_int  VolumeDown(CHANNELID eID, _float _vol);
-	_int  BGMVolumeUp(_float _vol);
-	_int  BGMVolumeDown(_float _vol);
-	_int  Pause(CHANNELID eID);
-	void PlaySound(TCHAR* pSoundKey, CHANNELID eID, _float _vol);
-	void PlayBGM(TCHAR* pSoundKey);
-	void StopSound(CHANNELID eID);
-	void StopAll();
+	_int  Channel_VolumeUp(CHANNELID eID, _float _vol);
+	_int  Channel_VolumeDown(CHANNELID eID, _float _vol);
+	_int  Channel_Pause(CHANNELID eID);
+
+	HRESULT PlaySound(TCHAR* pSoundKey, CHANNELID eID);
+	HRESULT PlayBGM(TCHAR* pSoundKey);
+	void Stop_ChannelSound(CHANNELID eID);
+	void Stop_AllChannel();
+
+	_float  Get_Channel_Volume(CHANNELID eID);
+	_bool  Get_Channel_IsPaused(CHANNELID eID);
+
 
 public: /* For. IMGUI Interface */
 	CImguiMgr* GetIMGui();
