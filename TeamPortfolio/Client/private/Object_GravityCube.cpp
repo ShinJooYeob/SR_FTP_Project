@@ -72,6 +72,7 @@ _int CObject_GravityCube::LateUpdate(_float fTimeDelta)
 	if (FAILED(Collision_Gravity(fTimeDelta)))
 		return -1;
 
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS),3.f))
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
 
 	return _int();

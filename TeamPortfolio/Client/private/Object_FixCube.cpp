@@ -51,9 +51,6 @@ _int CObject_FixCube::Update(_float fTimeDelta)
 
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FLEXIBLE, this);
 
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-	RELEASE_INSTANCE(CGameInstance);
-
 	return _int();
 }
 

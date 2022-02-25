@@ -111,6 +111,7 @@ _int CObject_PortalCube_A::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
 
 	return _int();

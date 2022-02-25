@@ -76,6 +76,7 @@ _int CObject_OrbitButton::LateUpdate(_float fTimeDelta)
 		return -1;
 
 
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
