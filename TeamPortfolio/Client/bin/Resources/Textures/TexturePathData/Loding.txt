@@ -1,0 +1,1 @@
+Loding_Texture|none|6|../Bin/Resources/Textures/Loding/LodingFez_%d.png

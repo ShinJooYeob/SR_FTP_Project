@@ -17,6 +17,11 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
+	HRESULT Ready_Layer_Loding(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_MainCamera(const _tchar* pLayerTag);
+
+
+
 private:
 	SCENEID m_eNextSceneIndex = SCENEID::SCENE_END;
 	class CLoader*		m_pLoader;

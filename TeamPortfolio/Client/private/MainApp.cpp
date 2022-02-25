@@ -5,6 +5,8 @@
 
 #include "Camera_Main.h"
 #include "UI_Mouse.h"
+#include "UI_Loding.h"
+
 CMainApp::CMainApp()
 	:m_pGameInstance(GetSingle(CGameInstance))
 {
@@ -97,8 +99,19 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Scene_Change(SCENEID eSceneID)
 {
-
 	if (m_pGameInstance == nullptr)
+		return E_FAIL;
+
+	/* 디폴트 텍스처 프로토타입 생성 */
+	CTexture::TEXTUREDESC TextureDesc{};
+	TextureDesc.szTextFilePath = TEXT("Loding.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Loding_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	//이제 오브젝트도 넣어줘야함
+	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Loding"), CUI_Loding::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 
@@ -111,7 +124,8 @@ HRESULT CMainApp::Scene_Change(SCENEID eSceneID)
 	case SCENEID::SCENE_STAGE3:
 	case SCENEID::SCENE_IMGUISCENE:
 
-		m_pGameInstance->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, eSceneID), SCENEID::SCENE_LOADING);
+		//Scene_Change에 디폴트로 false true 이걸 트루로 바꿔준다?
+		m_pGameInstance->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, eSceneID), SCENEID::SCENE_LOADING,true);
 
 		break;
 
@@ -119,8 +133,6 @@ HRESULT CMainApp::Scene_Change(SCENEID eSceneID)
 		return E_FAIL;
 		break;
 	}
-
-
 
 	return S_OK;
 }

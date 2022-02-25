@@ -141,12 +141,15 @@
     </Filter>
     <Filter Include="01.GameObject\SkyBox">
       <UniqueIdentifier>{5ce1afb8-bc4c-4d78-b19e-932ece10b1af}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="01.GameObject\UI\UI_Common">
       <UniqueIdentifier>{30ab8094-c84e-4236-a10e-fc12d1122091}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\UI\UI_Mouse">
       <UniqueIdentifier>{e13a833b-1100-4ecb-8aa9-e35d09797f3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI\UI_Loding">
+      <UniqueIdentifier>{d3491e29-2e30-4873-aa69-151009025148}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -278,6 +281,9 @@
       <Filter>01.GameObject\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI_Mouse.h" />
+    <ClInclude Include="..\public\UI_Loding.h">
+      <Filter>01.GameObject\UI\UI_Loding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -391,12 +397,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_OrbitCube.cpp">
       <Filter>01.GameObject\SubObject\Object_OrbitCube\Object_OrbitCube</Filter>
-      </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\UI_Mouse.cpp">
       <Filter>01.GameObject\UI\UI_Mouse</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI_Common.cpp">
       <Filter>01.GameObject\UI\UI_Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Loding.cpp">
+      <Filter>01.GameObject\UI\UI_Loding</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
