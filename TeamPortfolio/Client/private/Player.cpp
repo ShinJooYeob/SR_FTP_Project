@@ -45,7 +45,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 		return E_FAIL;
 	Safe_AddRef(m_pCamera_Main);
 
-	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"),TEXT("Idle"),4.f);
+	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"),TEXT("Idle"));
 
 	return S_OK;
 }

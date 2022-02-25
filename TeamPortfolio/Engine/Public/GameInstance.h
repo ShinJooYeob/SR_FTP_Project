@@ -19,6 +19,7 @@ class CLayer;
 class CImguiMgr;
 class CPicking;
 class CFrustumMgr;
+class CSoundMgr;
 
 class ENGINE_DLL CGameInstance final :public CBase
 {
@@ -83,11 +84,23 @@ public: /* For.Input_Device */
 public:
 	_float Easing(_uint eEasingType,_float fStartPoint, _float fTargetPoint,  _float fPassedTime, _float fTotalTime = 1.0f);
 	
+	//FrustumMgr
 public:
-	//이 함수는 매 프레임 당 한번만 실행 어차피 매 프레임 같은 투영, 뷰 행렬일테니까 
-	HRESULT SetUp_WorldFrustumPlane();
-	//이 함수를 이제 객체별로 전달해서 그려야할지 여부를 판단
-	_bool IsNeedToRender(_float3 vWorldPosition, _float fLenth = 1.4142135623f);
+	HRESULT SetUp_WorldFrustumPlane();													//이 함수는 매 프레임 당 한번만 실행 어차피 매 프레임 같은 투영, 뷰 행렬일테니까 
+	_bool IsNeedToRender(_float3 vWorldPosition, _float fLenth = 1.4142135623f);		//이 함수를 이제 객체별로 전달해서 그려야할지 여부를 판단
+
+
+	//SoundMgr
+public:
+	_int  VolumeUp(CHANNELID eID, _float _vol);
+	_int  VolumeDown(CHANNELID eID, _float _vol);
+	_int  BGMVolumeUp(_float _vol);
+	_int  BGMVolumeDown(_float _vol);
+	_int  Pause(CHANNELID eID);
+	void PlaySound(TCHAR* pSoundKey, CHANNELID eID, _float _vol);
+	void PlayBGM(TCHAR* pSoundKey);
+	void StopSound(CHANNELID eID);
+	void StopAll();
 
 public: /* For. IMGUI Interface */
 	CImguiMgr* GetIMGui();
@@ -108,6 +121,8 @@ private:
 	CImguiMgr*			m_pImguiMgr = nullptr;
 	CPicking*			m_pPickingMgr = nullptr;
 	CFrustumMgr*		m_pFrustumMgr = nullptr;
+	CSoundMgr*			m_pSoundMgr = nullptr;
+
 public:
 	static void Release_Engine();
 	virtual void Free() override;

@@ -130,6 +130,9 @@
     <Filter Include="01.Utility\08.FustumMgr">
       <UniqueIdentifier>{18d8e6c9-48ed-4ce4-a9e6-953b857d70ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\09.SoundMgr">
+      <UniqueIdentifier>{03d44a91-89af-4470-bf97-3d157792b7c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -248,6 +251,9 @@
     </ClCompile>
     <ClCompile Include="..\private\FrustumMgr.cpp">
       <Filter>01.Utility\08.FustumMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SoundMgr.cpp">
+      <Filter>01.Utility\09.SoundMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,6 +394,12 @@
     </ClInclude>
     <ClInclude Include="..\public\FrustumMgr.h">
       <Filter>01.Utility\08.FustumMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SoundMgr.h">
+      <Filter>01.Utility\09.SoundMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_Enum.h">
+      <Filter>99.Define</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

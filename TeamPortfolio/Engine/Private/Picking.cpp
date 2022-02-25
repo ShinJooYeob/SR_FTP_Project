@@ -94,7 +94,7 @@ HRESULT CPicking::Transform_ToLocalSpace(_Matrix WorldMatrixInverse)
 _bool CPicking::isPick(_float3* pLocalPoint, _float3 *pOut)
 {
 	_float fU, fV, fDist;
-	if (true == D3DXIntersectTri(&pLocalPoint[0], &pLocalPoint[1], &pLocalPoint[2], &m_vLocalRayPos, &m_vLocalRayDir, &fU, &fV, &fDist))
+	if (D3DXIntersectTri(&pLocalPoint[0], &pLocalPoint[1], &pLocalPoint[2], &m_vLocalRayPos, &m_vLocalRayDir, &fU, &fV, &fDist))
 	{
 		*pOut = m_vLocalRayPos + m_vLocalRayDir*fDist;
 		return true;
@@ -108,7 +108,7 @@ _bool CPicking::isPick(_float3* pLocalPoint, _float3 *pOut)
 _bool CPicking::isPick_UV(_float3 * pLocalPoint, _float3 * pOut, _float2 * pOutUV)
 {
 	_float fDist;
-	if (true == D3DXIntersectTri(&pLocalPoint[0], &pLocalPoint[1], &pLocalPoint[2], &m_vLocalRayPos, &m_vLocalRayDir, &pOutUV->x, &pOutUV->y, &fDist))
+	if (D3DXIntersectTri(&pLocalPoint[0], &pLocalPoint[1], &pLocalPoint[2], &m_vLocalRayPos, &m_vLocalRayDir, &pOutUV->x, &pOutUV->y, &fDist))
 	{
 		*pOut = m_vLocalRayPos + m_vLocalRayDir * fDist;
 		return true;

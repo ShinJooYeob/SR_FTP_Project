@@ -268,6 +268,7 @@ enum SHOPCASE
 	SHOP_SELL,
 	SHOP_END
 };
+
 enum EasingTypeID
 {
 	TYPE_Linear = 0,

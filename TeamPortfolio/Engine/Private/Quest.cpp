@@ -58,7 +58,8 @@ _int CQuest::Get_QuestNeed(_int eQuest)
 		iCountNeed = m_iQuestGoalIndex[eQuest] - m_iQuestIndex[eQuest];
 		return iCountNeed;
 	}
-		
+
+	return -1;
 }
 
 

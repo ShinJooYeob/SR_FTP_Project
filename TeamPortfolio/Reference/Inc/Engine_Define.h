@@ -2,6 +2,7 @@
 #pragma warning(disable : 4251)
 
 
+
 #include <d3d9.h>
 #include <d3dx9.h>
 
@@ -28,8 +29,18 @@
 #include <queue>
 #include <algorithm>
 
-
 using namespace std;
+
+/////////비디오 포함헤더
+#include <Vfw.h>
+#pragma comment(lib, "vfw32.lib")
+
+////////사운드 포함 헤더/////////////
+#include <io.h>
+#include "fmod.h"
+//#include "fmod.hpp"
+#pragma comment(lib, "fmod_vc.lib")
+
 
 #ifdef _DEBUG
 
@@ -52,6 +63,7 @@ using namespace std;
 #include "Engine_Macro.h"
 #include "Engine_Function.h"
 #include "Engine_Easing.h"
+#include "Engine_Enum.h"
 
 
 using namespace Engine;

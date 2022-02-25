@@ -9,6 +9,7 @@
 #include "EasingMgr.h"
 #include "Picking.h"
 #include "FrustumMgr.h"
+#include "SoundMgr.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -23,7 +24,8 @@ CGameInstance::CGameInstance()
 	m_pImguiMgr(GetSingle(CImguiMgr)),
 	m_pEasingMgr(GetSingle(CEasingMgr)),
 	m_pPickingMgr(GetSingle(CPicking)),
-	m_pFrustumMgr(GetSingle(CFrustumMgr))
+	m_pFrustumMgr(GetSingle(CFrustumMgr)),
+	m_pSoundMgr(GetSingle(CSoundMgr))
 {
 	m_pThreadMgr->AddRef();
 	m_pTimerMgr->AddRef();
@@ -36,13 +38,14 @@ CGameInstance::CGameInstance()
 	m_pImguiMgr->AddRef();
 	m_pPickingMgr->AddRef();
 	m_pFrustumMgr->AddRef();
+	m_pSoundMgr->AddRef();
 }
 
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst,const CGraphic_Device::GRAPHICDESC & GraphicDesc, _uint iMaxSceneNum, LPDIRECT3DDEVICE9 * ppOut, _float fDoubleInterver)
 {
 	if (m_pGraphicDevice == nullptr || m_pObjectMgr == nullptr || m_pComponenetMgr == nullptr || 
-		m_pSceneMgr == nullptr || m_pPickingMgr == nullptr || m_pFrustumMgr == nullptr)
+		m_pSceneMgr == nullptr || m_pPickingMgr == nullptr || m_pFrustumMgr == nullptr || m_pSoundMgr == nullptr)
 		return E_FAIL;
 
 	//if (FAILED(m_pSeverMgr->ConnectSever()))
@@ -66,7 +69,9 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst,const CGraphic_Device::
 		return E_FAIL;
 
 	
-	FAILED_CHECK(m_pFrustumMgr->Initialize_FrustumMgr(*ppOut))
+	FAILED_CHECK(m_pFrustumMgr->Initialize_FrustumMgr(*ppOut));
+
+	FAILED_CHECK(m_pSoundMgr->Initialize_FMOD());
 
 	return S_OK;
 }
@@ -384,6 +389,69 @@ _bool CGameInstance::IsNeedToRender(_float3 vWorldPosition, _float fLenth)
 	return m_pFrustumMgr->IsNeedToRender(vWorldPosition, fLenth);
 }
 
+_int CGameInstance::VolumeUp(CHANNELID eID, _float _vol)
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+
+	return m_pSoundMgr->VolumeUp(eID, _vol);
+}
+
+_int CGameInstance::VolumeDown(CHANNELID eID, _float _vol)
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+
+	return m_pSoundMgr->VolumeDown(eID, _vol);
+}
+
+_int CGameInstance::BGMVolumeUp(_float _vol)
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+
+	return m_pSoundMgr->BGMVolumeUp( _vol);
+}
+
+_int CGameInstance::BGMVolumeDown(_float _vol)
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+
+	return m_pSoundMgr->BGMVolumeDown(_vol);
+}
+
+_int CGameInstance::Pause(CHANNELID eID)
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+
+	return m_pSoundMgr->Pause(eID);
+}
+
+void CGameInstance::PlaySound(TCHAR * pSoundKey, CHANNELID eID, _float _vol)
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+
+	return m_pSoundMgr->PlaySound(pSoundKey, eID, _vol);
+}
+
+void CGameInstance::PlayBGM(TCHAR * pSoundKey)
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+
+	return m_pSoundMgr->PlayBGM(pSoundKey);
+}
+
+void CGameInstance::StopSound(CHANNELID eID)
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+
+	return m_pSoundMgr->StopSound(eID);
+}
+
+void CGameInstance::StopAll()
+{
+	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
+
+	return m_pSoundMgr->StopAll();
+}
+
 
 
 
@@ -441,6 +509,10 @@ void CGameInstance::Release_Engine()
 	
 	if (0 != GetSingle(CTimeMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com TimeMgr ");	
+
+	if (0 != GetSingle(CSoundMgr)->DestroyInstance())
+		MSGBOX("Failed to Release Com CSoundMgr ");
+
 	if (0 != GetSingle(CImguiMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com CImguiMgr ");
 
@@ -449,6 +521,7 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pSoundMgr);
 	Safe_Release(m_pThreadMgr);
 	Safe_Release(m_pObjectMgr);
 	Safe_Release(m_pSceneMgr);

@@ -208,7 +208,7 @@ HRESULT CCamera::Set_NewLookPoint(_float3 lookat)
 	m_pTransform->Set_MatrixState(CTransform::STATE_RIGHT, vRight);
 	m_pTransform->Set_MatrixState(CTransform::STATE_UP, vUp);
 	m_pTransform->Set_MatrixState(CTransform::STATE_LOOK, vLook);
-
+	return S_OK;
 }
 
 void CCamera::Free()
