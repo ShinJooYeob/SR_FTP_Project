@@ -70,6 +70,8 @@ private:
 	_float3					m_vClimingBlock;
 	_float3					m_vReturnStair = NOT_EXIST_BLOCK;
 
+	_float3					m_vCameraPivot = _float3(3, 3, -14.f);
+
 	CGameObject*			m_pCarryObject = nullptr;
 	CTransform*				m_pCarryObjectTransform = nullptr;
 
@@ -84,6 +86,7 @@ private:
 	HRESULT			Find_FootHold_Object(_float fDeltaTime);
 	HRESULT			Set_PosOnFootHoldObject(_float fDeltaTime);
 	HRESULT			Set_CamPosXYZ(_float fDeltaTime);
+
 
 
 	HRESULT SetUp_RenderState();

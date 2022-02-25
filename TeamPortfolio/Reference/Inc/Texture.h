@@ -36,6 +36,7 @@ public:
 
 	const _tchar* Get_NowTextureTag() { return m_TagNowTexture; };
 	_bool Get_IsReturnTexture() { return (m_szReturnTag != nullptr); };
+	_bool Get_IsWaitTexture() { return m_bIsWaitTexture; };
 
 	HRESULT Bind_Texture_AutoFrame(_float fTimeDelta);
 	HRESULT Bind_Texture(_uint iTextureIndex = 0, _uint iStageIndex = 0);

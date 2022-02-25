@@ -33,7 +33,8 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_fNowJumpPower = m_fJumpPower = 10.f;
+	m_fNowJumpPower = 0;
+	m_fJumpPower = 10.f;
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
 	//m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
 
@@ -44,7 +45,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 		return E_FAIL;
 	Safe_AddRef(m_pCamera_Main);
 
-	m_ComTexture->Change_TextureLayer(TEXT("Idle"));
+	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"),TEXT("Idle"),4.f);
 
 	return S_OK;
 }
@@ -89,6 +90,7 @@ _int CPlayer::Update(_float fDeltaTime)
 			}
 			if (m_fNowJumpPower < 0)
 				m_fNowJumpPower = -fDeltaTime;
+	
 
 				m_ComTexture->Change_TextureLayer_Wait(TEXT("jump_up"));
 			m_bPause = false;
@@ -208,6 +210,13 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 		}
 		if (m_fDeadNPauseTime < 4.0f)
 			m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
+		
+	}
+	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_OrbitButton"))) 
+	{
+		if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_LSHIFT) & DIS_Down)
+			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("buttonclick"), TEXT("Idle"), 4.f);
+
 	}
 	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Terrain)))
 	{
@@ -454,7 +463,7 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 		}
 		else {
 
-			if (!m_bIsCliming && !(m_ComTexture->Get_IsReturnTexture()))
+			if (!m_bIsCliming && !(m_ComTexture->Get_IsReturnTexture()) && !m_ComTexture->Get_IsWaitTexture())
 			{
 				m_ComTexture->Change_TextureLayer(TEXT("Idle"));
 			}
@@ -728,6 +737,72 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 
 HRESULT CPlayer::Set_CamPosXYZ(_float fDeltaTime)
 {
+
+	CGameInstance* pInstance = GET_INSTANCE(CGameInstance);
+	if (m_fJumpPower && m_pCarryObject == nullptr && !m_bPause && !m_bIsDead)
+	{
+		if (pInstance->Get_DIKeyState(DIK_I) & DIS_Press)
+		{
+			if (pInstance->Get_DIKeyState(DIK_I) & DIS_Down)
+				m_ComTexture->Change_TextureLayer_Wait(TEXT("lookup"),4.f);
+			else if (pInstance->Get_DIKeyState(DIK_I) & DIS_Up)
+				m_ComTexture->Change_TextureLayer(TEXT("Idle"));
+			else {
+				m_vCameraPivot.y += fDeltaTime*5.f;
+				if (m_vCameraPivot.y > 6.f)
+					m_vCameraPivot.y = 6.f;
+			}
+		}
+
+		else if (pInstance->Get_DIKeyState(DIK_K) & DIS_Press)
+		{
+			if (pInstance->Get_DIKeyState(DIK_K) & DIS_Down)
+				m_ComTexture->Change_TextureLayer_Wait(TEXT("lookdown"), 4.f);
+			else if (pInstance->Get_DIKeyState(DIK_K) & DIS_Up)
+				m_ComTexture->Change_TextureLayer(TEXT("Idle"));
+			else {
+				m_vCameraPivot.y -= fDeltaTime*5.f;
+				if (m_vCameraPivot.y < -6.f)
+					m_vCameraPivot.y = -6.f;
+			}
+		}
+		else if (pInstance->Get_DIKeyState(DIK_J) & DIS_Press)
+		{
+			if (pInstance->Get_DIKeyState(DIK_J) & DIS_Down)
+				m_ComTexture->Change_TextureLayer_Wait(TEXT("lookleft"), 4.f);
+			else if (pInstance->Get_DIKeyState(DIK_J) & DIS_Up)
+				m_ComTexture->Change_TextureLayer(TEXT("Idle"));
+			else {
+				m_vCameraPivot.x -= fDeltaTime * 8.f;
+				if (m_vCameraPivot.x < -10.f)
+					m_vCameraPivot.x = -10.f;
+			}
+
+		}
+		else if (pInstance->Get_DIKeyState(DIK_L) & DIS_Press)
+		{
+			if (pInstance->Get_DIKeyState(DIK_L) & DIS_Down)
+			m_ComTexture->Change_TextureLayer_Wait(TEXT("lookright"), 4.f);
+			else if (pInstance->Get_DIKeyState(DIK_L) & DIS_Up)
+				m_ComTexture->Change_TextureLayer(TEXT("Idle"));
+			else {
+				m_vCameraPivot.x += fDeltaTime * 8.f;
+				if (m_vCameraPivot.x > 10.f)
+					m_vCameraPivot.x = 10.f;
+			}
+
+		}
+		else
+			m_vCameraPivot = _float3(3.f, 3.f, -14.f);
+
+
+	}
+	else
+		m_vCameraPivot = _float3(3.f, 3.f, -14.f);
+
+
+
+
 	CTransform* pCamTransform = m_pCamera_Main->Get_Camera_Transform();
 	_Matrix matCamWorld = pCamTransform->Get_WorldMatrix();
 
@@ -738,20 +813,20 @@ HRESULT CPlayer::Set_CamPosXYZ(_float fDeltaTime)
 
 	if (m_bPause && m_fDeadNPauseTime > m_fTotalPauseTime &&m_fDeadNPauseTime < m_fTotalPauseTime + 1) 
 	{
-		vNewCamPos.x = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
-			vPlayerViewPos.x + 3.f, fDeltaTime, fDeltaTime * 1.8f);
-		vNewCamPos.y = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
-			vPlayerViewPos.y + 3.f, fDeltaTime, fDeltaTime * 1.8f);
-		vNewCamPos.z = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
-			vPlayerViewPos.z - 14.f, fDeltaTime, fDeltaTime * 1.8f);
+		vNewCamPos.x = pInstance->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.x + m_vCameraPivot.x, fDeltaTime, fDeltaTime * 1.8f);
+		vNewCamPos.y = pInstance->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.y + m_vCameraPivot.y, fDeltaTime, fDeltaTime * 1.8f);
+		vNewCamPos.z = pInstance->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.z + m_vCameraPivot.z, fDeltaTime, fDeltaTime * 1.8f);
 	}
 	else {
-		vNewCamPos.x = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
-			vPlayerViewPos.x + 3.f, fDeltaTime, fDeltaTime * 2.5f);
-		vNewCamPos.y = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
-			vPlayerViewPos.y + 3.f, fDeltaTime, fDeltaTime * 2.5f);
-		vNewCamPos.z = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
-			vPlayerViewPos.z - 14.f, fDeltaTime, fDeltaTime *2.5f);
+		vNewCamPos.x = pInstance->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.x + m_vCameraPivot.x, fDeltaTime, fDeltaTime * 2.5f);
+		vNewCamPos.y = pInstance->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.y + m_vCameraPivot.y, fDeltaTime, fDeltaTime * 2.5f);
+		vNewCamPos.z = pInstance->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.z + m_vCameraPivot.z, fDeltaTime, fDeltaTime *2.5f);
 
 	}
 	
@@ -759,6 +834,10 @@ HRESULT CPlayer::Set_CamPosXYZ(_float fDeltaTime)
 
 
 	pCamTransform->Set_MatrixState(CTransform::STATE_POS, vNewCamPos);
+
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 

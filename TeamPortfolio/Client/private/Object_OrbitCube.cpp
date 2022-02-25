@@ -46,7 +46,6 @@ HRESULT CObject_OrbitCube::Initialize_Clone(void * pArg)
 	m_ComTexture->Change_TextureLayer(TEXT("OrbitCube"));
 
 
-
 	//이렇게 구한 부모 행렬과 각 각의 월드 행렬과 곱해줘야한다.?
 
 

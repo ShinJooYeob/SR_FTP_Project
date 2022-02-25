@@ -44,6 +44,7 @@ HRESULT CObject_OrbitButton::Initialize_Clone(void * pArg)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_tOrbitDesc.vButtonPos);
 
 	m_ComTexture->Change_TextureLayer(TEXT("OrbitCube"));
+	m_Layer_Tag = TEXT("Layer_OrbitButton");
 
 	return S_OK;
 }
