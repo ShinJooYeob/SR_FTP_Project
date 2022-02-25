@@ -54,8 +54,9 @@ private:
 
 	CCollision*				m_pCollisionCom = nullptr;
 
-	_float					m_Seconds = 0.f;
+	class CPlayer*			m_pPlayer = nullptr;
 
+	_float					m_Seconds = 0.f;
 	_float					m_fTimeDelta;
 
 	class CObject_PortalCube_B*		m_pTargetCube = nullptr;

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Player.h"
 #include "..\public\Object_PortalCube_A.h"
 #include "Object_PortalCube_B.h"
 
@@ -75,13 +76,30 @@ _int CObject_PortalCube_A::Update(_float fTimeDelta)
 
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
 
-	if (m_Seconds > 0 && m_Seconds < 3)
+	if (m_Seconds > 0 && m_Seconds < 7.f)
 	{
 		m_Seconds += fTimeDelta;
-		if (m_Seconds > 3.f)
+		if (m_Seconds > 7.f)
 			m_Seconds = 0;
-	}
 
+		if (m_pPlayer != nullptr)
+		{
+
+			if (m_Seconds < 3.f)
+			{
+				CTransform* vPlayerTransform = (CTransform*)(m_pPlayer->Get_Component(TAG_COM(Com_Transform)));
+				_float3 vObjPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+				vPlayerTransform->MovetoTarget(vObjPos, fTimeDelta);
+
+			}
+			else {
+				Object_Transfer(m_pPlayer, fTimeDelta);
+				m_pPlayer = nullptr;
+			}
+
+		}
+
+	}
 	return _int();
 }
 
@@ -128,9 +146,15 @@ _int CObject_PortalCube_A::LateRender()
 
 _int CObject_PortalCube_A::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	if (!m_Seconds &&!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Player")))
+	if (m_Seconds == 0 &&!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Player")))
 	{
-		Object_Transfer(pDestObjects, fDeltaTime);
+		m_pPlayer = (CPlayer*)pDestObjects;
+		m_pPlayer->Set_PlayerPause(3.0f, TEXT("suckIn"));
+
+		m_Seconds += fDeltaTime;
+		m_pTargetCube->UsedPotal(fDeltaTime);
+
+		//Object_Transfer(pDestObjects, fDeltaTime);
 	}
 
 	return _int();
@@ -138,24 +162,16 @@ _int CObject_PortalCube_A::Obsever_On_Trigger(CGameObject * pDestObjects, _float
 
 _int CObject_PortalCube_A::Object_Transfer(CGameObject * pDestObjects, _float fDeltaTime)
 {
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
 
 		if (m_pTargetCube == nullptr || pDestObjects == nullptr)
 			return -1;
 
-		m_Seconds += fDeltaTime;
-		m_pTargetCube->UsedPotal(fDeltaTime);
-
 		CTransform* Player = (CTransform*)(pDestObjects->Get_Component(TAG_COM(Com_Transform)));
 		CTransform* PortalCube_B = (CTransform*)(m_pTargetCube->Get_Component(TAG_COM(Com_Transform)));
 		_float3 PortalCube_B_Pos = PortalCube_B->Get_MatrixState(CTransform::STATE_POS);
-		//PortalCube_B_Pos.y += 1.f;
 		Player->Set_MatrixState(CTransform::STATE_POS, PortalCube_B_Pos);
 
 
-
-	RELEASE_INSTANCE(CGameInstance);
 
 	return _int();
 }

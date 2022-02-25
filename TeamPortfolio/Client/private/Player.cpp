@@ -59,15 +59,40 @@ _int CPlayer::Update(_float fDeltaTime)
 		return E_FAIL;
 
 	if (m_bIsDead) {
-		m_fDeadTime += fDeltaTime;
+		m_fDeadNPauseTime += fDeltaTime;
 
-		if (m_fDeadTime > 3.f) {
+
+		if (m_fDeadNPauseTime > 3.f) {
 			m_bIsDead = false;
 			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0, 1.f, 0));
 			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
 			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
 		}
 
+	}
+	else if (m_bPause)
+	{
+		m_fDeadNPauseTime += fDeltaTime;
+
+		if (m_pCarryObject != nullptr && m_fDeadNPauseTime < 2.f)
+		{
+			_float CarryObjectScale = GetSingle(CGameInstance)->Easing(TYPE_Linear, 1, 0, m_fDeadNPauseTime,2.f);
+			CTransform* pCarryObjectTransform = ((CTransform*)(m_pCarryObject->Get_Component(TAG_COM(Com_Transform))));
+			pCarryObjectTransform->Scaled({ CarryObjectScale ,CarryObjectScale ,CarryObjectScale });
+			pCarryObjectTransform->Set_MatrixState(CTransform::STATE_POS, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 0.35f, 0));
+		}
+
+		if (m_fDeadNPauseTime > m_fTotalPauseTime + 1)
+		{
+			if (m_pCarryObject != nullptr) {
+				((CTransform*)(m_pCarryObject->Get_Component(TAG_COM(Com_Transform))))->Scaled({ 1.f ,1.f,1.f});
+			}
+			if (m_fNowJumpPower < 0)
+				m_fNowJumpPower = -fDeltaTime;
+
+				m_ComTexture->Change_TextureLayer_Wait(TEXT("jump_up"));
+			m_bPause = false;
+		}
 	}
 	else {
 
@@ -97,12 +122,12 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
 
-	if (!m_bIsDead) 
+	if (!m_bIsDead && !m_bPause)
 	{
 		if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
 			return E_FAIL;
 	}
-	if (FAILED(Set_CamPosXY(fDeltaTime)))
+	if (FAILED(Set_CamPosXYZ(fDeltaTime)))
 		return E_FAIL;
 
 
@@ -178,10 +203,10 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 		if (!m_bIsDead)
 		{
 			m_bIsDead = true;
-			m_fDeadTime = 0;
+			m_fDeadNPauseTime = 0;
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("suckIn"));
 		}
-		if (m_fDeadTime < 4.0f)
+		if (m_fDeadNPauseTime < 4.0f)
 			m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Terrain)))
@@ -189,6 +214,15 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 	return _int();
+}
+
+void CPlayer::Set_PlayerPause(_float TotalPauseTime, const _tchar* TagAnim, _float fFrameTime)
+{
+	m_bPause = true;
+	m_fDeadNPauseTime = 0;
+	m_fTotalPauseTime = TotalPauseTime;
+	m_szReturnAnimTag = m_ComTexture->Get_NowTextureTag();
+	m_ComTexture->Change_TextureLayer_Wait(TagAnim, fFrameTime);
 }
 
 HRESULT CPlayer::SetUp_Components()
@@ -692,7 +726,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 	return S_OK;
 }
 
-HRESULT CPlayer::Set_CamPosXY(_float fDeltaTime)
+HRESULT CPlayer::Set_CamPosXYZ(_float fDeltaTime)
 {
 	CTransform* pCamTransform = m_pCamera_Main->Get_Camera_Transform();
 	_Matrix matCamWorld = pCamTransform->Get_WorldMatrix();
@@ -702,12 +736,25 @@ HRESULT CPlayer::Set_CamPosXY(_float fDeltaTime)
 
 	_float3 vNewCamPos = { 0,0,0 };
 
+	if (m_bPause && m_fDeadNPauseTime > m_fTotalPauseTime &&m_fDeadNPauseTime < m_fTotalPauseTime + 1) 
+	{
+		vNewCamPos.x = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.x + 3.f, fDeltaTime, fDeltaTime * 1.8f);
+		vNewCamPos.y = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.y + 3.f, fDeltaTime, fDeltaTime * 1.8f);
+		vNewCamPos.z = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.z - 14.f, fDeltaTime, fDeltaTime * 1.8f);
+	}
+	else {
+		vNewCamPos.x = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.x + 3.f, fDeltaTime, fDeltaTime * 2.5f);
+		vNewCamPos.y = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.y + 3.f, fDeltaTime, fDeltaTime * 2.5f);
+		vNewCamPos.z = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
+			vPlayerViewPos.z - 14.f, fDeltaTime, fDeltaTime *2.5f);
 
-	vNewCamPos.x = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
-		vPlayerViewPos.x + 3.f, fDeltaTime, fDeltaTime * 2.5f);
-	vNewCamPos.y = GetSingle(CGameInstance)->Easing(TYPE_QuarticIn, 0,
-		vPlayerViewPos.y + 3.f, fDeltaTime, fDeltaTime * 2.5f);
-
+	}
+	
 	vNewCamPos = vNewCamPos.PosVector_Matrix(matCamWorld);
 
 

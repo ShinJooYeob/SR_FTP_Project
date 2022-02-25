@@ -33,6 +33,8 @@ public:
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)override;
 
+	void Set_PlayerPause(_float TotalPauseTime, const _tchar* TagAnim, _float fFrameTime = 6.0f);
+
 private:
 	CTexture*				m_ComTexture = nullptr;
 	CTransform*				m_ComTransform = nullptr;
@@ -53,7 +55,10 @@ private:
 
 
 	_bool					m_bIsDead = false;
-	_float					m_fDeadTime = 0;
+	_float					m_fDeadNPauseTime = 0;
+	_float					m_fTotalPauseTime = 0;
+	_bool					m_bPause = false;
+	const _tchar*			m_szReturnAnimTag = nullptr;
 
 	_bool					m_bTextureReverse = false;
 	_bool					m_bIsShdow = false;
@@ -78,7 +83,7 @@ private:
 
 	HRESULT			Find_FootHold_Object(_float fDeltaTime);
 	HRESULT			Set_PosOnFootHoldObject(_float fDeltaTime);
-	HRESULT			Set_CamPosXY(_float fDeltaTime);
+	HRESULT			Set_CamPosXYZ(_float fDeltaTime);
 
 
 	HRESULT SetUp_RenderState();

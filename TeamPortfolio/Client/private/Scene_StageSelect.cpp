@@ -129,7 +129,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 	{
 		for (_uint j = 0; j < 6; j++) {
 
-			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)-6, (_float)j)))
+			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i + 30, (_float)-24, (_float)j)))
 				return E_FAIL;
 		}
 	}
@@ -247,7 +247,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Object_PortalCube(const _tchar * pLayerT
 	CObject_PortalCube_A::POTALDESC tagDesc;
 
 	tagDesc.vPos_A_Cube = _float3(3,3,0);
-	tagDesc.vPos_B_Cube = _float3(5,-3.f,0);
+	tagDesc.vPos_B_Cube = _float3(30,-20.f,0);
 	tagDesc.iNowScene = SCENEID::SCENE_STAGESELECT;
 
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_Potal"), TEXT("Prototype_GameObject_Object_PortalCube_A"),&tagDesc))
