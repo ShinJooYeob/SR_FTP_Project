@@ -76,6 +76,7 @@ using namespace std;
 #include <afxwin.h>
 #include <afxwin.h>
 #include <afxwin.h>
+#include <afxwin.h>
 
 #pragma warning(disable : 4005)
 

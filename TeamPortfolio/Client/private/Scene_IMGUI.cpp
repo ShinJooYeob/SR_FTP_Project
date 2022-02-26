@@ -13,12 +13,9 @@ CScene_IMGUI::CScene_IMGUI(LPDIRECT3DDEVICE9 GraphicDevice)
 HRESULT CScene_IMGUI::Initialize()
 {
 	if (FAILED(__super::Initialize()))
-		return E_FAIL;
-	
+		return E_FAIL;	
 
 	FAILED_CHECK(Ready_Layer_BackGround(TAG_LAY(Layer_BackGround)));
-	FAILED_CHECK(Ready_Layer_BackGround(TAG_LAY(Layer_BackGround)));
-
 	return S_OK;
 }
 

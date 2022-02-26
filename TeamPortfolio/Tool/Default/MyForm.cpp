@@ -73,6 +73,7 @@ BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_LBN_SELCHANGE(IDC_LIST3, &CMyForm::OnLbnSelchangeList_ObjectSelect)
 	ON_BN_CLICKED(IDC_BUTTON15, &CMyForm::OnBnClickedButton_Delete)
 	ON_WM_ERASEBKGND()
+	ON_BN_CLICKED(IDC_BUTTON1, &CMyForm::OnBnClickedButtonCubeMap)
 END_MESSAGE_MAP()
 
 // CMyForm 진단입니다.
@@ -136,6 +137,17 @@ void CMyForm::OnTransform()
 	m_TransformDialog.ShowWindow(SW_SHOW);  // 창 모양으로 출력
 
 }
+void CMyForm::OnBnClickedButtonCubeMap()
+{
+
+	if (nullptr == m_CubeMapToolDialog.GetSafeHwnd())
+		m_CubeMapToolDialog.Create(IDD_MYCUBEMAP);	// 해당 id 에 맞는 다이얼로그 생성
+
+	m_CubeMapToolDialog.ShowWindow(SW_SHOW);  // 창 모양으로 출력
+
+}
+
+
 
 void CMyForm::OnObjectSave()
 {
@@ -253,3 +265,5 @@ BOOL CMyForm::OnEraseBkgnd(CDC* pDC)
 
 	return CFormView::OnEraseBkgnd(pDC);
 }
+
+

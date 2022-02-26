@@ -3,6 +3,7 @@
 #include "PathFind.h"
 #include "Trans_Dialog.h"
 #include "MapTool.h"
+#include "CubeMapDialog.h"
 
 // CMyForm Æû ºäÀÔ´Ï´Ù.
 
@@ -30,6 +31,8 @@ public:
 	CPathFind		m_PathFind;
 	CTrans_Dialog	m_TransformDialog;
 	CMapTool		m_MapToolDialog;
+	CCubeMapDialog	m_CubeMapToolDialog;
+
 
 	CButton m_CheckCameraEnable;
 	CButton m_CheckWirframeEnable;
@@ -60,4 +63,5 @@ public:
 	afx_msg void OnLbnSelchangeList_ObjectSelect();
 	afx_msg void OnBnClickedButton_Delete();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnBnClickedButtonCubeMap();
 };
