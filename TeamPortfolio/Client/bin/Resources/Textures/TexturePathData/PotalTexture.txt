@@ -1,2 +1,0 @@
-Potal|Potal_A|8|../bin/Resources/Textures/Potal/Potal_A/Potal_A_%d.png
-Potal|Potal_B|8|../bin/Resources/Textures/Potal/Potal_B/Potal_B_%d.png

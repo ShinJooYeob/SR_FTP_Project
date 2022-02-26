@@ -1,3 +1,0 @@
-Cube|FixedCube|1|../Bin/Resources/Textures/CubeTexture/FixedCube/FixCube.dds
-Cube|GravityCube|1|../Bin/Resources/Textures/CubeTexture/GravityCube/GravituCube.dds
-Cube|PotalCube|27|../Bin/Resources/Textures/CubeTexture/PotalCube/CubeTexture_%d.dds

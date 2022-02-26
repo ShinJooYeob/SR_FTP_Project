@@ -1,6 +1,0 @@
-Cube_Texture|AppearCube|2|../Bin/Resources/Textures/CubeTexture/AppearCube/AppearCube_%d.dds
-Cube_Texture|DefaultCube|10|../Bin/Resources/Textures/CubeTexture/DefaultCube/DefaultCube_%d.dds
-Cube_Texture|EscalatorCube|1|../Bin/Resources/Textures/CubeTexture/EscalatorCube/EscalatorCube_%d.dds
-Cube_Texture|FixedCube|4|../Bin/Resources/Textures/CubeTexture/FixedCube/FixedCube_%d.dds
-Cube_Texture|OrbitCube|3|../Bin/Resources/Textures/CubeTexture/OrbitCube/OrbitCube_%d.dds
-Cube_Texture|TerrainCube|7|../Bin/Resources/Textures/CubeTexture/TerrainCube/TerrainCube_%d.dds

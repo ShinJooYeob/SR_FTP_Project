@@ -1,1 +1,0 @@
-MiniMap|Tex1|2|../Bin/Resources/Textures/UI/MinimapUI/MinimapUI_%d.png
