@@ -133,6 +133,9 @@
     <Filter Include="01.Utility\09.SoundMgr">
       <UniqueIdentifier>{03d44a91-89af-4470-bf97-3d157792b7c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\10.FontMgr">
+      <UniqueIdentifier>{fe0dafe5-2d3c-4000-a66d-30a5d1a95c88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -254,6 +257,9 @@
     </ClCompile>
     <ClCompile Include="..\private\SoundMgr.cpp">
       <Filter>01.Utility\09.SoundMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FontMgr.cpp">
+      <Filter>01.Utility\10.FontMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Enum.h">
       <Filter>99.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FontMgr.h">
+      <Filter>01.Utility\10.FontMgr</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

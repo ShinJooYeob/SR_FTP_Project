@@ -45,7 +45,7 @@ private:
 	FMOD_CHANNEL* m_pChannelArr[32];
 	// 사운드 ,채널 객체 및 장치를 관리하는 객체 
 	FMOD_SYSTEM* m_pSystem;
-	_uint		m_iNumOfEachChannel;
+	const _uint		m_iNumOfEachChannel;
 public:
 	virtual void Free() override;
 };

@@ -5,6 +5,7 @@
 IMPLEMENT_SINGLETON(CSoundMgr)
 
 CSoundMgr::CSoundMgr()
+	:m_iNumOfEachChannel(_uint(32 / (CHANNEL_MAXCHANNEL - 1)))
 {
 }
 HRESULT CSoundMgr::Initialize_FMOD()
@@ -13,9 +14,6 @@ HRESULT CSoundMgr::Initialize_FMOD()
 
 	// 1. 시스템 포인터, 2. 사용할 가상채널 수 , 초기화 방식) 
 	FMOD_System_Init(m_pSystem, 32, FMOD_INIT_NORMAL, NULL);
-
-
-	m_iNumOfEachChannel = _uint( 32 / CHANNEL_MAXCHANNEL);
 
 	for (_uint i = 0; i<CHANNEL_MAXCHANNEL;i++)
 	{
@@ -105,6 +103,9 @@ int CSoundMgr::Channel_Pause(CHANNELID eID)
 
 HRESULT CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID)
 {
+	if (eID == CHANNEL_BGM)
+		return E_FAIL;
+
 	map<TCHAR*, FMOD_SOUND*>::iterator iter;
 
 	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)

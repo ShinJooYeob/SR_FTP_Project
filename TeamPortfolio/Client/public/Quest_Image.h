@@ -59,6 +59,9 @@ private:	_float			m_fFrame = 0.f;
 			bool			m_bIsPress = false;
 			_float4			m_vUIDesc;
 			_tchar*			m_BiggerTag;
+
+
+			_float			m_fTextFrame = 0;
 public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
 	HRESULT			Update_UIList(_float fTimeDelta);

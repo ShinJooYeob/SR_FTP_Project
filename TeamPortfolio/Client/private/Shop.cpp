@@ -157,8 +157,6 @@ _int CShop::Render()
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
 
-
-
 	return _int();
 }
 

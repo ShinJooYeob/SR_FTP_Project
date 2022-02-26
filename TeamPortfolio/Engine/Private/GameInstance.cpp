@@ -10,6 +10,7 @@
 #include "Picking.h"
 #include "FrustumMgr.h"
 #include "SoundMgr.h"
+#include "FontMgr.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -25,7 +26,8 @@ CGameInstance::CGameInstance()
 	m_pEasingMgr(GetSingle(CEasingMgr)),
 	m_pPickingMgr(GetSingle(CPicking)),
 	m_pFrustumMgr(GetSingle(CFrustumMgr)),
-	m_pSoundMgr(GetSingle(CSoundMgr))
+	m_pSoundMgr(GetSingle(CSoundMgr)),
+	m_pFontMgr(GetSingle(CFontMgr))
 {
 	m_pThreadMgr->AddRef();
 	m_pTimerMgr->AddRef();
@@ -39,13 +41,14 @@ CGameInstance::CGameInstance()
 	m_pPickingMgr->AddRef();
 	m_pFrustumMgr->AddRef();
 	m_pSoundMgr->AddRef();
+	m_pFontMgr->AddRef();
 }
 
 
-HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst,const CGraphic_Device::GRAPHICDESC & GraphicDesc, _uint iMaxSceneNum, LPDIRECT3DDEVICE9 * ppOut, _float fDoubleInterver)
+HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, const CGraphic_Device::GRAPHICDESC & GraphicDesc, _uint iMaxSceneNum, LPDIRECT3DDEVICE9 * ppOut, _float fDoubleInterver)
 {
-	if (m_pGraphicDevice == nullptr || m_pObjectMgr == nullptr || m_pComponenetMgr == nullptr || 
-		m_pSceneMgr == nullptr || m_pPickingMgr == nullptr || m_pFrustumMgr == nullptr || m_pSoundMgr == nullptr)
+	if (m_pGraphicDevice == nullptr || m_pObjectMgr == nullptr || m_pComponenetMgr == nullptr ||
+		m_pSceneMgr == nullptr || m_pPickingMgr == nullptr || m_pFrustumMgr == nullptr || m_pSoundMgr == nullptr || m_pFontMgr == nullptr)
 		return E_FAIL;
 
 	//if (FAILED(m_pSeverMgr->ConnectSever()))
@@ -65,13 +68,16 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst,const CGraphic_Device::
 	if (FAILED(m_pComponenetMgr->Reserve_Container(iMaxSceneNum)))
 		return E_FAIL;
 
-	if (FAILED(m_pPickingMgr->Initialize(*ppOut,GraphicDesc.hWnd,nullptr)))
+	if (FAILED(m_pPickingMgr->Initialize(*ppOut, GraphicDesc.hWnd, nullptr)))
 		return E_FAIL;
 
-	
+
 	FAILED_CHECK(m_pFrustumMgr->Initialize_FrustumMgr(*ppOut));
 
 	FAILED_CHECK(m_pSoundMgr->Initialize_FMOD());
+
+	FAILED_CHECK(m_pFontMgr->Initialize_FontMgr(*ppOut, TEXT("Font.txt"), { _float(GraphicDesc.iWinCX), _float(GraphicDesc.iWinCY) }));
+
 
 	return S_OK;
 }
@@ -454,6 +460,13 @@ _bool CGameInstance::Get_Channel_IsPaused(CHANNELID eID)
 	return 	m_pSoundMgr->Get_Channel_IsPaused(eID);
 }
 
+HRESULT CGameInstance::Render_Font(wstring szString, _float2 vOnWindowPos, _float2 vFontSize , _float3 Color_RGB , _uint UntilDrawIndex)
+{
+	NULL_CHECK_BREAK(m_pFontMgr);
+
+	return m_pFontMgr->Render_Font(szString, vOnWindowPos, vFontSize, Color_RGB, UntilDrawIndex);
+}
+
 
 
 
@@ -516,6 +529,9 @@ void CGameInstance::Release_Engine()
 	if (0 != GetSingle(CSoundMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com CSoundMgr ");
 
+	if (0 != GetSingle(CFontMgr)->DestroyInstance())
+		MSGBOX("Failed to Release Com CFontMgr ");
+
 	if (0 != GetSingle(CImguiMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com CImguiMgr ");
 
@@ -536,6 +552,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pEasingMgr);
 	Safe_Release(m_pPickingMgr);
 	Safe_Release(m_pFrustumMgr);
-
+	Safe_Release(m_pFontMgr);
+	
 	
 }

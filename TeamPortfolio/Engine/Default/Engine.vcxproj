@@ -171,6 +171,7 @@
     <ClCompile Include="..\Private\ComponentMgr.cpp" />
     <ClCompile Include="..\Private\EasingMgr.cpp" />
     <ClCompile Include="..\private\Effect.cpp" />
+    <ClCompile Include="..\private\FontMgr.cpp" />
     <ClCompile Include="..\private\FrustumMgr.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
     <ClCompile Include="..\Private\GameObject.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="..\Public\Engine_Macro.h" />
     <ClInclude Include="..\Public\Engine_Struct.h" />
     <ClInclude Include="..\Public\Engine_Typedef.h" />
+    <ClInclude Include="..\public\FontMgr.h" />
     <ClInclude Include="..\public\FrustumMgr.h" />
     <ClInclude Include="..\Public\GameInstance.h" />
     <ClInclude Include="..\Public\GameObject.h" />

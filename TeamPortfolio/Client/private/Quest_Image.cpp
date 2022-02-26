@@ -58,6 +58,9 @@ _int CQuest_Image::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
+	if (m_fTextFrame < 70)
+		m_fTextFrame += fDeltaTime * 10;
+
 	if (m_bIsPress == true)
 	{
 		if (FAILED(Update_UIList(fDeltaTime)))
@@ -86,7 +89,10 @@ _int CQuest_Image::LateUpdate(_float fDeltaTime)
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 
 	if (pInstance->Get_DIKeyState(DIK_U) & DIS_Down)
+	{
 		m_bIsPress = !m_bIsPress;
+		m_fTextFrame = 0;
+	}
 
 	if (m_bIsPress == true)
 	{
@@ -122,6 +128,8 @@ _int CQuest_Image::Render()
 		return E_FAIL;
 
 
+	
+	GetSingle(CGameInstance)->Render_Font(L"0123 45 67   89\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ", { 100,100 }, { 20,30 },_float3(rand() % 255 , rand() % 255, rand() % 255), m_fTextFrame);
 
 	return _int();
 }

@@ -1,0 +1,3 @@
+Font|lower|26|..\..\Client\bin\Resources\Textures\Font\lower\lower_%d.png
+Font|number|10|..\..\Client\bin\Resources\Textures\Font\number\number_%d.png
+Font|upper|26|..\..\Client\bin\Resources\Textures\Font\upper\upper_%d.png

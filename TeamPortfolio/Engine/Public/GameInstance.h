@@ -20,6 +20,7 @@ class CImguiMgr;
 class CPicking;
 class CFrustumMgr;
 class CSoundMgr;
+class CFontMgr;
 
 class ENGINE_DLL CGameInstance final :public CBase
 {
@@ -104,6 +105,9 @@ public:
 	_float  Get_Channel_Volume(CHANNELID eID);
 	_bool  Get_Channel_IsPaused(CHANNELID eID);
 
+public:
+	HRESULT Render_Font(wstring szString, _float2 vOnWindowPos, _float2 vFontSize = _float2(10.f, 10.f), _float3 Color_RGB = { 0,0,0 }, _uint UntilDrawIndex = 0);
+
 
 public: /* For. IMGUI Interface */
 	CImguiMgr* GetIMGui();
@@ -125,6 +129,7 @@ private:
 	CPicking*			m_pPickingMgr = nullptr;
 	CFrustumMgr*		m_pFrustumMgr = nullptr;
 	CSoundMgr*			m_pSoundMgr = nullptr;
+	CFontMgr*			m_pFontMgr = nullptr;
 
 public:
 	static void Release_Engine();

@@ -78,7 +78,7 @@ _int CSkyBox::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture(4)))// 몇번째 인덱스인지 명시 0부터 시작
+	if (FAILED(m_ComTexture->Bind_Texture(0)))// 몇번째 인덱스인지 명시 0부터 시작
 		return E_FAIL;
 
 
@@ -147,6 +147,7 @@ HRESULT CSkyBox::SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 
+	
 
 	return S_OK;
 }
