@@ -148,6 +148,9 @@
     <Filter Include="01.GameObject\UI\UI_Mouse">
       <UniqueIdentifier>{e13a833b-1100-4ecb-8aa9-e35d09797f3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\UI_Loading">
+      <UniqueIdentifier>{d3491e29-2e30-4873-aa69-151009025148}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -278,6 +281,12 @@
       <Filter>01.GameObject\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI_Mouse.h" />
+    <ClInclude Include="..\public\UI_Loading.h">
+      <Filter>01.GameObject\UI\UI_Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_LoadingBar.h">
+      <Filter>01.GameObject\UI\UI_Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -396,6 +405,12 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Common.cpp">
       <Filter>01.GameObject\UI\UI_Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Loading.cpp">
+      <Filter>01.GameObject\UI\UI_Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_LoadingBar.cpp">
+      <Filter>01.GameObject\UI\UI_Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI_Mouse.cpp">
       <Filter>01.GameObject\UI\UI_Mouse</Filter>

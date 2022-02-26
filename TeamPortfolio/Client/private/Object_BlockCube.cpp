@@ -31,9 +31,13 @@ HRESULT CObject_BlockCube::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
+	if (pArg != nullptr) {
+		_float3 vSettingPoint;
+		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+		m_Layer_Tag = (TEXT("Layer_BlockCube"));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(-3.f, 1.f, 10.f));
+	}
 
 	m_ComTexture->Change_TextureLayer(TEXT("DefaultCube"));
 
@@ -118,23 +122,25 @@ _int CObject_BlockCube::Collision_Block(_float fDeltaTime)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	//객체에게 중력을 적용하기 위한 값
 	CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform));
 
 	_float3& PlayerPos = Player->Get_MatrixState(CTransform::STATE_POS);
 
-	_float3& GravityCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+	_float3& BlockCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 
-	_float Distance = GravityCubePos.Get_Distance(PlayerPos);
+	_float Distance = BlockCubePos.Get_Distance(PlayerPos);
 
-	if (Distance < 4) //거리 조절 가능
+	if (Distance < 3)
 	{
-		fDeltaTime *= 0.5f; // 속도 조절 가능
-		Player->MovetoTarget(GravityCubePos, fDeltaTime);
+
+		_float3 Targer = PlayerPos - BlockCubePos;
+		_float3 fCollision_Distance = { Targer.x ,Targer.y ,Targer.z };
+
+		Player->MovetoDir(fCollision_Distance, fDeltaTime);
 	}
 
-
 	RELEASE_INSTANCE(CGameInstance);
+
 
 	return _int();
 }

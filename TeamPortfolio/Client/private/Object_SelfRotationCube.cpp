@@ -96,7 +96,7 @@ _int CObject_SelfRotationCube::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture(0)))
+	if (FAILED(m_ComTexture->Bind_Texture(1)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))

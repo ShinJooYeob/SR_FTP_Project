@@ -1,0 +1,2 @@
+Loading_Texture|Loading|6|../Bin/Resources/Textures/Loading/Loading/LoadingFez_%d.png
+Loading_Texture|LoadingBar|1|../Bin/Resources/Textures/Loading/LoadingBar/LoadingBar_%d.png

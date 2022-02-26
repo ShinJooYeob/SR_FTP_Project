@@ -188,7 +188,7 @@ _int CObject_OrbitCube::Render()
 	//m_pGraphicDevice->SetTransform(D3DTS_WORLD, &parentMatrix);
 
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture(1)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))

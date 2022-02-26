@@ -107,6 +107,12 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI"))
 		return E_FAIL;
 
+	m_iLoadingMaxCount = 999999999;
+
+	for (int i = 0; i < 999999999; ++i)
+	{
+		m_iLoadingProgressCount = i;
+	}
 
 	m_bIsLoadingFinished = true;
 
@@ -188,7 +194,6 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_OrbitCube"), CObject_OrbitCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 #pragma endregion
-
 
 	RELEASE_INSTANCE(CGameInstance);
 
