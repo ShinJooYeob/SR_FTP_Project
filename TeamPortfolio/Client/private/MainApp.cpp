@@ -7,6 +7,7 @@
 #include "UI_Mouse.h"
 #include "UI_Loading.h"
 #include "UI_LoadingBar.h"
+#include "UI_Common.h"
 
 CMainApp::CMainApp()
 	:m_pGameInstance(GetSingle(CGameInstance))
@@ -204,6 +205,13 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_Mouse"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+
+	//UI_Common 텍스처
+	TextureDesc.szTextFilePath = TEXT("UI.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_UI), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 	//블랭크 텍스처
 	TextureDesc.szTextFilePath = TEXT("Cam_Effect.txt");
 	
@@ -259,6 +267,9 @@ HRESULT CMainApp::Ready_Static_GameObject_Prototype()
 	
 	
 	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(L"Prototype_Mouse_UI", CUI_Mouse::Create(m_pGraphicDevice, _float4(0, 0, 0, 0)))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_UI_Common), CUI_Common::Create(m_pGraphicDevice, _float4(0, 0, 0, 0)))))
 		return E_FAIL;
 	return S_OK;
 }

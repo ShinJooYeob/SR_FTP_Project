@@ -16,10 +16,7 @@ END
 class CUI_Common final :public CUI
 {
 public:
-	enum SLOT
-	{
-		SLOT_1,SLOT_2,SLOT_3,SLOT4,SLOT5,SLOT6,SLOT7,SLOT8,SLOT_END
-	};
+	
 
 private:
 	explicit CUI_Common(LPDIRECT3DDEVICE9 pGraphicDevice);
@@ -40,7 +37,7 @@ public:
 
 	virtual _int Render()override;
 	virtual _int LateRender()override;
-
+	virtual HRESULT ReInitialize(void* pArg)override;
 
 public:
 
@@ -74,7 +71,7 @@ private:	_float			m_fFrame = 0.f;
 			_float			m_fPosX = -40.f;
 			_bool			m_bIsClicked=false;
 			_int			m_iEmpty;
-			_bool			m_bEmpty[SLOT_END];
+			
 public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
 	HRESULT			Update_UIList(_float fTimeDelta);

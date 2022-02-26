@@ -38,7 +38,7 @@ HRESULT CUI_Common::Initialize_Clone(void * pArg)
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(90));
+	m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(270));
 	m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
@@ -63,7 +63,7 @@ _int CUI_Common::Set_SkillSlot()
 	((CUI_Image*)Find_Image(L"Common_Image_11"))->Set_ImageAlpha(40);
 	((CUI_Image*)Find_Image(L"Common_Image_12"))->Set_ImageAlpha(40);
 
-	if (m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP) == 1)
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP) >= 1)
 		((CUI_Image*)Find_Image(L"Common_Image_9"))->Set_ImageAlpha(255);
 	if (m_Player_Inventory->Get_Skill_Level(SKILL_DUBBLEJUMP) == 1)
 		((CUI_Image*)Find_Image(L"Common_Image_10"))->Set_ImageAlpha(255);
@@ -87,7 +87,7 @@ _int CUI_Common::Update(_float fDeltaTime)
 	m_rcRect.top = (LONG)0;
 	m_rcRect.left = (LONG)0;
 	m_rcRect.bottom = (LONG)720;
-	m_rcRect.right = (LONG)50;
+	m_rcRect.right = (LONG)75;
 	if (PtInRect(&m_rcRect, ptMouse))
 	{
 		
@@ -203,6 +203,11 @@ _int CUI_Common::LateRender()
 		return E_FAIL;
 
 	return _int();
+}
+
+HRESULT CUI_Common::ReInitialize(void * pArg)
+{
+	return S_OK;
 }
 
 CUI * CUI_Common::Find_UI(const _tchar * tagUI)
@@ -419,7 +424,7 @@ HRESULT CUI_Common::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
 

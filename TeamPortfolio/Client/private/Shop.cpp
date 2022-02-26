@@ -391,7 +391,7 @@ HRESULT CShop::SetUp_Skills()
 
 	m_Skill[SKILL_POTION].Price = 500;
 
-
+	m_Player_Inventory->Set_Skill_MaxLevel(SKILL_SPEEDUP, 5);
 	return S_OK;
 }
 HRESULT CShop::Set_Skill_Rect()
@@ -406,7 +406,7 @@ HRESULT CShop::Buy_Skill(_int ChosenSkill)
 
 	if (m_Skill[ChosenSkill].Price <= m_Player_Inventory->Get_Gold())
 	{
-		if (m_Player_Inventory->Get_Skill_Level(ChosenSkill) == 1)
+		if (m_Player_Inventory->Get_Skill_Level(ChosenSkill) == m_Player_Inventory->Get_MaxLevel(ChosenSkill))
 		{
 			MSGBOX("최대 레벨초과")
 				return E_FAIL;

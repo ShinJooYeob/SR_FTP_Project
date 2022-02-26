@@ -45,7 +45,7 @@ void CInventory::Set_Skill_LevelUP(_int eSKILL)
 		return;
 	}
 	
-	if (m_pSkill_Index[eSKILL] >= 1)
+	if (m_pSkill_Index[eSKILL] >m_pSKill_LevelMax[eSKILL])
 	{
 		MSGBOX("Max level ÃÊ°ú");
 		return;
@@ -54,17 +54,32 @@ void CInventory::Set_Skill_LevelUP(_int eSKILL)
 	++m_pSkill_Index[eSKILL];
 }
 
-
-
-
-
-void CInventory::Initialize_Skill_Array(_int eSkill_Index)
+void CInventory::Set_Skill_MaxLevel(_int eSKILL,_int MaxLevel)
 {
-	m_pSkill_Index = new _int[eSkill_Index];
-	for (int i = 0;i < eSkill_Index;++i)
+	m_pSKill_LevelMax[eSKILL] = MaxLevel;
+
+}
+
+_int CInventory::Get_MaxLevel(_int eSKILL)
+{
+	return m_pSKill_LevelMax[eSKILL];
+}
+
+
+
+void CInventory::Initialize_Skill_Array(_int eSKILL_END)
+{
+	m_pSkill_Index = new _int[eSKILL_END];
+	for (int i = 0;i < eSKILL_END;++i)
 		m_pSkill_Index[i] = 0;
 
-	m_iMaxSkill_Index = eSkill_Index;
+	m_iMaxSkill_Index = eSKILL_END;
+
+	m_pSKill_LevelMax = new _int[eSKILL_END];
+	for (int i = 0;i < eSKILL_END;++i)
+		m_pSKill_LevelMax[i] = 1;
+
+	m_iMaxSkill_Index = eSKILL_END;
 }
 
 CInventory * CInventory::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
@@ -97,5 +112,8 @@ void CInventory::Free()
 {
 	__super::Free();
 	if (m_bIsClone)
+	{
 		Safe_Delete_Array(m_pSkill_Index);
+		Safe_Delete_Array(m_pSKill_LevelMax);
+	}
 }
