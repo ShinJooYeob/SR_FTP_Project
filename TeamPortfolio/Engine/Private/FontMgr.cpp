@@ -53,14 +53,14 @@ HRESULT CFontMgr::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2
 
 	const _tchar* pString	= szString.c_str();
 
-	_uint UntilDraw = szString.length();
+	_uint UntilDraw = (_uint)(szString.length());
 
 	if (UntilDrawIndex != -1)
 	{
 		UntilDraw = UntilDrawIndex;
 
-		if (UntilDrawIndex >= szString.length())
-			UntilDraw = szString.length();
+		if (UntilDrawIndex >= (_uint)(szString.length()))
+			UntilDraw = (_uint)(szString.length());
 	}
 	
 	
@@ -166,14 +166,14 @@ HRESULT CFontMgr::Render_World_Font(wstring szString, _float3 vOnWorldPos, _floa
 
 	const _tchar* pString = szString.c_str();
 
-	_uint UntilDraw = szString.length();
+	_uint UntilDraw = (_uint)(szString.length());
 
 	if (UntilDrawIndex != -1)
 	{
 		UntilDraw = UntilDrawIndex;
 
-		if (UntilDrawIndex >= szString.length())
-			UntilDraw = szString.length();
+		if (UntilDrawIndex >= (_uint)(szString.length()))
+			UntilDraw = (_uint)(szString.length());
 	}
 
 	for (_uint i = 0; i < UntilDraw; i++)
