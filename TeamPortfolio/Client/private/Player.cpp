@@ -382,7 +382,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 	}
 
 	//มกวม
-	if (m_bIsJumped < (m_ComInventory->Get_Skill_Level(SKILL_DUBBLEJUMP) + 1) && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
+	if (m_bIsJumped < (_uint)(m_ComInventory->Get_Skill_Level(SKILL_DUBBLEJUMP) + 1) && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
 	{
 
 		if (m_pCarryObject)
@@ -454,9 +454,8 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 				{
 					if ((m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP)) && (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_DoubleDown || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_DoubleDown))
 					{
-						_float SkillLevel = m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP);
 						m_bIsRunning = true;
-						m_ComTransform->Set_MoveSpeed(2.5f + SkillLevel * 0.25f);
+						m_ComTransform->Set_MoveSpeed(2.5f + m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP) * 0.25f);
 					}
 					else if(pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Down || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Down)
 					{
@@ -905,6 +904,8 @@ HRESULT CPlayer::SetUp_RenderState()
 
 HRESULT CPlayer::Release_RenderState()
 {
+	 _float3 Temp = m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0);
+	GetSingle(CGameInstance)->Render_World_Font(L"0ere'sy\nForgive me, girl", Temp,_float2(0.3f,0.45f),_float3(38,240,120));
 
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 

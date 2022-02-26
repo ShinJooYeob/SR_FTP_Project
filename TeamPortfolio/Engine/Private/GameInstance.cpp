@@ -467,6 +467,13 @@ HRESULT CGameInstance::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _f
 	return m_pFontMgr->Render_UI_Font(szString, vOnWindowPos, vFontSize, Color_RGB, UntilDrawIndex);
 }
 
+HRESULT CGameInstance::Render_World_Font(wstring szString, _float3 vOnWorldPos, _float2 vFontSize, _float3 Color_RGB, _int UntilDrawIndex)
+{
+	NULL_CHECK_BREAK(m_pFontMgr);
+
+	return m_pFontMgr->Render_World_Font(szString, vOnWorldPos, vFontSize, Color_RGB, UntilDrawIndex);
+}
+
 
 
 

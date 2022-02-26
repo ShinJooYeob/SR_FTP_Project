@@ -107,14 +107,22 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI"))
 		return E_FAIL;
 
-	m_iLoadingMaxCount = 999999999;
 
-	for (int i = 0; i < 999999999; ++i)
+	EnterCriticalSection(_CriSec);
+	m_iLoadingMaxCount = 99999999;
+	m_iLoadingProgressCount = 0;
+	LeaveCriticalSection(_CriSec);
+
+	for (int i = 0; i < 99999999; ++i)
 	{
+		EnterCriticalSection(_CriSec);
 		m_iLoadingProgressCount = i;
+		LeaveCriticalSection(_CriSec);
 	}
 
+	EnterCriticalSection(_CriSec);
 	m_bIsLoadingFinished = true;
+	LeaveCriticalSection(_CriSec);
 
 	return S_OK;
 }
@@ -196,7 +204,21 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 #pragma endregion
 
 	RELEASE_INSTANCE(CGameInstance);
+	EnterCriticalSection(_CriSec);
+	m_iLoadingMaxCount = 99999999;
+	m_iLoadingProgressCount = 0;
+	LeaveCriticalSection(_CriSec);
 
+	for (int i = 0; i < 99999999; ++i)
+	{
+		EnterCriticalSection(_CriSec);
+		m_iLoadingProgressCount = i;
+		LeaveCriticalSection(_CriSec);
+	}
+
+	EnterCriticalSection(_CriSec);
+	m_bIsLoadingFinished = true;
+	LeaveCriticalSection(_CriSec);
 	m_bIsLoadingFinished = true;
 	return S_OK;
 }
@@ -254,7 +276,21 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 
 	RELEASE_INSTANCE(CGameInstance);
+	EnterCriticalSection(_CriSec);
+	m_iLoadingMaxCount = 99999999;
+	m_iLoadingProgressCount = 0;
+	LeaveCriticalSection(_CriSec);
 
+	for (int i = 0; i < 99999999; ++i)
+	{
+		EnterCriticalSection(_CriSec);
+		m_iLoadingProgressCount = i;
+		LeaveCriticalSection(_CriSec);
+	}
+
+	EnterCriticalSection(_CriSec);
+	m_bIsLoadingFinished = true;
+	LeaveCriticalSection(_CriSec);
 	m_bIsLoadingFinished = true;
 	return S_OK;
 }

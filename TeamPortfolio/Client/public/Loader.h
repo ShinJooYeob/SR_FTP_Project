@@ -39,7 +39,7 @@ private:
 	
 	//로딩바 게이지를 위한 변수
 	_int m_iLoadingMaxCount = 1;
-	_int m_iLoadingProgressCount = 1;
+	_int m_iLoadingProgressCount = 0;
 
 	SCENEID  m_eSceneID = SCENEID::SCENE_END;
 	LPDIRECT3DDEVICE9 m_pGraphicDevice = nullptr;

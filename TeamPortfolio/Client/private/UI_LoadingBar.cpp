@@ -30,9 +30,10 @@ HRESULT CUI_LoadingBar::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-
 	vRect = { 230,655,230,690 };
+	Set_UI_Transform(m_ComTransform, Set_byRectPos(vRect));
 
+	m_fDepth = -6666;
 	//850
 	//m_vUIDesc = _float4(g_iWinCX >> 1, g_iWinCY >> 1, g_iWinCX, g_iWinCY);
 	//m_vUIDesc = _float4(WinPosX, WinPosY, WinCX, WinCY);
@@ -53,8 +54,6 @@ _int CUI_LoadingBar::Update(_float fDeltaTime)
 		return E_FAIL;
 	m_fFrame = fDeltaTime;
 
-	if (FAILED(Set_UI_Transform(m_ComTransform, Set_byRectPos(vRect))))
-		return E_FAIL;
 
 	return _int();
 }
@@ -116,14 +115,22 @@ _float4 CUI_LoadingBar::Set_byRectPos(_float4 tRect)
 
 void CUI_LoadingBar::Set_Progress(_float _ProgressCount, _float _MaxCount)
 {
-	vRect.z = 820.f * _ProgressCount / _MaxCount + 230;
+	vRect.z = 820.f * _ProgressCount / (_float)_MaxCount + 230;
+
+
+
+	m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1, 0, 0));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1, 0));
+
+	Set_UI_Transform(m_ComTransform, Set_byRectPos(vRect));
+
+
 }
 
 HRESULT CUI_LoadingBar::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
-
 	//m_eNowSceneNum = SCENEID::SCENE_LOADING;
 
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))

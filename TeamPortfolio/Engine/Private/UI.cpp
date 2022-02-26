@@ -71,6 +71,7 @@ HRESULT CUI::Set_UI_Transform(CTransform * pComTransform, _float4 vUIDesc)
 {
 	if (pComTransform == nullptr)
 		return E_FAIL;
+
 	m_fX= vUIDesc.x;
 	m_fY= vUIDesc.y;
 	m_fSizeX= vUIDesc.z;
@@ -79,6 +80,7 @@ HRESULT CUI::Set_UI_Transform(CTransform * pComTransform, _float4 vUIDesc)
 	m_pGraphicDevice->GetViewport(&ViewPortDesc);
 	_int iWinCX = ViewPortDesc.Width;
 	_int iWinCY = ViewPortDesc.Height;
+
 	pComTransform->Scaled(_float3(m_fSizeX, m_fSizeY, 1.f));
 	pComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(m_fX - iWinCX * 0.5f, -m_fY + iWinCY * 0.5f, 0.f));
 	return S_OK;
