@@ -19,8 +19,8 @@ public:
 
 private:
 	LPDIRECT3DDEVICE9		m_pGraphicDevice;
-	class CVIBuffer_Rect*	m_VIBuffer;
-	class CTexture*			m_texFont;
+	class CVIBuffer_Rect*	m_VIBuffer=nullptr;
+	class CTexture*			m_texFont = nullptr;
 	_float2					m_vWindowSize;
 
 

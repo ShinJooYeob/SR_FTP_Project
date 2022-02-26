@@ -107,12 +107,12 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI"))
 		return E_FAIL;
 
-	m_iLoadingMaxCount = 999999999;
+	//m_iLoadingMaxCount = 999999999;
 
-	for (int i = 0; i < 999999999; ++i)
-	{
-		m_iLoadingProgressCount = i;
-	}
+	//for (int i = 0; i < 999999999; ++i)
+	//{
+	//	m_iLoadingProgressCount = i;
+	//}
 
 	m_bIsLoadingFinished = true;
 
@@ -268,8 +268,31 @@ HRESULT CLoader::Load_Scene_Stage3(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 HRESULT CLoader::Load_Scene_IMGUI(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CTexture::TEXTUREDESC TextureDesc;
+
+#pragma region PROTOTYPE_COMPONENT
+
+	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Cube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+#pragma endregion
+
+#pragma  region PROTOTYPE_GAMEOBJECT
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Player), CPlayer::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+#pragma endregion
+
+	RELEASE_INSTANCE(CGameInstance);
 
 	m_bIsLoadingFinished = true;	
+
 	return S_OK;
 }
 

@@ -13,16 +13,26 @@ CMapLoadMgr::CMapLoadMgr()
 
 }
 
-list<OUTPUT_OBJECTINFO*>* CMapLoadMgr::LoadMap(_uint index)
+HRESULT CMapLoadMgr::LoadMap(SCENEID id, _uint index)
 {
 	if (m_MaxMapCount <= index)
-		return nullptr;
+		return E_FAIL;
 
 	// 3. 해당 맵 호출시 맵 데이터가 깔리게 만들자.
 
 
+	// 여기서 맵을 만들어 버리는 코드를 제작
+	list<OUTPUT_OBJECTINFO*> currentMap = m_MapObjectList[index];
+	_float3 xyz;
 
+	for (auto obj : currentMap)
+	{
+		memcpy(xyz, &obj->WorldMatData.m[3][0],sizeof(_float3));
+		GetSingle(CGameInstance)->Add_GameObject_To_Layer(id,
+			TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainCube),
+			&xyz);
 
+	}
 
 	return S_OK;
 

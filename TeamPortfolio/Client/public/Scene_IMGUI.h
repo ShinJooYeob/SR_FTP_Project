@@ -17,10 +17,10 @@ public:
 	virtual _int LateRender()override;
 
 private:
-	
-	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_MainCamera(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Terrain(const	 _tchar* pLayerTag);
+
+	HRESULT Ready_Layer_Player(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_SkyBox(const _tchar* pLayerTag);
+//	HRESULT Ready_Layer_Terrain(const	 _tchar* pLayerTag);
 
 
 

@@ -7,6 +7,9 @@ IMPLEMENT_SINGLETON(CFontMgr)
 
 CFontMgr::CFontMgr()
 {
+	m_pGraphicDevice = nullptr;
+	m_VIBuffer = nullptr;
+	m_texFont = nullptr;
 }
 
 HRESULT CFontMgr::Initialize_FontMgr(LPDIRECT3DDEVICE9 pGraphicDevice, const _tchar * szFonttxtFile, _float2 WindowSize)

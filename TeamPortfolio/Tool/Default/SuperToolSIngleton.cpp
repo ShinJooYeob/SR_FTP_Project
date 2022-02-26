@@ -615,9 +615,9 @@ HRESULT CSuperToolSIngleton::Update_Select_Render_Visble(const _tchar* laytag, C
 void CSuperToolSIngleton::Free()
 {
 
+	GetSingle(CKeyMgr)->DestroyInstance();
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pComRenderer);
 	Safe_Release(m_pGameInstance);
-	GetSingle(CKeyMgr)->DestroyInstance();
 	m_pGameInstance->Release_Engine();
 }
