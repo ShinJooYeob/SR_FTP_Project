@@ -1,0 +1,1 @@
+Resources|mapdata|4|..\bin\Resources\mapdata\Map_%d.dat

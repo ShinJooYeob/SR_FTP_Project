@@ -64,4 +64,5 @@ public:
 	afx_msg void OnBnClickedButton_Delete();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnBnClickedButtonCubeMap();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

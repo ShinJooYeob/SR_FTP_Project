@@ -266,4 +266,20 @@ BOOL CMyForm::OnEraseBkgnd(CDC* pDC)
 	return CFormView::OnEraseBkgnd(pDC);
 }
 
+BOOL CMyForm::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		//이스케이프키일 경우 함수 종료
+		if (pMsg->wParam == VK_DOWN || pMsg->wParam == VK_UP ||
+			pMsg->wParam == VK_LEFT || pMsg->wParam == VK_RIGHT)
+			return TRUE;
+	}
+
+	return CFormView::PreTranslateMessage(pMsg);
+
+
+	return false;
+}

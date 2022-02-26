@@ -245,7 +245,8 @@ bool CFileInfo::FindType(CFileFind& Find, E_FILETYPE type)
 	case FILETYPE_XML:
 		StrCompare = L"xml";
 		break;
-	case FILETYPE_ALL:
+	case FILETYPE_DAT:
+		StrCompare = L"dat";
 		break;
 	}
 

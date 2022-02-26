@@ -139,6 +139,12 @@
     <Filter Include="01.GameObject\UI\UI_Loby">
       <UniqueIdentifier>{c35c93ed-b3d0-41a7-a4c4-02d59285a920}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Mgr">
+      <UniqueIdentifier>{1e7c4da9-2e78-42bc-96a5-a761833a2064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Mgr\MapLoadMgr">
+      <UniqueIdentifier>{5252ae48-587c-459b-8e1e-9a9a118a96e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -234,15 +240,12 @@
     <ClInclude Include="..\public\Object_PortalCube_B.h">
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Inventory_Main.h" />
-    <ClInclude Include="..\public\Item.h" />
     <ClInclude Include="..\public\Object_VanishCube.h">
       <Filter>01.GameObject\SubObject\Object_VanishCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Object_AppearCube.h">
       <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
     </ClInclude>
-
     <ClInclude Include="..\public\Object_EscalatorCube.h">
       <Filter>01.GameObject\SubObject\Object_escalatorCube</Filter>
     </ClInclude>
@@ -260,6 +263,13 @@
     </ClInclude>
     <ClInclude Include="..\public\UI_Loby.h">
       <Filter>01.GameObject\UI\UI_Loby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_Mouse.h" />
+    <ClInclude Include="..\public\Client_Struct.h">
+      <Filter>99.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MapLoadMgr.h">
+      <Filter>03.Mgr\MapLoadMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -347,15 +357,12 @@
     <ClCompile Include="..\private\Object_PortalCube_B.cpp">
       <Filter>01.GameObject\SubObject\Object_PortalCube\PortalCube_B</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Inventory_Main.cpp" />
-    <ClCompile Include="..\private\Item.cpp" />
     <ClCompile Include="..\private\Object_VanishCube.cpp">
       <Filter>01.GameObject\SubObject\Object_VanishCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Object_AppearCube.cpp">
       <Filter>01.GameObject\SubObject\Object_AppearCube</Filter>
     </ClCompile>
-
     <ClCompile Include="..\private\Object_EscalatorCube.cpp">
       <Filter>01.GameObject\SubObject\Object_escalatorCube</Filter>
     </ClCompile>
@@ -373,6 +380,10 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Loby.cpp">
       <Filter>01.GameObject\UI\UI_Loby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Mouse.cpp" />
+    <ClCompile Include="..\private\MapLoadMgr.cpp">
+      <Filter>03.Mgr\MapLoadMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
