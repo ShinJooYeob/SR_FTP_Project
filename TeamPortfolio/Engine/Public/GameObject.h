@@ -19,7 +19,7 @@ public:
 	virtual _int Render();
 	virtual _int LateRender();
 
-	void Set_NowSceneNum(_uint eNowSceneNum) {	m_eNowSceneNum = eNowSceneNum; };
+	virtual void Set_NowSceneNum(_uint eNowSceneNum) {	m_eNowSceneNum = eNowSceneNum; };
 	void Set_Layer_Tag(const _tchar* _pLayer_Tag);
 
 	const _tchar* Get_Layer_Tag();
@@ -38,6 +38,7 @@ public:
 	virtual _float Get_CamDistance() const { return m_fCamDistance; }
 
 	class CComponent* Find_Components(const _tchar* tagComponent);
+	virtual HRESULT ReInitialize(void* pArg = nullptr) { return S_OK; };
 
 protected:
 	map<const _tchar*, class CComponent*>	m_mapComponets;

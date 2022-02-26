@@ -18,6 +18,7 @@ public:
 	virtual _int LateRender()override;
 	virtual _float Get_CamDistance()  const override { return m_fDepth; }
 
+
 	// Set Compo끝나고 UIDesc에 fX,fY,SizeX,SizeY 벡터 넣으면됨
 	HRESULT Set_UI_Transform(class CTransform* pComTransform,_float4 vUIDesc);
 

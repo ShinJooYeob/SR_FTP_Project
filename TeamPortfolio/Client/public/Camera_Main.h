@@ -23,6 +23,7 @@ public:
 		CAM_EFT_HIT,
 
 		CAM_EFT_SHAKE,
+		CAM_EFT_ACTION,
 		CAM_EFT_END
 	};
 
@@ -59,6 +60,7 @@ public:
 	void FadeOut(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec);
 	void CamShake(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec);
 	void HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec);
+	void CamAction(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec);
 
 private:
 	_int						m_eLoookState = Look_Front_Axis;

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\Scene_StageSelect.h"
+#include "Scene_Loading.h"
 #include "Camera_Main.h"
 #include "Object_PortalCube_A.h"
 #include "Object_EscalatorCube.h"
@@ -36,11 +37,6 @@ HRESULT CScene_StageSelect::Initialize()
 
 
 
-	CCamera_Main* m_MainCamera = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
-	if (m_MainCamera == nullptr)
-		return E_FAIL;
-
-	m_MainCamera->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT,0.016f);
 
 
 	return S_OK;
@@ -51,8 +47,10 @@ _int CScene_StageSelect::Update(_float fDeltaTime)
 	if (__super::Update(fDeltaTime) < 0)
 		return -1;
 
-
-
+	if ( GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
+		if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING)))
+			return E_FAIL;
+	}
 	return 0;
 }
 
@@ -180,6 +178,7 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 		return E_FAIL;
 
 	pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
+	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, 0.016f);
 
 	
 	return S_OK;
@@ -188,10 +187,22 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 {
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Player)))
-		return E_FAIL;
-	
-	GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGESELECT);
+
+	list<CGameObject*>* pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
+	if (pPlayerList == nullptr)
+	{
+		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Player)))
+			return E_FAIL;
+
+		GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGESELECT);
+	}
+	else 
+	{
+		(pPlayerList->front())->ReInitialize();
+
+	}
+
+
 
 
 	return S_OK;

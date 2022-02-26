@@ -60,8 +60,12 @@ _int CUI::LateRender()
 	if (FAILED(__super::LateRender()))
 		return E_FAIL;
 
+
+
+
 	return _int();
 }
+
 
 HRESULT CUI::Set_UI_Transform(CTransform * pComTransform, _float4 vUIDesc)
 {

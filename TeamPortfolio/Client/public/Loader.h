@@ -44,6 +44,8 @@ private:
 	SCENEID  m_eSceneID = SCENEID::SCENE_END;
 	LPDIRECT3DDEVICE9 m_pGraphicDevice = nullptr;
 
+	static _bool	bIsAlreadyloadedArr[SCENE_END];
+
 public:
 	static CLoader* Create(LPDIRECT3DDEVICE9 pGraphicDevice, SCENEID eSceneID);
 	virtual void Free() override;

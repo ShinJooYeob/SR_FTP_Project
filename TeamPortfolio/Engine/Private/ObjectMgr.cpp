@@ -21,11 +21,20 @@ HRESULT CObjectMgr::Reserve_Container(_uint _eSceneNum)
 
 HRESULT CObjectMgr::Add_GameObject_Prototype(const _tchar * tagPrototype, CGameObject * pPrototype)
 {
-	if (pPrototype == nullptr 	|| Find_Prototype(tagPrototype)  != nullptr)
+	if (pPrototype == nullptr)
 		return E_FAIL;
 
+	if (Find_Prototype(tagPrototype) != nullptr)
+	{
+		OutputDebugString(L"Prototypes already exist,So won't add more And did Release Parameter GameObject");
+		Safe_Release(pPrototype);
+		return S_FALSE;
+	}
+	else {
 
-	m_mapPrototypes.emplace(tagPrototype, pPrototype);
+		m_mapPrototypes.emplace(tagPrototype, pPrototype);
+	}
+
 
 	return S_OK;
 }

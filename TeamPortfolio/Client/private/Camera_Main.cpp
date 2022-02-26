@@ -26,8 +26,12 @@ _uint CALLBACK CameraEffectThread(void* _Prameter)
 	case CCamera_Main::CAM_EFT_HIT:
 		pCamemra->HitEft(tThreadArg.IsClientQuit, tThreadArg.CriSec);
 		break;
+	case CCamera_Main::CAM_EFT_ACTION:
+		pCamemra->CamAction(tThreadArg.IsClientQuit, tThreadArg.CriSec);
+		break;
 
 	default:
+		MSGBOX("worng Cam Eft");
 		break;
 	}
 
@@ -393,6 +397,10 @@ void CCamera_Main::HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 	m_eEffectID = CCamera_Main::CAM_EFT_END;
 	LeaveCriticalSection(_CriSec);
 	return;
+}
+
+void CCamera_Main::CamAction(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
+{
 }
 
 HRESULT CCamera_Main::SetUp_DefaultLookAtAxis(void* pArg)

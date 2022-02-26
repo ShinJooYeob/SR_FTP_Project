@@ -54,6 +54,9 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 _int CPlayer::Update(_float fDeltaTime)
 {
 
+	if (m_eNowSceneNum == SCENE_LOADING)
+		return S_FALSE;
+
 	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FLEXIBLE, this);
 
 	if (FAILED(__super::Update(fDeltaTime)))
@@ -119,7 +122,8 @@ _int CPlayer::Update(_float fDeltaTime)
 
 _int CPlayer::LateUpdate(_float fDeltaTime)
 {
-
+	if (m_eNowSceneNum == SCENE_LOADING)
+		return S_FALSE;
 
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
@@ -477,6 +481,7 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 
 HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 {
+
 
 	CGameInstance* pGameInstance = GetSingle(CGameInstance);
 

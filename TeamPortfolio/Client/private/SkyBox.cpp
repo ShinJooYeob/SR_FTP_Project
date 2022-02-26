@@ -39,6 +39,8 @@ HRESULT CSkyBox::Initialize_Clone(void * pArg)
 
 _int CSkyBox::Update(_float fTimeDelta)
 {
+	if (m_eNowSceneNum == SCENE_LOADING)
+		return S_FALSE;
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
@@ -49,6 +51,9 @@ _int CSkyBox::Update(_float fTimeDelta)
 
 _int CSkyBox::LateUpdate(_float fTimeDelta)
 {
+	if (m_eNowSceneNum == SCENE_LOADING)
+		return S_FALSE;
+
 	if (0 > __super::LateUpdate(fTimeDelta))
 		return -1;
 
@@ -75,10 +80,12 @@ _int CSkyBox::LateUpdate(_float fTimeDelta)
 
 _int CSkyBox::Render()
 {
+	if (m_eNowSceneNum == SCENE_LOADING)
+		return S_FALSE;
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture(0)))// 몇번째 인덱스인지 명시 0부터 시작
+	if (FAILED(m_ComTexture->Bind_Texture(m_eNowSceneNum - SCENE_STAGESELECT)))// 몇번째 인덱스인지 명시 0부터 시작
 		return E_FAIL;
 
 

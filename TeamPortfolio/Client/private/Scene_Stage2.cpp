@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\Scene_Stage2.h"
+#include "Scene_Loading.h"
 #include "Object_OrbitCube.h"
 #include "Camera_Main.h""
 
@@ -19,7 +20,7 @@ HRESULT CScene_Stage2::Initialize()
 	////////////////////////////은혁이 테스트Layer_Player
 	if (FAILED(Ready_Layer_Cube(TAG_LAY(Layer_Player))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_FixCube(TEXT("Layer_FixCube"))))
+	if (FAILED(Ready_Layer_FixCube(TAG_LAY(Layer_Terrain))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_PushCube(TEXT("Layer_PushCube"))))
 		return E_FAIL;
@@ -31,24 +32,6 @@ HRESULT CScene_Stage2::Initialize()
 	if (FAILED(Ready_Layer_Object_InteractiveCube(TEXT("Layer_InteractiveCube"))))
 		return E_FAIL;
 
-
-	//if (FAILED(Ready_Layer_OrbitCube(TEXT("Layer_OrbitCube"))))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Layer_Object_PortalCube_A(TEXT("Layer_PortalCube_A"))))
-	//	return E_FAIL;
-	//if (FAILED(Ready_Layer_Object_PortalCube_B(TEXT("Layer_PortalCube_B"))))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Layer_Object_RisingCube(TEXT("Layer_RisingCube"))))
-	//	return E_FAIL;
-	//if (FAILED(Ready_Layer_Object_EscalatorCube(TEXT("Layer_EscalatorCube"))))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Layer_Object_LeftCube(TEXT("Layer_LeftCube"))))
-	//	return E_FAIL;
-	//if (FAILED(Ready_Layer_Object_RightCube(TEXT("Layer_RightCube"))))
-	//	return E_FAIL;
 	if (FAILED(Ready_Layer_Object_VanishCube(TEXT("Layer_VanishCube"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Object_AppearCube(TEXT("Layer_AppearCube"))))
@@ -65,7 +48,10 @@ _int CScene_Stage2::Update(_float fDeltaTime)
 	if (__super::Update(fDeltaTime) < 0)
 		return -1;
 
-
+	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
+		if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
+			return E_FAIL;
+	}
 
 	return 0;
 }
@@ -131,14 +117,26 @@ HRESULT CScene_Stage2::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 		return E_FAIL;
 
 	pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
+	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, 0.016f);
 
 	return S_OK;
 }
 
 HRESULT CScene_Stage2::Ready_Layer_Cube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TEXT("Prototype_GameObject_Object_MoveCube")))
-		return E_FAIL;
+	list<CGameObject*>* pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
+	if (pPlayerList == nullptr)
+	{
+		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Player)))
+			return E_FAIL;
+
+		GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGESELECT);
+	}
+	else
+	{
+		(pPlayerList->front())->ReInitialize();
+
+	}
 
 	return S_OK;
 }
