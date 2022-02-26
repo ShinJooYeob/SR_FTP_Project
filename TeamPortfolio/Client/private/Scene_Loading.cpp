@@ -26,11 +26,11 @@ HRESULT CScene_Loading::Initialize(SCENEID eSceneID)
 	m_eNextSceneIndex = eSceneID;
 	m_pLoader = CLoader::Create(m_pGraphicDevice,eSceneID);
 
-	if (FAILED(Ready_Layer_Loding(TEXT("Layer_Loding"))))
+	if (FAILED(Ready_Layer_Loading(TEXT("Layer_Loading"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
-		return E_FAIL;
+	/*if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
+		return E_FAIL;*/
 
 
 	return S_OK;
@@ -125,11 +125,12 @@ _int CScene_Loading::LateRender()
 	return 0;
 }
 
-HRESULT CScene_Loading::Ready_Layer_Loding(const _tchar * pLayerTag)
+HRESULT CScene_Loading::Ready_Layer_Loading(const _tchar * pLayerTag)
 {
 	//오브젝트들을 써야함
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOADING, pLayerTag, TEXT("Prototype_GameObject_Loding")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOADING, pLayerTag, TEXT("Prototype_GameObject_Loading")))
 		return E_FAIL;
+
 	return S_OK;
 }
 

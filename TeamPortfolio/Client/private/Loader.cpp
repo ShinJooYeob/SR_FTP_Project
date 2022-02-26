@@ -106,10 +106,12 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI"))
 		return E_FAIL;
 
-	//for (int i = 0; i < 99999999999; ++i)
-	//{
-	//	int A = 0;
-	//}
+	m_iLoadingMaxCount = 999999999;
+
+	for (int i = 0; i < 999999999; ++i)
+	{
+		m_iLoadingProgressCount = i;
+	}
 
 	m_bIsLoadingFinished = true;
 

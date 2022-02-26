@@ -5,7 +5,7 @@
 
 #include "Camera_Main.h"
 #include "UI_Mouse.h"
-#include "UI_Loding.h"
+#include "UI_Loading.h"
 
 CMainApp::CMainApp()
 	:m_pGameInstance(GetSingle(CGameInstance))
@@ -104,14 +104,14 @@ HRESULT CMainApp::Scene_Change(SCENEID eSceneID)
 
 	/* 디폴트 텍스처 프로토타입 생성 */
 	CTexture::TEXTUREDESC TextureDesc{};
-	TextureDesc.szTextFilePath = TEXT("Loding.txt");
+	TextureDesc.szTextFilePath = TEXT("Loading.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Loding_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Loading_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 	//이제 오브젝트도 넣어줘야함
-	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Loding"), CUI_Loding::Create(m_pGraphicDevice))))
+	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Loading"), CUI_Loading::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 

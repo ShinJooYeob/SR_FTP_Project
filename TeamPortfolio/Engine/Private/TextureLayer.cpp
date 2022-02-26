@@ -29,7 +29,7 @@ HRESULT CTextureLayer::Initialize_Prototype(void * pArg)
 		HRESULT		hr = 0;
 
 		if (tTextureLayerDesc.eTextureType == 0)
-			hr = D3DXCreateTextureFromFile(m_pGraphicDevice, szFullPath, (LPDIRECT3DTEXTURE9*)&pTexture);
+  			hr = D3DXCreateTextureFromFile(m_pGraphicDevice, szFullPath, (LPDIRECT3DTEXTURE9*)&pTexture);
 		else
 			hr = D3DXCreateCubeTextureFromFile(m_pGraphicDevice, szFullPath, (LPDIRECT3DCUBETEXTURE9*)&pTexture);
 
