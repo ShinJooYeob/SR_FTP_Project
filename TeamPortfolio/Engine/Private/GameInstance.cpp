@@ -460,11 +460,11 @@ _bool CGameInstance::Get_Channel_IsPaused(CHANNELID eID)
 	return 	m_pSoundMgr->Get_Channel_IsPaused(eID);
 }
 
-HRESULT CGameInstance::Render_Font(wstring szString, _float2 vOnWindowPos, _float2 vFontSize , _float3 Color_RGB , _uint UntilDrawIndex)
+HRESULT CGameInstance::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2 vFontSize , _float3 Color_RGB , _int UntilDrawIndex)
 {
 	NULL_CHECK_BREAK(m_pFontMgr);
 
-	return m_pFontMgr->Render_Font(szString, vOnWindowPos, vFontSize, Color_RGB, UntilDrawIndex);
+	return m_pFontMgr->Render_UI_Font(szString, vOnWindowPos, vFontSize, Color_RGB, UntilDrawIndex);
 }
 
 

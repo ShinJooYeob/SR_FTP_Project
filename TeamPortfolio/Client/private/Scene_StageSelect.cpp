@@ -198,7 +198,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 	}
 	else 
 	{
-		(pPlayerList->front())->ReInitialize();
+		(pPlayerList->front())->ReInitialize(&_float3(0,1,0));
 
 	}
 

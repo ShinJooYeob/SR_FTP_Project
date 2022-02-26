@@ -34,6 +34,7 @@ public:
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)override;
 
 	void Set_PlayerPause(_float TotalPauseTime, const _tchar* TagAnim, _float fFrameTime = 6.0f);
+	virtual HRESULT ReInitialize(void* pArg)override;
 
 private:
 	CTexture*				m_ComTexture = nullptr;

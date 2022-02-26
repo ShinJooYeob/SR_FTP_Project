@@ -29,7 +29,7 @@ HRESULT CFontMgr::Initialize_FontMgr(LPDIRECT3DDEVICE9 pGraphicDevice, const _tc
 	return S_OK;
 }
 
-HRESULT CFontMgr::Render_Font(wstring szString, _float2 vOnWindowPos, _float2 vFontSize, _float3 Color_RGB, _uint UntilDrawIndex)
+HRESULT CFontMgr::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2 vFontSize, _float3 Color_RGB, _int UntilDrawIndex)
 {
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
@@ -54,10 +54,16 @@ HRESULT CFontMgr::Render_Font(wstring szString, _float2 vOnWindowPos, _float2 vF
 
 	_uint UntilDraw = szString.length();
 
-	if (UntilDrawIndex > 0)
+	if (UntilDrawIndex != -1)
+	{
 		UntilDraw = UntilDrawIndex;
 
-	for (_uint i = 0 ; i < UntilDrawIndex; i ++)
+		if (UntilDrawIndex >= szString.length())
+			UntilDraw = szString.length();
+	}
+	
+	
+	for (_uint i = 0 ; i < UntilDraw; i ++)
 	{
 		FAILED_CHECK(m_pGraphicDevice->SetTransform(D3DTS_WORLD, &matTransform));
 

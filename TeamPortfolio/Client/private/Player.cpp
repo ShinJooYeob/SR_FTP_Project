@@ -53,6 +53,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 
 _int CPlayer::Update(_float fDeltaTime)
 {
+	
 
 	if (m_eNowSceneNum == SCENE_LOADING)
 		return S_FALSE;
@@ -109,11 +110,6 @@ _int CPlayer::Update(_float fDeltaTime)
 
 		if (FAILED(Find_FootHold_Object(fDeltaTime)))
 			return E_FAIL;
-
-
-		//if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
-		//	return E_FAIL;
-
 
 	}
 
@@ -236,6 +232,17 @@ void CPlayer::Set_PlayerPause(_float TotalPauseTime, const _tchar* TagAnim, _flo
 	m_fTotalPauseTime = TotalPauseTime;
 	m_szReturnAnimTag = m_ComTexture->Get_NowTextureTag();
 	m_ComTexture->Change_TextureLayer_Wait(TagAnim, fFrameTime);
+}
+
+HRESULT CPlayer::ReInitialize(void * pArg)
+{
+	_float3 vStartPos = *(_float3*)(pArg);
+
+	m_fNowJumpPower = 0;
+	m_fJumpPower = 10.f;
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vStartPos);
+	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"), TEXT("Idle"));
+	return S_OK;
 }
 
 HRESULT CPlayer::SetUp_Components()
@@ -375,8 +382,9 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 	}
 
 	//มกวม
-	if (m_bIsJumped < 2 && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
+	if (m_bIsJumped < (m_ComInventory->Get_Skill_Level(SKILL_DUBBLEJUMP) + 1) && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
 	{
+
 		if (m_pCarryObject)
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("carryjumpup"), 8.f);
 		else
@@ -444,11 +452,11 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 				//if (lstrcmp(m_ComTexture->Get_NowTextureTag(), TEXT("jump_down"))) 
 				if (!(m_ComTexture->Get_IsReturnTexture()))
 				{
-
-					if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_DoubleDown || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_DoubleDown)
+					if ((m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP)) && (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_DoubleDown || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_DoubleDown))
 					{
+						_float SkillLevel = m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP);
 						m_bIsRunning = true;
-						m_ComTransform->Set_MoveSpeed(4.f);
+						m_ComTransform->Set_MoveSpeed(2.5f + SkillLevel * 0.25f);
 					}
 					else if(pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Down || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Down)
 					{
@@ -897,6 +905,7 @@ HRESULT CPlayer::SetUp_RenderState()
 
 HRESULT CPlayer::Release_RenderState()
 {
+
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);

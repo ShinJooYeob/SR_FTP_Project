@@ -134,7 +134,7 @@ HRESULT CScene_Stage2::Ready_Layer_Cube(const _tchar * pLayerTag)
 	}
 	else
 	{
-		(pPlayerList->front())->ReInitialize();
+		(pPlayerList->front())->ReInitialize(&_float3(0, 2, 0));
 
 	}
 
