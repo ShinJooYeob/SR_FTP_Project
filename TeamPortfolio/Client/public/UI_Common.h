@@ -15,6 +15,11 @@ END
 
 class CUI_Common final :public CUI
 {
+public:
+	enum SLOT
+	{
+		SLOT_1,SLOT_2,SLOT_3,SLOT4,SLOT5,SLOT6,SLOT7,SLOT8,SLOT_END
+	};
 
 private:
 	explicit CUI_Common(LPDIRECT3DDEVICE9 pGraphicDevice);
@@ -46,7 +51,7 @@ public:
 	HRESULT Ready_Layer_Button(const _tchar * pLayerTag);
 	HRESULT Make_Bigger(const _tchar * pLayerTag);
 
-	void Set_SkillSlot();
+	_int Set_SkillSlot();
 
 
 private:
@@ -59,7 +64,6 @@ private:
 
 
 private:	_float			m_fFrame = 0.f;
-			_float			m_temp = 0.f;
 			map<const _tchar*, CUI*>			m_UIButtonList;
 			map<const _tchar*, CUI*>			m_UIList;
 			map<const _tchar*, CUI*>			m_UIPrototypes;
@@ -69,7 +73,8 @@ private:	_float			m_fFrame = 0.f;
 			_tchar*			m_BiggerTag;
 			_float			m_fPosX = -40.f;
 			_bool			m_bIsClicked=false;
-			
+			_int			m_iEmpty;
+			_bool			m_bEmpty[SLOT_END];
 public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
 	HRESULT			Update_UIList(_float fTimeDelta);

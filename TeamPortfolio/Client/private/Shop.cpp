@@ -408,6 +408,11 @@ HRESULT CShop::Buy_Skill(_int ChosenSkill)
 
 	if (m_Skill[ChosenSkill].Price <= m_Player_Inventory->Get_Gold())
 	{
+		if (m_Player_Inventory->Get_Skill_Level(ChosenSkill) == 1)
+		{
+			MSGBOX("최대 레벨초과")
+				return E_FAIL;
+		}
 		m_Player_Inventory->Set_Skill_LevelUP(ChosenSkill);
 		m_Player_Inventory->Set_Gold(-m_Skill[ChosenSkill].Price);
 	}

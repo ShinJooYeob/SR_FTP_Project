@@ -55,7 +55,7 @@ private:
 	_int			m_iBigger = BIGGER_DEFAULT;
 	_float4			m_vUIDesc;
 	_float			m_fSeconds = 0;
-	
+	_int			m_iAlpha = 255;
 
 	_bool			m_bEasingStart=false;
 	_float4			m_vEasingDesc;//x 스타트 y타겟 z패스드타임 w총시간
@@ -67,6 +67,7 @@ public:
 	void			Set_ImageRenderFalse() { m_bRender = false; }
 	void			Set_ImageRenderTrue() { m_bRender = true; }
 	void			Set_ImageBigger(BIGGER eBigger) { m_iBigger = eBigger; m_bEasingStart = false; }
+	void			Set_ImageAlpha(_int Alpha) { m_iAlpha = Alpha; }
 private:
 	HRESULT			SetUp_Components();
 

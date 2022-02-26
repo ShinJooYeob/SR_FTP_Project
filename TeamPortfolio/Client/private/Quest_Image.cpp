@@ -162,6 +162,8 @@ HRESULT CQuest_Image::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 	m_UIList.emplace(L"Quest_Image_1", (CUI*)temp);
 
 
+
+
 	return S_OK;
 }
 HRESULT CQuest_Image::Set_Image_Render(const _tchar * tagUIList, _bool bCheck)

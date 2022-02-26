@@ -45,11 +45,12 @@ void CInventory::Set_Skill_LevelUP(_int eSKILL)
 		return;
 	}
 	
-	if (m_pSkill_Index[eSKILL] > 1)
+	if (m_pSkill_Index[eSKILL] >= 1)
 	{
 		MSGBOX("Max level ÃÊ°ú");
 		return;
 	}
+	else
 	++m_pSkill_Index[eSKILL];
 }
 
