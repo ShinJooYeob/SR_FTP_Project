@@ -13,7 +13,7 @@ class CMapLoadMgr : public CBase
 
 public:
 	// 맵 정보를 불러온다.
-	HRESULT LoadMap(_uint index);
+	list<OUTPUT_OBJECTINFO*>*  LoadMap(_uint index);
 
 
 private:

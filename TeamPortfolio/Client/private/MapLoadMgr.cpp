@@ -13,12 +13,14 @@ CMapLoadMgr::CMapLoadMgr()
 
 }
 
-HRESULT CMapLoadMgr::LoadMap(_uint index)
+list<OUTPUT_OBJECTINFO*>* CMapLoadMgr::LoadMap(_uint index)
 {
-	if (m_MaxMapCount > index)
-		return E_FAIL;
+	if (m_MaxMapCount <= index)
+		return nullptr;
 
 	// 3. 해당 맵 호출시 맵 데이터가 깔리게 만들자.
+
+
 
 
 
