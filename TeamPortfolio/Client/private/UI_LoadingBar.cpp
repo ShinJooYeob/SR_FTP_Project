@@ -1,18 +1,19 @@
 #include "stdafx.h"
-#include "..\public\UI_Loading.h"
+#include "..\public\UI_LoadingBar.h"
 
-CUI_Loading::CUI_Loading(LPDIRECT3DDEVICE9 pGraphicDevice)
+
+CUI_LoadingBar::CUI_LoadingBar(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CUI(pGraphicDevice)
 {
 }
 
-CUI_Loading::CUI_Loading(const CUI_Loading & rhs)
+CUI_LoadingBar::CUI_LoadingBar(const CUI_LoadingBar & rhs)
 	: CUI(rhs)
 {
 }
 
 
-HRESULT CUI_Loading::Initialize_Prototype(void * pArg)
+HRESULT CUI_LoadingBar::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
@@ -20,7 +21,7 @@ HRESULT CUI_Loading::Initialize_Prototype(void * pArg)
 	return S_OK;
 }
 
-HRESULT CUI_Loading::Initialize_Clone(void * pArg)
+HRESULT CUI_LoadingBar::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
@@ -29,36 +30,46 @@ HRESULT CUI_Loading::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_vUIDesc = _float4(g_iWinCX >> 1, g_iWinCY >> 1, g_iWinCX, g_iWinCY);
-	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-		return E_FAIL;
 
-	m_ComTexture->Change_TextureLayer(TEXT("Loading"));
+	vRect = { 230,655,230,690 };
 
+	//850
+	//m_vUIDesc = _float4(g_iWinCX >> 1, g_iWinCY >> 1, g_iWinCX, g_iWinCY);
+	//m_vUIDesc = _float4(WinPosX, WinPosY, WinCX, WinCY);
+
+	//x = Ltop
+
+
+	m_ComTexture->Change_TextureLayer(TEXT("LoadingBar"));
+
+	//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(280.f, 675.f, 0.f));
 
 	return S_OK;
 }
 
-_int CUI_Loading::Update(_float fDeltaTime)
+_int CUI_LoadingBar::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 	m_fFrame = fDeltaTime;
 
+	if (FAILED(Set_UI_Transform(m_ComTransform, Set_byRectPos(vRect))))
+		return E_FAIL;
+
 	return _int();
 }
 
-_int CUI_Loading::LateUpdate(_float fDeltaTime)
+_int CUI_LoadingBar::LateUpdate(_float fDeltaTime)
 {
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
-	//RENDER_PRIORITY ,RENDER_UI
+
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
 		return E_FAIL;
 	return _int();
 }
 
-_int CUI_Loading::Render()
+_int CUI_LoadingBar::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -66,10 +77,10 @@ _int CUI_Loading::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(m_fFrame)))
-		return E_FAIL;
-	//if (FAILED(m_ComTexture->Bind_Texture(0)))
+	//if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(m_fFrame)))
 	//	return E_FAIL;
+	if (FAILED(m_ComTexture->Bind_Texture()))
+		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
@@ -83,7 +94,7 @@ _int CUI_Loading::Render()
 	return _int();
 }
 
-_int CUI_Loading::LateRender()
+_int CUI_LoadingBar::LateRender()
 {
 	if (FAILED(__super::LateRender()))
 		return E_FAIL;
@@ -91,7 +102,24 @@ _int CUI_Loading::LateRender()
 	return _int();
 }
 
-HRESULT CUI_Loading::SetUp_Components()
+_float4 CUI_LoadingBar::Set_byRectPos(_float4 tRect)
+{
+	_float4 Result = {};
+	Result.z = tRect.z - tRect.x;
+	Result.w = tRect.w - tRect.y;
+	Result.x = tRect.x + Result.z * 0.5f;
+	Result.y = tRect.y + Result.w * 0.5f;
+
+
+	return Result;
+}
+
+void CUI_LoadingBar::Set_Progress(_float _ProgressCount, _float _MaxCount)
+{
+	vRect.z = 820.f * _ProgressCount / _MaxCount + 230;
+}
+
+HRESULT CUI_LoadingBar::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
@@ -110,8 +138,12 @@ HRESULT CUI_Loading::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CUI_Loading::SetUp_RenderState()
+HRESULT CUI_LoadingBar::SetUp_RenderState()
 {
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
@@ -119,24 +151,25 @@ HRESULT CUI_Loading::SetUp_RenderState()
 	return S_OK;
 }
 
-HRESULT CUI_Loading::Release_RenderState()
+HRESULT CUI_LoadingBar::Release_RenderState()
 {
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	return S_OK;
 }
 
-CUI_Loading * CUI_Loading::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
+CUI_LoadingBar * CUI_LoadingBar::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 {
-	CUI_Loading* pInstance = new CUI_Loading(pGraphicDevice);
+	CUI_LoadingBar* pInstance = new CUI_LoadingBar(pGraphicDevice);
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CUI_Loading_ProtoType");
+		MSGBOX("Fail to Create CUI_LoadingBar_ProtoType");
 		Safe_Release(pInstance);
 
 	}
@@ -145,13 +178,13 @@ CUI_Loading * CUI_Loading::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 	return pInstance;
 }
 
-CGameObject * CUI_Loading::Clone(void * pArg)
+CGameObject * CUI_LoadingBar::Clone(void * pArg)
 {
-	CUI_Loading* pInstance = new CUI_Loading((*this));
+	CUI_LoadingBar* pInstance = new CUI_LoadingBar((*this));
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CUI_Loading_Clone");
+		MSGBOX("Fail to Create CUI_LoadingBar_Clone");
 		Safe_Release(pInstance);
 
 	}
@@ -160,7 +193,7 @@ CGameObject * CUI_Loading::Clone(void * pArg)
 	return pInstance;
 }
 
-void CUI_Loading::Free()
+void CUI_LoadingBar::Free()
 {
 	__super::Free();
 

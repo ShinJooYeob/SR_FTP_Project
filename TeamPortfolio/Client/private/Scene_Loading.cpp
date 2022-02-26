@@ -6,7 +6,7 @@
 #include "Scene_StageSelect.h"
 #include "Scene_Stage2.h"
 #include "Scene_IMGUI.h"
-
+#include "UI_LoadingBar.h"
 #include "Camera_Main.h"
 
 
@@ -29,6 +29,9 @@ HRESULT CScene_Loading::Initialize(SCENEID eSceneID)
 	if (FAILED(Ready_Layer_Loading(TEXT("Layer_Loading"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_LoadingBar(TEXT("Layer_LoadingBar"))))
+		return E_FAIL;
+
 	/*if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;*/
 
@@ -41,6 +44,7 @@ _int CScene_Loading::Update(_float fDeltaTime)
 	if (__super::Update(fDeltaTime) < 0)
 		return -1;
 
+	m_pLoadingBar->Set_Progress((_float)(m_pLoader->Get_ProgressCount()), (_float)(m_pLoader->Get_MaxCount()));
 
 	return 0;
 }
@@ -130,6 +134,16 @@ HRESULT CScene_Loading::Ready_Layer_Loading(const _tchar * pLayerTag)
 	//오브젝트들을 써야함
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOADING, pLayerTag, TEXT("Prototype_GameObject_Loading")))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_Loading::Ready_Layer_LoadingBar(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOADING, pLayerTag, TEXT("Prototype_GameObject_LoadingBar")))
+		return E_FAIL;
+
+	m_pLoadingBar = (CUI_LoadingBar*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_LOADING, pLayerTag));
 
 	return S_OK;
 }

@@ -192,6 +192,7 @@
     <ClInclude Include="..\public\TerrainGround.h" />
     <ClInclude Include="..\public\UI_Image.h" />
     <ClInclude Include="..\public\UI_Loading.h" />
+    <ClInclude Include="..\public\UI_LoadingBar.h" />
     <ClInclude Include="..\public\UI_Loby.h" />
     <ClInclude Include="..\public\UI_Mouse.h" />
     <ClInclude Include="Client.h" />
@@ -235,6 +236,7 @@
     <ClCompile Include="..\private\TerrainGround.cpp" />
     <ClCompile Include="..\private\UI_Image.cpp" />
     <ClCompile Include="..\private\UI_Loading.cpp" />
+    <ClCompile Include="..\private\UI_LoadingBar.cpp" />
     <ClCompile Include="..\private\UI_Loby.cpp" />
     <ClCompile Include="..\private\UI_Mouse.cpp" />
     <ClCompile Include="Client.cpp" />

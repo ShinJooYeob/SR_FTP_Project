@@ -6,6 +6,7 @@
 #include "Camera_Main.h"
 #include "UI_Mouse.h"
 #include "UI_Loading.h"
+#include "UI_LoadingBar.h"
 
 CMainApp::CMainApp()
 	:m_pGameInstance(GetSingle(CGameInstance))
@@ -112,6 +113,8 @@ HRESULT CMainApp::Scene_Change(SCENEID eSceneID)
 
 	//이제 오브젝트도 넣어줘야함
 	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Loading"), CUI_Loading::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_LoadingBar"),CUI_LoadingBar::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 

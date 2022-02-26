@@ -284,6 +284,9 @@
     <ClInclude Include="..\public\UI_Loading.h">
       <Filter>01.GameObject\UI\UI_Loading</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_LoadingBar.h">
+      <Filter>01.GameObject\UI\UI_Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -391,7 +394,6 @@
     <ClCompile Include="..\private\UI_Loby.cpp">
       <Filter>01.GameObject\UI\UI_Loby</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\UI_Mouse.cpp" />
     <ClCompile Include="..\private\SkyBox.cpp">
       <Filter>01.GameObject\SkyBox</Filter>
     </ClCompile>
@@ -406,6 +408,12 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Loading.cpp">
       <Filter>01.GameObject\UI\UI_Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_LoadingBar.cpp">
+      <Filter>01.GameObject\UI\UI_Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Mouse.cpp">
+      <Filter>01.GameObject\UI\UI_Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

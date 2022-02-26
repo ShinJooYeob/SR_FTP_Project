@@ -2,7 +2,6 @@
 
 #include "UI.h"
 
-
 BEGIN(Engine)
 class CTexture;
 class CRenderer;
@@ -12,12 +11,18 @@ END
 
 BEGIN(Client)
 
-class CUI_Loading final :public CUI
+class CUI_LoadingBar final :public CUI
 {
+public:
+	typedef struct tagLoadingBar {
+		_float ProgressBar;
+		_float MaxBar;
+	}LOADINGBAR;
+
 private:
-	explicit CUI_Loading(LPDIRECT3DDEVICE9 pGraphicDevice);
-	explicit CUI_Loading(const CUI_Loading& rhs);
-	virtual ~CUI_Loading() = default;
+	explicit CUI_LoadingBar(LPDIRECT3DDEVICE9 pGraphicDevice);
+	explicit CUI_LoadingBar(const CUI_LoadingBar& rhs);
+	virtual ~CUI_LoadingBar() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
@@ -29,6 +34,10 @@ public:
 
 	virtual _int Render()override;
 	virtual _int LateRender()override;
+
+	_float4 Set_byRectPos(_float4 tRect);
+
+	void Set_Progress(_float _ProgressCount,_float _MaxCount);
 
 
 private:
@@ -47,8 +56,15 @@ private:
 	_float			m_fFrame = 0.f;
 	_float4			m_vUIDesc;
 
+	_float			WinPosX;
+	_float			WinPosY;
+	_float			WinCX;
+	_float			WinCY;
+
+	_float4			vRect;
+
 public:
-	static CUI_Loading* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
+	static CUI_LoadingBar* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg = nullptr)override;
 	virtual void Free()override;
 };
