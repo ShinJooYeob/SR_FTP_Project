@@ -56,11 +56,12 @@ private:
 	HRESULT Ready_Object_Clone_Map(const _tchar* layertag);
 	HRESULT Ready_Object_Camera(const _tchar* layertag);
 
-	HRESULT		Render_Set_Statee();
+	HRESULT		Render_Set_State();
 
 	// 창 초기화
 private:
 	HRESULT Initialize_ToolView();
+
 
 public: // Get Set
 	CGameInstance* GetGameInstance()
@@ -87,17 +88,18 @@ public: // Get Set
 
 public: //For. Data
 	HRESULT SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd);
-	HRESULT SaveData_Map(list<CObjectTool_ToolObject*> objlist, CWnd* cwnd);
+	HRESULT SaveData_Map(list<CGameObject*> objlist, CWnd* cwnd);
 
-	HRESULT LoadData_Object(CWnd * cwnd);
-	HRESULT LoadData_Map(CWnd* cwnd);
+	HRESULT LoadData_Data(CWnd * cwnd);
 
 	HRESULT Create_ToolObject_Button(wstring name);
 	HRESULT Create_ToolObject_Data(const _tchar* str, const OUTPUT_OBJECTINFO& data);
 
 public:// For Create
 	CObjectTool_ToolObject* Create_New_ToolObject(wstring name, const _tchar* laytag);
-	CObjectTool_ToolObject* Create_New_MapObject(_float3 Pos, const _tchar* laytag);
+	CObjectTool_ToolObject* Create_Load_MapObject(const OUTPUT_OBJECTINFO& info, const _tchar* laytag);
+
+	CObjectTool_ToolObject* Create_Clone_MapObject(_float3 Pos, const _tchar* laytag);
 
 public:// For Object
 	_float3					Get_Center_MapPosition();
@@ -127,7 +129,7 @@ private:
 private:
 	LPDIRECT3DDEVICE9			m_pGraphicDevice;
 	CGameInstance*				m_pGameInstance;
-	CRenderer*					m_pComRenderer;
+	CRenderer*					m_pComRenderer;	
 
 private:
 	_int						m_ViewObjectSelectIndex;

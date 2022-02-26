@@ -27,8 +27,8 @@ public:
 private:
 	_int				m_iNowSceneIndx_ExceptLoad = 0;
 	_int				m_iCurrentSceneIdx = 0;
-	CScene*				m_pScene = nullptr;
 
+	CScene*				m_pScene = nullptr;
 public:
 	virtual void Free()override;
 };

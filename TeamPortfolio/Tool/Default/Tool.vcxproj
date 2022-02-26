@@ -209,6 +209,7 @@
     <ClInclude Include="..\Header\Struct.h" />
     <ClInclude Include="..\Header\Tool_Define.h" />
     <ClInclude Include="Camera_Tool.h" />
+    <ClInclude Include="CubeMapDialog.h" />
     <ClInclude Include="FileInfo.h" />
     <ClInclude Include="KeyMgr.h" />
     <ClInclude Include="MainFrm.h" />
@@ -229,6 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera_Tool.cpp" />
+    <ClCompile Include="CubeMapDialog.cpp" />
     <ClCompile Include="FileInfo.cpp" />
     <ClCompile Include="KeyMgr.cpp" />
     <ClCompile Include="MainFrm.cpp" />

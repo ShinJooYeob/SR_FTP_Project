@@ -72,6 +72,8 @@ BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON14, &CMyForm::OnBnClickedButton_CreateObject)
 	ON_LBN_SELCHANGE(IDC_LIST3, &CMyForm::OnLbnSelchangeList_ObjectSelect)
 	ON_BN_CLICKED(IDC_BUTTON15, &CMyForm::OnBnClickedButton_Delete)
+	ON_WM_ERASEBKGND()
+	ON_BN_CLICKED(IDC_BUTTON1, &CMyForm::OnBnClickedButtonCubeMap)
 END_MESSAGE_MAP()
 
 // CMyForm 진단입니다.
@@ -135,6 +137,17 @@ void CMyForm::OnTransform()
 	m_TransformDialog.ShowWindow(SW_SHOW);  // 창 모양으로 출력
 
 }
+void CMyForm::OnBnClickedButtonCubeMap()
+{
+
+	if (nullptr == m_CubeMapToolDialog.GetSafeHwnd())
+		m_CubeMapToolDialog.Create(IDD_MYCUBEMAP);	// 해당 id 에 맞는 다이얼로그 생성
+
+	m_CubeMapToolDialog.ShowWindow(SW_SHOW);  // 창 모양으로 출력
+
+}
+
+
 
 void CMyForm::OnObjectSave()
 {
@@ -146,7 +159,7 @@ void CMyForm::OnObjectSave()
 void CMyForm::OnBnClickedButtonLoad()
 {
 	// 오브젝트 로드 해서 새로 생성
-	GetSingle(CSuperToolSIngleton)->LoadData_Object(this);
+	GetSingle(CSuperToolSIngleton)->LoadData_Data(this);
 }
 
 void CMyForm::OnMapSave()
@@ -243,4 +256,30 @@ void CMyForm::OnBnClickedButton_Delete()
 	obj->DIED();
 	m_ListBox_Objects.DeleteString(index);
 	m_ListBox_Objects.SetCurSel(index);
+}
+
+
+BOOL CMyForm::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	return CFormView::OnEraseBkgnd(pDC);
+}
+
+BOOL CMyForm::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		//이스케이프키일 경우 함수 종료
+		if (pMsg->wParam == VK_DOWN || pMsg->wParam == VK_UP ||
+			pMsg->wParam == VK_LEFT || pMsg->wParam == VK_RIGHT)
+			return TRUE;
+	}
+
+	return CFormView::PreTranslateMessage(pMsg);
+
+
+	return false;
 }

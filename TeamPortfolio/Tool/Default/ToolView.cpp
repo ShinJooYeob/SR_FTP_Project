@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_WM_INPUT()
 	ON_WM_LBUTTONUP()
 	ON_WM_RBUTTONDOWN()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -115,11 +116,10 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 		D3DCOLOR_ARGB(255, 255, 255, 255));*/
 #pragma endregion 복습용
 
-		/*CGameInstance*		m_pGameInstance = GetSingle(CDevice)->Get_GameInstance();
-		if (m_pGameInstance == nullptr)
-			return;
-	*/
+	
 
+	
+//	UnlockWindowUpdate();
 	GetSingle(CSuperToolSIngleton)->Update_Tool(0.03f);
 
 	// #Tag Tool Renderer
@@ -129,6 +129,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
 	GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
 
+//	LockWindowUpdate();
 
 }
 
@@ -228,7 +229,7 @@ void CToolView::OnInitialUpdate()
 		return;
 	}
 
-	SetTimer(TIMER_UPDATE, 30, NULL);
+	SetTimer(TIMER_UPDATE, 50, NULL);
 
 	m_Nearobj = nullptr;
 
@@ -286,7 +287,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 		return;
 
 	// 선택한 오브젝트 생성
-	GetSingle(CSuperToolSIngleton)->Create_New_MapObject(m_NextPos, TAG_LAY(Layer_Map));
+	GetSingle(CSuperToolSIngleton)->Create_Clone_MapObject(m_NextPos, TAG_LAY(Layer_Map));
 }
 void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
 {
@@ -367,7 +368,7 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	_float3 b = vertex[2] - vertex[0];
 	_float3 nomalVec = _float3(0, 0, 0);
 
-
+	
 	D3DXVec3Cross(&nomalVec, &a, &b);
 	nomalVec.z *= -1;
 	
@@ -400,3 +401,12 @@ BOOL CToolView::DestroyWindow()
 	return CScrollView::DestroyWindow();
 }
 
+
+
+
+BOOL CToolView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	return true;
+}

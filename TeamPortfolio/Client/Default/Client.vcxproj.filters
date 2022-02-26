@@ -151,6 +151,12 @@
     <Filter Include="01.GameObject\UI\UI_Loading">
       <UniqueIdentifier>{d3491e29-2e30-4873-aa69-151009025148}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Mgr">
+      <UniqueIdentifier>{1e7c4da9-2e78-42bc-96a5-a761833a2064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Mgr\MapLoadMgr">
+      <UniqueIdentifier>{5252ae48-587c-459b-8e1e-9a9a118a96e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -287,6 +293,13 @@
     <ClInclude Include="..\public\UI_LoadingBar.h">
       <Filter>01.GameObject\UI\UI_Loading</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_Mouse.h" />
+    <ClInclude Include="..\public\Client_Struct.h">
+      <Filter>99.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MapLoadMgr.h">
+      <Filter>03.Mgr\MapLoadMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -414,6 +427,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Mouse.cpp">
       <Filter>01.GameObject\UI\UI_Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MapLoadMgr.cpp">
+      <Filter>03.Mgr\MapLoadMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

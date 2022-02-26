@@ -12,6 +12,7 @@ IMPLEMENT_SINGLETON(CSuperToolSIngleton)
 
 CSuperToolSIngleton::E_TOOL_MODE CSuperToolSIngleton::g_MAP_MODE = CSuperToolSIngleton::E_TOOL_MODE::TOOLMODE_OBJECT;
 
+
 CSuperToolSIngleton::CSuperToolSIngleton()
 	: m_pGraphicDevice(nullptr), m_pGameInstance(GetSingle(CGameInstance))
 {
@@ -55,6 +56,7 @@ HRESULT CSuperToolSIngleton::InitDevice(void)
 	//m_pGraphicDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 	////UV좌표를 1을 넘어가게 작성할 경우 다시 1인 점을 0으로 치환하여 좌표를 찍음
 
+
 	// 오브젝트 정보
 	Ready_Initalize_Object();
 
@@ -78,9 +80,9 @@ HRESULT CSuperToolSIngleton::Render_Begin(void)
 {
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
-	Render_Set_Statee();
+	Render_Set_State();
 
-	m_pGameInstance->Render_Begin();
+	m_pGameInstance->Render_Begin();	
 	return S_OK;
 }
 
@@ -89,11 +91,12 @@ HRESULT CSuperToolSIngleton::Render_End(HWND hWnd)
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
 	m_pGraphicDevice->EndScene();
-	m_pGraphicDevice->Present(nullptr, nullptr, hWnd, nullptr);
+	m_pGraphicDevice->Present(NULL, NULL, hWnd, NULL);
+
 	return S_OK;
 }
 
-HRESULT CSuperToolSIngleton::Render_Set_Statee()
+HRESULT CSuperToolSIngleton::Render_Set_State()
 {
 	if (m_pGraphicDevice == nullptr)
 		return E_FAIL;
@@ -254,6 +257,7 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView()
 	return S_OK;
 }
 
+
 HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd)
 {
 	// 선택한 오브젝트를 저장한다.
@@ -312,59 +316,66 @@ HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* 
 	return S_OK;
 }
 
-HRESULT CSuperToolSIngleton::SaveData_Map(list<CObjectTool_ToolObject*> objlist, CWnd* cwnd)
+HRESULT CSuperToolSIngleton::SaveData_Map(list<CGameObject*> objlist, CWnd* cwnd)
 {
 	// 선택한 오브젝트를 저장한다.
 
 	// 1. 클릭시 다이얼 로그 생성.
-	//CFileDialog		Dlg(FALSE,
-	//	L"dat", // .dat파일로 저장
-	//	L"*.dat",
-	//	OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-	//	L"Data Files(*.dat)|*.dat||",
-	//	cwnd);
+	CFileDialog		Dlg(FALSE,
+		L"dat", // .dat파일로 저장
+		L"*.dat",
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		L"Data Files(*.dat)|*.dat||",
+		cwnd);
 
-	//TCHAR	szPath[MAX_PATH] = L"";
-	//GetCurrentDirectory(MAX_PATH, szPath);
-	//PathRemoveFileSpec(szPath);
+	TCHAR	szPath[MAX_PATH] = L"";
+	GetCurrentDirectory(MAX_PATH, szPath);
+	PathRemoveFileSpec(szPath);
 
-	//lstrcat(szPath, g_FilePath_ObjectPathData_Save.c_str());
-	//Dlg.m_ofn.lpstrInitialDir = szPath;
+	lstrcat(szPath, g_FilePath_ObjectPathData_Save.c_str());
+	Dlg.m_ofn.lpstrInitialDir = szPath;
 
-	//if (IDOK == Dlg.DoModal())
-	//{
-	//	// 이름
+	if (IDOK == Dlg.DoModal())
+	{
+		// 이름
 
-	//	CString				str = Dlg.GetPathName().GetString();
-	//	CString				Filename = PathFindFileName(str);
+		CString				str = Dlg.GetPathName().GetString();
+		CString				Filename = PathFindFileName(str);
 
-	//	TCHAR				newName[64] = L"";
+		TCHAR				newName[64] = L"";
 
-	//	lstrcpy(newName, Filename);
-	//	PathRemoveExtension(newName);
-	//	
+		lstrcpy(newName, Filename);
+		PathRemoveExtension(newName);
+		
 
-	//	const TCHAR*		pGetPath = str.GetString();
+		const TCHAR*		pGetPath = str.GetString();
 
-	//	HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+		HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
-	//	if (INVALID_HANDLE_VALUE == hFile)
-	//		return E_FAIL;
+		if (INVALID_HANDLE_VALUE == hFile)
+			return E_FAIL;
 
+		OUTPUT_ID id;
+		id.FILEID = OUTPUT_MAP;
+		lstrcpy(id.strObjectName, newName);
 
-	//	DWORD	dwByte = 0;
+		// 저장
+		DWORD	dwByte = 0;	
 
-	//	// 저장
-	//	obj->Set_OUTPUTData_Save();
-	//	WriteFile(hFile, &obj->Get_OutputData(), sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+		WriteFile(hFile, &id, sizeof(OUTPUT_ID), &dwByte, nullptr);
 
-	//	CloseHandle(hFile);
-	//}
+		for (auto& iter : objlist)
+		{
+			((CObjectTool_ToolObject*)iter)->Set_OUTPUTData_Save();
+			WriteFile(hFile, &((CObjectTool_ToolObject*)iter)->Get_OutputData(), sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+		}
+		CloseHandle(hFile);
+	}
 	return S_OK;
 }
 
 
-HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
+HRESULT CSuperToolSIngleton::LoadData_Data(CWnd * cwnd)
 {
 	// 새 오브젝트를 가져온다.
 
@@ -375,8 +386,7 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 	CFileDialog dlg(TRUE, _T("*.dat"), _T(""), OFN_HIDEREADONLY, szFilter);
 
 	OUTPUT_ID			infoid;
-
-	OUTPUT_OBJECTINFO infoObj;
+	OUTPUT_OBJECTINFO	infoObj;
 
 
 	if (IDOK == dlg.DoModal())
@@ -405,19 +415,23 @@ HRESULT CSuperToolSIngleton::LoadData_Object(CWnd * cwnd)
 			Create_ToolObject_Data(infoid.strObjectName,infoObj);
 			break;
 		case OUTPUT_MAP:
+			while (true)
+			{
+				ReadFile(hFile, &infoObj, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+
+				if (0 == dwByte)
+				{
+					// Safe_Delete(pObjInfo);
+					break;
+				}
+				GetSingle(CSuperToolSIngleton)->Create_Load_MapObject(infoObj, TAG_LAY(Layer_Map));
+			}
 			break;
 		}
-
-		
 
 		CloseHandle(hFile);
 	}
 
-	return S_OK;
-}
-
-HRESULT CSuperToolSIngleton::LoadData_Map(CWnd * cwnd)
-{
 	return S_OK;
 }
 
@@ -458,7 +472,19 @@ CObjectTool_ToolObject* CSuperToolSIngleton::Create_New_ToolObject(wstring name,
 	return newobj;
 }
 
-CObjectTool_ToolObject * CSuperToolSIngleton::Create_New_MapObject(_float3 Pos, const _tchar* laytag)
+CObjectTool_ToolObject * CSuperToolSIngleton::Create_Load_MapObject(const OUTPUT_OBJECTINFO& info, const _tchar* laytag)
+{
+	// 데이터로 오브젝트 생성 생성
+	FAILED_CHECK_NONERETURN(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, laytag, TAG_OP(Prototype_BackGround)));
+
+	// 3. 생성된 오브젝트 가져오기
+	CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, laytag)->back();
+	newobj->LoadData(info);
+	return newobj;
+}
+
+
+CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(_float3 Pos, const _tchar* laytag)
 {
 	// 현재 선택된 오브젝트를 클론해 맵 레이어에 오브젝트를 제작한다.
 	// 1. 오브젝트 선택

@@ -16,12 +16,20 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
-
 private:
+	
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_MainCamera(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Terrain(const	 _tchar* pLayerTag);
+
+
 
 private:
 	bool mbIsFrame = false;
+
+	// 리스트 배열로 선언한다.
+
+
 
 public:
 	static CScene_IMGUI* Create(LPDIRECT3DDEVICE9 GraphicDevice);

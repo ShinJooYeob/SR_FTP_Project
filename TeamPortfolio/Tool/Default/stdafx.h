@@ -61,6 +61,7 @@
 #include <algorithm>
 #include <ctime>
 #include <fstream>
+#include <time.h>
 
 
 #include <afxdlgs.h>
@@ -72,6 +73,7 @@
 using namespace std;
 
 #include "Include.h"
+#include <afxwin.h>
 #include <afxwin.h>
 #include <afxwin.h>
 #include <afxwin.h>
