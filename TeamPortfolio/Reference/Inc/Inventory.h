@@ -19,16 +19,17 @@ public:
 	_int Get_Gold() { return m_iGold; }
 	_int Get_Skill_Level(_int eSKILL);
 	
-	_int* Get_Skill_Index(_int eSKILL) { return m_pSkill_Index; }
+	_int* Get_Skill_Index() const { return m_pSkill_Index; }
 	void Set_Gold(_int Gold) { m_iGold += Gold; }
-	void Set_Skill_Level(_int eSKILL, _int Skill_level);
-
+	void Set_Skill_LevelUP(_int eSKILL);
+	
 
 	void Initialize_Skill_Array(_int eSkill_Index);
 
 
 private:
 	_int m_iGold;
+	_int m_iMaxSkill_Level;
 	_int m_iMaxSkill_Index;
 	_int* m_pSkill_Index = nullptr;
 public:

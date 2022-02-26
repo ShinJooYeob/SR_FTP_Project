@@ -17,9 +17,6 @@ class CShop final :public CUI
 {
 	typedef struct SKILL_INFO
 	{
-		_float Move_Speed;
-		_float Jump_Power;
-		_float Dash_CoolDown;
 		_int   Price;
 	}SKILLINFO;
 private:
@@ -58,7 +55,7 @@ private:
 
 
 private:	_float			m_fFrame = 0.f;
-			SKILLINFO			m_Skill[SKILL_END]; //스킬 정보를 담아놓는 배열
+			SKILLINFO			m_Skill[SKILL_END]; //스킬 가격을 담아놓는 배열
 			_int				m_iChosenSkill; //현재 선택한 스킬이 뭔지 알수 있게 이넘 값 넣는 변수
 			map<const _tchar*, CUI*>			m_UIButtonList;
 			map<const _tchar*, CUI*>			m_UIList;

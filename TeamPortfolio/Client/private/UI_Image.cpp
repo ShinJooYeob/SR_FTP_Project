@@ -51,22 +51,73 @@ _int CUI_Image::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-	if (!lstrcmp(L"Common_1", m_pImageName))
+	if (!lstrcmp(L"Common_1", m_pImageName)|| !lstrcmp(L"Common_2", m_pImageName)|| !lstrcmp(L"Common_3", m_pImageName)|| !lstrcmp(L"Common_4", m_pImageName)|| !lstrcmp(L"Common_5", m_pImageName))
 	{
+		
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 			return E_FAIL;
 	}
-
-	if (m_iBigger == BIGGER_ON && m_vUIDesc.w < 200)
+	
+	if (m_iBigger == BIGGER_ON)
 	{
-		m_vUIDesc.z += 20;
-		m_vUIDesc.w += 18;
-
-		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-			return E_FAIL;
-
-
+		if (m_bEasingStart == false)
+		{
+			m_vEasingDesc.x = 0.00001f;
+			m_vEasingDesc.y = 200.f;
+			m_vEasingDesc.z = 0.f;
+			m_vEasingDesc.w = 1.f;
+			m_bEasingStart = true;
+		}
+		if (m_bEasingStart == true)
+		{
+			m_vEasingDesc.z += fDeltaTime;
+			if (m_vEasingDesc.z > m_vEasingDesc.w)
+			{
+				
+				
+			}
+			else
+			{
+				
+				m_vUIDesc.z = GetSingle(CGameInstance)->Easing(TYPE_BounceIn, m_vEasingDesc.x, m_vEasingDesc.y, m_vEasingDesc.z, m_vEasingDesc.w);
+				m_vUIDesc.w = m_vUIDesc.z * 18 / 20;
+				if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+					return E_FAIL;
+			}
+		}
 	}
+
+	if (m_iBigger == BIGGER_OFF)
+	{
+		if (m_bEasingStart == false)
+		{
+			m_vEasingDesc.x = 200.f;
+			m_vEasingDesc.y = 0.00001f;
+			m_vEasingDesc.z = 0.f;
+			m_vEasingDesc.w = 2.f;
+			m_bEasingStart = true;
+		}
+		if (m_bEasingStart == true)
+		{
+			m_vEasingDesc.z += fDeltaTime;
+			if (m_vEasingDesc.z > m_vEasingDesc.w)
+			{
+				
+			}
+			else
+			{
+				
+				m_vUIDesc.z = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_vEasingDesc.x, m_vEasingDesc.y, m_vEasingDesc.z, m_vEasingDesc.w);
+				m_vUIDesc.w = m_vUIDesc.z * 18 / 20;
+				if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+					return E_FAIL;
+			}
+		}
+	}
+	
+
+
+	
 	if (m_iBigger == BIGGER_OFF && m_vUIDesc.z>20)
 	{
 		m_vUIDesc.z -= 20;
@@ -86,17 +137,17 @@ HRESULT CUI_Image::SetUp_RenderState()
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
-	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	//m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-	//m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	//m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	//Sour => 현재 그리려고하는 그림의 색
 	//Dest => 직전까지 화면에 그려진 색
 	//
 	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
-	m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(120, 255, 255, 255));
+	m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(m_iAlpha, 255, 255, 255));
 	//
 	//
 	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
@@ -214,7 +265,7 @@ void CUI_Image::Set_ImageName(TCHAR * pImageName)
 		m_ComTexture->Change_TextureLayer(L"manual_Potion");
 		m_bRender = false;
 	}
-
+	////////////////////common///////////////
 	else if (!lstrcmp(L"Quest_2", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"Quest_2");
@@ -223,7 +274,26 @@ void CUI_Image::Set_ImageName(TCHAR * pImageName)
 	{
 		m_ComTexture->Change_TextureLayer(L"Common_1");
 	}
-
+	else if (!lstrcmp(L"Common_2", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"SPEEDUP");
+	}
+	else if (!lstrcmp(L"Common_3", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"DUBBLEJUMP");
+	}
+	else if (!lstrcmp(L"Common_4", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"DASH");
+	}
+	else if (!lstrcmp(L"Common_5", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"POTION");
+	}
+	else if (!lstrcmp(L"Common_6", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"CoolDown");
+	}
 }
 
 HRESULT CUI_Image::SetUp_Components()

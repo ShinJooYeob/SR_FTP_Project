@@ -39,7 +39,7 @@ HRESULT CUI_Common::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 	m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(90));
-	m_vUIDesc = _float4((g_iWinCX >> 1) - 750, 360, 800, 100);
+	m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
 
@@ -56,11 +56,31 @@ HRESULT CUI_Common::Initialize_Clone(void * pArg)
 	return S_OK;
 }
 
+_int CUI_Common::Set_SkillSlot()
+{
+	((CUI_Image*)Find_Image(L"Common_Image_9"))->Set_ImageAlpha(40);
+	((CUI_Image*)Find_Image(L"Common_Image_10"))->Set_ImageAlpha(40);
+	((CUI_Image*)Find_Image(L"Common_Image_11"))->Set_ImageAlpha(40);
+	((CUI_Image*)Find_Image(L"Common_Image_12"))->Set_ImageAlpha(40);
+
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP) == 1)
+		((CUI_Image*)Find_Image(L"Common_Image_9"))->Set_ImageAlpha(255);
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_DUBBLEJUMP) == 1)
+		((CUI_Image*)Find_Image(L"Common_Image_10"))->Set_ImageAlpha(255);
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_DASH) == 1)
+		((CUI_Image*)Find_Image(L"Common_Image_11"))->Set_ImageAlpha(255);
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_POTION) == 1)
+		((CUI_Image*)Find_Image(L"Common_Image_12"))->Set_ImageAlpha(255);
+	
+	return 0;
+}
 _int CUI_Common::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-
+	
+	Set_SkillSlot();
+	//_float fPosX = GetSingle(CGameInstance)->Easing(TYPE_ExpoInOut, m_fStartPosX, m_fTargetPosx, m_fPassedTime);
 	POINT ptMouse;
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
@@ -69,29 +89,29 @@ _int CUI_Common::Update(_float fDeltaTime)
 	m_rcRect.bottom = (LONG)720;
 	m_rcRect.right = (LONG)50;
 	if (PtInRect(&m_rcRect, ptMouse))
+	{
+		
 		m_MouseOn = true;
-
+		if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON)&(DIS_Down))
+		{
+			m_bIsClicked = !m_bIsClicked;
+		}
+	}
 	else
 		m_MouseOn = false;
+	if(!m_bIsClicked)
+	{
+		
+		if (m_MouseOn)
+			Show_UI(fDeltaTime);
 
-	if (m_MouseOn == true && m_vUIDesc.x<(g_iWinCX >> 1) - 600)
-	{
-		m_temp += 10;
-		m_vUIDesc = _float4((g_iWinCX >> 1) - 750 + m_temp, 360, 800, 100);
-		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-			return E_FAIL;
-		for (auto pair : m_UIList)
-			((CUI_Image*)(pair.second))->Set_ImageUIDesc(10);
+		if (!m_MouseOn)
+			Hide_UI(fDeltaTime);
 	}
-	else if (m_MouseOn == false && m_vUIDesc.x>-40)
-	{
-		m_temp -= 10;
-		m_vUIDesc = _float4((g_iWinCX >> 1) - 750 + m_temp, 360, 800, 100);
-		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-			return E_FAIL;
-		for (auto pair : m_UIList)
-			((CUI_Image*)(pair.second))->Set_ImageUIDesc(-10);
-	}
+
+
+	
+
 	if (FAILED(Update_UIList(fDeltaTime)))
 		return E_FAIL;
 	if (FAILED(Update_UIButtonList(fDeltaTime)))
@@ -101,8 +121,34 @@ _int CUI_Common::Update(_float fDeltaTime)
 
 	return _int();
 }
+HRESULT CUI_Common::Show_UI(_float fDeltaTime)
+{
+	if(m_fPosX<40)
+	{
+		m_fPosX += fDeltaTime * 320;
+		m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
+			if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+				return E_FAIL;
+			for (auto pair : m_UIList)
+				((CUI_Image*)(pair.second))->Set_ImageUIDesc(fDeltaTime * 320);
+	}
 
 
+}
+HRESULT CUI_Common::Hide_UI(_float fDeltaTime)
+{
+	if (m_fPosX>-40)
+	{
+		m_fPosX -= fDeltaTime * 320;
+		m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+			return E_FAIL;
+		for (auto pair : m_UIList)
+			((CUI_Image*)(pair.second))->Set_ImageUIDesc(-(fDeltaTime * 320));
+	}
+
+
+}
 
 _int CUI_Common::LateUpdate(_float fDeltaTime)
 {
@@ -180,9 +226,41 @@ CUI * CUI_Common::Find_Image(const _tchar * tagUIList)
 }
 HRESULT CUI_Common::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 {
+	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x , m_vUIDesc.y-280, 50, 50)));
+	temp->Set_ImageName(L"Common_2");
+	m_UIList.emplace(L"Common_Image_9", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y-200, 50, 50)));
+	temp->Set_ImageName(L"Common_3");
+	m_UIList.emplace(L"Common_Image_10", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y-120, 50, 50)));
+	temp->Set_ImageName(L"Common_4");
+	m_UIList.emplace(L"Common_Image_11", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y-40, 50, 50)));
+	temp->Set_ImageName(L"Common_5");
+	m_UIList.emplace(L"Common_Image_12", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 280, 50, 50)));
+	temp->Set_ImageName(L"Common_6");
+	m_UIList.emplace(L"Common_Image_13", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 200, 50, 50)));
+	temp->Set_ImageName(L"Common_6");
+	m_UIList.emplace(L"Common_Image_14", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 120, 50, 50)));
+	temp->Set_ImageName(L"Common_6");
+	m_UIList.emplace(L"Common_Image_15", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 40, 50, 50)));
+	temp->Set_ImageName(L"Common_6");
+	m_UIList.emplace(L"Common_Image_16", (CUI*)temp);
 
 
-	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 280, 64, 64)));
+
+	 temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 280, 64, 64)));
 	temp->Set_ImageName(L"Common_1");
 	m_UIList.emplace(L"Common_Image_1", (CUI*)temp);
 
@@ -214,6 +292,9 @@ HRESULT CUI_Common::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 	temp->Set_ImageName(L"Common_1");
 	m_UIList.emplace(L"Common_Image_8", (CUI*)temp);
 
+
+
+	
 	return S_OK;
 }
 HRESULT CUI_Common::Set_Image_Render(const _tchar * tagUIList, _bool bCheck)
@@ -258,6 +339,9 @@ HRESULT CUI_Common::Make_Bigger(const _tchar * pLayerTag)
 		temp->Set_ImageBigger(CUI_Image::BIGGER_ON);
 	return S_OK;
 }
+
+
+
 HRESULT CUI_Common::Update_UIList(_float fTimeDelta)
 {
 	for (auto pair : m_UIList)
