@@ -1,1 +1,0 @@
-textures|Cube|4|..\bin\Resources\textures\Cube\DefaultCube_%d.dds

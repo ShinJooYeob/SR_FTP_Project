@@ -18,7 +18,8 @@ TeamPortfolio/Tool/x64/**/*.*
 TeamPortfolio/Tool/x86/**/*.*
 
 ## Resource ignore
-TeamPortfolio/Resource/**/*.*
+TeamPortfolio/Client/bin/Resources/**/*.*
+TeamPortfolio/Tool/bin/Resources/**/*.*
 
 \Engine
 

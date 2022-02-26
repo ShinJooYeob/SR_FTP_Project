@@ -1,1 +1,0 @@
-textures|blocks|357|..\bin\Resources\textures\blocks\Block_%d.png
