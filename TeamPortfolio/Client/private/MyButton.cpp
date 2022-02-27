@@ -114,6 +114,16 @@ _int CMyButton::Update(_float fDeltaTime)
 			{
 				return 104;
 			}
+			else if (!lstrcmp(L"Button_Result_Start", m_pButtonName))
+			{
+				//다시 하기 기능 만들기
+				return 0;
+			}
+			else if (!lstrcmp(L"Button_Result_Cancel", m_pButtonName))
+			{
+				//로비로 돌아가기 기능 만들기
+				return 0;
+			}
 
 		}
 	}
@@ -298,11 +308,19 @@ void CMyButton::Set_ButtonName(TCHAR * pButtonName)
 	{
 		m_ComTexture->Change_TextureLayer(L"Loby_Button1");
 	}
-
 	else if (!lstrcmp(L"Loby_Button3", m_pButtonName))
 	{
 		m_ComTexture->Change_TextureLayer(L"Loby_Button3");
 	}
+	else if (!lstrcmp(L"Button_Result_Start", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Button_Result_Start");
+	}
+	else if (!lstrcmp(L"Button_Result_Cancel", m_pButtonName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Button_Result_Cancel");
+	}
+	
 
 }
 

@@ -269,6 +269,13 @@ enum SHOPCASE
 	SHOP_END
 };
 
+enum RESULTCASE
+{
+	RESULT_START = 10000,
+	RESULT_CANCEL,
+	RESULT_END
+};
+
 enum EasingTypeID
 {
 	TYPE_Linear = 0,

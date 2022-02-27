@@ -35,7 +35,13 @@ private:
 	HRESULT		SetUp_RenderState();
 	HRESULT		Release_RenderState();
 
-	HRESULT		Ready_Layer_Button(const _tchar * pLayerTag);
+	//진우형 프레임워크
+private:
+	HRESULT		Ready_Layer_Button(const _tchar * pLayerTag);//버튼 클론을 만들고 있음
+	HRESULT		Update_UIButtonList(_float fTimeDelta); //이게 버튼의 업데이트를 돌려주고 있다.
+	HRESULT		LateUpdate_UIButtonList(_float fTimeDelta); //이게 버튼의 레이트업데이트를 돌려주고 있다.
+	CUI *		Find_UI(const _tchar * tagUI); //UI 겹치는게 있는지 체크
+	CUI *		Find_Button(const _tchar * tagUIList); //이게 클론을 찾음
 
 private:
 	CTexture*				m_ComTexture = nullptr;
