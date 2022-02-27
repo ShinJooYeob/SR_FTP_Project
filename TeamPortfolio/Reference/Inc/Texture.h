@@ -76,9 +76,6 @@ private:
 	HRESULT Insert_TextureLayer(TYPE eType, _tchar* szFilePath, _tchar* szStateKey, _int iNumTextureCount);
 
 
-
-
-
 public:
 	static CTexture* Create(LPDIRECT3DDEVICE9 pGraphicDevice, TEXTUREDESC* pArg);
 	virtual CComponent* Clone(void* pArg = nullptr)override;
