@@ -4,7 +4,7 @@
 
 
 CTexture::CTexture(LPDIRECT3DDEVICE9 pGraphicDevice)
-	:CComponent(pGraphicDevice)
+	:CComponent(pGraphicDevice), m_SettingIndex(-1)
 {
 }
 

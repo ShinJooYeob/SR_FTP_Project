@@ -109,16 +109,16 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 
 
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 999999999;
+	m_iLoadingMaxCount = 99999999;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
-	for (int i = 0; i < 999999999; ++i)
-	//{
+	for (int i = 0; i < m_iLoadingMaxCount; ++i)
+	{
 		EnterCriticalSection(_CriSec);
-	//	m_iLoadingProgressCount = i;
+		m_iLoadingProgressCount = i;
 		LeaveCriticalSection(_CriSec);
-	//}
+	}
 
 	EnterCriticalSection(_CriSec);
 	m_bIsLoadingFinished = true;
@@ -213,7 +213,7 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
-	for (int i = 0; i < 99999999; ++i)
+	for (int i = 0; i < m_iLoadingMaxCount; ++i)
 	{
 		EnterCriticalSection(_CriSec);
 		m_iLoadingProgressCount = i;
@@ -282,7 +282,7 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
-	for (int i = 0; i < 99999999; ++i)
+	for (int i = 0; i < m_iLoadingMaxCount; ++i)
 	{
 		EnterCriticalSection(_CriSec);
 		m_iLoadingProgressCount = i;

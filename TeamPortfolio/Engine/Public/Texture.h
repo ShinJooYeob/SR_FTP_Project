@@ -69,7 +69,7 @@ private:
 	const _tchar*								m_TagNowTexture = nullptr;
 	const _tchar*								m_szReturnTag = nullptr;
 	TEXTUREDESC									m_TextureDesc;
-	_uint										m_SettingIndex;
+	_uint										m_SettingIndex = -1;
 
 private:
 	HRESULT Read_TextFile(TYPE eTextureType, const _tchar* szFilePath);
