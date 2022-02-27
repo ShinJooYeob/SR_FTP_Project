@@ -85,7 +85,9 @@ _int CSkyBox::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture(m_eNowSceneNum - SCENE_STAGESELECT)))// 몇번째 인덱스인지 명시 0부터 시작
+	//if (FAILED(m_ComTexture->Bind_Texture(m_eNowSceneNum - SCENE_STAGESELECT)))// 몇번째 인덱스인지 명시 0부터 시작
+	//	return E_FAIL;
+	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(0.008f)))// 몇번째 인덱스인지 명시 0부터 시작
 		return E_FAIL;
 
 

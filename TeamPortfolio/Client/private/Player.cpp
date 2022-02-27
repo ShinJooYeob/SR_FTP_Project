@@ -63,6 +63,10 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 
+	if (m_bReHurtTime < 5.f)
+		m_bReHurtTime += fDeltaTime;
+
+
 	if (m_bIsDead) {
 		m_fDeadNPauseTime += fDeltaTime;
 
@@ -182,8 +186,12 @@ _int CPlayer::LateRender()
 _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
 
-
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
+	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Terrain)))
+	{
+		//if (!(abs(fCollision_Distance.x) > abs(fCollision_Distance.y) && abs(fCollision_Distance.z) > abs(fCollision_Distance.y)))
+		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
+	}
+	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
 	{
 		if (m_pCarryObject == nullptr && GetSingle(CGameInstance)->Get_DIKeyState(DIK_LSHIFT) & DIS_Down)
 		{
@@ -216,17 +224,13 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 			m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
 		
 	}
-	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_OrbitButton"))) 
+	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_OrbitButton")))
 	{
 		if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_LSHIFT) & DIS_Down)
 			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("buttonclick"), TEXT("Idle"), 4.f);
 
 	}
-	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Terrain)))
-	{
-		//if (!(abs(fCollision_Distance.x) > abs(fCollision_Distance.y) && abs(fCollision_Distance.z) > abs(fCollision_Distance.y)))
-			m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
-	}
+
 	return _int();
 }
 
@@ -697,17 +701,27 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 		}
 		else if (Time > 3.f && m_vReturnStair != NOT_EXIST_BLOCK)
 		{
-			//피격 이미지 넣어주기/////////////////////////
-			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"),8.f);
-			//m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
-			vResultPos = m_vReturnStair.PosVector_Matrix(matVeiwSpace);
-			vResultPos.y += 1.f;
-			m_fNowJumpPower = 0;
-			m_bIsJumped = 0;
+			if (m_bReHurtTime < 4.f)
+			{
+				m_bIsDead = true;
+				m_fDeadNPauseTime = 4.0f;
+				m_bReHurtTime = 0;
+			}
+			else {
+
+				m_bReHurtTime = 0;
+				//피격 이미지 넣어주기/////////////////////////
+				m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
+				//m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
+				vResultPos = m_vReturnStair.PosVector_Matrix(matVeiwSpace);
+				vResultPos.y += 1.f;
+				m_fNowJumpPower = 0;
+				m_bIsJumped = 0;
+				m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
+
+			}
 
 
-
-			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT,fDeltaTime);
 		}
 		else {
 			m_fNowJumpPower -= fDeltaTime * m_fJumpPower;

@@ -442,19 +442,19 @@ void CCamera_Main::CamAction(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 	for (_uint i = 0; i < m_iActionArrSize - 1; i++)
 	{
 		fPassedTime = 0;
-		while (fPassedTime < 2.5f)
+		while (fPassedTime < 1.5f)
 		{
 			Sleep(SleepTime);
 			if (*_IsClientQuit == true)
 				return;
 			fPassedTime += m_fTimeDelta;
 
-			if (fPassedTime < 2.f)
+			if (fPassedTime < 1.f)
 			{
 				_float3 vRenewPos;
-				vRenewPos.x = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[i].x, m_ActionTargetPos[i + 1].x, fPassedTime, 2);
-				vRenewPos.y = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[i].y, m_ActionTargetPos[i + 1].y, fPassedTime, 2);
-				vRenewPos.z = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[i].z, m_ActionTargetPos[i + 1].z, fPassedTime, 2);
+				vRenewPos.x = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[i].x, m_ActionTargetPos[i + 1].x, fPassedTime, 1);
+				vRenewPos.y = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[i].y, m_ActionTargetPos[i + 1].y, fPassedTime, 1);
+				vRenewPos.z = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[i].z, m_ActionTargetPos[i + 1].z, fPassedTime, 1);
 
 				m_pTransform->Set_MatrixState(CTransform::STATE_POS, vRenewPos);
 
@@ -465,7 +465,7 @@ void CCamera_Main::CamAction(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 
 	fPassedTime = 0;
-	while (fPassedTime < 2.f)
+	while (fPassedTime < 1.f)
 	{
 		Sleep(SleepTime);
 		if (*_IsClientQuit == true)
@@ -474,9 +474,9 @@ void CCamera_Main::CamAction(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 
 		_float3 vRenewPos;
-		vRenewPos.x = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[m_iActionArrSize - 1].x, m_ActionTargetPos[0].x, fPassedTime, 2);
-		vRenewPos.y = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[m_iActionArrSize - 1].y, m_ActionTargetPos[0].y, fPassedTime, 2);
-		vRenewPos.z = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[m_iActionArrSize - 1].z, m_ActionTargetPos[0].z, fPassedTime, 2);
+		vRenewPos.x = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[m_iActionArrSize - 1].x, m_ActionTargetPos[0].x, fPassedTime, 1);
+		vRenewPos.y = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[m_iActionArrSize - 1].y, m_ActionTargetPos[0].y, fPassedTime, 1);
+		vRenewPos.z = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[m_iActionArrSize - 1].z, m_ActionTargetPos[0].z, fPassedTime, 1);
 
 		m_pTransform->Set_MatrixState(CTransform::STATE_POS, vRenewPos);
 

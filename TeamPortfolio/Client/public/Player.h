@@ -56,6 +56,7 @@ private:
 
 
 	_bool					m_bIsDead = false;
+	_float					m_bReHurtTime = 0;
 	_float					m_fDeadNPauseTime = 0;
 	_float					m_fTotalPauseTime = 0;
 	_bool					m_bPause = false;

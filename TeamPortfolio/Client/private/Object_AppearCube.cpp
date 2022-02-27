@@ -37,7 +37,7 @@ HRESULT CObject_AppearCube::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		memcpy(&m_fTempPos, pArg, sizeof(_float3)); //원래 자리로 돌아가기 위한 템프 포지션
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(999.f,999.f,999.f));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
 		m_Layer_Tag = (TEXT("Layer_AppearCube"));
 	}
 
@@ -74,6 +74,7 @@ _int CObject_AppearCube::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
@@ -109,10 +110,6 @@ _int CObject_AppearCube::LateRender()
 
 _int CObject_AppearCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
-	{
-
-	}
 
 	return _int();
 }
@@ -137,7 +134,7 @@ _int CObject_AppearCube::Cube_Appears(_float fDeltaTime)
 	}
 	else
 	{
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(999.f,999.f,999.f));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
 		m_fTimer = 0;
 	}
 

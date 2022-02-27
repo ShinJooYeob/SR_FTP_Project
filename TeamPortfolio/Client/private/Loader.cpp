@@ -200,6 +200,10 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_OrbitButton"), CObject_OrbitButton::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_OrbitCube"), CObject_OrbitCube::Create(m_pGraphicDevice))))
+		return E_FAIL;	
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_VanishCube"), CObject_VanishCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_AppearCube"), CObject_AppearCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 #pragma endregion
 
@@ -264,10 +268,7 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_InteractiveCube"), CObject_InteractiveCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_VanishCube"), CObject_VanishCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_AppearCube"), CObject_AppearCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
+
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_BlockCube"), CObject_BlockCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 

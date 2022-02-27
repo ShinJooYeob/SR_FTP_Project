@@ -64,6 +64,7 @@ _int CObject_FixCube::LateUpdate(_float fTimeDelta)
 
 	//if (FAILED(SetUp_OnTerrain(fTimeDelta)))
 	//	return -1;
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();

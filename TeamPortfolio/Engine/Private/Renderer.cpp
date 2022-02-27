@@ -47,6 +47,9 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderID, CGameObject * pGameObj
 		pGameObject == nullptr)
 		return E_FAIL;
 
+	if (eRenderID == CRenderer::RENDER_ALPHA)
+		pGameObject->Compute_CamDistance((CTransform*)(pGameObject->Get_Component(TEXT("Com_Transform"))));
+
 	m_RenderObjectList[eRenderID].emplace_back(pGameObject);
 	
 	Safe_AddRef(pGameObject);

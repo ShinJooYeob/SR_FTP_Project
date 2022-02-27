@@ -144,6 +144,11 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
 
 	if (FAILED(Ready_Layer_ElevetorCube(pLayerTag)))
 		return E_FAIL;
+
+	FAILED_CHECK(Ready_Layer_Object_VanishCube(pLayerTag));
+	FAILED_CHECK(Ready_Layer_Object_AppearCube(pLayerTag));
+	
+
 	if (FAILED(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton"))))
 		return E_FAIL;
 	
@@ -303,8 +308,19 @@ HRESULT CScene_StageSelect::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLay
 	return S_OK;
 }
 
+HRESULT CScene_StageSelect::Ready_Layer_Object_VanishCube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_VanishCube"), &_float3(9.f, -1.f, -1.f)))
+		return E_FAIL;
+	return S_OK;
+}
 
-
+HRESULT CScene_StageSelect::Ready_Layer_Object_AppearCube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_AppearCube"), &_float3(10.f, -1.f, -1.f)))
+		return E_FAIL;
+	return S_OK;
+}
 
 
 CScene_StageSelect * CScene_StageSelect::Create(LPDIRECT3DDEVICE9 GraphicDevice)

@@ -34,10 +34,6 @@ HRESULT CScene_Stage2::Initialize()
 	if (FAILED(Ready_Layer_Object_InteractiveCube(TEXT("Layer_InteractiveCube"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Object_VanishCube(TEXT("Layer_VanishCube"))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_Object_AppearCube(TEXT("Layer_AppearCube"))))
-		return E_FAIL;
 	if (FAILED(Ready_Layer_Object_BlockCube(TEXT("Layer_BlockCube"))))
 		return E_FAIL;
 

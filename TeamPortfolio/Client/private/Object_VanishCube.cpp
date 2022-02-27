@@ -91,6 +91,7 @@ _int CObject_VanishCube::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
@@ -126,7 +127,7 @@ _int CObject_VanishCube::LateRender()
 
 _int CObject_VanishCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Cube")))
+	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Player)))
 	{
 		Collision_Vanish(fDeltaTime);
 
@@ -145,7 +146,7 @@ _int CObject_VanishCube::Collision_Vanish(_float fDeltaTime)
 
 	if (m_fTimer > 2)
 	{
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(999.f,999.f,999.f));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
 
 		m_fTimer = 0;
 	};
