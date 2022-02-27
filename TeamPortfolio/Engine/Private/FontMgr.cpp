@@ -59,7 +59,7 @@ HRESULT CFontMgr::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2
 	{
 		UntilDraw = UntilDrawIndex;
 
-		if (UntilDrawIndex >= (_uint)(szString.length()))
+		if (UntilDrawIndex >=(szString.length()))
 			UntilDraw = (_uint)(szString.length());
 	}
 	
@@ -138,12 +138,6 @@ HRESULT CFontMgr::Render_World_Font(wstring szString, _float3 vOnWorldPos, _floa
 
 	_Matrix matTransform;
 	D3DXMatrixIdentity(&matTransform);
-	//{
-	//	vFontSize.x,								0,													0,			0,
-	//	0,											vFontSize.y,										0,			0,
-	//	0,											0,													1,			0,
-	//	vOnWorldPos.x,								vOnWorldPos.y,							vOnWorldPos.z,		1
-	//};
 
 
 	_Matrix vCamMatirx = matVeiwSpace.InverseMatrix();
@@ -158,7 +152,8 @@ HRESULT CFontMgr::Render_World_Font(wstring szString, _float3 vOnWorldPos, _floa
 
 
 	memcpy(&(matTransform.m[0][0]), &((*((_float3*)(&vCamMatirx.m[0][0])))*vFontSize.x), sizeof(_float3));
-	memcpy(&(matTransform.m[1][0]), &((*((_float3*)(&vCamMatirx.m[1][0])))*vFontSize.y), sizeof(_float3));
+	memcpy(&(matTransform.m[1][0]), &(_float3(0,1,0) * vFontSize.y), sizeof(_float3));
+	//memcpy(&(matTransform.m[1][0]), &((*((_float3*)(&vCamMatirx.m[1][0])))*vFontSize.y), sizeof(_float3));
 	memcpy(&(matTransform.m[2][0]), &((*((_float3*)(&vCamMatirx.m[2][0])))), sizeof(_float3));
 	memcpy(&(matTransform.m[3][0]), &(vNewPos), sizeof(_float3));
 
@@ -172,7 +167,7 @@ HRESULT CFontMgr::Render_World_Font(wstring szString, _float3 vOnWorldPos, _floa
 	{
 		UntilDraw = UntilDrawIndex;
 
-		if (UntilDrawIndex >= (_uint)(szString.length()))
+		if (UntilDrawIndex >= (szString.length()))
 			UntilDraw = (_uint)(szString.length());
 	}
 

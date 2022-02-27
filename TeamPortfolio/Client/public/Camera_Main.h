@@ -40,6 +40,7 @@ public:
 	virtual _int LateUpdate(_float fDeltaTime)override;
 	virtual _int Render()override;
 	virtual _int LateRender()override;
+	virtual HRESULT ReInitialize(_float3* ActionPointArr, _uint iArrSize);
 
 	void		CameraEffect(CameraEffectID eEffect,_float fTimeDelta, _float fTotalFrame = 1.f);
 
@@ -84,6 +85,8 @@ private:
 	_float					m_fTimeDelta = 0;
 	_Matrix					m_CamEffectMatricx;
 	_float					m_fZoomInTime = 0;
+	_float3*				m_ActionTargetPos = nullptr;
+	_uint					m_iActionArrSize = 0;
 private:
 	HRESULT			SetUp_DefaultLookAtAxis(void* pArg);
 	HRESULT			SetUp_Components();

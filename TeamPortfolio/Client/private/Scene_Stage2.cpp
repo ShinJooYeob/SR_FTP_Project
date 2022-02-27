@@ -18,6 +18,8 @@ HRESULT CScene_Stage2::Initialize()
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
 	////////////////////////////은혁이 테스트Layer_Player
+	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
+		return E_FAIL;
 	if (FAILED(Ready_Layer_Cube(TAG_LAY(Layer_Player))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_FixCube(TAG_LAY(Layer_Terrain))))
@@ -116,10 +118,27 @@ HRESULT CScene_Stage2::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
 		return E_FAIL;
 
+	_float3 ActionPos[4] = { _float3(5,5,0) ,_float3(5,-5,0) ,_float3(-5,5,0),_float3(-5,-5,0) };
+
+	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,4))
+
+
 	pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
 	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, 0.016f);
 
 	return S_OK;
+}
+
+HRESULT CScene_Stage2::Ready_Layer_SkyBox(const _tchar * pLayerTag)
+{
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_SkyBox")))
+		return E_FAIL;
+
+	return S_OK;
+
+
 }
 
 HRESULT CScene_Stage2::Ready_Layer_Cube(const _tchar * pLayerTag)

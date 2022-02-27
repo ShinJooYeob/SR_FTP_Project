@@ -39,7 +39,7 @@ _uint CALLBACK CameraEffectThread(void* _Prameter)
 }
 
 CCamera_Main::CCamera_Main(LPDIRECT3DDEVICE9 pGraphicDevice)
-	:CCamera(pGraphicDevice)
+	:CCamera(pGraphicDevice), m_ActionTargetPos(nullptr)
 {
 }
 
@@ -159,6 +159,25 @@ _int CCamera_Main::LateRender()
 	return _int();
 }
 
+HRESULT CCamera_Main::ReInitialize(_float3* ActionPointArr, _uint iArrSize)
+{
+	if (ActionPointArr == nullptr)
+		return E_FAIL;
+
+	Safe_Delete_Array(m_ActionTargetPos);
+
+	m_ActionTargetPos = new _float3[iArrSize + 1];
+
+	m_ActionTargetPos[0] = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	memcpy(&(m_ActionTargetPos[1]), ActionPointArr, sizeof(_float3)*iArrSize);
+	m_iActionArrSize = iArrSize + 1;
+
+	return S_OK;
+}
+
+
+
 void CCamera_Main::CameraEffect(CameraEffectID eEffect,_float fTimeDelta, _float fTotalFrame)
 {
 	if (m_eEffectID != CAM_EFT_END || eEffect >= CAM_EFT_END)
@@ -250,6 +269,11 @@ HRESULT CCamera_Main::Reset_LookAtAxis(void * pArg)
 
 
 	m_eLoookState = CameraLookStateID::Look_Front_Axis;
+
+
+
+
+
 
 	return S_OK;
 }
@@ -401,6 +425,75 @@ void CCamera_Main::HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 void CCamera_Main::CamAction(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
+	if (m_ActionTargetPos == nullptr)
+	{
+		EnterCriticalSection(_CriSec);
+		m_eEffectID = CCamera_Main::CAM_EFT_END;
+		LeaveCriticalSection(_CriSec);
+		return;
+	}
+
+	_float fPassedTime  = 0; 
+	m_ActionTargetPos[0] = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
+	DWORD SleepTime = DWORD(m_fTimeDelta * 1000);
+	CGameInstance* pInstance = GetSingle(CGameInstance);
+
+
+	for (_uint i = 0; i < m_iActionArrSize - 1; i++)
+	{
+		fPassedTime = 0;
+		while (fPassedTime < 2.5f)
+		{
+			Sleep(SleepTime);
+			if (*_IsClientQuit == true)
+				return;
+			fPassedTime += m_fTimeDelta;
+
+			if (fPassedTime < 2.f)
+			{
+				_float3 vRenewPos;
+				vRenewPos.x = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[i].x, m_ActionTargetPos[i + 1].x, fPassedTime, 2);
+				vRenewPos.y = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[i].y, m_ActionTargetPos[i + 1].y, fPassedTime, 2);
+				vRenewPos.z = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[i].z, m_ActionTargetPos[i + 1].z, fPassedTime, 2);
+
+				m_pTransform->Set_MatrixState(CTransform::STATE_POS, vRenewPos);
+
+			}
+
+		}
+	}
+
+
+	fPassedTime = 0;
+	while (fPassedTime < 2.f)
+	{
+		Sleep(SleepTime);
+		if (*_IsClientQuit == true)
+			return;
+		fPassedTime += m_fTimeDelta;
+
+
+		_float3 vRenewPos;
+		vRenewPos.x = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[m_iActionArrSize - 1].x, m_ActionTargetPos[0].x, fPassedTime, 2);
+		vRenewPos.y = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[m_iActionArrSize - 1].y, m_ActionTargetPos[0].y, fPassedTime, 2);
+		vRenewPos.z = pInstance->Easing(TYPE_ExpoInOut, m_ActionTargetPos[m_iActionArrSize - 1].z, m_ActionTargetPos[0].z, fPassedTime, 2);
+
+		m_pTransform->Set_MatrixState(CTransform::STATE_POS, vRenewPos);
+
+
+
+	}
+
+
+
+
+
+	m_pTransform->Set_MatrixState(CTransform::STATE_POS, m_ActionTargetPos[0]);
+
+	EnterCriticalSection(_CriSec);
+	m_eEffectID = CCamera_Main::CAM_EFT_END;
+	LeaveCriticalSection(_CriSec);
+
 }
 
 HRESULT CCamera_Main::SetUp_DefaultLookAtAxis(void* pArg)
@@ -525,6 +618,10 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 	if (pInstance->Get_DIKeyState(DIK_4) & DIS_Down)
 	{
 		CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
+	}	
+	if (pInstance->Get_DIKeyState(DIK_5) & DIS_Down)
+	{
+		CameraEffect(CCamera_Main::CAM_EFT_ACTION, fDeltaTime);
 	}
 
 
@@ -625,6 +722,7 @@ void CCamera_Main::Free()
 {
 	__super::Free();
 
+	Safe_Delete_Array(m_ActionTargetPos);
 	Safe_Release(m_MiniMapUI);
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComTexture);

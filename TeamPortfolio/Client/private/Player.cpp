@@ -100,7 +100,8 @@ _int CPlayer::Update(_float fDeltaTime)
 			m_bPause = false;
 		}
 	}
-	else {
+	else if(m_pCamera_Main->Get_EffectID() != CCamera_Main::CAM_EFT_ACTION)
+	{
 
 		if (FAILED(Input_Keyboard(fDeltaTime)))
 			return E_FAIL;
@@ -108,7 +109,11 @@ _int CPlayer::Update(_float fDeltaTime)
 		if (FAILED(Animation_Change(fDeltaTime)))
 			return E_FAIL;
 
+
 		if (FAILED(Find_FootHold_Object(fDeltaTime)))
+			return E_FAIL;
+
+		if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
 			return E_FAIL;
 
 	}
@@ -124,13 +129,12 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
 
-	if (!m_bIsDead && !m_bPause)
+	if (m_pCamera_Main->Get_EffectID() != CCamera_Main::CAM_EFT_ACTION)
 	{
-		if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
+
+		if (FAILED(Set_CamPosXYZ(fDeltaTime)))
 			return E_FAIL;
 	}
-	if (FAILED(Set_CamPosXYZ(fDeltaTime)))
-		return E_FAIL;
 
 
 
@@ -220,7 +224,8 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 	}
 	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Terrain)))
 	{
-		m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
+		//if (!(abs(fCollision_Distance.x) > abs(fCollision_Distance.y) && abs(fCollision_Distance.z) > abs(fCollision_Distance.y)))
+			m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 	return _int();
 }
@@ -563,14 +568,17 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 			 if (vPlayerViewPos.x + 0.5f >= vTerrainObjectViewPos.x && vPlayerViewPos.x - 0.5f < vTerrainObjectViewPos.x) 
 			 {
 				 // 같은 x축의
-				 TerrainViewPos.push_back(vTerrainObjectViewPos);
-				 if (vTerrainObjectViewPos.z < vPlayerViewPos.z - 0.25f && vTerrainObjectViewPos.z > fPlayerFrontZ)
+					 TerrainViewPos.push_back(vTerrainObjectViewPos);
+				 if (vTerrainObjectViewPos.z < vPlayerViewPos.z - 0.25f  && vTerrainObjectViewPos.z > fPlayerFrontZ)
 				 {
 					 fPlayerFrontZ = vTerrainObjectViewPos.z;
 					 m_bIsShdow = true;
 				 }
-				 if(vTerrainObjectViewPos.z > vPlayerViewPos.z + 0.25f && vTerrainObjectViewPos.z < fPlayerBackZ)
+				 if (vTerrainObjectViewPos.z > vPlayerViewPos.z + 0.25f && vTerrainObjectViewPos.z < fPlayerBackZ)
+				 {
 					 fPlayerBackZ = vTerrainObjectViewPos.z;
+
+				 }
 			 }
 
 			 //if (vTerrainObjectViewPos.z > vPlayerViewPos.z - 0.25f && vTerrainObjectViewPos.z < vPlayerViewPos.z + 0.25f)
@@ -585,7 +593,7 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 				// }
 			 //}
 		 }
-		 if (vTerrainWorldPos.y <= vPlayerPos.y - 0.5f && vTerrainWorldPos.y >= vPlayerPos.y - 1.5f + fGravity)
+		 else if (vTerrainWorldPos.y <= vPlayerPos.y - 0.5f && vTerrainWorldPos.y >= vPlayerPos.y - 1.5f + fGravity)
 		 {//아래층의
 			 vTerrainObjectViewPos = vTerrainWorldPos.PosVector_Matrix(matVeiwSpace);
 			 if (vPlayerViewPos.x + 0.5f >= vTerrainObjectViewPos.x && vPlayerViewPos.x - 0.5f < vTerrainObjectViewPos.x)
@@ -679,7 +687,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 				else
 					m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
 
-				vResultPos.y = m_vDownstairsNear.y + 0.9f;
+				vResultPos.y = m_vDownstairsNear.y + 0.95f;
 				m_fNowJumpPower = 0;
 				m_bIsJumped = 0;
 
@@ -718,7 +726,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 
 				vResultPos.z = m_vDownstairsNear.z;
 				m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
-				vResultPos.y = m_vDownstairsNear.y + 1.f;
+				vResultPos.y = m_vDownstairsNear.y + 0.95f;
 				m_fNowJumpPower = 0;
 				m_bIsJumped = 0;
 			}

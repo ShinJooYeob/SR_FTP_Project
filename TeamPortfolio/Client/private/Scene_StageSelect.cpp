@@ -89,8 +89,7 @@ _int CScene_StageSelect::LateRender()
 HRESULT CScene_StageSelect::Ready_Layer_SkyBox(const _tchar * pLayerTag)
 {
 
-
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TEXT("Prototype_GameObject_SkyBox")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_SkyBox")))
 		return E_FAIL;
 
 	return S_OK;
@@ -176,6 +175,11 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 
 	if(FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
 		return E_FAIL;
+
+
+	_float3 ActionPos[1] = { _float3(30,-24,0) };
+
+	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,1))
 
 	pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
 	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, 0.016f);
