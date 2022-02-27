@@ -54,10 +54,13 @@ private:
 	map<const _tchar*, CUI*>			m_UIPrototypes;
 
 	_float			m_fFrame = 0.f;
-	_float4			m_vUIDesc;
+	_float4			m_vUIDesc; //결과창용
+
+	_float4			m_vButtonDesc; // 버튼용
 
 	_bool			m_bStopSwitch = false;
 	_float			m_fTimer = 0.f;
+
 
 public:
 	static CUI_Result* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

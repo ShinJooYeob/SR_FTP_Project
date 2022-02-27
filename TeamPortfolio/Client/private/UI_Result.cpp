@@ -71,10 +71,23 @@ _int CUI_Result::Update(_float fDeltaTime)
 	}
 
 
-	if (m_fTimer > 3.f)
+	if (m_fTimer > 1.f)
 	{
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 			return E_FAIL;
+
+
+		CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
+		CTransform* ButtonTransform = (CTransform*)ButtonStart->Get_Component(TEXT("Com_Transform"));
+		//ButtonTransform->Set_MatrixState(CTransform::STATE_POS, _float3(100.f, 200.f, 0));
+		m_vButtonDesc = { (g_iWinCX >> 1) - 150,(g_iWinCY >> 1)+150, 250 ,100 };
+		ButtonStart->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
+
+		CMyButton* ButtonCancel = (CMyButton*)Find_Button(L"Button_Result_Cancel");
+		ButtonTransform = (CTransform*)ButtonCancel->Get_Component(TEXT("Com_Transform"));
+		//ButtonTransform->Set_MatrixState(CTransform::STATE_POS, _float3(200.f, -100.f, 0));
+		m_vButtonDesc = { (g_iWinCX >> 1) + 150,(g_iWinCY >> 1) + 150, 250 ,100 };
+		ButtonStart->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
 
 		if (FAILED(Update_UIButtonList(fDeltaTime)))
 			return E_FAIL;
@@ -95,12 +108,12 @@ _int CUI_Result::LateUpdate(_float fDeltaTime)
 		return E_FAIL;
 	//RENDER_PRIORITY ,RENDER_UI
 
-	if (m_fTimer > 3.f)
-	{
+	//이걸 함으로써 렌더되지 않게 연산량을 줄여주자!!!
+	//if (m_fTimer > 3.f)
+	//{
 		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
 			return E_FAIL;
-	}
-
+	//}
 	if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
 		return E_FAIL;
 
@@ -127,6 +140,7 @@ _int CUI_Result::Render()
 		return E_FAIL;
 
 
+	//잊지마라 폰트 매니저는 렌더에서만 사용가능하다.
 	_tchar tempArr[64];
 	_itow_s(m_fTimer, tempArr, 10);
 
@@ -150,13 +164,15 @@ _int CUI_Result::LateRender()
 
 HRESULT CUI_Result::Ready_Layer_Button(const _tchar * pLayerTag)
 {
-	CMyButton* temp = (CMyButton*)(Find_UI(TEXT("ProtoType_GameObject_UI_Button"))->Clone(&_float4(999.f, 999.f + 100, 250, 100)));
+	CMyButton* temp = (CMyButton*)(Find_UI(TEXT("ProtoType_GameObject_UI_Button"))->Clone(&_float4(999.f, 999.f, 250, 100)));
 	temp->Set_ButtonName(L"Button_Result_Start");
 	m_UIButtonList.emplace(L"Button_Result_Start", (CUI*)temp);
 
 	temp = (CMyButton*)(Find_UI(TEXT("ProtoType_GameObject_UI_Button"))->Clone(&_float4(999.f, 999.f, 250, 100)));
 	temp->Set_ButtonName(L"Button_Result_Cancel");
 	m_UIButtonList.emplace(L"Button_Result_Cancel", (CUI*)temp);
+
+	//m_vButtonDesc = { g_iWinCX >> 1,g_iWinCY >> 1, 250 ,100 };
 
 	return S_OK;
 }
@@ -173,7 +189,7 @@ HRESULT CUI_Result::Update_UIButtonList(_float fTimeDelta)
 		{
 		case RESULT_START:
 		{
-			CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
+			//CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
 			
 			//이거 되니깐 같이 이동시키면 될 듯 기억하셈
 			//ButtonStart->Set_UI_Transform

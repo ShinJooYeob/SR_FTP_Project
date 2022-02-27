@@ -117,12 +117,12 @@ _int CMyButton::Update(_float fDeltaTime)
 			else if (!lstrcmp(L"Button_Result_Start", m_pButtonName))
 			{
 				//다시 하기 기능 만들기
-				return 0;
+				return RESULT_START;
 			}
 			else if (!lstrcmp(L"Button_Result_Cancel", m_pButtonName))
 			{
 				//로비로 돌아가기 기능 만들기
-				return 0;
+				return RESULT_CANCEL;
 			}
 
 		}
