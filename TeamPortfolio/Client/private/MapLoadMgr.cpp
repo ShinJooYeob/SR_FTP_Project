@@ -55,16 +55,12 @@ HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index)
 		if (newObj == nullptr)
 			continue;
 
-	//	newObj->Set_LoadData(Infodata);
-
-		
 		CTransform* trans = (CTransform*)newObj->Get_Component(TAG_COM(Com_Transform));
 		trans->Set_Matrix(Infodata->WorldMatData);
 
 		CTexture* tex = (CTexture*)newObj->Get_Component(TAG_COM(Com_Texture));
 		tex->Change_TextureLayer(Infodata->TexDesc.szStateKey);
 		tex->Set_LoadTexutreNumber(Infodata->TexDesc.StateIndex);
-
 	}
 
 	return S_OK;
