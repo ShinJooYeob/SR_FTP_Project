@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Scene_IMGUI.h"
 
+#include "Player.h"
 #include "MapLoadMgr.h"
 
 
@@ -30,14 +31,24 @@ HRESULT CScene_IMGUI::Initialize()
 		return E_FAIL;	
 
 	// 배경 카메라 지형 생성
-	FAILED_CHECK(Ready_Layer_BackGround(TAG_LAY(Layer_BackGround)));
-	FAILED_CHECK(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main)));
-	FAILED_CHECK(Ready_Layer_Terrain(TAG_LAY(Layer_Terrain)));
 
-
+	// 임의 매니저 초기화
 	GetSingle(CMapLoadMgr)->GetInstance();
 
-	GetSingle(CMapLoadMgr)->LoadMap(0);
+	FAILED_CHECK(Ready_Layer_Player(TAG_LAY(Layer_Player)));
+	FAILED_CHECK(Ready_Layer_SkyBox(TEXT("Layer_SkyBox")));
+
+
+	
+	// 로드된 오브젝트 정보로 그리기
+	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
+		SCENEID::SCENE_IMGUISCENE,
+		TAG_LAY(Layer_Terrain),
+		TAG_OP(Prototype_TerrainCube),
+		_float3(0, 0, 0));
+
+	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_IMGUISCENE,0);
+
 	return S_OK;
 }
 
@@ -85,26 +96,33 @@ _int CScene_IMGUI::LateRender()
 	return 0;
 }
 
-HRESULT CScene_IMGUI::Ready_Layer_BackGround(const _tchar * pLayerTag)
+HRESULT CScene_IMGUI::Ready_Layer_Player(const _tchar * pLayerTag)
+{
+	list<CGameObject*>* pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
+	if (pPlayerList == nullptr)
+	{
+		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Player)))
+			return E_FAIL;
+
+		GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_IMGUISCENE);
+	}
+	else
+	{
+		(pPlayerList->front())->ReInitialize(&_float3(0, 1, 0));
+
+	}
+	return S_OK;
+
+}
+
+HRESULT CScene_IMGUI::Ready_Layer_SkyBox(const _tchar * pLayerTag)
 {
 
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TEXT("Prototype_GameObject_SkyBox")))
+		return E_FAIL;
 
 	return S_OK;
 }
-
-HRESULT CScene_IMGUI::Ready_Layer_MainCamera(const _tchar * pLayerTag)
-{
-	return S_OK;
-}
-
-HRESULT CScene_IMGUI::Ready_Layer_Terrain(const _tchar * pLayerTag)
-{
-	// 불러오기 및 맵 생성
-
-
-	return S_OK;
-}
-
 
 
 

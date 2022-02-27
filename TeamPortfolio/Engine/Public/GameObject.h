@@ -40,6 +40,7 @@ public:
 	class CComponent* Find_Components(const _tchar* tagComponent);
 	virtual HRESULT ReInitialize(void* pArg = nullptr) { return S_OK; };
 
+//	void Set_LoadData(OUTPUT_OBJECTINFO* pInfo);
 protected:
 	map<const _tchar*, class CComponent*>	m_mapComponets;
 	typedef map<const _tchar*, class CComponent*>	COMPONENTS;
@@ -52,10 +53,11 @@ protected:
 	_float						m_fCamDistance;
 	_bool						m_isDied = false;
 
+	// 들어오는 데이터
+//	OUTPUT_OBJECTINFO*			m_pLoadInfoData = nullptr;
 protected:
 	HRESULT Add_Component(_uint iScenenNum, const _tchar* tagPrototype,const _tchar* tagComponent, CComponent** ppOut , void* pArg =nullptr);
 	HRESULT Change_Component(_uint iScenenNum, const _tchar* tagPrototype, const _tchar* tagComponent, CComponent** ppOut, void* pArg = nullptr);
-
 
 public:
 	virtual CGameObject* Clone(void* pArg = nullptr)PURE;

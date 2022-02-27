@@ -37,16 +37,6 @@ void CMiniView::OnDraw(CDC* pDC)
 
 	GetSingle(CSuperToolSIngleton)->Render_Begin();
 
-	// AfxGetMainWnd : 현재 스레드로부터 wnd를 반환
-
-	// #Tag 창에있는 데이터 가져오는 방법
-	// CToolView에 있는 맵정보를 가져온다.
-	CMainFrame*		pMain = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
-	CToolView*		pMainView = dynamic_cast<CToolView*>(pMain->m_MainSplitter.GetPane(0, 1));
-
-	// 맵정보를 가져와서 미니맵 랜더링
-//	CTerrain*		pTerrain = pMainView->Get_Terrain();
-//	pTerrain->MiniRender();
 	GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
 
 }

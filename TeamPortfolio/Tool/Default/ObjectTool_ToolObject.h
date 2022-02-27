@@ -41,7 +41,8 @@ public: // For. Transform
 	_float3 Get_Scale() { return m_ComTransform->Get_MatrixScale(); }
 
 public:	// For. Texture
-	HRESULT Set_TextureNum_Bind(int num = 0);
+	HRESULT Set_StateKey_TextureNum_Bind(const _tchar* state, int num = 0);
+
 	void	Set_Visble(_bool b) { m_isVisble = b; }
 
 	HRESULT Texture_CurrentBind();

@@ -12,6 +12,15 @@ class CObjectTool_ToolObject;
 END
 class CToolView : public CScrollView
 {
+private:
+	enum E_PICKMODE
+	{
+		PICKMODE_NOMAL,
+		PICKMODE_Z,
+		PICKMODE_END,
+
+	};
+
 protected: // serialization에서만 만들어집니다.
 	CToolView();
 	DECLARE_DYNCREATE(CToolView)
@@ -48,12 +57,18 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 
+public:
+	void Change_PickVector(bool b);
+	void Add_Axis_PickVector();
+
 private:
 	_float3 OneVector(_float3 nomalVec);
 	
 private:
 	CObjectTool_ToolObject* m_Nearobj;
-	_float3					m_NextPos;
+	_float3					m_PickPos;
+	_float3					m_AddPos;
+	E_PICKMODE				m_ePickMode;
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -63,6 +78,8 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전

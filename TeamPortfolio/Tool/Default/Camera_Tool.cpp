@@ -30,6 +30,8 @@ HRESULT CCamera_Tool::Initialize_Clone(void * pArg)
 
 	m_StartMat = m_pTransform->Get_WorldMatrix();
 	Change_Camera_Demension();
+	m_OffSet = ZEROVEC;
+
 	return S_OK;
 }
 
@@ -40,39 +42,64 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 
 	if (isKey)
 	{
-		_float3 newCenter = GetSingle(CSuperToolSIngleton)->Get_Center_MapPosition();
+	//	_float3 newCenter = GetSingle(CSuperToolSIngleton)->Get_Center_MapPosition();
+		
+	
+
 
 		if (GetSingle(CKeyMgr)->Key_Pressing(VK_UP))
 		{
 			m_pTransform->Move_Up(fDeltaTime);
+
 		}
 		if (GetSingle(CKeyMgr)->Key_Pressing(VK_DOWN))
 		{
 			m_pTransform->Move_Down(fDeltaTime);
+
 		}
 
 		if (GetSingle(CKeyMgr)->Key_Pressing(VK_LEFT))
 		{
 			m_pTransform->Move_Left(fDeltaTime);
-		//	Set_NewLookPoint(newCenter);
 		}
 		if (GetSingle(CKeyMgr)->Key_Pressing(VK_RIGHT))
 		{
-			m_pTransform->Move_Right(fDeltaTime);
-		// Set_NewLookPoint(newCenter);
-			
-		}
-		Set_NewLookPoint(newCenter);
+			m_pTransform->Move_Right(fDeltaTime);	
 
+		}
+
+		
 
 		if (GetSingle(CKeyMgr)->Key_Pressing('W'))
 		{
 			m_pTransform->Move_Forward(fDeltaTime);
+
+
 		}
 		if (GetSingle(CKeyMgr)->Key_Pressing('S'))
 		{
 			m_pTransform->Move_Backward(fDeltaTime);
+
 		}
+		
+		_float3 newPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
+		_float3 newLook = m_pTransform->Get_MatrixState(CTransform::STATE_LOOK);
+		_float3 newTarget = (newPos + newLook * 5);
+
+
+		if (GetSingle(CKeyMgr)->Key_Pressing('A'))
+		{
+			m_pTransform->Move_Left(fDeltaTime);
+			Set_NewLookPoint(newTarget);
+		}
+
+		if (GetSingle(CKeyMgr)->Key_Pressing('D'))
+		{
+			m_pTransform->Move_Right(fDeltaTime);
+			Set_NewLookPoint(newTarget);
+
+		}	
+
 
 		if (GetSingle(CKeyMgr)->Key_Down('T'))
 		{

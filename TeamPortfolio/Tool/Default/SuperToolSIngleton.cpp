@@ -91,6 +91,7 @@ HRESULT CSuperToolSIngleton::Render_End(HWND hWnd)
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
 	m_pGraphicDevice->EndScene();
+
 	m_pGraphicDevice->Present(NULL, NULL, hWnd, NULL);
 
 	return S_OK;
@@ -255,6 +256,17 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView()
 	m_pPathDialog = &m_pMyButtomView->m_PathFind;
 
 	return S_OK;
+}
+
+HRESULT CSuperToolSIngleton::Initialize_ToolView_Data()
+{
+	// 최초 데이터 세팅 / 
+	
+	// 최초 텍스처 로딩
+
+	
+	return S_OK;
+
 }
 
 
@@ -531,7 +543,7 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Get_ViewObject_Object(int index)
 {
 	auto list  = Get_GameObjectList(TAG_LAY(Layer_View));
 
-	if (list->empty())
+	if (list== nullptr)
 		return nullptr;
 
 	if(index == 0)
@@ -588,6 +600,8 @@ list<CGameObject*>* CSuperToolSIngleton::Get_GameObjectList(const _tchar* layert
 HRESULT CSuperToolSIngleton::Update_Select_Render_None(const _tchar* laytag)
 {
 	list<CGameObject*>* objlist = Get_GameObjectList(laytag);
+	if (objlist == nullptr)
+		return E_FAIL;
 
 	for (auto obj : *objlist)
 	{
@@ -615,9 +629,9 @@ HRESULT CSuperToolSIngleton::Update_Select_Render_Visble(const _tchar* laytag, C
 void CSuperToolSIngleton::Free()
 {
 
+	GetSingle(CKeyMgr)->DestroyInstance();
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pComRenderer);
 	Safe_Release(m_pGameInstance);
-	GetSingle(CKeyMgr)->DestroyInstance();
 	m_pGameInstance->Release_Engine();
 }
