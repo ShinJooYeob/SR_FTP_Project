@@ -160,6 +160,27 @@
     <Filter Include="01.GameObject\UI\UI_Result">
       <UniqueIdentifier>{79db21f3-b9c8-4442-b2f5-568cd0f0bc16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\ForLobyObject">
+      <UniqueIdentifier>{9124556a-141a-4ed0-ba2a-0cdc4459df89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobyCube">
+      <UniqueIdentifier>{8e188e61-e1e4-44d2-9a6f-26a62a555cfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobyPlayer">
+      <UniqueIdentifier>{6a0ae343-3b91-42ce-89d2-5af6fe11926c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobySkyBox">
+      <UniqueIdentifier>{d302878a-d511-4722-86a6-f5e0b791e832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobyUI">
+      <UniqueIdentifier>{baa5b314-a5a5-4dc8-a0f8-aed8b3e22aeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobyUI\LobyScroll">
+      <UniqueIdentifier>{10cc8296-9064-4511-9d51-cfe3e4886051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobyUI\LobyUI">
+      <UniqueIdentifier>{fd568e79-6727-4148-a802-fcda54358c5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -306,6 +327,21 @@
     <ClInclude Include="..\public\UI_Result.h">
       <Filter>01.GameObject\UI\UI_Result</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\LobyCube.h">
+      <Filter>01.GameObject\ForLobyObject\LobyCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\LobyPlayer.h">
+      <Filter>01.GameObject\ForLobyObject\LobyPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\LobySkyBox.h">
+      <Filter>01.GameObject\ForLobyObject\LobySkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Loby_UI.h">
+      <Filter>01.GameObject\ForLobyObject\LobyUI\LobyUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\LobyScroll.h">
+      <Filter>01.GameObject\ForLobyObject\LobyUI\LobyScroll</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -439,6 +475,21 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Result.cpp">
       <Filter>01.GameObject\UI\UI_Result</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LobyCube.cpp">
+      <Filter>01.GameObject\ForLobyObject\LobyCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LobyPlayer.cpp">
+      <Filter>01.GameObject\ForLobyObject\LobyPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LobySkyBox.cpp">
+      <Filter>01.GameObject\ForLobyObject\LobySkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Loby_UI.cpp">
+      <Filter>01.GameObject\ForLobyObject\LobyUI\LobyUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LobyScroll.cpp">
+      <Filter>01.GameObject\ForLobyObject\LobyUI\LobyScroll</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

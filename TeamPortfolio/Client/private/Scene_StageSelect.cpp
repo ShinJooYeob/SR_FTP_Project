@@ -220,8 +220,15 @@ HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 
 HRESULT CScene_StageSelect::Ready_Layer_UI_Common(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_UI_Common)))
-		return E_FAIL;
+	list<CGameObject*>* pObjectList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
+	if (pObjectList == nullptr)
+	{
+		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_UI_Common)))
+			return E_FAIL;
+
+		GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGESELECT);
+	}
+
 
 
 	return S_OK;

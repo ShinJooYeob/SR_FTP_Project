@@ -19,8 +19,14 @@ public:
 
 
 private:
-	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_UI_Loby(const _tchar * pLayerTag);
+	HRESULT Ready_Layer_SkyBox(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_LobyCube(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_LobyPlayer(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_LobyScroll(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_LobyUI(const _tchar* pLayerTag);
+
+	//HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
+	//HRESULT Ready_Layer_UI_Loby(const _tchar * pLayerTag);
 	HRESULT Ready_Layer_MainCamera(const _tchar* pLayerTag);
 
 public:

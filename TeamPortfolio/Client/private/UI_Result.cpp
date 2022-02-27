@@ -65,24 +65,24 @@ _int CUI_Result::Update(_float fDeltaTime)
 		return E_FAIL;
 	m_fFrame = fDeltaTime;
 
-	if (m_bStopSwitch == false)
-	{
-		m_fTimer += m_fFrame;
-	}
+	//if (m_bStopSwitch == false)
+	//{
+	//	m_fTimer += m_fFrame;
+	//}
 
 
-	if (m_fTimer > 3.f)
-	{
-		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-			return E_FAIL;
+	//if (m_fTimer > 3.f)
+	//{
+	//	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+	//		return E_FAIL;
 
-		if (FAILED(Update_UIButtonList(fDeltaTime)))
-			return E_FAIL;
+	//	if (FAILED(Update_UIButtonList(fDeltaTime)))
+	//		return E_FAIL;
 
 
 
-		m_bStopSwitch = true;
-	}
+	//	m_bStopSwitch = true;
+	//}
 
 
 

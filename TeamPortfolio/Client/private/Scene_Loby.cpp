@@ -20,16 +20,19 @@ HRESULT CScene_Loby::Initialize()
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
-	
-	if (FAILED(Ready_Layer_BackGround(TAG_LAY(Layer_BackGround))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_UI_Loby(TAG_LAY(Layer_UI_Loby))))
-		return E_FAIL;
+
+
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
+	
+	FAILED_CHECK(Ready_Layer_SkyBox(TEXT("Layer_SkyBox")));
 
+	FAILED_CHECK(Ready_Layer_LobyCube(TEXT("Layer_LobyCube")));
+	FAILED_CHECK(Ready_Layer_LobyPlayer(TEXT("Layer_LobyPlayer")));
+	FAILED_CHECK(Ready_Layer_LobyScroll(TEXT("Layer_LobyScroll")));
+	FAILED_CHECK(Ready_Layer_LobyUI(TEXT("Layer_LobyUI")));
 
-
+	
 	return S_OK;
 }
 
@@ -46,13 +49,6 @@ _int CScene_Loby::Update(_float fDeltaTime)
 
 	}
 
-	if (GetKeyState(VK_F1) & 0x8000)
-	{
-
-		if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING)))
-			return E_FAIL;
-
-	}
 
 	// IMGUI / ¸Ê Åø Å×½ºÆ®¾ÀÀ¸·Î »ç¿ë
 	if (GetKeyState(VK_F2) & 0x8000)
@@ -93,19 +89,44 @@ _int CScene_Loby::LateRender()
 }
 
 
-HRESULT CScene_Loby::Ready_Layer_BackGround(const _tchar * pLayerTag)
-{
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TAG_OP(Prototype_BackGround)))
+HRESULT CScene_Loby::Ready_Layer_SkyBox(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TEXT("Prototype_GameObject_LobySkyBox")))
 		return E_FAIL;
+
 	return S_OK;
 }
 
-HRESULT CScene_Loby::Ready_Layer_UI_Loby(const _tchar * pLayerTag)
+HRESULT CScene_Loby::Ready_Layer_LobyCube(const _tchar * pLayerTag)
 {
-
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TAG_OP(Prototype_UI_Loby)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TEXT("Prototype_GameObject_LobyCube")))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_Loby::Ready_Layer_LobyPlayer(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TEXT("Prototype_GameObject_LobyPlayer")))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_Loby::Ready_Layer_LobyScroll(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TEXT("Prototype_GameObject_LobyScroll")))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_Loby::Ready_Layer_LobyUI(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TEXT("Prototype_GameObject_LobyUI")))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -114,7 +135,8 @@ HRESULT CScene_Loby::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	CCamera::CAMERADESC CameraDesc;
 
 	CameraDesc.bIsOrtho = true;
-	CameraDesc.vWorldRotAxis = _float3(5.f, 3.f, 5.f);
+	CameraDesc.vEye = _float3(0.f, 0.f, -10.f);
+	CameraDesc.vWorldRotAxis = _float3(0.f, 0.f, 0.f);
 	CameraDesc.vAxisY = _float3(0, 1, 0);
 	CameraDesc.fFovy = D3DXToRadian(60.0f);
 	CameraDesc.fAspect = _float(g_iWinCX) / g_iWinCY;
@@ -124,8 +146,25 @@ HRESULT CScene_Loby::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	CameraDesc.TransformDesc.fMovePerSec = 10.f;
 	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Camera_Main), &CameraDesc))
-		return E_FAIL;
+	CCamera_Main* pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+
+	if (pMainCam == nullptr)
+	{
+		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Camera_Main), &CameraDesc))
+			return E_FAIL;
+	}
+	else 
+	{
+
+		if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
+			return E_FAIL;
+
+
+		pMainCam->Set_NowSceneNum(SCENE_LOBY);
+
+
+	}
+	
 	return S_OK;
 }
 

@@ -106,7 +106,7 @@ public:
 	_bool  Get_Channel_IsPaused(CHANNELID eID);
 
 public:
-	HRESULT Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2 vFontSize = _float2(10.f, 10.f), _float3 Color_RGB = { 0,0,0 }, _int UntilDrawIndex = -1);
+	HRESULT Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2 vFontSize = _float2(20.f, 30.f), _float3 Color_RGB = { 0,0,0 }, _int UntilDrawIndex = -1);
 	HRESULT Render_World_Font(wstring szString, _float3 vOnWorldPos, _float2 vFontSize = _float2(0.3f, 0.45f), _float3 Color_RGB = { 0,0,0 }, _int UntilDrawIndex = -1);
 
 public: /* For. IMGUI Interface */

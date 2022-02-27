@@ -197,7 +197,7 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 			m_pCarryObject = pDestObjects;
 			m_pCarryObjectTransform = (CTransform*)(m_pCarryObject->Get_Component(TAG_COM(Com_Transform)));
 
-			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carryup"),TEXT("carryIdle"));
+			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carryup"),TEXT("carryIdle"),12.f);
 
 			m_bIsCliming = false;
 			m_bIsRunning = false;

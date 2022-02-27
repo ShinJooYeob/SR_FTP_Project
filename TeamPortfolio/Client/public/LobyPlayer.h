@@ -1,0 +1,55 @@
+
+#pragma once
+
+#include "GameObject.h"
+
+BEGIN(Engine)
+class CTexture;
+class CRenderer;
+class CTransform;
+class CVIBuffer_Rect;
+class CCollision;
+END
+
+BEGIN(Client)
+
+class CLobyPlayer final : public CGameObject
+{
+private:
+	explicit CLobyPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CLobyPlayer(const CLobyPlayer& rhs);
+	virtual ~CLobyPlayer() = default;
+public:
+	virtual HRESULT Initialize_Prototype(void* pArg)override;
+	virtual HRESULT Initialize_Clone(void* pArg)override;
+	virtual _int Update(_float fTimeDelta)override;
+	virtual _int LateUpdate(_float fTimeDelta)override;
+	virtual _int Render()override;
+	virtual _int LateRender()override;
+
+
+
+private:
+	HRESULT SetUp_Components();
+
+	HRESULT SetUp_RenderState();
+	HRESULT Release_RenderState();
+
+private:
+
+	CVIBuffer_Rect*		m_ComVIBuffer = nullptr;
+	CTransform*			m_ComTransform = nullptr;
+	CRenderer*			m_ComRenderer = nullptr;
+	CTexture*			m_ComTexture = nullptr;
+
+	_float				m_fFrame = 0;
+
+public:
+	static CLobyPlayer* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	virtual CGameObject* Clone(void* pArg) override;
+	virtual void Free() override;
+};
+
+
+
+END

@@ -159,6 +159,11 @@
     <ClInclude Include="..\public\Camera_Main.h" />
     <ClInclude Include="..\public\Client_Define.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
+    <ClInclude Include="..\public\LobyCube.h" />
+    <ClInclude Include="..\public\LobyPlayer.h" />
+    <ClInclude Include="..\public\LobyScroll.h" />
+    <ClInclude Include="..\public\LobySkyBox.h" />
+    <ClInclude Include="..\public\Loby_UI.h" />
     <ClInclude Include="..\public\UI_Common.h" />
     <ClInclude Include="..\public\Client_Struct.h" />
     <ClInclude Include="..\public\MapLoadMgr.h" />
@@ -206,6 +211,11 @@
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\private\Camera_Main.cpp" />
+    <ClCompile Include="..\private\LobyCube.cpp" />
+    <ClCompile Include="..\private\LobyPlayer.cpp" />
+    <ClCompile Include="..\private\LobyScroll.cpp" />
+    <ClCompile Include="..\private\LobySkyBox.cpp" />
+    <ClCompile Include="..\private\Loby_UI.cpp" />
     <ClCompile Include="..\private\UI_Common.cpp" />
     <ClCompile Include="..\private\MapLoadMgr.cpp" />
     <ClCompile Include="..\private\MiniMapUI.cpp" />
