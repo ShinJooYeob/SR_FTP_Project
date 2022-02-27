@@ -34,7 +34,8 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Common(TAG_LAY(Layer_UI_Common))))
 		return E_FAIL;
-
+	if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
+		return E_FAIL;
 
 
 

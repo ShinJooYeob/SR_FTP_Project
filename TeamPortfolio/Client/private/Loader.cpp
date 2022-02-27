@@ -10,6 +10,7 @@
 #include "Quest_Image.h"
 #include "UI_Common.h"
 #include "TerrainCube.h"
+
 #include "Object_FixCube.h"
 #include "Object_GravityCube.h"
 #include "Object_OrbitButton.h"
@@ -17,8 +18,6 @@
 #include "Object_PortalCube_A.h"
 #include "Object_PortalCube_B.h"
 #include "Object_EscalatorCube.h"
-
-
 #include "Object_MoveCube.h"
 #include "Object_PushCube.h"
 #include "Object_SelfRotationCube.h"
@@ -27,6 +26,8 @@
 #include "Object_VanishCube.h"
 #include "Object_AppearCube.h"
 #include "Object_BlockCube.h"
+#include "UI_Result.h"
+
 #include "MyButton.h"
 
 
@@ -163,6 +164,10 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//////////eunhyuk_UI
+	TextureDesc.szTextFilePath = TEXT("UI_Result.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_UI_Result_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
 	
 
@@ -204,6 +209,10 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_VanishCube"), CObject_VanishCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_AppearCube"), CObject_AppearCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	//eunhyuk_UI
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_UI_Result"), CUI_Result::Create(m_pGraphicDevice))))
 		return E_FAIL;
 #pragma endregion
 

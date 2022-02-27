@@ -31,6 +31,7 @@ private:
 	HRESULT Ready_Layer_Object_PortalCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_ElevetorCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);
 
 	HRESULT Ready_Layer_Object_VanishCube(const _tchar* pLayerTag);//사라지는 큐브
 	HRESULT Ready_Layer_Object_AppearCube(const _tchar* pLayerTag);//나타나는 큐브
