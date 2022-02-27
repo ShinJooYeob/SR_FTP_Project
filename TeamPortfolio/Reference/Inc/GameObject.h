@@ -52,6 +52,7 @@ protected:
 	_float						m_fCamDistance;
 	_bool						m_isDied = false;
 
+	OUTPUT_OBJECTINFO*			m_LoadData = nullptr;
 protected:
 	HRESULT Add_Component(_uint iScenenNum, const _tchar* tagPrototype,const _tchar* tagComponent, CComponent** ppOut , void* pArg =nullptr);
 	HRESULT Change_Component(_uint iScenenNum, const _tchar* tagPrototype, const _tchar* tagComponent, CComponent** ppOut, void* pArg = nullptr);

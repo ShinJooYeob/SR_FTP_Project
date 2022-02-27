@@ -41,7 +41,14 @@ HRESULT CScene_IMGUI::Initialize()
 
 	
 	// 로드된 오브젝트 정보로 그리기
+	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
+		SCENEID::SCENE_IMGUISCENE,
+		TAG_LAY(Layer_Terrain),
+		TAG_OP(Prototype_TerrainCube),
+		_float3(0, 0, 0));
+
 	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_IMGUISCENE,0);
+
 	return S_OK;
 }
 

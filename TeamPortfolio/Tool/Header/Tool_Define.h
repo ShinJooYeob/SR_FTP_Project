@@ -28,7 +28,11 @@ enum SCENEID
 	SCENE_END
 };
 
+
+
 extern HWND g_hWnd;
+extern HWND g_hWnd2;
+
 extern HINSTANCE g_hInstance;
 // 저장 파일 이름
 
@@ -37,9 +41,18 @@ static const wstring g_FilePath_ObjectPathData = L"../bin/Resources/mapdata/";
 static const wstring g_FilePath_ObjectPathData_Save = L"\\bin\\Resources\\mapdata\\";
 
 
-static const TCHAR* g_FileName_Blocktxt = TEXT("Blocks.txt");
+static const TCHAR* g_FileName_Blocktxt = TEXT("Cube.txt");
 static const TCHAR* g_Filename_Cubetxt = TEXT("Cube.txt");
+
+#define  UPVEC _float3(0,1,0)
+#define  DOWNVEC _float3(0,-1,0)
+#define  LEFTVEC _float3(-1,0,0)
+#define  RIGHTVEC _float3(1,0,0)
+#define  FRONTVEC _float3(0,0,1)
+#define  BACKVEC _float3(0,0,-1)
+#define  ZEROVEC _float3(0,0,0)
 
 namespace Tool {};
 
+using namespace Engine;
 using namespace Tool;

@@ -61,6 +61,7 @@ private:
 	// 창 초기화
 private:
 	HRESULT Initialize_ToolView();
+	HRESULT Initialize_ToolView_Data();
 
 
 public: // Get Set
@@ -72,7 +73,7 @@ public: // Get Set
 	{
 		return m_pComRenderer;
 	}
-	LPDIRECT3DDEVICE9 Get_Graohics_Device()
+	LPDIRECT3DDEVICE9 Get_Graphics_Device()
 	{
 		return m_pGraphicDevice;
 	}

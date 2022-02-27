@@ -29,6 +29,8 @@
 HWND	g_hWnd;
 HINSTANCE g_hInstance;
 
+LPDIRECT3DSWAPCHAIN9 chain1 = nullptr;
+
 IMPLEMENT_DYNCREATE(CToolView, CScrollView)
 
 BEGIN_MESSAGE_MAP(CToolView, CScrollView)
@@ -43,6 +45,8 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_WM_LBUTTONUP()
 	ON_WM_RBUTTONDOWN()
 	ON_WM_ERASEBKGND()
+	ON_WM_MOUSEWHEEL()
+	ON_WM_MBUTTONDOWN()
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -51,7 +55,8 @@ CToolView::CToolView()
 
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-
+	m_AddPos = _float3(0, 1, 0);
+	m_ePickMode = PICKMODE_NOMAL;
 }
 
 CToolView::~CToolView()
@@ -116,18 +121,24 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 		D3DCOLOR_ARGB(255, 255, 255, 255));*/
 #pragma endregion 복습용
 
-	
 
-	
+
 //	UnlockWindowUpdate();
 	GetSingle(CSuperToolSIngleton)->Update_Tool(0.03f);
+
+	LPDIRECT3DSURFACE9 pBackBuffer = nullptr;
+	chain1->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer);
+	GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->SetRenderTarget(0, pBackBuffer);
 
 	// #Tag Tool Renderer
 	GetSingle(CSuperToolSIngleton)->Render_Begin();
 	
 	//랜더링
 	GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
-	GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
+	// GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
+	
+	GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->EndScene();
+	chain1->Present(NULL, NULL, g_hWnd, NULL, 0);
 
 //	LockWindowUpdate();
 
@@ -182,14 +193,9 @@ void CToolView::OnInitialUpdate()
 	// 2인자 : 사이즈를 표현하는 클래스
 	SetScrollSizes(MM_TEXT, CSize(TILECX * TILEX, (TILECY * TILEY / 2)));
 
-	// #Tag Tool 디바이스 초기화
-	
 
-
-
-	// #Tag 창 크기 재설정
-		// AfxGetMainWnd : 현재 메인 윈도우를 반환하는 전역 함수
-		// 반환타입이 부모타입이어서 자식 타입으로 형변환 했음
+	// AfxGetMainWnd : 현재 메인 윈도우를 반환하는 전역 함수
+	// 반환타입이 부모타입이어서 자식 타입으로 형변환 했음
 	CMainFrame*	pMainFrm = (CMainFrame*)AfxGetMainWnd();
 
 	RECT	rcWindow{};
@@ -229,12 +235,93 @@ void CToolView::OnInitialUpdate()
 		return;
 	}
 
+
+	GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->GetSwapChain(0, &chain1);
+	D3DPRESENT_PARAMETERS param;
+	chain1->GetPresentParameters(&param);
+//	GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->CreateAdditionalSwapChain(&param, &chain2);
+
+
 	SetTimer(TIMER_UPDATE, 50, NULL);
 
 	m_Nearobj = nullptr;
 
 
 	return;
+}
+
+void CToolView::Change_PickVector(bool b)
+{
+	if (m_ePickMode == PICKMODE_Z)
+	{
+		if (m_AddPos == FRONTVEC)
+		{
+			m_AddPos = BACKVEC;
+			return;
+		}
+		if (m_AddPos == BACKVEC)
+		{
+			m_AddPos = FRONTVEC;
+			return;
+		}
+	}
+
+	// 마우스 휠 올렸을 때
+	if (b)
+	{
+
+		if (m_AddPos == UPVEC)
+		{
+			m_AddPos = RIGHTVEC;
+			return;
+		}
+		if (m_AddPos == RIGHTVEC)
+		{
+			m_AddPos = DOWNVEC;
+			return;
+		}
+		if (m_AddPos == DOWNVEC)
+		{
+			m_AddPos = LEFTVEC;
+			return;
+		}
+		if (m_AddPos == LEFTVEC)
+		{
+			m_AddPos = UPVEC;
+			return;
+		}
+
+
+
+	}
+	// 내렸을 때
+	else
+	{
+		if (m_AddPos == UPVEC)
+		{
+			m_AddPos = LEFTVEC;
+			return;
+		}
+		if (m_AddPos == LEFTVEC)
+		{
+			m_AddPos = DOWNVEC;
+			return;
+		}
+		if (m_AddPos == DOWNVEC)
+		{
+			m_AddPos = RIGHTVEC;
+			return;
+		}
+		if (m_AddPos == RIGHTVEC)
+		{
+			m_AddPos = UPVEC;
+			return;
+		}
+	}
+}
+
+void CToolView::Add_Axis_PickVector()
+{
 }
 
 _float3 CToolView::OneVector(_float3 nomalVec)
@@ -286,8 +373,18 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	if (m_Nearobj == nullptr)
 		return;
 
+	// 해당위치에 객체가 있다면 리턴
+	list<CGameObject*>* maplist = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
+	if (maplist == nullptr)
+		return;
+	for (auto obj : *maplist)
+	{
+		if ((m_PickPos + m_AddPos) == ((CObjectTool_ToolObject*)obj)->Get_Pos())
+			return;
+	}
+
 	// 선택한 오브젝트 생성
-	GetSingle(CSuperToolSIngleton)->Create_Clone_MapObject(m_NextPos, TAG_LAY(Layer_Map));
+	GetSingle(CSuperToolSIngleton)->Create_Clone_MapObject(m_PickPos + m_AddPos, TAG_LAY(Layer_Map));
 }
 void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
 {
@@ -344,39 +441,51 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	if (picklist.empty())
 		return;
 
-	m_Nearobj = picklist.front();
-	float CurDistance = m_Nearobj->Get_CamDistance();
+	CObjectTool_ToolObject* newpickobj = picklist.front();
+
+	float CurDistance = newpickobj->Get_CamDistance();
 	for (CObjectTool_ToolObject* obj : picklist)
 	{
 		if (CurDistance > obj->Get_CamDistance())
 		{
 			CurDistance = obj->Get_CamDistance();
-			m_Nearobj = obj;
+			newpickobj = obj;
 		}
 		
+	}
+
+	if (m_Nearobj != newpickobj)
+	{
+		m_Nearobj = newpickobj;
+		m_PickPos = m_Nearobj->Get_Pos();
+	}
+	else
+	{
+		return;
 	}
 	
 	// 피킹된 오브젝트의 면기준으로 다음 생성될 타일 위치 결정
 	// 노말이 없어서 직접 계산 / 일단 나중에
 
-	m_NextPos = m_Nearobj->Get_Pos();
-//	m_NextPos.y += 1;
+	//if(m_Nearobj)
+	//	m_NextPos = m_Nearobj->Get_Pos();
 
-	_float3* vertex = m_Nearobj->GetPickVertex3();
+	// 피킹시 다음 위치 결정 코드 
+	//_float3* vertex = m_Nearobj->GetPickVertex3();
+	//_float3 a = vertex[1] - vertex[0];
+	//_float3 b = vertex[2] - vertex[0];
+	//_float3 nomalVec = _float3(0, 0, 0);	
+	//D3DXVec3Cross(&nomalVec, &a, &b);
+	//nomalVec.z *= -1;	
+	//D3DXVec3Normalize(&nomalVec, &nomalVec);
+	//_float3 AddVec = OneVector(nomalVec);
+	//m_NextPos += AddVec;
 
-	_float3 a = vertex[1] - vertex[0];
-	_float3 b = vertex[2] - vertex[0];
-	_float3 nomalVec = _float3(0, 0, 0);
 
-	
-	D3DXVec3Cross(&nomalVec, &a, &b);
-	nomalVec.z *= -1;
-	
-	D3DXVec3Normalize(&nomalVec, &nomalVec);
+	 GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_PickPos + m_AddPos);
 
-	_float3 AddVec = OneVector(nomalVec);
-	m_NextPos += AddVec;
-	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_NextPos);
+
+
 
 }
 
@@ -409,4 +518,49 @@ BOOL CToolView::OnEraseBkgnd(CDC* pDC)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 	return true;
+}
+
+
+BOOL CToolView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	
+	
+	if (zDelta > 0)
+	{
+		Change_PickVector(TRUE);
+	}
+	else 
+	{
+		Change_PickVector(FALSE);
+
+	}
+
+	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_PickPos + m_AddPos);
+	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
+
+
+}
+
+
+void CToolView::OnMButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+
+	if (m_ePickMode == PICKMODE_NOMAL)
+	{
+		m_ePickMode = PICKMODE_Z;
+		m_AddPos = FRONTVEC;
+	}
+	else
+	{
+		m_ePickMode = PICKMODE_NOMAL;
+		m_AddPos = UPVEC;
+
+	}
+	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_PickPos + m_AddPos);
+
+	CScrollView::OnMButtonDown(nFlags, point);
 }

@@ -76,7 +76,7 @@ _int CObjectTool_ToolObject::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture(m_tOutputData.StateIndex)))
+	if (FAILED(m_ComTexture->Bind_Texture(m_tOutputData.TexDesc.StateIndex)))
 		return E_FAIL;
 
 	//렌더링 그룹에 들어가면 순서에 맞게 이 랜더가 호출되고 호출이 됬으면 버텍스 버퍼를 그려줘라
@@ -159,12 +159,14 @@ HRESULT CObjectTool_ToolObject::Set_Position(_float3 Position)
 	return S_OK;
 }
 
-HRESULT CObjectTool_ToolObject::Set_TextureNum_Bind(int num)
+HRESULT CObjectTool_ToolObject::Set_StateKey_TextureNum_Bind(const _tchar * state, int num)
 {
 	NULL_CHECK_BREAK(m_ComTexture);
 
-	m_tOutputData.StateIndex = num;
-	m_ComTexture->Bind_Texture(m_tOutputData.StateIndex);
+	m_tOutputData.TexDesc.StateIndex = num;
+	lstrcpy(m_tOutputData.TexDesc.szStateKey,state);
+	m_ComTexture->Change_TextureLayer(state,num);
+
 	return S_OK;
 }
 
@@ -210,7 +212,7 @@ HRESULT CObjectTool_ToolObject::Set_ViBuffer_Change()
 HRESULT CObjectTool_ToolObject::Texture_CurrentBind()
 {
 	NULL_CHECK_BREAK(m_ComTexture);
-	m_ComTexture->Bind_Texture(m_tOutputData.StateIndex);
+	m_ComTexture->Bind_Texture(m_tOutputData.TexDesc.StateIndex);
 	return S_OK;
 }
 
@@ -236,7 +238,7 @@ void CObjectTool_ToolObject::LoadData(const OUTPUT_OBJECTINFO& data)
 	Set_WorldMat(m_tOutputData.WorldMatData);
 
 	// For Texture
-	Set_TextureNum_Bind(m_tOutputData.StateIndex);
+	Set_StateKey_TextureNum_Bind(m_tOutputData.TexDesc.szStateKey, m_tOutputData.TexDesc.StateIndex);
 
 }
 

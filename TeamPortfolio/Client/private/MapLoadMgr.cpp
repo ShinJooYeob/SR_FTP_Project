@@ -126,7 +126,7 @@ HRESULT CMapLoadMgr::Insert_MapData(const _tchar * filepath, _uint maxcount)
 		case OUTPUT_MAP:
 			while (true)
 			{
-				OUTPUT_OBJECTINFO *pInfoData = new OUTPUT_OBJECTINFO;
+				OUTPUT_OBJECTINFO* pInfoData = new OUTPUT_OBJECTINFO;
 
 				ReadFile(hFile, &(*pInfoData), sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
 

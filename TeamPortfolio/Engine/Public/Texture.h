@@ -46,6 +46,9 @@ public:
 	HRESULT ClearTexture();
 	const TEXTUREDESC& Get_TextureDESC() const	{return m_TextureDesc;}
 
+	map<wstring, CTextureLayer*>& Get_SaveTextureMap() { return m_mapTextureLayers; }
+
+
 private:
 	//얘는 다른 클론들과 공유 X
 	CTextureLayer*								m_pBindedTextureLayer = nullptr;

@@ -6,6 +6,7 @@
 #include "MainFrm.h"
 #include "ToolView.h"
 #include "Trans_Dialog.h"
+#include "TextureLayer.h"
 #include "ObjectTool_ToolObject.h"
 #include "afxdialogex.h"
 
@@ -17,13 +18,15 @@ IMPLEMENT_DYNAMIC(CTrans_Dialog, CDialog)
 CTrans_Dialog::CTrans_Dialog(CWnd* pParent /*=nullptr*/)
 	: CDialog(IDD_CTrans_Dialog, pParent)
 {
+	m_Com_Textures = nullptr;
 
 }
 
 CTrans_Dialog::~CTrans_Dialog()
 {
 
-
+	if (m_Com_Textures)
+		Safe_Release(m_Com_Textures);
 }
 
 void CTrans_Dialog::DoDataExchange(CDataExchange* pDX)
@@ -100,19 +103,40 @@ END_MESSAGE_MAP()
 HRESULT CTrans_Dialog::ResetTexture()
 {
 	// 텍스처 리스트 업데이트
-	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_ViewObject_Object();
-
-	if (CurrentToolObject)
+	
+	//모든 텍스처 데이터 업데이트
+	if (m_Com_Textures == nullptr)
 	{
-		CTexture* tex = (CTexture*)CurrentToolObject->Get_Component(TAG_COM(Com_Texture));
-		m_TextureListBox.ResetContent();
-		int size = tex->CurrentTextureLayerSize()+1;
+		CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_ViewObject_Object();
+		if (CurrentToolObject == nullptr)
+			return E_FAIL;
 
-		for (_uint i = 0; i < size; i++)
+		m_Com_Textures = static_cast<CTexture*>(CurrentToolObject->Get_Component(TAG_COM(Com_Texture)));
+		NULL_CHECK_BREAK(m_Com_Textures);
+		m_Com_Textures->AddRef();
+
+
+	}
+	if (m_Com_Textures)
+	{
+		auto iterbegin= m_Com_Textures->Get_SaveTextureMap().begin();
+		auto iterend = m_Com_Textures->Get_SaveTextureMap().end();
+		m_TextureListBox.ResetContent();
+		// 전체 TextureMap 순회
+
+		for (auto iter = iterbegin;iter!=iterend ;iter++)
 		{
-			TCHAR fomatText[64];
-			wsprintf(fomatText, L"Block_%d", i);
-			m_TextureListBox.AddString(fomatText);
+			wstring wstr = (iter->first);
+			CTextureLayer* layer= (iter->second);
+			wstring wstr2 = L"_%d";
+			wstr += wstr2;
+			// 레이어 개수 만큼 업데이트
+			for (int i=0; i <= layer->Get_TextureNum();i++)
+			{
+				TCHAR fomatText[64];
+				wsprintf(fomatText, wstr.c_str(), i);
+				m_TextureListBox.AddString(fomatText);
+			}
 		}
 	}
 	return S_OK;
@@ -212,14 +236,28 @@ void CTrans_Dialog::OnBnClickedButton1()
 
 void CTrans_Dialog::OnLbnSelchangeList1()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// 리스트 박스 선택시 이벤트
+
 	CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject();
-	_uint index = m_TextureListBox.GetCurSel();
-	CurrentToolObject->Set_TextureNum_Bind(index);
-	
+	NULL_CHECK(CurrentToolObject);
+
+	// 해당 스테이트키 + 넘버를 해석해서 현재 텍스쳐에 넣는다.
+
+	if (m_Com_Textures)
+	{
+		// 선택한 리스트의 키 _ 번호 획득
+		CString cstr;
+		_uint index = m_TextureListBox.GetCurSel();
+		m_TextureListBox.GetText(index, cstr);
+		int _index = cstr.Find(L"_", 0);
+		CString KeyCStr = cstr.Left(_index);
+		CString NumCStr = cstr.Right(1);
+		int keyindex = _ttoi(NumCStr);
+
+		// 키와 번호를 추출해서 오브젝트에 적용한다.
+		CurrentToolObject->Set_StateKey_TextureNum_Bind(KeyCStr, keyindex);
+	}
 }
-
-
 
 
 void CTrans_Dialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)

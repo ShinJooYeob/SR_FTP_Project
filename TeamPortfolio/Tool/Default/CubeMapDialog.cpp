@@ -39,7 +39,7 @@ void CreateCubeMap()
 {
 	// 큐브 텍스처 초기화
 	LPDIRECT3DCUBETEXTURE9 pCubeMap;
-	LPDIRECT3DDEVICE9 device = GetSingle(CSuperToolSIngleton)->Get_Graohics_Device();
+	LPDIRECT3DDEVICE9 device = GetSingle(CSuperToolSIngleton)->Get_Graphics_Device();
 
 	FAILED_CHECK_NONERETURN(device->CreateCubeTexture(256, 1, D3DUSAGE_RENDERTARGET, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &pCubeMap, NULL));
 

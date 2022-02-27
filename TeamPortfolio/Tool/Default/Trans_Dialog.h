@@ -46,6 +46,7 @@ private:
 	// 슬라이더
 	CSliderCtrl m_Silder_Rotation[3];
 
+	CTexture *	m_Com_Textures;
 
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
