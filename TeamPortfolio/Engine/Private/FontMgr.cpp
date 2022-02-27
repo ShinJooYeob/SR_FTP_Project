@@ -117,6 +117,7 @@ HRESULT CFontMgr::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2
 	}
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
 	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 
 	return S_OK;
@@ -236,11 +237,8 @@ HRESULT CFontMgr::Render_World_Font(wstring szString, _float3 vOnWorldPos, _floa
 
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
 	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
-
-	m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_XRGB(255, 255, 255));
-
-
 	return S_OK;
 }
 

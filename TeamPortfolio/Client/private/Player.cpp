@@ -36,7 +36,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	m_fNowJumpPower = 0;
 	m_fJumpPower = 10.f;
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
-	//m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
+	m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
 
 	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main))));
 	
@@ -259,7 +259,7 @@ HRESULT CPlayer::SetUp_Components()
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
 	TransformDesc.fMovePerSec = 3.f;
 	TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
-	//TransformDesc.vPivot = _float3(0, 0.1f, 0);
+	TransformDesc.vPivot = _float3(0, -0.25f, 0);
 
 
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Renderer), TAG_COM(Com_Renderer), (CComponent**)&m_ComRenderer)))
@@ -649,7 +649,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 {
 	if (m_pCarryObject) {
 		m_pCarryObjectTransform->Set_MatrixState(CTransform::STATE_POS,
-			m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 0.35f, 0));
+			m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 0.5f, 0));
 	}
 
 	if (m_pCamera_Main->Get_bIsTuring())
