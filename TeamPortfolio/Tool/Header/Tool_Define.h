@@ -41,8 +41,8 @@ static const wstring g_FilePath_ObjectPathData = L"../bin/Resources/mapdata/";
 static const wstring g_FilePath_ObjectPathData_Save = L"\\bin\\Resources\\mapdata\\";
 
 
-static const TCHAR* g_FileName_Blocktxt = TEXT("Cube.txt");
-static const TCHAR* g_Filename_Cubetxt = TEXT("Cube.txt");
+static const TCHAR* g_FileName_Blocktxt = TEXT("Cube_Texture.txt");
+static const TCHAR* g_Filename_Cubetxt = TEXT("Cube_Texture.txt");
 
 #define  UPVEC _float3(0,1,0)
 #define  DOWNVEC _float3(0,-1,0)

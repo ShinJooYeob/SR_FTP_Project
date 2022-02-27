@@ -543,7 +543,7 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Get_ViewObject_Object(int index)
 {
 	auto list  = Get_GameObjectList(TAG_LAY(Layer_View));
 
-	if (list->empty())
+	if (list== nullptr)
 		return nullptr;
 
 	if(index == 0)

@@ -134,6 +134,12 @@ CComponent * CGameObject::Find_Components(const _tchar * tagComponent)
 	return iter->second;
 }
 
+//void CGameObject::Set_LoadData(OUTPUT_OBJECTINFO * pInfo)
+//{
+//	// OUTPUT_OBJECTINFO를 포인터 대입받음
+//	m_pLoadInfoData = pInfo;
+//}
+
 
 void CGameObject::Free()
 {

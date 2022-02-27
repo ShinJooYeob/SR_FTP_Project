@@ -34,6 +34,8 @@ public:
 	HRESULT Change_TextureLayer_ReturnTo(const _tchar* tagTexureLayer, const _tchar* szReturnTag, _float fFramePerSec = 6.f, _float fResturnFps = 6.f);
 	HRESULT Change_TextureLayer_ReturnToWait(const _tchar* tagTexureLayer, const _tchar* szReturnTag, _float fFramePerSec = 6.f, _float fResturnFps = 6.f);
 
+
+	void	Set_LoadTexutreNumber(_uint num) { m_SettingIndex = num; }
 	const _tchar* Get_NowTextureTag() { return m_TagNowTexture; };
 	_bool Get_IsReturnTexture() { return (m_szReturnTag != nullptr); };
 	_bool Get_IsWaitTexture() { return m_bIsWaitTexture; };
@@ -67,6 +69,7 @@ private:
 	const _tchar*								m_TagNowTexture = nullptr;
 	const _tchar*								m_szReturnTag = nullptr;
 	TEXTUREDESC									m_TextureDesc;
+	_uint										m_SettingIndex;
 
 private:
 	HRESULT Read_TextFile(TYPE eTextureType, const _tchar* szFilePath);

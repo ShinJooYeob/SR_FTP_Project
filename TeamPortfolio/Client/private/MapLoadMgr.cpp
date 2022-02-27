@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "../public/MapLoadMgr.h"
+#include "Gameobject.h"
 
 
 IMPLEMENT_SINGLETON(CMapLoadMgr);
@@ -13,7 +14,7 @@ CMapLoadMgr::CMapLoadMgr()
 
 }
 
-HRESULT CMapLoadMgr::LoadMap(SCENEID id, _uint index)
+HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index)
 {
 	if (m_MaxMapCount <= index)
 		return E_FAIL;
@@ -23,14 +24,46 @@ HRESULT CMapLoadMgr::LoadMap(SCENEID id, _uint index)
 
 	// 여기서 맵을 만들어 버리는 코드를 제작
 	list<OUTPUT_OBJECTINFO*> currentMap = m_MapObjectList[index];
-	_float3 xyz;
 
-	for (auto obj : currentMap)
+	// 데이터 대입 부분
+	
+	// 1. 오브젝트를 생성함
+	// 2. 큐브 생성후 데이터를 대입받음
+	// 3, 대입받은 오브젝트에 데이터를 적용
+
+	// 맵 생성부분
+
+	for (auto Infodata : currentMap)
 	{
-		memcpy(xyz, &obj->WorldMatData.m[3][0],sizeof(_float3));
-		GetSingle(CGameInstance)->Add_GameObject_To_Layer(id,
-			TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainCube),
-			&xyz);
+		// 1. 큐브 ID로 각 큐브 생성
+		_uint cubeID = Infodata->CubeID;
+		switch (cubeID)
+		{
+		case 0:
+			GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
+				TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainCube),
+				_float3(0, 0, 0));
+			break;
+		case 1:
+			break;
+		default:
+			break;
+		}
+
+		// 2. 생성된 큐브에 컴포넌트 별로 데이터 세팅.
+		CGameObject* newObj = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(sceneid, TAG_LAY(Layer_Terrain))->back();
+		if (newObj == nullptr)
+			continue;
+
+	//	newObj->Set_LoadData(Infodata);
+
+		
+		CTransform* trans = (CTransform*)newObj->Get_Component(TAG_COM(Com_Transform));
+		trans->Set_Matrix(Infodata->WorldMatData);
+
+		CTexture* tex = (CTexture*)newObj->Get_Component(TAG_COM(Com_Texture));
+		tex->Change_TextureLayer(Infodata->TexDesc.szStateKey);
+		tex->Set_LoadTexutreNumber(Infodata->TexDesc.StateIndex);
 
 	}
 

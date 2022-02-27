@@ -52,6 +52,7 @@ HRESULT CTexture::Initialize_Prototype(void * pArg)
 
 HRESULT CTexture::Initialize_Clone(void * pArg)
 {
+	m_SettingIndex = -1;
 
 	return S_OK;
 }
@@ -321,7 +322,10 @@ HRESULT CTexture::Bind_Texture(_uint iTextureIndex, _uint iStageIndex)
 	if (m_pBindedTextureLayer == nullptr)
 		return E_FAIL;
 
-	return m_pBindedTextureLayer->Bind_Texture(iTextureIndex, iStageIndex);
+	if(m_SettingIndex == -1)
+		return m_pBindedTextureLayer->Bind_Texture(iTextureIndex, iStageIndex);
+	else 
+		return m_pBindedTextureLayer->Bind_Texture(m_SettingIndex, iStageIndex);
 }
 
 _uint CTexture::CurrentTextureLayerSize()
