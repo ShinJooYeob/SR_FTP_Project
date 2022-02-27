@@ -34,7 +34,8 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Common(TAG_LAY(Layer_UI_Common))))
 		return E_FAIL;
-
+	if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
+		return E_FAIL;
 
 
 
@@ -295,6 +296,14 @@ HRESULT CScene_StageSelect::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLay
 
 
 
+
+	return S_OK;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_UI_Result(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_UI_Result")))
+		return E_FAIL;
 
 	return S_OK;
 }

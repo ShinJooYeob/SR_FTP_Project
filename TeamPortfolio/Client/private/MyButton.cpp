@@ -139,7 +139,7 @@ _int CMyButton::Update(_float fDeltaTime)
 			}
 
 	}
-	else if (m_bOnMouse == false)
+	else if (m_bOnMouse == false)//
 	{
 		if (!lstrcmp(L"Loby_Button1", m_pButtonName))
 		{

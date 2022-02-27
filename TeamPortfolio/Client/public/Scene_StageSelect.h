@@ -31,6 +31,7 @@ private:
 	HRESULT Ready_Layer_Object_PortalCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_ElevetorCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);
 
 
 
