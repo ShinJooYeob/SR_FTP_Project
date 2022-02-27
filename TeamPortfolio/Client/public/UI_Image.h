@@ -30,6 +30,7 @@ public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
 	virtual HRESULT Initialize_Clone(void* pArg)override;
 
+	
 	virtual _int Update(_float fDeltaTime)override;
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
@@ -60,14 +61,19 @@ private:
 	_bool			m_bEasingStart=false;
 	_float4			m_vEasingDesc;//x 스타트 y타겟 z패스드타임 w총시간
 public:
+	RECT			Get_Rect() const{ return m_rcRect; }
 	_int			Get_ImageBigger() { return m_iBigger; }
 
-	void			Set_ImageUIDesc(_float vUIDescx) { m_vUIDesc.x = m_vUIDesc.x + vUIDescx; }
+	void			Set_ImageUIDescSizeY(_float vUIDescSizeY){ m_vUIDesc.w = m_vUIDesc.w + vUIDescSizeY; }
+	void			Set_ImageUIDescX(_float vUIDescx) { m_vUIDesc.x = m_vUIDesc.x + vUIDescx; }
 	void			Set_ImageName(TCHAR* pImageName);
 	void			Set_ImageRenderFalse() { m_bRender = false; }
 	void			Set_ImageRenderTrue() { m_bRender = true; }
 	void			Set_ImageBigger(BIGGER eBigger) { m_iBigger = eBigger; m_bEasingStart = false; }
 	void			Set_ImageAlpha(_int Alpha) { m_iAlpha = Alpha; }
+	//vRect.x,y,z,w=top,left,bottom,right
+	void			Set_UI_TransformRect(_float4 vRect);
+
 private:
 	HRESULT			SetUp_Components();
 

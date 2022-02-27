@@ -68,7 +68,8 @@ _int CShop::Update(_float fDeltaTime)
 
 
 	}
-
+	if(m_bNotEnoughMoney)
+		m_fTime += fDeltaTime; //초당 1씩증가
 	return _int();
 }
 
@@ -154,7 +155,23 @@ _int CShop::Render()
 
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
-
+	
+	wstring temp;
+	_tchar szbuf[64];
+	_itow_s(m_Player_Inventory->Get_Gold(), szbuf, 10);
+	temp = wstring(szbuf) + L"gold";
+	
+	GetSingle(CGameInstance)->Render_UI_Font(temp, { 800.f,190.f }, { 20.f,30.f }, _float3(255, 255, 255));
+	
+	if (m_bNotEnoughMoney)
+	{
+		GetSingle(CGameInstance)->Render_UI_Font(L"Not enough money", { 500.f,550.f }, { 20.f,30.f }, _float3(255, 255, 255));
+		if (m_fTime > 1)//1초가 지나면
+		{
+			m_bNotEnoughMoney = false;//b false로바꿔서 여기 안들어옴
+			m_fTime = 0;//시간 초기화
+		}
+	}
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
 
@@ -315,7 +332,7 @@ HRESULT CShop::Update_UIButtonList(_float fTimeDelta)
 				Manual_Render(m_iChosenSkill);
 				break;
 			case SHOP_BUY:
-				if (m_iChosenSkill > SKILL_END + 9)//스킬인덱스 초과 방지용
+				if (m_iChosenSkill==0 || m_iChosenSkill > SKILL_END + 9)//스킬인덱스 초과 방지용
 					break;
 				Buy_Skill(m_iChosenSkill - SHOP_SPEEDUP);
 				break;
@@ -402,14 +419,14 @@ HRESULT CShop::Set_Skill_Rect()
 
 HRESULT CShop::Buy_Skill(_int ChosenSkill)
 {
-
+	
 
 	if (m_Skill[ChosenSkill].Price <= m_Player_Inventory->Get_Gold())
 	{
+		m_bNotEnoughMoney = false;
 		if (m_Player_Inventory->Get_Skill_Level(ChosenSkill) == m_Player_Inventory->Get_MaxLevel(ChosenSkill))
 		{
-			MSGBOX("최대 레벨초과")
-				return E_FAIL;
+			return S_OK;
 		}
 		m_Player_Inventory->Set_Skill_LevelUP(ChosenSkill);
 		m_Player_Inventory->Set_Gold(-m_Skill[ChosenSkill].Price);
@@ -417,7 +434,8 @@ HRESULT CShop::Buy_Skill(_int ChosenSkill)
 
 	else if (m_Skill[ChosenSkill].Price > m_Player_Inventory->Get_Gold())
 	{
-		MSGBOX("소지금이 부족합니다")
+		m_fTime = 0;
+		m_bNotEnoughMoney = true;
 			return E_FAIL;
 		
 	}
