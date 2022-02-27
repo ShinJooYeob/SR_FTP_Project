@@ -162,6 +162,8 @@ _int CMyButton::Update(_float fDeltaTime)
 		}
 
 	}
+
+
 	return SHOP_END;
 
 }

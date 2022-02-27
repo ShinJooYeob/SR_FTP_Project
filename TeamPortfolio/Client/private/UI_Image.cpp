@@ -46,12 +46,24 @@ HRESULT CUI_Image::Initialize_Clone(void * pArg)
 
 	return S_OK;
 }
+void CUI_Image::Set_UI_TransformRect( _float4 vRect)
+{
+	//vRect.x,y,z,w=top,left,bottom,right
+	_float4 vResult{};
+	/*≥ ∫Ò*/vResult.z = vRect.w-vRect.y;
+	/*≥Ù¿Ã*/vResult.w = vRect.z-vRect.x;
+	/*x¡¬«•*/vResult.x = vRect.y + vResult.z*0.5f;
+	/*y¡¬«•*/vResult.y = vRect.x + vResult.w*0.5f;
+	Set_UI_Transform(m_ComTransform, vResult);
+	
+}
 
 _int CUI_Image::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-	if (!lstrcmp(L"Common_1", m_pImageName)|| !lstrcmp(L"Common_2", m_pImageName)|| !lstrcmp(L"Common_3", m_pImageName)|| !lstrcmp(L"Common_4", m_pImageName)|| !lstrcmp(L"Common_5", m_pImageName))
+	if (!lstrcmp(L"Common_1", m_pImageName)|| !lstrcmp(L"Common_2", m_pImageName)|| !lstrcmp(L"Common_3", m_pImageName)|| !lstrcmp(L"Common_4", m_pImageName)|| !lstrcmp(L"Common_5", m_pImageName)
+		|| !lstrcmp(L"Common_6", m_pImageName))
 	{
 		
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))

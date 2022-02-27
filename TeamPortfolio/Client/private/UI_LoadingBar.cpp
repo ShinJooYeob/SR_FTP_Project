@@ -108,7 +108,7 @@ _float4 CUI_LoadingBar::Set_byRectPos(_float4 tRect)
 	Result.w = tRect.w - tRect.y;
 	Result.x = tRect.x + Result.z * 0.5f;
 	Result.y = tRect.y + Result.w * 0.5f;
-
+	
 
 	return Result;
 }

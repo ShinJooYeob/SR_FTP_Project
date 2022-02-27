@@ -2,7 +2,7 @@
 #include "MyButton.h"
 #include "UI_Image.h"
 #include "../public/UI_Common.h"
-
+#include "Player.h"
 
 CUI_Common::CUI_Common(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CUI(pGraphicDevice)
@@ -38,7 +38,7 @@ HRESULT CUI_Common::Initialize_Clone(void * pArg)
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(90));
+	m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(270));
 	m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
@@ -56,14 +56,14 @@ HRESULT CUI_Common::Initialize_Clone(void * pArg)
 	return S_OK;
 }
 
-_int CUI_Common::Set_SkillSlot()
+HRESULT CUI_Common::Set_SkillSlot()
 {
 	((CUI_Image*)Find_Image(L"Common_Image_9"))->Set_ImageAlpha(40);
 	((CUI_Image*)Find_Image(L"Common_Image_10"))->Set_ImageAlpha(40);
 	((CUI_Image*)Find_Image(L"Common_Image_11"))->Set_ImageAlpha(40);
 	((CUI_Image*)Find_Image(L"Common_Image_12"))->Set_ImageAlpha(40);
 
-	if (m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP) == 1)
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP) >= 1)
 		((CUI_Image*)Find_Image(L"Common_Image_9"))->Set_ImageAlpha(255);
 	if (m_Player_Inventory->Get_Skill_Level(SKILL_DUBBLEJUMP) == 1)
 		((CUI_Image*)Find_Image(L"Common_Image_10"))->Set_ImageAlpha(255);
@@ -72,7 +72,38 @@ _int CUI_Common::Set_SkillSlot()
 	if (m_Player_Inventory->Get_Skill_Level(SKILL_POTION) == 1)
 		((CUI_Image*)Find_Image(L"Common_Image_12"))->Set_ImageAlpha(255);
 	
-	return 0;
+
+
+	return S_OK;
+}
+
+HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
+{
+	/*CGameObject* pPlayer = GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, TAG_LAY(Layer_Player));
+	
+	_bool CooldownStart = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_SPEEDUP);
+	if (CooldownStart)
+	{
+		_float top = m_fCooltime*(-30.f);
+		((CUI_Image*)Find_Image(L"Common_Image_13"))->Set_UI_TransformRect(_float4(m_vUIDesc.x + top, m_vUIDesc.y - 280, 50, 50));
+		m_fCooltime = fDeltaTime;
+		if (m_fCooltime > 5)
+		{
+		
+			m_fCooltime = 0;
+		}
+	}*/
+	//_bool CooldownStart = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_DUBBLEJUMP);
+	//if (CooldownStart);
+
+	//_bool CooldownStart = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_DASH);
+	//if (CooldownStart);
+
+	//_bool CooldownStart = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_POTION);
+	//if (CooldownStart);
+
+
+	return S_OK;
 }
 _int CUI_Common::Update(_float fDeltaTime)
 {
@@ -80,38 +111,10 @@ _int CUI_Common::Update(_float fDeltaTime)
 		return E_FAIL;
 	
 	Set_SkillSlot();
-	//_float fPosX = GetSingle(CGameInstance)->Easing(TYPE_ExpoInOut, m_fStartPosX, m_fTargetPosx, m_fPassedTime);
-	POINT ptMouse;
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
-	m_rcRect.top = (LONG)0;
-	m_rcRect.left = (LONG)0;
-	m_rcRect.bottom = (LONG)720;
-	m_rcRect.right = (LONG)50;
-	if (PtInRect(&m_rcRect, ptMouse))
-	{
-		
-		m_MouseOn = true;
-		if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON)&(DIS_Down))
-		{
-			m_bIsClicked = !m_bIsClicked;
-		}
-	}
-	else
-		m_MouseOn = false;
-	if(!m_bIsClicked)
-	{
-		
-		if (m_MouseOn)
-			Show_UI(fDeltaTime);
-
-		if (!m_MouseOn)
-			Hide_UI(fDeltaTime);
-	}
-
-
 	
-
+	if (FAILED(Change_UIHideState(fDeltaTime)))
+		return E_FAIL;
+	Set_CoolDown(fDeltaTime);
 	if (FAILED(Update_UIList(fDeltaTime)))
 		return E_FAIL;
 	if (FAILED(Update_UIButtonList(fDeltaTime)))
@@ -121,19 +124,55 @@ _int CUI_Common::Update(_float fDeltaTime)
 
 	return _int();
 }
+
 HRESULT CUI_Common::Show_UI(_float fDeltaTime)
 {
 	if(m_fPosX<40)
 	{
 		m_fPosX += fDeltaTime * 320;
 		m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
-			if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-				return E_FAIL;
+		if(FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+		return E_FAIL;
+				
 			for (auto pair : m_UIList)
-				((CUI_Image*)(pair.second))->Set_ImageUIDesc(fDeltaTime * 320);
+				((CUI_Image*)(pair.second))->Set_ImageUIDescX(fDeltaTime * 320);
 	}
 
+	return S_OK;
+}
 
+HRESULT CUI_Common::Change_UIHideState(_float fDeltaTime)
+{
+	POINT ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	m_rcRect.top = (LONG)0;
+	m_rcRect.left = (LONG)0;
+	m_rcRect.bottom = (LONG)720;
+	m_rcRect.right = (LONG)75;
+	if (PtInRect(&m_rcRect, ptMouse))
+	{
+
+		m_MouseOn = true;
+		if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON)&(DIS_Down))
+		{
+			m_bIsClicked = !m_bIsClicked;
+		}
+	}
+	else
+		m_MouseOn = false;
+	if (!m_bIsClicked)
+	{
+
+		if (m_MouseOn)
+			if (FAILED(Show_UI(fDeltaTime)))
+				return E_FAIL;
+
+		if (!m_MouseOn)
+			if (FAILED(Hide_UI(fDeltaTime)))
+				return E_FAIL;
+	}
+	return S_OK;
 }
 HRESULT CUI_Common::Hide_UI(_float fDeltaTime)
 {
@@ -142,12 +181,13 @@ HRESULT CUI_Common::Hide_UI(_float fDeltaTime)
 		m_fPosX -= fDeltaTime * 320;
 		m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-			return E_FAIL;
+		return E_FAIL;
+			
 		for (auto pair : m_UIList)
-			((CUI_Image*)(pair.second))->Set_ImageUIDesc(-(fDeltaTime * 320));
+			((CUI_Image*)(pair.second))->Set_ImageUIDescX(-(fDeltaTime * 320));
 	}
 
-
+	return S_OK;
 }
 
 _int CUI_Common::LateUpdate(_float fDeltaTime)
@@ -205,6 +245,11 @@ _int CUI_Common::LateRender()
 	return _int();
 }
 
+HRESULT CUI_Common::ReInitialize(void * pArg)
+{
+	return S_OK;
+}
+
 CUI * CUI_Common::Find_UI(const _tchar * tagUI)
 {
 	auto iter = find_if(m_UIPrototypes.begin(), m_UIPrototypes.end(), CTagFinder(tagUI));
@@ -242,22 +287,24 @@ HRESULT CUI_Common::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 	temp->Set_ImageName(L"Common_5");
 	m_UIList.emplace(L"Common_Image_12", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 280, 50, 50)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 40, 50, 50)));
 	temp->Set_ImageName(L"Common_6");
 	m_UIList.emplace(L"Common_Image_13", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 200, 50, 50)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 120, 50, 50)));
 	temp->Set_ImageName(L"Common_6");
 	m_UIList.emplace(L"Common_Image_14", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 120, 50, 50)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 200, 50, 50)));
 	temp->Set_ImageName(L"Common_6");
 	m_UIList.emplace(L"Common_Image_15", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 40, 50, 50)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 280, 50, 50)));
 	temp->Set_ImageName(L"Common_6");
 	m_UIList.emplace(L"Common_Image_16", (CUI*)temp);
 
+
+	
 
 
 	 temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 280, 64, 64)));
@@ -419,7 +466,7 @@ HRESULT CUI_Common::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STAGESELECT, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TAG_CP(Prototype_Texture_UI), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 	m_Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
 

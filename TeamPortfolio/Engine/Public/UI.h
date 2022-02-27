@@ -22,6 +22,7 @@ public:
 	// Set Compo끝나고 UIDesc에 fX,fY,SizeX,SizeY 벡터 넣으면됨
 	HRESULT Set_UI_Transform(class CTransform* pComTransform,_float4 vUIDesc);
 
+
 protected:
 	_float				m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float				m_fDepth=0;

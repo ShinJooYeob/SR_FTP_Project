@@ -17,6 +17,11 @@ class CCamera_Main;
 class CPlayer final :public CGameObject
 {
 private:
+	typedef struct CoolDown
+	{
+		_bool m_bCoolDownStart=false;
+	}COOL;
+private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphicDevice);
 	explicit CPlayer(const CPlayer& rhs);
 	virtual ~CPlayer() = default;
@@ -36,6 +41,9 @@ public:
 	void Set_PlayerPause(_float TotalPauseTime, const _tchar* TagAnim, _float fFrameTime = 6.0f);
 	virtual HRESULT ReInitialize(void* pArg)override;
 
+	_bool Get_CoolDownStart(_int eSKILL) { return m_tCoolDown[eSKILL].m_bCoolDownStart; }
+	void Set_CoolDownStart_False(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = false; }
+	void Set_CoolDownStart_True(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = true; }
 private:
 	CTexture*				m_ComTexture = nullptr;
 	CTransform*				m_ComTransform = nullptr;
@@ -48,6 +56,7 @@ private:
 	CCollision*		m_pCollisionCom = nullptr;
 
 private:
+	COOL					m_tCoolDown[SKILL_END];
 	_float					m_fFrame = 0.f;
 
 	_float					m_fJumpPower = 5.f;

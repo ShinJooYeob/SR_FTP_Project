@@ -56,12 +56,14 @@ private:
 
 private:	_float			m_fFrame = 0.f;
 			SKILLINFO			m_Skill[SKILL_END]; //스킬 가격을 담아놓는 배열
-			_int				m_iChosenSkill; //현재 선택한 스킬이 뭔지 알수 있게 이넘 값 넣는 변수
+			_int				m_iChosenSkill=0; //현재 선택한 스킬이 뭔지 알수 있게 이넘 값 넣는 변수
 			map<const _tchar*, CUI*>			m_UIButtonList;
 			map<const _tchar*, CUI*>			m_UIList;
 			map<const _tchar*, CUI*>			m_UIPrototypes;
 			bool			m_bIsPress = false;
 			_float4			m_vUIDesc;
+			_bool			m_bNotEnoughMoney = false;
+			_float			m_fTime=0;
 public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
 	HRESULT			Update_UIList(_float fTimeDelta);

@@ -130,7 +130,8 @@ _int CQuest_Image::Render()
 		return E_FAIL;
 
 
-	GetSingle(CGameInstance)->Render_UI_Font(L"0123456789\nShe's gone\nOut of my life\nI was wrong\nI'm to blame\nI was so untrue\nI can't live without her love\nIn my life\nThere's just an empty space\nAll my dreams are lost\nI'm wasting away\nForgive me, girl", { 300.f,100.f }, { 20.f,30.f }, _float3(255, 0, 0), (_uint)m_fTextFrame);
+	GetSingle(CGameInstance)->Render_UI_Font(L"0123456789\nShe's gone\nOut of my life\nI was wrong\nI'm to blame\nI was so untrue\nI can't live without her love\nIn my life\nThere's just an empty space\nAll my dreams are lost\nI'm wasting away\nForgive me, girl", 
+	{ 300.f,100.f}, { 15.f,20.f }, _float3(255, 0, 0), (_uint)m_fTextFrame);
 
 	//GetSingle(CGameInstance)->Render_Font(L"0123456789\nShe's gone\nOut of my life\nI was wrong\nI'm to blame\nI was so untrue\nI can't live without her love\nIn my life\nThere's just an empty space\nAll my dreams are lost\nI'm wasting away\nForgive me, girl", { 300.f,100.f }, { 20.f,30.f }, _float3(_float(rand() % 255), _float(rand() % 255), _float(rand() % 255)), (_uint)m_fTextFrame);
 	//GetSingle(CGameInstance)->Render_Font(L"0123456l\nas    dasdasd", { 600.f,400.f }, { 20.f,30.f }, _float3(255, 0, 0), (_uint)m_fTextFrame);

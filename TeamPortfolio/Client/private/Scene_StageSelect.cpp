@@ -218,6 +218,14 @@ HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 	return S_OK;
 }
 
+HRESULT CScene_StageSelect::Ready_Layer_UI_Common(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_UI_Common)))
+		return E_FAIL;
+
+
+	return S_OK;
+}
 HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 {
 
@@ -245,14 +253,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Quest(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CScene_StageSelect::Ready_Layer_UI_Common(const _tchar * pLayerTag)
-{
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_UI_Common)))
-		return E_FAIL;
-
-	return S_OK;
-}
 
 HRESULT CScene_StageSelect::Ready_Layer_JumpCube(const _tchar * pLayerTag)
 {
