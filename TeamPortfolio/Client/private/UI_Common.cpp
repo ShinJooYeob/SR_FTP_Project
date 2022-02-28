@@ -79,20 +79,31 @@ HRESULT CUI_Common::Set_SkillSlot()
 
 HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 {
-	/*CGameObject* pPlayer = GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, TAG_LAY(Layer_Player));
+	CGameObject* pPlayer = GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player));
 	
+	if (pPlayer == nullptr)
+		return E_FAIL;
+
 	_bool CooldownStart = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_SPEEDUP);
 	if (CooldownStart)
 	{
-		_float top = m_fCooltime*(-30.f);
-		((CUI_Image*)Find_Image(L"Common_Image_13"))->Set_UI_TransformRect(_float4(m_vUIDesc.x + top, m_vUIDesc.y - 280, 50, 50));
+		m_vUIDesc.w = 10;
+
+		RECT temp = {};
+		temp.left = m_vUIDesc.x - m_vUIDesc.z * 0.5f;
+		temp.top = m_vUIDesc.y - m_vUIDesc.w * 0.5f;
+		temp.right = m_vUIDesc.x + m_vUIDesc.z * 0.5f;
+		temp.bottom = m_vUIDesc.y + m_vUIDesc.w * 0.5f;
+
+
+		((CUI_Image*)Find_Image(L"Common_Image_13"))->Set_UI_TransformRect(_float4(temp.top, temp.left, temp.bottom, temp.right ));
 		m_fCooltime = fDeltaTime;
 		if (m_fCooltime > 5)
 		{
 		
 			m_fCooltime = 0;
 		}
-	}*/
+	}
 	//_bool CooldownStart = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_DUBBLEJUMP);
 	//if (CooldownStart);
 
@@ -135,7 +146,7 @@ HRESULT CUI_Common::Show_UI(_float fDeltaTime)
 		return E_FAIL;
 				
 			for (auto pair : m_UIList)
-				((CUI_Image*)(pair.second))->Set_ImageUIDescX(fDeltaTime * 320);
+				((CUI_Image*)(pair.second))->Set_ImageUIDescX(m_fPosX);
 	}
 
 	return S_OK;
@@ -184,7 +195,7 @@ HRESULT CUI_Common::Hide_UI(_float fDeltaTime)
 		return E_FAIL;
 			
 		for (auto pair : m_UIList)
-			((CUI_Image*)(pair.second))->Set_ImageUIDescX(-(fDeltaTime * 320));
+			((CUI_Image*)(pair.second))->Set_ImageUIDescX(m_fPosX);
 	}
 
 	return S_OK;

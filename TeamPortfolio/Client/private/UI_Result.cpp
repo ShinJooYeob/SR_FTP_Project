@@ -95,14 +95,14 @@ _int CUI_Result::LateUpdate(_float fDeltaTime)
 		return E_FAIL;
 	//RENDER_PRIORITY ,RENDER_UI
 
-	if (m_fTimer > 3.f)
-	{
-		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
-			return E_FAIL;
-	}
+	////////////////////////////////if (m_fTimer > 3.f)
+	////////////////////////////////{
+	////////////////////////////////	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
+	////////////////////////////////		return E_FAIL;
+	////////////////////////////////}
 
-	if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
-		return E_FAIL;
+	////////////////////////////////if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
+	////////////////////////////////	return E_FAIL;
 
 	return _int();
 }

@@ -72,7 +72,7 @@ private:	_float			m_fFrame = 0.f;
 			_bool			m_bIsClicked=false;
 			_int			m_iEmpty;
 			_float			m_fCooltime=0;
-			
+			_float			m_top = 0;
 public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
 	HRESULT			Update_UIList(_float fTimeDelta);
