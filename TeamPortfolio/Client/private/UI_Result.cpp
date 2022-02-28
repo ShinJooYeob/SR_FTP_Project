@@ -56,6 +56,9 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	m_ComTexture->Change_TextureLayer(TEXT("Result"));
 
+	//최대 시간 1초
+	m_fMaxTime = 1.f;
+
 
 	return S_OK;
 }
@@ -69,10 +72,12 @@ _int CUI_Result::Update(_float fDeltaTime)
 	if (m_bStopSwitch == false)
 	{
 		m_fTimer += m_fFrame;
+		TempMinutes = m_fTimer / 60;
+		TempSeconds = (_uint)m_fTimer % 60;
 	}
 
 
-	if (m_fTimer > 1.f)
+	if (m_fTimer > m_fMaxTime || m_bClear == true)
 	{
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 			return E_FAIL;
@@ -99,11 +104,11 @@ _int CUI_Result::LateUpdate(_float fDeltaTime)
 	//RENDER_PRIORITY ,RENDER_UI
 
 	//이걸 함으로써 렌더되지 않게 연산량을 줄여주자!!!
-	//if (m_fTimer > 3.f)
-	//{
+	if (m_fTimer > m_fMaxTime || m_bClear == true)
+	{
 		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
 			return E_FAIL;
-	//}
+	}
 	if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
 		return E_FAIL;
 
@@ -131,15 +136,60 @@ _int CUI_Result::Render()
 
 
 	//잊지마라 폰트 매니저는 렌더에서만 사용가능하다.
-	_tchar tempArr[64];
-	_itow_s(m_fTimer, tempArr, 10);
+	if (m_fTimer > m_fMaxTime || m_bClear == true)
+	{
+		if (m_fTimer > m_fMaxTime)
+		{
+			//삭제하지 말것 테스트가 끝나면 주석을 풀 예정
+			wstring TempString = L"Mission Failed";
 
-	wstring TempString = wstring(tempArr) + L"Sec " + L"Eunhyek";
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
 
-	GetSingle(CGameInstance)->Render_UI_Font(TempString, { 400.f,200.f }, { 20.f,30.f }, _float3(83, 250, 120));
+			if (FAILED(Release_RenderState()))
+				return E_FAIL;
 
-	if (FAILED(Release_RenderState()))
-		return E_FAIL;
+			//이건 사람들한테 공개하는 용도로 사용됨
+			//_tchar tempMinArr[64];
+			//_itow_s(TempMinutes, tempMinArr, 10);
+
+			//_tchar tempSecArr[64];
+			//_itow_s(TempSeconds, tempSecArr, 10);
+
+
+			//wstring TempString = wstring(tempMinArr) + L"Minutes " + wstring(tempSecArr) + L"Seconds";
+
+			//GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			//if (FAILED(Release_RenderState()))
+			//	return E_FAIL;
+		}
+		else
+		{
+			_tchar tempMinArr[64];
+			_itow_s(TempMinutes, tempMinArr, 10);
+
+			_tchar tempSecArr[64];
+			_itow_s(TempSeconds, tempSecArr, 10);
+
+
+			wstring TempString = wstring(tempMinArr) + L"Minutes " + wstring(tempSecArr) + L"Seconds";
+
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			if (FAILED(Release_RenderState()))
+				return E_FAIL;
+
+			//_tchar tempArr[64];
+			//_itow_s(m_fTimer, tempArr, 10);
+
+			//wstring TempString = wstring(tempArr) + L"Sec " + L"Eunhyek";
+
+			//GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			//if (FAILED(Release_RenderState()))
+			//	return E_FAIL;
+		}
+	}
 
 	return _int();
 }
@@ -348,6 +398,11 @@ void CUI_Result::Button_Picking()
 	m_fCancelButton = TempButton;
 	ButtonCancel->Set_Rect(m_vButtonDesc, TempButton);
 	ButtonCancel->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
+}
+
+void CUI_Result::Set_Clear(_bool _bClear)
+{
+	m_bClear = _bClear;
 }
 
 CUI_Result * CUI_Result::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)

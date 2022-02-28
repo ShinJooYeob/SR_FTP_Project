@@ -38,6 +38,8 @@ private:
 public:
 	void		Button_Picking();
 
+	void		Set_Clear(_bool _bClear);
+
 	//진우형 프레임워크
 private:
 	HRESULT		Ready_Layer_Button(const _tchar * pLayerTag);//버튼 클론을 만들고 있음
@@ -60,13 +62,18 @@ private:
 	_float4			m_vUIDesc; //결과창용
 
 	_float4			m_vButtonDesc; // 버튼용
-
-	_bool			m_isClicked = false;
-	_bool			m_bStopSwitch = false;
-	_float			m_fTimer = 0.f;
-
 	RECT			m_fStartButton;
 	RECT			m_fCancelButton;
+
+	_bool			m_isClicked = false;
+
+	_bool			m_bStopSwitch = false; //타이며 멈춤 역할
+	_float			m_fTimer = 0.f; // 타이머
+	_float			m_fMaxTime = 0.f; // 최대 시간
+	_bool			m_bClear = false; //클리어 여부
+	_float			TempMinutes = 0.f; //몇분인지 담는중
+	_float			TempSeconds = 0.f; //몇초인지 담는중
+
 
 
 public:
