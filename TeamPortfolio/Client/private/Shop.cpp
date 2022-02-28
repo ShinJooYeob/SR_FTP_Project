@@ -70,6 +70,8 @@ _int CShop::Update(_float fDeltaTime)
 	}
 	if(m_bNotEnoughMoney)
 		m_fTime += fDeltaTime; //초당 1씩증가
+	if (m_bIsExcessMaxLevel)
+		m_fTime += fDeltaTime;
 	return _int();
 }
 
@@ -158,11 +160,34 @@ _int CShop::Render()
 	
 	wstring temp;
 	_tchar szbuf[64];
+
 	_itow_s(m_Player_Inventory->Get_Gold(), szbuf, 10);
 	temp = wstring(szbuf) + L"gold";
-	
-	GetSingle(CGameInstance)->Render_UI_Font(temp, { 800.f,190.f }, { 20.f,30.f }, _float3(255, 255, 255));
-	
+	GetSingle(CGameInstance)->Render_UI_Font(temp, { 800.f,190.f }, { 20.f,30.f }, _float3(255, 255, 0));
+
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP) < m_Player_Inventory->Get_MaxLevel(SKILL_SPEEDUP))
+	{
+		_itow_s(m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP), szbuf, 10);
+		temp = L"LV" + wstring(szbuf);
+		GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85, m_vUIDesc.y - 140 }, { 16.f,24.f }, _float3(255, 100, 150));
+	}
+	else if (m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP) == m_Player_Inventory->Get_MaxLevel(SKILL_SPEEDUP))
+	{
+		_itow_s(m_Player_Inventory->Get_Skill_Level(SKILL_SPEEDUP), szbuf, 10);
+		temp = L"LV" + wstring(szbuf) + L"MAX";
+		GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85, m_vUIDesc.y - 140 }, { 16.f,24.f }, _float3(255, 100, 150));
+	}
+	_itow_s(m_Player_Inventory->Get_Skill_Level(SKILL_DUBBLEJUMP), szbuf, 10);
+	temp = L"LV" + wstring(szbuf);
+	GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85, m_vUIDesc.y - 40 }, { 16.f,24.f }, _float3(255, 100, 150));
+
+	_itow_s(m_Player_Inventory->Get_Skill_Level(SKILL_CAMERA), szbuf, 10);
+	temp = L"LV" + wstring(szbuf);
+	GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85, m_vUIDesc.y + 60 }, { 16.f,24.f }, _float3(255, 100, 150));
+
+	_itow_s(m_Player_Inventory->Get_Skill_Level(SKILL_POTION), szbuf, 10);
+	temp = L"LV" + wstring(szbuf);
+	GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85, m_vUIDesc.y + 160 }, { 16.f,24.f }, _float3(255, 100, 150));
 	if (m_bNotEnoughMoney)
 	{
 		GetSingle(CGameInstance)->Render_UI_Font(L"Not enough money", { 500.f,550.f }, { 20.f,30.f }, _float3(255, 255, 255));
@@ -172,6 +197,18 @@ _int CShop::Render()
 			m_fTime = 0;//시간 초기화
 		}
 	}
+
+	if (m_bIsExcessMaxLevel)
+	{
+		GetSingle(CGameInstance)->Render_UI_Font(L"Excess Max Level", { 500.f,550.f }, { 20.f,30.f }, _float3(255, 255, 255));
+		if (m_fTime > 1)//1초가 지나면
+		{
+			m_bIsExcessMaxLevel = false;//b false로바꿔서 여기 안들어옴
+			m_fTime = 0;//시간 초기화
+		}
+	}
+	
+
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
 
@@ -422,6 +459,8 @@ HRESULT CShop::Buy_Skill(_int ChosenSkill)
 		m_bNotEnoughMoney = false;
 		if (m_Player_Inventory->Get_Skill_Level(ChosenSkill) == m_Player_Inventory->Get_MaxLevel(ChosenSkill))
 		{
+			m_fTime = 0;
+			m_bIsExcessMaxLevel = true;
 			return S_OK;
 		}
 		m_Player_Inventory->Set_Skill_LevelUP(ChosenSkill);

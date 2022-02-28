@@ -154,9 +154,6 @@
     <Filter Include="03.Mgr\MapLoadMgr">
       <UniqueIdentifier>{5252ae48-587c-459b-8e1e-9a9a118a96e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\UI\Button\Quest_Image">
-      <UniqueIdentifier>{afe7a243-c029-45ff-9d5d-1db6db6ab580}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\UI\UI_Result">
       <UniqueIdentifier>{79db21f3-b9c8-4442-b2f5-568cd0f0bc16}</UniqueIdentifier>
     </Filter>
@@ -183,6 +180,9 @@
     </Filter>
     <Filter Include="01.GameObject\UI\UI_Result\UI_RankStar">
       <UniqueIdentifier>{ec5de813-1b57-4c8a-9179-690f963576f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\UI\Quest_Image">
+      <UniqueIdentifier>{afe7a243-c029-45ff-9d5d-1db6db6ab580}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -298,7 +298,7 @@
       <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Quest_Image.h">
-      <Filter>01.GameObject\UI\Button\Quest_Image</Filter>
+      <Filter>01.GameObject\UI\Quest_Image</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI_Loby.h">
       <Filter>01.GameObject\UI\UI_Loby</Filter>
@@ -450,7 +450,7 @@
       <Filter>01.GameObject\SubObject\Object_BlockCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Quest_Image.cpp">
-      <Filter>01.GameObject\UI\Button\Quest_Image</Filter>
+      <Filter>01.GameObject\UI\Quest_Image</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI_Loby.cpp">
       <Filter>01.GameObject\UI\UI_Loby</Filter>
