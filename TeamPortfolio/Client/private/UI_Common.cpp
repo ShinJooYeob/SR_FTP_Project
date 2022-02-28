@@ -39,7 +39,7 @@ HRESULT CUI_Common::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 	m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(270));
-	m_vUIDesc = _float4(m_fPosX, 360, 800, 100);
+	m_vUIDesc = _float4(m_fPosX, 360.f, 800.f, 100.f);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
 
@@ -67,7 +67,7 @@ HRESULT CUI_Common::Set_SkillSlot()
 		((CUI_Image*)Find_Image(L"Common_Image_9"))->Set_ImageAlpha(255);
 	if (m_Player_Inventory->Get_Skill_Level(SKILL_DUBBLEJUMP) == 1)
 		((CUI_Image*)Find_Image(L"Common_Image_10"))->Set_ImageAlpha(255);
-	if (m_Player_Inventory->Get_Skill_Level(SKILL_DASH) == 1)
+	if (m_Player_Inventory->Get_Skill_Level(SKILL_CAMERA) == 1)
 		((CUI_Image*)Find_Image(L"Common_Image_11"))->Set_ImageAlpha(255);
 	if (m_Player_Inventory->Get_Skill_Level(SKILL_POTION) == 1)
 		((CUI_Image*)Find_Image(L"Common_Image_12"))->Set_ImageAlpha(255);
@@ -77,31 +77,140 @@ HRESULT CUI_Common::Set_SkillSlot()
 	return S_OK;
 }
 
+
+
+
 HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 {
-	/*CGameObject* pPlayer = GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, TAG_LAY(Layer_Player));
+	CGameObject* pPlayer = GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player));
 	
+	if (pPlayer == nullptr)
+		return E_FAIL;
+
 	_bool CooldownStart = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_SPEEDUP);
 	if (CooldownStart)
 	{
-		_float top = m_fCooltime*(-30.f);
-		((CUI_Image*)Find_Image(L"Common_Image_13"))->Set_UI_TransformRect(_float4(m_vUIDesc.x + top, m_vUIDesc.y - 280, 50, 50));
-		m_fCooltime = fDeltaTime;
-		if (m_fCooltime > 5)
-		{
+		m_fCooltime.x += fDeltaTime;
+		_float4 ImageUIDesc = ((CUI_Image*)Find_Image(L"Common_Image_13"))->Get_UIDesc();
+		((CUI_Image*)Find_Image(L"Common_Image_13"))->Set_ImageAlpha(170);
+
+		_float4 temp = {};
+		temp.x = (ImageUIDesc.x - ImageUIDesc.z * 0.5f);//left
+		temp.y = (ImageUIDesc.y - ImageUIDesc.w * 0.5f);//top
+		temp.z = (ImageUIDesc.x + ImageUIDesc.z * 0.5f);//right
+		temp.w = (ImageUIDesc.y + ImageUIDesc.w * 0.5f);//bottom
+		temp.y =temp.y+fDeltaTime*50.f/3.f; // ¹öÆ°Å©±â/ÄðÅ¸ÀÓ
 		
-			m_fCooltime = 0;
+		m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
+		((CUI_Image*)Find_Image(L"Common_Image_13"))->Set_UI_TransformRect(_float4(temp.x, temp.y, temp.z, temp.w));
+
+		
+		
+		if (m_fCooltime.x > 3.f)//ÄðÅ¸ÀÓ ÀûÀ¸¸éµÊ3ÃÊ
+		{
+			m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
+			m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
+			((CUI_Image*)Find_Image(L"Common_Image_13"))->Set_ImageUIDesc(_float4(m_fPosX, m_vUIDesc.y - 280.f, 50.f, 50.f));
+			((CUI_Image*)Find_Image(L"Common_Image_13"))->Start_SetUI_Transform();
+			((CUI_Image*)Find_Image(L"Common_Image_13"))->Set_ImageAlpha(0);
+			((CPlayer*)pPlayer)->Set_CoolDownStart_False(SKILL_SPEEDUP);
+			m_fCooltime.x = 0;
 		}
-	}*/
-	//_bool CooldownStart = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_DUBBLEJUMP);
-	//if (CooldownStart);
+	}
+	_bool CooldownStart2 = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_DUBBLEJUMP);
+	if (CooldownStart2)
+	{
+		m_fCooltime.y += fDeltaTime;
+		_float4 ImageUIDesc = ((CUI_Image*)Find_Image(L"Common_Image_14"))->Get_UIDesc();
+		((CUI_Image*)Find_Image(L"Common_Image_14"))->Set_ImageAlpha(170);
 
-	//_bool CooldownStart = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_DASH);
-	//if (CooldownStart);
+		_float4 temp = {};
+		temp.x = (ImageUIDesc.x - ImageUIDesc.z * 0.5f);//left
+		temp.y = (ImageUIDesc.y - ImageUIDesc.w * 0.5f);//top
+		temp.z = (ImageUIDesc.x + ImageUIDesc.z * 0.5f);//right
+		temp.w = (ImageUIDesc.y + ImageUIDesc.w * 0.5f);//bottom
+		temp.y = temp.y + fDeltaTime*50.f / 6.f; // ¹öÆ°Å©±â/ÄðÅ¸ÀÓ
 
-	//_bool CooldownStart = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_POTION);
-	//if (CooldownStart);
+		m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
+		((CUI_Image*)Find_Image(L"Common_Image_14"))->Set_UI_TransformRect(_float4(temp.x, temp.y, temp.z, temp.w));
 
+
+
+		if (m_fCooltime.y > 6.f)//ÄðÅ¸ÀÓ ÀûÀ¸¸éµÊ6ÃÊ
+		{
+			m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
+			m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
+			((CUI_Image*)Find_Image(L"Common_Image_14"))->Set_ImageUIDesc(_float4(m_fPosX, m_vUIDesc.y - 200.f, 50.f, 50.f));
+			((CUI_Image*)Find_Image(L"Common_Image_14"))->Start_SetUI_Transform();
+			((CUI_Image*)Find_Image(L"Common_Image_14"))->Set_ImageAlpha(0);
+			((CPlayer*)pPlayer)->Set_CoolDownStart_False(SKILL_DUBBLEJUMP);
+			m_fCooltime.y = 0;
+		}
+	}
+	_bool CooldownStart3 = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_CAMERA);
+	if (CooldownStart3)
+	{
+		m_fCooltime.z += fDeltaTime;
+		_float4 ImageUIDesc = ((CUI_Image*)Find_Image(L"Common_Image_15"))->Get_UIDesc();
+		((CUI_Image*)Find_Image(L"Common_Image_15"))->Set_ImageAlpha(170);
+
+		_float4 temp = {};
+		temp.x = (ImageUIDesc.x - ImageUIDesc.z * 0.5f);//left
+		temp.y = (ImageUIDesc.y - ImageUIDesc.w * 0.5f);//top
+		temp.z = (ImageUIDesc.x + ImageUIDesc.z * 0.5f);//right
+		temp.w = (ImageUIDesc.y + ImageUIDesc.w * 0.5f);//bottom
+		temp.y = temp.y + fDeltaTime*50.f / 3.f; // ¹öÆ°Å©±â/ÄðÅ¸ÀÓ
+
+		m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
+		((CUI_Image*)Find_Image(L"Common_Image_15"))->Set_UI_TransformRect(_float4(temp.x, temp.y, temp.z, temp.w));
+
+
+
+		if (m_fCooltime.z > 3.f)//ÄðÅ¸ÀÓ ÀûÀ¸¸éµÊ
+		{
+			m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
+			m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
+			((CUI_Image*)Find_Image(L"Common_Image_15"))->Set_ImageUIDesc(_float4(m_fPosX, m_vUIDesc.y - 120.f, 50.f, 50.f));
+			((CUI_Image*)Find_Image(L"Common_Image_15"))->Start_SetUI_Transform();
+			((CUI_Image*)Find_Image(L"Common_Image_15"))->Set_ImageAlpha(0);
+			((CPlayer*)pPlayer)->Set_CoolDownStart_False(SKILL_CAMERA);
+			m_fCooltime.z = 0;
+		}
+	}
+	_bool CooldownStart4 = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_POTION);
+	if (CooldownStart4)
+	{
+		m_fCooltime.w += fDeltaTime;
+		_float4 ImageUIDesc = ((CUI_Image*)Find_Image(L"Common_Image_16"))->Get_UIDesc();
+		((CUI_Image*)Find_Image(L"Common_Image_16"))->Set_ImageAlpha(170);
+
+		_float4 temp = {};
+		temp.x = (ImageUIDesc.x - ImageUIDesc.z * 0.5f);//left
+		temp.y = (ImageUIDesc.y - ImageUIDesc.w * 0.5f);//top
+		temp.z = (ImageUIDesc.x + ImageUIDesc.z * 0.5f);//right
+		temp.w = (ImageUIDesc.y + ImageUIDesc.w * 0.5f);//bottom
+		temp.y = temp.y + fDeltaTime*50.f / 3.f; // ¹öÆ°Å©±â/ÄðÅ¸ÀÓ
+
+		m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
+		((CUI_Image*)Find_Image(L"Common_Image_16"))->Set_UI_TransformRect(_float4(temp.x, temp.y, temp.z, temp.w));
+
+
+
+		if (m_fCooltime.w > 3.f)//ÄðÅ¸ÀÓ ÀûÀ¸¸éµÊ
+		{
+			m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
+			m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
+			((CUI_Image*)Find_Image(L"Common_Image_16"))->Set_ImageUIDesc(_float4(m_fPosX, m_vUIDesc.y - 40.f, 50.f, 50.f));
+			((CUI_Image*)Find_Image(L"Common_Image_16"))->Start_SetUI_Transform();
+			((CUI_Image*)Find_Image(L"Common_Image_16"))->Set_ImageAlpha(0);
+			((CPlayer*)pPlayer)->Set_CoolDownStart_False(SKILL_POTION);
+			m_fCooltime.w = 0;
+		}
+	}
 
 	return S_OK;
 }
@@ -135,7 +244,7 @@ HRESULT CUI_Common::Show_UI(_float fDeltaTime)
 		return E_FAIL;
 				
 			for (auto pair : m_UIList)
-				((CUI_Image*)(pair.second))->Set_ImageUIDescX(fDeltaTime * 320);
+				((CUI_Image*)(pair.second))->Set_ImageUIDescX(m_fPosX);
 	}
 
 	return S_OK;
@@ -184,7 +293,7 @@ HRESULT CUI_Common::Hide_UI(_float fDeltaTime)
 		return E_FAIL;
 			
 		for (auto pair : m_UIList)
-			((CUI_Image*)(pair.second))->Set_ImageUIDescX(-(fDeltaTime * 320));
+			((CUI_Image*)(pair.second))->Set_ImageUIDescX(m_fPosX);
 	}
 
 	return S_OK;
@@ -217,6 +326,9 @@ _int CUI_Common::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
+	m_vUIDesc = _float4(m_fPosX, 360.f, 800.f, 100.f);
+	Set_UI_Transform(m_ComTransform, m_vUIDesc);
+	m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(270));
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
@@ -287,19 +399,19 @@ HRESULT CUI_Common::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 	temp->Set_ImageName(L"Common_5");
 	m_UIList.emplace(L"Common_Image_12", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 40, 50, 50)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 280, 50, 50)));
 	temp->Set_ImageName(L"Common_6");
 	m_UIList.emplace(L"Common_Image_13", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 120, 50, 50)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 200, 50, 50)));
 	temp->Set_ImageName(L"Common_6");
 	m_UIList.emplace(L"Common_Image_14", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 200, 50, 50)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 120, 50, 50)));
 	temp->Set_ImageName(L"Common_6");
 	m_UIList.emplace(L"Common_Image_15", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 280, 50, 50)));
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y - 40, 50, 50)));
 	temp->Set_ImageName(L"Common_6");
 	m_UIList.emplace(L"Common_Image_16", (CUI*)temp);
 

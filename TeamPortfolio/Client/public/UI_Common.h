@@ -47,7 +47,7 @@ public:
 	HRESULT Set_Image_Render(const _tchar * tagUIList, _bool bCheck);
 	HRESULT Ready_Layer_Button(const _tchar * pLayerTag);
 	HRESULT Make_Bigger(const _tchar * pLayerTag);
-
+	
 	HRESULT Set_SkillSlot();
 
 
@@ -71,8 +71,8 @@ private:	_float			m_fFrame = 0.f;
 			_float			m_fPosX = -40.f;
 			_bool			m_bIsClicked=false;
 			_int			m_iEmpty;
-			_float			m_fCooltime=0;
 			
+			_float4			m_fCooltime={ 0,0,0,0 };
 public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
 	HRESULT			Update_UIList(_float fTimeDelta);

@@ -38,6 +38,8 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
 	m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
 
+	ZeroMemory(m_tCoolDown, sizeof(COOL) * SKILL_END);
+
 	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main))));
 	
 	if (m_pCamera_Main == nullptr)
@@ -392,7 +394,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 	//มกวม
 	if (m_bIsJumped < (_uint)(m_ComInventory->Get_Skill_Level(SKILL_DUBBLEJUMP) + 1) && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
 	{
-
+		m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart = true;
 		if (m_pCarryObject)
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("carryjumpup"), 8.f);
 		else
@@ -462,7 +464,7 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 				{
 					if ((m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP)) && (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_DoubleDown || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_DoubleDown))
 					{
-						/*m_tCoolDown[SKILL_SPEEDUP].m_bCoolDownStart = true;*/
+						m_tCoolDown[SKILL_SPEEDUP].m_bCoolDownStart = true;
 						m_bIsRunning = true;
 						m_ComTransform->Set_MoveSpeed(2.5f + m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP) * 0.25f);
 					}

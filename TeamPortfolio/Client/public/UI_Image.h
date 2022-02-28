@@ -62,10 +62,11 @@ private:
 	_float4			m_vEasingDesc;//x 스타트 y타겟 z패스드타임 w총시간
 public:
 	RECT			Get_Rect() const{ return m_rcRect; }
+	_float4			Get_UIDesc()  { return m_vUIDesc; }
 	_int			Get_ImageBigger() { return m_iBigger; }
 
-	void			Set_ImageUIDescSizeY(_float vUIDescSizeY){ m_vUIDesc.w = m_vUIDesc.w + vUIDescSizeY; }
-	void			Set_ImageUIDescX(_float vUIDescx) { m_vUIDesc.x = m_vUIDesc.x + vUIDescx; }
+	void			Set_ImageUIDesc(_float4 vUIDesc){ m_vUIDesc = vUIDesc; }
+	void			Set_ImageUIDescX(_float vUIDescx) { m_vUIDesc.x = vUIDescx; }
 	void			Set_ImageName(TCHAR* pImageName);
 	void			Set_ImageRenderFalse() { m_bRender = false; }
 	void			Set_ImageRenderTrue() { m_bRender = true; }
@@ -73,6 +74,7 @@ public:
 	void			Set_ImageAlpha(_int Alpha) { m_iAlpha = Alpha; }
 	//vRect.x,y,z,w=top,left,bottom,right
 	void			Set_UI_TransformRect(_float4 vRect);
+	void			Start_SetUI_Transform();
 
 private:
 	HRESULT			SetUp_Components();
