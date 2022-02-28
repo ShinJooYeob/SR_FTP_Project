@@ -162,6 +162,7 @@ HRESULT CPauseUI::Second_SetUp_RenderState()
 		return E_FAIL;
 
 
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 180);
 	for (_uint i = 2; i < 6; i++)
 	{
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[i])))

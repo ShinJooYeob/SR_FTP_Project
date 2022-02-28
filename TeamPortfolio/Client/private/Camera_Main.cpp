@@ -601,24 +601,24 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 
+	/*
 
-
-	if (pInstance->Get_DIKeyState(DIK_1) & DIS_Down)
-	{
-		CameraEffect(CCamera_Main::CAM_EFT_FADE_IN, fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_2) & DIS_Down)
-	{
-		CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_3) & DIS_Down)
-	{
-		CameraEffect(CCamera_Main::CAM_EFT_SHAKE, fDeltaTime);
-	}
-	if (pInstance->Get_DIKeyState(DIK_4) & DIS_Down)
-	{
-		CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
-	}	
+		if (pInstance->Get_DIKeyState(DIK_1) & DIS_Down)
+		{
+			CameraEffect(CCamera_Main::CAM_EFT_FADE_IN, fDeltaTime);
+		}
+		if (pInstance->Get_DIKeyState(DIK_2) & DIS_Down)
+		{
+			CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, fDeltaTime);
+		}
+		if (pInstance->Get_DIKeyState(DIK_3) & DIS_Down)
+		{
+			CameraEffect(CCamera_Main::CAM_EFT_SHAKE, fDeltaTime);
+		}
+		if (pInstance->Get_DIKeyState(DIK_4) & DIS_Down)
+		{
+			CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
+		}	*/
 	if (pInstance->Get_DIKeyState(DIK_5) & DIS_Down)
 	{
 		CameraEffect(CCamera_Main::CAM_EFT_ACTION, fDeltaTime);

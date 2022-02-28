@@ -89,11 +89,11 @@ HRESULT CFontMgr::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2
 			FAILED_CHECK(m_VIBuffer->Render());
 			continue;
 		}
-		else if (pString[i] >= 48 && pString[i] <= 57)//숫자
+		else if (pString[i] >= 33 && pString[i] <= 63)//숫자
 		{
 			m_texFont->Change_TextureLayer(L"number");
 
-			FAILED_CHECK(m_texFont->Bind_Texture(pString[i] - 48));
+			FAILED_CHECK(m_texFont->Bind_Texture(pString[i] - 33));
 
 			matTransform.m[3][0] = matTransform.m[3][0] + vFontSize.x;
 			FAILED_CHECK(m_VIBuffer->Render());
@@ -108,6 +108,45 @@ HRESULT CFontMgr::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2
 			matTransform.m[3][0] = matTransform.m[3][0] + vFontSize.x;
 			FAILED_CHECK(m_VIBuffer->Render());
 			continue;
+		}
+
+		else if (pString[i] == L'[')
+		{
+			m_texFont->Change_TextureLayer(L"number");
+
+			FAILED_CHECK(m_texFont->Bind_Texture(31));
+
+			matTransform.m[3][0] = matTransform.m[3][0] + vFontSize.x;
+			FAILED_CHECK(m_VIBuffer->Render());
+
+		}
+		else if (pString[i] == L']')
+		{
+			m_texFont->Change_TextureLayer(L"number");
+
+			FAILED_CHECK(m_texFont->Bind_Texture(32));
+
+			matTransform.m[3][0] = matTransform.m[3][0] + vFontSize.x;
+			FAILED_CHECK(m_VIBuffer->Render());
+
+		}
+		else if (pString[i] == L'_')
+		{
+			m_texFont->Change_TextureLayer(L"number");
+
+			FAILED_CHECK(m_texFont->Bind_Texture(33));
+
+			matTransform.m[3][0] = matTransform.m[3][0] + vFontSize.x;
+			FAILED_CHECK(m_VIBuffer->Render());
+		}
+		else if (pString[i] == L'~')
+		{
+			m_texFont->Change_TextureLayer(L"number");
+
+			FAILED_CHECK(m_texFont->Bind_Texture(34));
+
+			matTransform.m[3][0] = matTransform.m[3][0] + vFontSize.x;
+			FAILED_CHECK(m_VIBuffer->Render());
 		}
 		else //나머지 문자는 그냥 띄워쓰기로 대채
 		{

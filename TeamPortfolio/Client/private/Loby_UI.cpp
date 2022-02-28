@@ -258,16 +258,16 @@ _int CLoby_UI::Render()
 
 	if (m_iPageIndex == 1 && !m_IsSceneChange)
 	{
-		GetSingle(CGameInstance)->Render_UI_Font(m_szID, { g_iWinCX *0.5f - 90, 450 }, { 10,15 }, { 83,250,120 });
+		GetSingle(CGameInstance)->Render_UI_Font(m_szID, { g_iWinCX *0.5f - 90, 455 }, { 20,30 }, { 15,40,30 });
 
 		_uint stringLen = (_uint)(m_szPassword.length());
 		wstring szHideString = L"";
 		for (_uint i = 0; i < stringLen;i++)
 		{
-			szHideString += L"x ";
+			szHideString += L"*";
 		}
 
-		GetSingle(CGameInstance)->Render_UI_Font(szHideString, { g_iWinCX *0.5f - 90, 570 }, { 10,15 }, { 83,250,120 });
+		GetSingle(CGameInstance)->Render_UI_Font(szHideString, { g_iWinCX *0.5f - 90, 573 }, { 20,30 }, { 15,40,30 });
 	}
 
 

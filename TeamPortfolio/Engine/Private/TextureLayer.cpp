@@ -33,8 +33,7 @@ HRESULT CTextureLayer::Initialize_Prototype(void * pArg)
 		else
 			hr = D3DXCreateCubeTextureFromFile(m_pGraphicDevice, szFullPath, (LPDIRECT3DCUBETEXTURE9*)&pTexture);
 
-		if (FAILED(hr))
-			return E_FAIL;
+		FAILED_CHECK(hr);
 
 
 		m_vecTexture.emplace_back(pTexture);
