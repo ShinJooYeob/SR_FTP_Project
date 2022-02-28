@@ -81,7 +81,7 @@ public: // Get Set
 	CMainFrame* GetMainFrm() { return m_pMainFrame; }
 	CMyForm* GetMyButtonView() { return m_pMyButtomView; }
 	CToolView*  GetToolView() { return m_pToolView; }
-//	CMiniView* GetMiniView() { return m_pMiniView; }
+	CMiniView* GetMiniView() { return m_pMiniView; }
 
 	CPathFind*  GetPathTool() { return m_pPathDialog; }
 	CTrans_Dialog* GetTransTool() { return m_pTransDialog; }
@@ -122,7 +122,7 @@ private:
 	// 각 창에대한 정보
 	CMainFrame*			m_pMainFrame;	// 메인 프레임
 	CMyForm*			m_pMyButtomView;// 버튼 뷰
-//	CMiniView*			m_pMiniView;	// 미니 뷰
+	CMiniView*			m_pMiniView;	// 미니 뷰
 	CToolView*			m_pToolView;	// 툴 뷰
 	CPathFind*			m_pPathDialog;	// 경로 창
 	CTrans_Dialog*		m_pTransDialog;	// 위치 조정 창

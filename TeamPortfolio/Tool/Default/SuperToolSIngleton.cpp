@@ -250,8 +250,9 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView()
 {
 	m_pMainFrame = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 	m_pToolView = static_cast<CToolView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 1));
-//	m_pMiniView = static_cast<CMiniView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 0));
-	m_pMyButtomView = static_cast<CMyForm*>(m_pMainFrame->m_MainSplitter.GetPane(0, 0));
+
+	m_pMyButtomView = static_cast<CMyForm*>(m_pMainFrame->m_SecondSplitter.GetPane(0, 0));
+	m_pMiniView = static_cast<CMiniView*>(m_pMainFrame->m_SecondSplitter.GetPane(1, 0));
 
 	m_pTransDialog = &m_pMyButtomView->m_TransformDialog;
 	m_pPathDialog = &m_pMyButtomView->m_PathFind;

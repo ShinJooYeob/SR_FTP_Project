@@ -35,7 +35,7 @@ protected:  // 컨트롤 모음이 포함된 멤버입니다.
 
 public:
 	CSplitterWnd		m_MainSplitter;	// CSplitterWnd : 창 분할을 위한 클래스
-//	CSplitterWnd		m_SecondSplitter;
+	CSplitterWnd		m_SecondSplitter;
 
 	// 생성된 메시지 맵 함수
 protected:
