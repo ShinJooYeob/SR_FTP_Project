@@ -118,16 +118,16 @@ _int CMyButton::Update(_float fDeltaTime)
 			{
 				return 104;
 			}
-			else if (!lstrcmp(L"Button_Result_Start", m_pButtonName))
-			{
-				//다시 하기 기능 만들기
-				return RESULT_START;
-			}
-			else if (!lstrcmp(L"Button_Result_Cancel", m_pButtonName))
-			{
-				//로비로 돌아가기 기능 만들기
-				return RESULT_CANCEL;
-			}
+			//else if (!lstrcmp(L"Button_Result_Start", m_pButtonName))
+			//{
+			//	//다시 하기 기능 만들기
+			//	return RESULT_START;
+			//}
+			//else if (!lstrcmp(L"Button_Result_Cancel", m_pButtonName))
+			//{
+			//	//로비로 돌아가기 기능 만들기
+			//	return RESULT_CANCEL;
+			//}
 
 		}
 	}
@@ -155,10 +155,12 @@ _int CMyButton::Update(_float fDeltaTime)
 		if (!lstrcmp(L"Button_Result_Start", m_pButtonName))
 		{
 			m_ComTexture->Change_TextureLayer(L"Button_Result_Start2");
+			return RESULT_START;
 		}
 		if (!lstrcmp(L"Button_Result_Cancel", m_pButtonName))
 		{
 			m_ComTexture->Change_TextureLayer(L"Button_Result_Cancel2");
+			return RESULT_CANCEL;
 		}
 	}
 	else if (m_bOnMouse == false)//

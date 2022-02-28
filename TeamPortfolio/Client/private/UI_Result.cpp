@@ -168,16 +168,34 @@ HRESULT CUI_Result::Ready_Layer_Button(const _tchar * pLayerTag)
 
 HRESULT CUI_Result::Update_UIButtonList(_float fTimeDelta)
 {
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	int hr;
-
 	for (auto pair : m_UIButtonList) {
 		hr = (pair.second->Update(fTimeDelta));
-		if (hr != SHOP_END)
-			break;
+		if (hr != SHOP_END)  
+			//스위치는 for문 밖에다 쓰도록 하자!
 		switch (hr)
 		{
 		case RESULT_START:
 		{
+			if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
+			{
+				POINT ptMouse;
+				GetCursorPos(&ptMouse);
+				ScreenToClient(g_hWnd, &ptMouse);
+				m_isClicked = false;
+				if (PtInRect(&m_fStartButton, ptMouse))
+				{
+					m_isClicked = true;
+					CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
+					CTexture* ButtonTexture = (CTexture*)ButtonStart->Get_Component(TEXT("Com_Texture"));
+					ButtonTexture->Change_TextureLayer(L"Button_Result_Start3");
+				}
+			}
+			if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Up)
+			{
+				//여기에 기능구현하면 될 듯
+			}
 			//CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
 			
 			//이거 되니깐 같이 이동시키면 될 듯 기억하셈
@@ -198,6 +216,7 @@ HRESULT CUI_Result::Update_UIButtonList(_float fTimeDelta)
 	}
 
 
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 
@@ -292,6 +311,7 @@ void CUI_Result::Button_Picking()
 	TEST.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
 	TEST.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
 	TEST.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
+	m_fStartButton = TEST;
 	ButtonStart->Set_Rect(m_vButtonDesc, TEST);
 	ButtonStart->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
 

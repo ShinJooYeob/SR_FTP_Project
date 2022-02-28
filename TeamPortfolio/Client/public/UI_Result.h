@@ -61,8 +61,11 @@ private:
 
 	_float4			m_vButtonDesc; // ¹öÆ°¿ë
 
+	_bool			m_isClicked = false;
 	_bool			m_bStopSwitch = false;
 	_float			m_fTimer = 0.f;
+
+	RECT			m_fStartButton;
 
 
 public:
