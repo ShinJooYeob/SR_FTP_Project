@@ -72,7 +72,7 @@ _int CMyButton::Update(_float fDeltaTime)
 				m_isClicked = true;
 				return SHOP_DUBBLEJUMP;
 			}
-			else if (!lstrcmp(L"DASH", m_pButtonName))
+			else if (!lstrcmp(L"CAMERA", m_pButtonName))
 			{
 				m_isClicked = true;
 				return SHOP_DASH;
@@ -276,9 +276,9 @@ void CMyButton::Set_ButtonName(TCHAR * pButtonName)
 	{
 		m_ComTexture->Change_TextureLayer(L"DUBBLEJUMP");
 	}
-	else if (!lstrcmp(L"DASH", m_pButtonName))
+	else if (!lstrcmp(L"CAMERA", m_pButtonName))
 	{
-		m_ComTexture->Change_TextureLayer(L"DASH");
+		m_ComTexture->Change_TextureLayer(L"CAMERA");
 	}
 	else if (!lstrcmp(L"SPEEDUP", m_pButtonName))
 	{

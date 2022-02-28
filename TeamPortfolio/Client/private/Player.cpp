@@ -394,7 +394,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 	//มกวม
 	if (m_bIsJumped < (_uint)(m_ComInventory->Get_Skill_Level(SKILL_DUBBLEJUMP) + 1) && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
 	{
-
+		m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart = true;
 		if (m_pCarryObject)
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("carryjumpup"), 8.f);
 		else

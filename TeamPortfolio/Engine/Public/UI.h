@@ -19,7 +19,7 @@ public:
 	virtual _float Get_CamDistance()  const override { return m_fDepth; }
 
 
-	// Set Compo≥°≥™∞Ì UIDescø° fX,fY,SizeX,SizeY ∫§≈Õ ≥÷¿∏∏Èµ 
+	//UIDescø° fX,fY,SizeX,SizeY ∫§≈Õ ≥÷¿∏∏Èµ 
 	HRESULT Set_UI_Transform(class CTransform* pComTransform,_float4 vUIDesc);
 
 

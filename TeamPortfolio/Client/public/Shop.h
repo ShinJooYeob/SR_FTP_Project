@@ -75,7 +75,6 @@ private:
 	HRESULT			SetUp_Components();
 	HRESULT			SetUp_Skills();
 
-	HRESULT			Set_Skill_Rect();
 
 	HRESULT			Buy_Skill(_int ChosenSkill);
 

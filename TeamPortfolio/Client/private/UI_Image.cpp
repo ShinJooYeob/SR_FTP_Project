@@ -48,14 +48,22 @@ HRESULT CUI_Image::Initialize_Clone(void * pArg)
 }
 void CUI_Image::Set_UI_TransformRect( _float4 vRect)
 {
-	//vRect.x,y,z,w=top,left,bottom,right
+	//vRect.x,y,z,w=left,top,right,bottom
 	_float4 vResult{};
-	/*³Êºñ*/vResult.z = vRect.w-vRect.y;
-	/*³ôÀÌ*/vResult.w = vRect.z-vRect.x;
-	/*xÁÂÇ¥*/vResult.x = vRect.y + vResult.z*0.5f;
-	/*yÁÂÇ¥*/vResult.y = vRect.x + vResult.w*0.5f;
+	/*³Êºñ*/vResult.z = vRect.z-vRect.x;
+	/*³ôÀÌ*/vResult.w = vRect.w-vRect.y;
+	/*xÁÂÇ¥*/vResult.x = vRect.x + vResult.z*0.5f;
+	/*yÁÂÇ¥*/vResult.y = vRect.y + vResult.w*0.5f;
+	m_vUIDesc = vResult;
 	Set_UI_Transform(m_ComTransform, vResult);
 	
+}
+
+void CUI_Image::Start_SetUI_Transform()
+{
+	m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
+	Set_UI_Transform(m_ComTransform, m_vUIDesc);
 }
 
 _int CUI_Image::Update(_float fDeltaTime)
@@ -63,7 +71,7 @@ _int CUI_Image::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 	if (!lstrcmp(L"Common_1", m_pImageName)|| !lstrcmp(L"Common_2", m_pImageName)|| !lstrcmp(L"Common_3", m_pImageName)|| !lstrcmp(L"Common_4", m_pImageName)|| !lstrcmp(L"Common_5", m_pImageName)
-		|| !lstrcmp(L"Common_6", m_pImageName))
+		)
 	{
 		
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
@@ -296,7 +304,7 @@ void CUI_Image::Set_ImageName(TCHAR * pImageName)
 	}
 	else if (!lstrcmp(L"Common_4", m_pImageName))
 	{
-		m_ComTexture->Change_TextureLayer(L"DASH");
+		m_ComTexture->Change_TextureLayer(L"CAMERA");
 	}
 	else if (!lstrcmp(L"Common_5", m_pImageName))
 	{

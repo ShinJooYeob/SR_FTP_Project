@@ -290,8 +290,8 @@ HRESULT CShop::Ready_Layer_Button(const _tchar * pLayerTag)
 	m_UIButtonList.emplace(L"Button_DUBBLEJUMP", (CUI*)temp);
 
 	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y + 60, 50, 50)));
-	temp->Set_ButtonName(L"DASH");
-	m_UIButtonList.emplace(L"Button_DASH", (CUI*)temp);
+	temp->Set_ButtonName(L"CAMERA");
+	m_UIButtonList.emplace(L"Button_CAMERA", (CUI*)temp);
 
 	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 285, m_vUIDesc.y + 160, 50, 50)));
 	temp->Set_ButtonName(L"POTION");
@@ -404,18 +404,14 @@ HRESULT CShop::SetUp_Skills()
 
 	m_Skill[SKILL_DUBBLEJUMP].Price = 3000;
 	
-	m_Skill[SKILL_DASH].Price = 3000;
+	m_Skill[SKILL_CAMERA].Price = 3000;
 
 	m_Skill[SKILL_POTION].Price = 500;
 
 	m_Player_Inventory->Set_Skill_MaxLevel(SKILL_SPEEDUP, 5);
 	return S_OK;
 }
-HRESULT CShop::Set_Skill_Rect()
-{
 
-	return S_OK;
-}
 
 HRESULT CShop::Buy_Skill(_int ChosenSkill)
 {
