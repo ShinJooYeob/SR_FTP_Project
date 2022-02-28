@@ -61,7 +61,7 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 	m_ComTexture->Change_TextureLayer(TEXT("Result"));
 
 	//최대 시간 1초
-	m_fMaxTime = 1.f;
+	m_fMaxTime = 100000000000.f;
 
 
 	return S_OK;

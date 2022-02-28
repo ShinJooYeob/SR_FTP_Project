@@ -51,7 +51,7 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 
-	GetSingle(CGameInstance)->PlayBGM(L"Stage1BG.mp3");
+	//GetSingle(CGameInstance)->PlayBGM(L"Stage1BG.mp3");
 
 	return S_OK;
 }

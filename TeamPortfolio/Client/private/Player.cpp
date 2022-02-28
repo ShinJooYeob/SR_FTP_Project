@@ -394,7 +394,18 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 	//มกวม
 	if (m_bIsJumped < (_uint)(m_ComInventory->Get_Skill_Level(SKILL_DUBBLEJUMP) + 1) && pInstance->Get_DIKeyState(DIK_SPACE) & DIS_Down)
 	{
-		m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart = true;
+		if (m_bIsJumped > 0)
+		{
+			if (m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart) 
+			{
+				return S_OK;
+			}
+			else {
+				m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart = true;
+			}
+
+		}
+
 		if (m_pCarryObject)
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("carryjumpup"), 8.f);
 		else
@@ -462,11 +473,19 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 				//if (lstrcmp(m_ComTexture->Get_NowTextureTag(), TEXT("jump_down"))) 
 				if (!(m_ComTexture->Get_IsReturnTexture()))
 				{
-					if ((m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP)) && (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_DoubleDown || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_DoubleDown))
+					if ((m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP)) && ((pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_DoubleDown || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_DoubleDown)))
 					{
-						m_tCoolDown[SKILL_SPEEDUP].m_bCoolDownStart = true;
-						m_bIsRunning = true;
-						m_ComTransform->Set_MoveSpeed(2.5f + m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP) * 0.25f);
+						if (m_tCoolDown[SKILL_SPEEDUP].m_bCoolDownStart)
+						{
+							m_bIsRunning = false;
+							m_ComTransform->Set_MoveSpeed(2.5f);
+						}
+						else {
+							m_tCoolDown[SKILL_SPEEDUP].m_bCoolDownStart = true;
+							m_bIsRunning = true;
+							m_ComTransform->Set_MoveSpeed(2.5f + m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP) * 0.25f);
+
+						}
 					}
 					else if(pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Down || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Down)
 					{
