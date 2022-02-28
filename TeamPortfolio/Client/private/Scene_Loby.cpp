@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Loby_UI.h"
 #include "..\Public\Scene_Loby.h"
 #include "Scene_Loading.h"
 
@@ -25,7 +26,7 @@ HRESULT CScene_Loby::Initialize()
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
 	
-	FAILED_CHECK(Ready_Layer_SkyBox(TEXT("Layer_SkyBox")));
+	FAILED_CHECK(Ready_Layer_SkyBox(TEXT("Layer_LobySkyBox")));
 
 	FAILED_CHECK(Ready_Layer_LobyCube(TEXT("Layer_LobyCube")));
 	FAILED_CHECK(Ready_Layer_LobyPlayer(TEXT("Layer_LobyPlayer")));
@@ -41,15 +42,21 @@ _int CScene_Loby::Update(_float fDeltaTime)
 	if (__super::Update(fDeltaTime) < 0)
 		return -1;
 
-	if (GetKeyState(VK_RETURN) & 0x8000)
+	if (!ChangeTime &&m_pUI->Get_IsSceneChange() )
 	{
-
-		if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
-			return E_FAIL;
+		ChangeTime += fDeltaTime;
 
 	}
 
-
+	if (ChangeTime)
+	{
+		ChangeTime += fDeltaTime;
+		if (ChangeTime > 1.4f && m_pMainCam->Get_EffectID() == CCamera_Main::CAM_EFT_END)
+		{
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
+				return E_FAIL;
+		}
+	}
 	// IMGUI / ¸Ê Åø Å×½ºÆ®¾ÀÀ¸·Î »ç¿ë
 	if (GetKeyState(VK_F2) & 0x8000)
 	{
@@ -126,7 +133,10 @@ HRESULT CScene_Loby::Ready_Layer_LobyUI(const _tchar * pLayerTag)
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TEXT("Prototype_GameObject_LobyUI")))
 		return E_FAIL;
+	m_pUI = (CLoby_UI*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_LOBY, pLayerTag));
 
+	if (m_pUI == nullptr)
+		return E_FAIL;
 	return S_OK;
 }
 
@@ -146,21 +156,25 @@ HRESULT CScene_Loby::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	CameraDesc.TransformDesc.fMovePerSec = 10.f;
 	CameraDesc.TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 
-	CCamera_Main* pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+	m_pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
 
-	if (pMainCam == nullptr)
+	if (m_pMainCam == nullptr)
 	{
 		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Camera_Main), &CameraDesc))
+			return E_FAIL;
+
+		m_pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+		if (m_pMainCam == nullptr)
 			return E_FAIL;
 	}
 	else 
 	{
 
-		if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
+		if (FAILED(m_pMainCam->Reset_LookAtAxis(&CameraDesc)))
 			return E_FAIL;
 
 
-		pMainCam->Set_NowSceneNum(SCENE_LOBY);
+		m_pMainCam->Set_NowSceneNum(SCENE_LOBY);
 
 
 	}

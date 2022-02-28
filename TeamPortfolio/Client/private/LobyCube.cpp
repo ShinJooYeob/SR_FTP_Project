@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "..\public\LobyCube.h"
+#include "Scene_Loading.h"
+
 
 
 
@@ -30,10 +32,10 @@ HRESULT CLobyCube::Initialize_Clone(void * pArg)
 	/* 현재 객체에게 추가되어야할 컴포넌트들을 복제(or 참조)하여 멤버변수에 보관한다.  */
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-
+	m_IsTurning = false;
 	m_ComTransform->Scaled(_float3(6.5f,6.5f,6.5f));
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0, -3.f, -4.5f));
-
+	m_eEasingType = TYPE_ExpoInOut;
 	return S_OK;
 }
 
@@ -43,7 +45,13 @@ _int CLobyCube::Update(_float fTimeDelta)
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
+	CGameInstance* pInstace = GetSingle(CGameInstance);
 
+	if (m_IsTurning) {
+
+		Revolution_Turn_AxisY_CW(fTimeDelta);
+
+	}
 	return _int();
 }
 
@@ -95,7 +103,24 @@ _int CLobyCube::LateRender()
 	return _int();
 }
 
+void CLobyCube::Strat_Turning(_uint RotDir)
+{
+	if (!m_IsTurning)
+	{
+		if (!RotDir)
+		{
+			m_fTargetAngle = m_fStartAngle + D3DXToRadian(90);
+		}
+		else
+		{
+			m_fTargetAngle = m_fStartAngle - D3DXToRadian(90);
+		}
+		m_fTotalTime = 1;
+		m_fPassedTime = 0;
+		m_IsTurning = true;
+	}
 
+}
 
 HRESULT CLobyCube::SetUp_Components()
 {	/* For.Com_Transform */
@@ -141,6 +166,39 @@ HRESULT CLobyCube::SetUp_RenderState()
 HRESULT CLobyCube::Release_RenderState()
 {
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+
+	return S_OK;
+}
+
+HRESULT CLobyCube::Revolution_Turn_AxisY_CW(_float fDeltaTime)
+{
+	_float fRadianAngle = GetSingle(CGameInstance)->Easing(m_eEasingType, m_fStartAngle, m_fTargetAngle, m_fPassedTime, m_fTotalTime);
+
+	if (m_fPassedTime >= m_fTotalTime)
+	{
+		m_IsTurning = false;
+		m_fStartAngle = fRadianAngle = m_fTargetAngle;
+	}
+
+	m_ComTransform->Rotation_CW(_float3(0, 1, 0), fRadianAngle);
+	m_fPassedTime += fDeltaTime;
+
+
+	
+
+
+	return S_OK;
+}
+
+HRESULT CLobyCube::Rot_N_SceneChange(_float fDeltaTime)
+{
+
+	m_fTargetAngle = m_fStartAngle + D3DXToRadian(1080);
+	m_eEasingType = TYPE_QuarticOut;
+	m_fTotalTime = 3;
+	m_fPassedTime = 0;
+	m_IsTurning = true;
 
 
 	return S_OK;

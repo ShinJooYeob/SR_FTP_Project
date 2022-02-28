@@ -28,6 +28,7 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
+
 private:
 	HRESULT SetUp_Components();
 
@@ -43,7 +44,6 @@ private:
 	CVIBuffer_Cube*			m_ComVIBuffer = nullptr;
 
 	CCamera_Main*			m_MainCamera = nullptr;
-
 	_float					m_fTexttureFrame = 0;
 
 public:

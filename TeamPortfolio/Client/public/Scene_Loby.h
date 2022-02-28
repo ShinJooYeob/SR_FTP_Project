@@ -29,6 +29,10 @@ private:
 	//HRESULT Ready_Layer_UI_Loby(const _tchar * pLayerTag);
 	HRESULT Ready_Layer_MainCamera(const _tchar* pLayerTag);
 
+private:
+	class CCamera_Main*				m_pMainCam = nullptr;
+	class CLoby_UI*				m_pUI = nullptr;
+	_float ChangeTime = 0;
 public:
 	static CScene_Loby* Create(LPDIRECT3DDEVICE9 GraphicDevice);
 	virtual void Free() override;

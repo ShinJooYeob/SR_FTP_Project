@@ -1,6 +1,7 @@
 #include "stdafx.h"
+#include "LobyCube.h"
 #include "..\public\Loby_UI.h"
-
+#include "Camera_Main.h"
 
 
 
@@ -32,14 +33,16 @@ HRESULT CLoby_UI::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_vUIDesc.x = g_iWinCX *0.5f;
-	m_vUIDesc.y = 180;
-	m_vUIDesc.z = 1000;
-	m_vUIDesc.w = 300;
+	m_vUIDesc_Logo.x = g_iWinCX *0.5f;
+	m_vUIDesc_Logo.y = 180;
+	m_vUIDesc_Logo.z = 1000;
+	m_vUIDesc_Logo.w = 300;
 
 	m_fAlphaValue = 0;
 	m_fTextFrame = 0;
-	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+	m_fIndexAlpha = 255.f;
+	m_IsSceneChange = false;
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc_Logo)))
 		return E_FAIL;
 
 
@@ -70,14 +73,123 @@ _int CLoby_UI::Update(_float fDeltaTime)
 	}
 	m_fTextFrame += fDeltaTime * 5;
 
+	if (m_fIndexAlpha > 0)
+	{
+		m_fIndexAlpha -= fDeltaTime * 255.f;
+		if (m_fIndexAlpha < 0)
+			m_fIndexAlpha = 0;
+	}
+
+	CGameInstance* pInstace = GetSingle(CGameInstance);
+
+	if (pInstace->Get_DIKeyState(DIK_RETURN) & DIS_Down)
+	{
+		if (!m_iPageIndex)
+		{
+			switch (m_iManuIndex)
+			{
+			case 0:
+			{
+				CCamera_Main* pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+				if (pMainCam == nullptr)
+					return E_FAIL;
+				pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_IN, fDeltaTime, 1.8f);
+				m_pLobyCube->Rot_N_SceneChange(fDeltaTime);
+				m_fIndexAlpha = 9999999.f;
+				m_IsSceneChange = true;
+			}
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				PostQuitMessage(NULL);
+				break;
+			default:
+				break;
+			}
+
+		}
+	}
+	if (!m_fIndexAlpha)
+	{
+
+		if (pInstace->Get_DIKeyState(DIK_UP) & DIS_Down)
+		{
+			m_fIndexAlpha = 255.f;
+			m_iManuIndex--;
+			if (m_iManuIndex < 0)
+				m_iManuIndex = 0;
+		}
+		else if (pInstace->Get_DIKeyState(DIK_DOWN) & DIS_Down)
+		{
+			m_fIndexAlpha = 255.f;
+			m_iManuIndex++;
+			if (m_iManuIndex > 3)
+				m_iManuIndex = 3;
+		}	
+		else if (pInstace->Get_DIKeyState(DIK_RIGHT) & DIS_Down)
+		{
+			m_iPageIndex++;
+			m_fIndexAlpha = 510.f;
+			if (m_iPageIndex > 3)
+				m_iPageIndex = 0;
+			m_pLobyCube->Strat_Turning(0);
+		}
+		else if (pInstace->Get_DIKeyState(DIK_LEFT) & DIS_Down)
+		{
+			m_iPageIndex--;
+			m_fIndexAlpha = 510.f;
+			if (m_iPageIndex < 0)
+				m_iPageIndex = 3;
+
+			m_pLobyCube->Strat_Turning(1);
+		}
+
+
+	}
+
+
 	return _int();
 
 }
 
-HRESULT CLoby_UI::SetUp_RenderState()
+
+
+
+_int CLoby_UI::LateUpdate(_float fDeltaTime)
+{
+	if (FAILED(__super::LateUpdate(fDeltaTime)))
+		return E_FAIL;
+
+
+	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
+		return E_FAIL;
+
+	return _int();
+}
+
+HRESULT CLoby_UI::First_SetUp_RenderState()
 {
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
+
+	m_vUIDesc_Logo.x = g_iWinCX *0.5f;
+	m_vUIDesc_Logo.y = 180;
+	m_vUIDesc_Logo.z = 1000;
+	m_vUIDesc_Logo.w = 300;
+
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc_Logo)))
+		return E_FAIL;
+
+
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
+
+	if (FAILED(m_ComTexture->Bind_Texture(0)))
+		return E_FAIL;
+
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
@@ -99,46 +211,67 @@ HRESULT CLoby_UI::SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
+
+	if (FAILED(m_ComVIBuffer->Render()))
+		return E_FAIL;
 	return S_OK;
 }
 
+HRESULT CLoby_UI::Second_SetUp_RenderState()
+{
+	m_vUIDesc_Index.x = g_iWinCX * 0.5f;
+	m_vUIDesc_Index.y = 415 + m_iManuIndex * 55.f;
+	m_vUIDesc_Index.z = 300;
+	m_vUIDesc_Index.w = 50;
+
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc_Index)))
+		return E_FAIL;
+
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
+
+	if (FAILED(m_ComTexture->Bind_Texture(1)))
+		return E_FAIL;
+
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+	//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_CURRENT);
+	m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	if (m_fIndexAlpha > 255)
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 255);
+	else 
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, _uint(m_fIndexAlpha));
+
+	
+
+
+	if (FAILED(m_ComVIBuffer->Render()))
+		return E_FAIL;
+
+	return S_OK;
+}
 HRESULT CLoby_UI::Release_RenderState()
 {
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+	m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
+
 	return S_OK;
 }
 
-
-_int CLoby_UI::LateUpdate(_float fDeltaTime)
-{
-	if (FAILED(__super::LateUpdate(fDeltaTime)))
-		return E_FAIL;
-
-
-	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
-		return E_FAIL;
-
-	return _int();
-}
 
 _int CLoby_UI::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture(0)))
-		return E_FAIL;
+	FAILED_CHECK(First_SetUp_RenderState());
+	if (!m_iPageIndex)
+		FAILED_CHECK(Second_SetUp_RenderState());
 
-	if (FAILED(SetUp_RenderState()))
-		return E_FAIL;
-
-	if (FAILED(m_ComVIBuffer->Render()))
-		return E_FAIL;
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
@@ -172,6 +305,11 @@ HRESULT CLoby_UI::SetUp_Components()
 	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Texture_LobyUI"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 	
+
+	m_pLobyCube = (CLobyCube*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, TEXT("Layer_LobyCube")));
+
+	if (m_pLobyCube == nullptr)
+		return E_FAIL;
 
 	return S_OK;
 }

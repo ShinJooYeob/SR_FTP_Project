@@ -130,6 +130,7 @@ _int CLobySkyBox::LateRender()
 	return _int();
 }
 
+
 HRESULT CLobySkyBox::SetUp_Components()
 {
 	/* For.Com_Transform */
