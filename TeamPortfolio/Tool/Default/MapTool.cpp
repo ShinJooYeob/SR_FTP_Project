@@ -58,8 +58,7 @@ void CMapTool::Update_CountText(int offset)
 
 void CMapTool::CreateNewMap(_uint x, _uint y, _uint z, E_BUILDINGTYPE type)
 {
-	// 마지막 피킹지점에서로 변경
-
+	
 	// 1. 현재 맵객체는 삭제
 	GetSingle(CSuperToolSIngleton)->Update_Select_Render_None(TAG_LAY(Layer_View));
 	auto objlist = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
