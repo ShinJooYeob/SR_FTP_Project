@@ -134,7 +134,6 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	
 	//·£´õ¸µ
 	GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
-	// GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
 	
 	GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->EndScene();
 	chain1->Present(NULL, NULL, g_hWnd, NULL, 0);

@@ -6,6 +6,7 @@
 #include "MiniView.h"
 #include "MainFrm.h"
 #include "ToolView.h"
+#include "ObjectTool_ToolObject.h"
 
 // CMiniView
 #ifdef _DEBUG
@@ -35,8 +36,23 @@ void CMiniView::OnDraw(CDC* pDC)
 	CDocument* pDoc = GetDocument();
 	// TODO: 여기에 그리기 코드를 추가합니다.
 
+	CObjectTool_ToolObject* toolObj = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject();
+	if (toolObj == nullptr)
+		return;
+
+
+	toolObj->Set_MiniRender();
 	GetSingle(CSuperToolSIngleton)->Render_Begin();
 
+	// 1. 선택 오브젝트를 가져옴
+	// 2. 선택 오브젝트만 랜더링
+
+	// toolObj->MiniRender();
+
+	GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
+
+
+	GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->EndScene();
 	GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
 
 }

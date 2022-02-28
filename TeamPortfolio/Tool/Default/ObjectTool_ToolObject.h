@@ -28,6 +28,8 @@ public:
 	virtual _int LateRender()override;
 
 public: // For. Transform
+	HRESULT Set_MiniRender();
+
 	HRESULT Set_WorldMat(_Matrix world);
 	HRESULT Set_Default(wstring name);
 
