@@ -28,14 +28,16 @@ public:
 	virtual _int Update(_float fDeltaTime)override;
 	virtual _int LateUpdate(_float fDeltaTime)override;
 
-	HRESULT First_SetUp_RenderState();
-	HRESULT Second_SetUp_RenderState();
-	HRESULT Release_RenderState();
+
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 	_bool	Get_IsSceneChange() {	return m_IsSceneChange;	};
 
 
+	HRESULT First_SetUp_RenderState();
+	HRESULT Second_SetUp_RenderState();
+	HRESULT Thrid_SetUp_RenderState();
+	HRESULT Release_RenderState();
 
 private:
 	CTexture*				m_ComTexture = nullptr;
@@ -49,6 +51,13 @@ private:
 private:
 	_float4			m_vUIDesc_Logo;
 	_float4			m_vUIDesc_Index;
+
+	_float4			m_vUIDesc_FirstSound;
+	_float4			m_vUIDesc_SecondSound;
+
+	_bool			m_bIsFirstSoundClicked = false;
+	_bool			m_bIsSecondSoundClicked = false;
+
 	_float			m_fAlphaValue = 0;
 	_float			m_fTextFrame = 0;
 	
@@ -56,14 +65,25 @@ private:
 	_float			m_fIndexAlpha = 255.f;
 
 	_uint			m_iManuIndex = 0;
-	_uint			m_iPageIndex = 0;
+	_int			m_iPageIndex = 0;
 	_bool			m_IsSceneChange = false;
+
+	_bool			m_bIsNewResgist = false;
+
 public:
 	//vRect.x,y,z,w=top,left,bottom,right
 	void			Set_UI_TransformRect(_float4 vRect);
 
 private:
 	HRESULT			SetUp_Components();
+	HRESULT			SetUp_UIDesc();
+	HRESULT			Update_MouseButton(_float fTimeDelta);
+	HRESULT			Update_Alpha(_float fTimeDelta);
+	HRESULT			Input_ManuIndex(_float fTimeDelta);
+
+
+private:
+	RECT			TransUIDesc_to_Rect(_float4 UIDesc);
 
 public:
 	static CLoby_UI* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

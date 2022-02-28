@@ -33,18 +33,7 @@ HRESULT CLoby_UI::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_vUIDesc_Logo.x = g_iWinCX *0.5f;
-	m_vUIDesc_Logo.y = 180;
-	m_vUIDesc_Logo.z = 1000;
-	m_vUIDesc_Logo.w = 300;
-
-	m_fAlphaValue = 0;
-	m_fTextFrame = 0;
-	m_fIndexAlpha = 255.f;
-	m_IsSceneChange = false;
-	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc_Logo)))
-		return E_FAIL;
-
+	FAILED_CHECK(SetUp_UIDesc());
 
 	return S_OK;
 }
@@ -65,92 +54,12 @@ _int CLoby_UI::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 
-	if (m_fAlphaValue < 255) {
+	
+	FAILED_CHECK(Update_Alpha(fDeltaTime));
 
-		m_fAlphaValue += fDeltaTime * 85.f;
-		if (m_fAlphaValue > 255)
-			m_fAlphaValue = 255;
-	}
-	m_fTextFrame += fDeltaTime * 5;
+	FAILED_CHECK(Input_ManuIndex(fDeltaTime));
 
-	if (m_fIndexAlpha > 0)
-	{
-		m_fIndexAlpha -= fDeltaTime * 255.f;
-		if (m_fIndexAlpha < 0)
-			m_fIndexAlpha = 0;
-	}
-
-	CGameInstance* pInstace = GetSingle(CGameInstance);
-
-	if (pInstace->Get_DIKeyState(DIK_RETURN) & DIS_Down)
-	{
-		if (!m_iPageIndex)
-		{
-			switch (m_iManuIndex)
-			{
-			case 0:
-			{
-				CCamera_Main* pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
-				if (pMainCam == nullptr)
-					return E_FAIL;
-				pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_IN, fDeltaTime, 1.8f);
-				m_pLobyCube->Rot_N_SceneChange(fDeltaTime);
-				m_fIndexAlpha = 9999999.f;
-				m_IsSceneChange = true;
-			}
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				PostQuitMessage(NULL);
-				break;
-			default:
-				break;
-			}
-
-		}
-	}
-	if (!m_fIndexAlpha)
-	{
-
-		if (pInstace->Get_DIKeyState(DIK_UP) & DIS_Down)
-		{
-			m_fIndexAlpha = 255.f;
-			m_iManuIndex--;
-			if (m_iManuIndex < 0)
-				m_iManuIndex = 0;
-		}
-		else if (pInstace->Get_DIKeyState(DIK_DOWN) & DIS_Down)
-		{
-			m_fIndexAlpha = 255.f;
-			m_iManuIndex++;
-			if (m_iManuIndex > 3)
-				m_iManuIndex = 3;
-		}	
-		else if (pInstace->Get_DIKeyState(DIK_RIGHT) & DIS_Down)
-		{
-			m_iPageIndex++;
-			m_fIndexAlpha = 510.f;
-			if (m_iPageIndex > 3)
-				m_iPageIndex = 0;
-			m_pLobyCube->Strat_Turning(0);
-		}
-		else if (pInstace->Get_DIKeyState(DIK_LEFT) & DIS_Down)
-		{
-			m_iPageIndex--;
-			m_fIndexAlpha = 510.f;
-			if (m_iPageIndex < 0)
-				m_iPageIndex = 3;
-
-			m_pLobyCube->Strat_Turning(1);
-		}
-
-
-	}
-
-
+	FAILED_CHECK(Update_MouseButton(fDeltaTime));
 	return _int();
 
 }
@@ -250,6 +159,56 @@ HRESULT CLoby_UI::Second_SetUp_RenderState()
 
 	return S_OK;
 }
+
+HRESULT CLoby_UI::Thrid_SetUp_RenderState()
+{
+
+
+
+
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc_FirstSound)))
+		return E_FAIL;
+
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
+
+	if (FAILED(m_ComTexture->Bind_Texture(2)))
+		return E_FAIL;
+
+
+	if (m_fIndexAlpha > 255)
+		m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(0, 255, 255, 255));
+	else
+		m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255 - _uint(m_fIndexAlpha), 255, 255, 255));
+
+
+
+
+
+	if (FAILED(m_ComVIBuffer->Render()))
+		return E_FAIL;
+
+
+
+	if(m_iPageIndex == 3)
+		m_vUIDesc_SecondSound.y = 565;
+	else
+		m_vUIDesc_SecondSound.y = 575;
+
+
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc_SecondSound)))
+		return E_FAIL;
+
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
+
+
+	if (FAILED(m_ComVIBuffer->Render()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLoby_UI::Release_RenderState()
 {
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
@@ -269,9 +228,16 @@ _int CLoby_UI::Render()
 
 
 	FAILED_CHECK(First_SetUp_RenderState());
-	if (!m_iPageIndex)
-		FAILED_CHECK(Second_SetUp_RenderState());
 
+	if (m_iPageIndex == 0) {
+
+		FAILED_CHECK(Second_SetUp_RenderState());
+	}
+	else if (m_iPageIndex == 3 || m_iPageIndex == 2) 
+	{
+
+		FAILED_CHECK(Thrid_SetUp_RenderState());
+	}
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
@@ -314,9 +280,276 @@ HRESULT CLoby_UI::SetUp_Components()
 	return S_OK;
 }
 
+HRESULT CLoby_UI::SetUp_UIDesc()
+{
+	m_vUIDesc_Logo.x = g_iWinCX *0.5f;
+	m_vUIDesc_Logo.y = 180;
+	m_vUIDesc_Logo.z = 1000;
+	m_vUIDesc_Logo.w = 300;
+
+	m_fAlphaValue = 0;
+	m_fTextFrame = 0;
+	m_fIndexAlpha = 255.f;
+	m_IsSceneChange = false;
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc_Logo)))
+		return E_FAIL;
+
+
+	m_vUIDesc_FirstSound.x = g_iWinCX * 0.5f;
+	m_vUIDesc_FirstSound.y = 450;
+	m_vUIDesc_FirstSound.z = 50;
+	m_vUIDesc_FirstSound.w = 30;
+
+	m_vUIDesc_SecondSound.x = g_iWinCX * 0.5f;
+
+	if (m_iPageIndex == 3)
+		m_vUIDesc_SecondSound.y = 565;
+	else
+		m_vUIDesc_SecondSound.y = 575;
+
+	m_vUIDesc_SecondSound.z = 50;
+	m_vUIDesc_SecondSound.w = 30;
+
+	return S_OK;
+}
+
+HRESULT CLoby_UI::Update_MouseButton(_float fTimeDelta)
+{
+	CGameInstance* pInstance = GetSingle(CGameInstance);
+
+	if (m_iPageIndex == 2 || m_iPageIndex == 3) {
+
+		//MOUSEBUTTONSTATE{ MBS_LBUTTON, MBS_RBUTTON, MBS_WHEEL, MBS_END };
+		if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
+		{
+
+			if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Down)
+			{
+				POINT ptMouse;
+				GetCursorPos(&ptMouse);
+				ScreenToClient(g_hWnd, &ptMouse);
+
+
+				m_bIsFirstSoundClicked = false;
+				m_bIsSecondSoundClicked = false;
+
+
+				if (PtInRect(&TransUIDesc_to_Rect(m_vUIDesc_FirstSound), ptMouse))
+				{
+
+					m_bIsFirstSoundClicked = true;
+
+				}
+				else if (PtInRect(&TransUIDesc_to_Rect(m_vUIDesc_SecondSound), ptMouse))
+				{
+					m_bIsSecondSoundClicked = true;
+				}
+
+
+			}
+			else if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Up)
+			{
+				m_bIsFirstSoundClicked = false;
+				m_bIsSecondSoundClicked = false;
+			}
+
+
+			//enum MOUSEMOVESTATE { MMS_X, MMS_Y, MMS_WHEEL, MMS_END };
+			if (m_bIsFirstSoundClicked)
+			{
+				m_vUIDesc_FirstSound.x += (pInstance->Get_DIMouseMoveState(CInput_Device::MMS_X));
+
+				if (m_vUIDesc_FirstSound.x < g_iWinCX * 0.5f - 100)
+					m_vUIDesc_FirstSound.x = g_iWinCX * 0.5f - 100;
+				if (m_vUIDesc_FirstSound.x > g_iWinCX * 0.5f + 100)
+					m_vUIDesc_FirstSound.x = g_iWinCX * 0.5f + 100;
+			
+				if (m_iPageIndex == 3)
+					pInstance->Channel_VolumeUp(CHANNEL_BGM, ((m_vUIDesc_FirstSound.x - (g_iWinCX * 0.5f - 100))) / 200.f);
+
+				if (m_iPageIndex == 2)
+					pInstance->Channel_VolumeUp(CHANNEL_UI, ((m_vUIDesc_FirstSound.x - (g_iWinCX * 0.5f - 100))) / 200.f);
+
+
+			}
+			else if (m_bIsSecondSoundClicked)
+			{
+
+				m_vUIDesc_SecondSound.x += (pInstance->Get_DIMouseMoveState(CInput_Device::MMS_X));
+
+				if (m_vUIDesc_SecondSound.x < g_iWinCX * 0.5f - 100)
+					m_vUIDesc_SecondSound.x = g_iWinCX * 0.5f - 100;
+				if (m_vUIDesc_SecondSound.x > g_iWinCX * 0.5f + 100)
+					m_vUIDesc_SecondSound.x = g_iWinCX * 0.5f + 100;
+
+				if (m_iPageIndex == 3)
+					pInstance->Channel_VolumeUp(CHANNEL_PLAYER, ((m_vUIDesc_SecondSound.x - (g_iWinCX * 0.5f - 100))) / 200.f);
+
+				if (m_iPageIndex == 2)
+					pInstance->Channel_VolumeUp(CHANNEL_EFFECT, ((m_vUIDesc_SecondSound.x - (g_iWinCX * 0.5f - 100))) / 200.f);
 
 
 
+
+			}
+
+
+
+
+		}
+	}
+
+	return S_OK;
+}
+
+HRESULT CLoby_UI::Update_Alpha(_float fTimeDelta)
+{
+	if (m_fAlphaValue < 255) {
+
+		m_fAlphaValue += fTimeDelta * 85.f;
+		if (m_fAlphaValue > 255)
+			m_fAlphaValue = 255;
+	}
+	m_fTextFrame += fTimeDelta * 5;
+
+	if (m_fIndexAlpha > 0)
+	{
+		m_fIndexAlpha -= fTimeDelta * 255.f;
+		if (m_fIndexAlpha < 0)
+			m_fIndexAlpha = 0;
+	}
+
+	return S_OK;
+}
+
+HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
+{
+	CGameInstance* pInstace = GetSingle(CGameInstance);
+
+
+	if (!m_fIndexAlpha)
+	{
+		if (pInstace->Get_DIKeyState(DIK_RETURN) & DIS_Down)
+		{
+			if (m_iPageIndex == 0)
+			{
+				switch (m_iManuIndex)
+				{
+				case 0:
+				{
+					m_iPageIndex = 1;
+					m_iManuIndex = 0;
+					m_fIndexAlpha = 510.f;
+					m_pLobyCube->Strat_Turning(0);
+					m_bIsNewResgist = true;
+				}
+				break;
+				case 1:
+				{
+					m_iPageIndex = 1;
+					m_iManuIndex = 1;
+					m_fIndexAlpha = 510.f;
+					m_pLobyCube->Strat_Turning(0);
+				}
+				break;
+				case 2:
+				{
+					m_iPageIndex = 3;
+					m_iManuIndex = 2;
+					m_fIndexAlpha = 510.f;
+
+					m_vUIDesc_FirstSound.x = g_iWinCX * 0.5f - 100 + 200 * GetSingle(CGameInstance)->Get_Channel_Volume(CHANNEL_BGM);
+					m_vUIDesc_SecondSound.x = g_iWinCX * 0.5f - 100 + 200 * GetSingle(CGameInstance)->Get_Channel_Volume(CHANNEL_PLAYER);
+
+					m_pLobyCube->Strat_Turning(1);
+				}
+				break;
+				case 3:
+					PostQuitMessage(NULL);
+					break;
+				default:
+					break;
+				}
+
+			}
+
+			else if (m_iPageIndex == 1)
+			{
+
+				if (false || m_bIsNewResgist) //로그인 성공 or 신규 가입시 씬 전환
+				{
+					CCamera_Main* pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+					if (pMainCam == nullptr)
+						return E_FAIL;
+					pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_IN, fTimeDelta, 1.8f);
+					m_pLobyCube->Rot_N_SceneChange(fTimeDelta);
+					m_fIndexAlpha = 9999999.f;
+					m_IsSceneChange = true;
+				}
+				else //로그인 실패시
+				{
+					m_iPageIndex = 0;
+					m_fIndexAlpha = 510.f;
+					m_iManuIndex = 0;
+					m_pLobyCube->Strat_Turning(1);
+
+				}
+
+			}
+			else if (m_iPageIndex == 2)
+			{
+				m_iPageIndex = 0;
+				m_fIndexAlpha = 510.f;
+				m_iManuIndex = 2;
+				m_pLobyCube->Strat_Turning(2);
+			}
+			else if (m_iPageIndex == 3)
+			{
+				m_iPageIndex = 2;
+				m_fIndexAlpha = 510.f;
+				m_iManuIndex = 2;
+
+				m_vUIDesc_FirstSound.x = g_iWinCX * 0.5f - 100 + 200 * GetSingle(CGameInstance)->Get_Channel_Volume(CHANNEL_UI);
+				m_vUIDesc_SecondSound.x = g_iWinCX * 0.5f - 100 + 200 * GetSingle(CGameInstance)->Get_Channel_Volume(CHANNEL_EFFECT);
+
+				m_pLobyCube->Strat_Turning(1);
+			}
+		}
+		if (pInstace->Get_DIKeyState(DIK_UP) & DIS_Down)
+		{
+			m_fIndexAlpha = 255.f;
+			m_iManuIndex--;
+			if (m_iManuIndex < 0)
+				m_iManuIndex = 0;
+		}
+		else if (pInstace->Get_DIKeyState(DIK_DOWN) & DIS_Down)
+		{
+			m_fIndexAlpha = 255.f;
+			m_iManuIndex++;
+			if (m_iManuIndex > 3)
+				m_iManuIndex = 3;
+		}
+	}
+
+	return S_OK;
+}
+
+
+
+
+
+RECT CLoby_UI::TransUIDesc_to_Rect(_float4 UIDesc)
+{
+	RECT tRsult{};
+
+	tRsult.left = UIDesc.x  - UIDesc.z*0.5f;
+	tRsult.top = UIDesc.y - UIDesc.w*0.5f;
+	tRsult.right = UIDesc.x + UIDesc.z*0.5f;
+	tRsult.bottom = UIDesc.y + UIDesc.w*0.5f;
+
+
+	return tRsult;
+}
 
 CLoby_UI * CLoby_UI::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 {

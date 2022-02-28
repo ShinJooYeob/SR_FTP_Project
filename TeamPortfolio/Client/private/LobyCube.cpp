@@ -107,13 +107,17 @@ void CLobyCube::Strat_Turning(_uint RotDir)
 {
 	if (!m_IsTurning)
 	{
-		if (!RotDir)
+		if (RotDir == 0)
 		{
 			m_fTargetAngle = m_fStartAngle + D3DXToRadian(90);
 		}
-		else
+		else if(RotDir == 1)
 		{
 			m_fTargetAngle = m_fStartAngle - D3DXToRadian(90);
+		}
+		else if (RotDir == 2)
+		{
+			m_fTargetAngle = m_fStartAngle + D3DXToRadian(180);
 		}
 		m_fTotalTime = 1;
 		m_fPassedTime = 0;

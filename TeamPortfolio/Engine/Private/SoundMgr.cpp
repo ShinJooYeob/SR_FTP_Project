@@ -48,9 +48,11 @@ HRESULT CSoundMgr::Update_FMOD(_float fTimeDelta)
 
 int CSoundMgr::Channel_VolumeUp(CHANNELID eID, _float _vol)
 {
-	if (m_VolumeArr[eID] < SOUND_MAX) {
-		m_VolumeArr[eID] += _vol;
-	}
+	m_VolumeArr[eID] = _vol;
+	if (m_VolumeArr[eID] > SOUND_MAX)
+		m_VolumeArr[eID] = SOUND_MAX;
+	if (m_VolumeArr[eID] < SOUND_MIN)
+		m_VolumeArr[eID] = SOUND_MIN;
 
 	if(eID == CHANNEL_BGM)
 		FMOD_Channel_SetVolume(m_pChannelArr[31], m_VolumeArr[eID]);
@@ -65,9 +67,11 @@ int CSoundMgr::Channel_VolumeUp(CHANNELID eID, _float _vol)
 
 int CSoundMgr::Channel_VolumeDown(CHANNELID eID, _float _vol)
 {
-	if (m_VolumeArr[eID] > SOUND_MIN) {
-		m_VolumeArr[eID] -= _vol;
-	}
+	m_VolumeArr[eID] = _vol;
+	if (m_VolumeArr[eID] > SOUND_MAX)
+		m_VolumeArr[eID] = SOUND_MAX;
+	if (m_VolumeArr[eID] < SOUND_MIN)
+		m_VolumeArr[eID] = SOUND_MIN;
 
 	if (eID == CHANNEL_BGM)
 		FMOD_Channel_SetVolume(m_pChannelArr[31], m_VolumeArr[eID]);

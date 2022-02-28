@@ -52,7 +52,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 
 	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Press)
 	{
-		GetSingle(CGameInstance)->PlaySound(L"beep.mp3", CHANNEL_PLAYER);
+		GetSingle(CGameInstance)->PlaySound(L"beep.mp3", CHANNEL_UI);
 	}
 
 	POINT ptMouse;

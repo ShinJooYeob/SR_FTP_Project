@@ -401,7 +401,7 @@ _int CGameInstance::Channel_VolumeUp(CHANNELID eID, _float _vol)
 {
 
 	NULL_CHECK_MSG(m_pSoundMgr, L"Not Have m_pSoundMgr");
-	return _int();
+	return m_pSoundMgr->Channel_VolumeUp(eID, _vol);
 }
 
 _int CGameInstance::Channel_VolumeDown(CHANNELID eID, _float _vol)
