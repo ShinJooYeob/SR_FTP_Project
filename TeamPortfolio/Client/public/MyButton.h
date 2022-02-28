@@ -29,6 +29,7 @@ public:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 	virtual _int LateUpdate(_float fDeltaTime)override;
+	void	Set_Rect(_float4 RectPos, RECT fRect);
 
 	virtual _int Render()override;
 	virtual _int LateRender()override;
@@ -51,6 +52,7 @@ private:
 	_float4			m_vUIDesc;
 	_bool			m_bBigger;
 	_bool			m_bOnMouse;
+
 public:
 	void			Set_ButtonName(TCHAR* pButtonName);
 private:

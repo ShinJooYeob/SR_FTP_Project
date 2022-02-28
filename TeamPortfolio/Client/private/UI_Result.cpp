@@ -76,18 +76,7 @@ _int CUI_Result::Update(_float fDeltaTime)
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 			return E_FAIL;
 
-
-		CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
-		CTransform* ButtonTransform = (CTransform*)ButtonStart->Get_Component(TEXT("Com_Transform"));
-		//ButtonTransform->Set_MatrixState(CTransform::STATE_POS, _float3(100.f, 200.f, 0));
-		m_vButtonDesc = { (g_iWinCX >> 1) - 150,(g_iWinCY >> 1)+150, 250 ,100 };
-		ButtonStart->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
-
-		CMyButton* ButtonCancel = (CMyButton*)Find_Button(L"Button_Result_Cancel");
-		ButtonTransform = (CTransform*)ButtonCancel->Get_Component(TEXT("Com_Transform"));
-		//ButtonTransform->Set_MatrixState(CTransform::STATE_POS, _float3(200.f, -100.f, 0));
-		m_vButtonDesc = { (g_iWinCX >> 1) + 150,(g_iWinCY >> 1) + 150, 250 ,100 };
-		ButtonStart->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
+		Button_Picking();
 
 		if (FAILED(Update_UIButtonList(fDeltaTime)))
 			return E_FAIL;
@@ -183,8 +172,8 @@ HRESULT CUI_Result::Update_UIButtonList(_float fTimeDelta)
 
 	for (auto pair : m_UIButtonList) {
 		hr = (pair.second->Update(fTimeDelta));
-		//if (hr != SHOP_END)
-		//	break;
+		if (hr != SHOP_END)
+			break;
 		switch (hr)
 		{
 		case RESULT_START:
@@ -288,6 +277,35 @@ HRESULT CUI_Result::Release_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	return S_OK;
+}
+
+void CUI_Result::Button_Picking()
+{
+	CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
+	CTransform* ButtonTransform = (CTransform*)ButtonStart->Get_Component(TEXT("Com_Transform"));
+	//ButtonTransform->Set_MatrixState(CTransform::STATE_POS, _float3(100.f, 200.f, 0));
+	m_vButtonDesc = { (g_iWinCX >> 1) - 150,(g_iWinCY >> 1) + 150, 250 ,100 };
+	_float4 vUIDesc = m_vButtonDesc;
+
+	RECT TEST;
+	TEST.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	TEST.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	TEST.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	TEST.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
+	ButtonStart->Set_Rect(m_vButtonDesc, TEST);
+	ButtonStart->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
+
+	CMyButton* ButtonCancel = (CMyButton*)Find_Button(L"Button_Result_Cancel");
+	ButtonTransform = (CTransform*)ButtonCancel->Get_Component(TEXT("Com_Transform"));
+	//ButtonTransform->Set_MatrixState(CTransform::STATE_POS, _float3(200.f, -100.f, 0));
+	m_vButtonDesc = { (g_iWinCX >> 1) + 150,(g_iWinCY >> 1) + 150, 250 ,100 };
+	vUIDesc = m_vButtonDesc;
+	TEST.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	TEST.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	TEST.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	TEST.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
+	ButtonCancel->Set_Rect(m_vButtonDesc, TEST);
+	ButtonCancel->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
 }
 
 CUI_Result * CUI_Result::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)

@@ -35,6 +35,9 @@ private:
 	HRESULT		SetUp_RenderState();
 	HRESULT		Release_RenderState();
 
+public:
+	void		Button_Picking();
+
 	//진우형 프레임워크
 private:
 	HRESULT		Ready_Layer_Button(const _tchar * pLayerTag);//버튼 클론을 만들고 있음
