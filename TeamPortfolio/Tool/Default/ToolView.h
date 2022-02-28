@@ -12,14 +12,6 @@ class CObjectTool_ToolObject;
 END
 class CToolView : public CScrollView
 {
-private:
-	enum E_PICKMODE
-	{
-		PICKMODE_NOMAL,
-		PICKMODE_Z,
-		PICKMODE_END,
-
-	};
 
 protected: // serialization에서만 만들어집니다.
 	CToolView();
@@ -68,7 +60,6 @@ private:
 	CObjectTool_ToolObject* m_Nearobj;
 	_float3					m_PickPos;
 	_float3					m_AddPos;
-	E_PICKMODE				m_ePickMode;
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

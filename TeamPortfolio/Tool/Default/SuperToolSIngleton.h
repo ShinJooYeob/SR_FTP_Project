@@ -81,7 +81,7 @@ public: // Get Set
 	CMainFrame* GetMainFrm() { return m_pMainFrame; }
 	CMyForm* GetMyButtonView() { return m_pMyButtomView; }
 	CToolView*  GetToolView() { return m_pToolView; }
-	CMiniView* GetMiniView() { return m_pMiniView; }
+//	CMiniView* GetMiniView() { return m_pMiniView; }
 
 	CPathFind*  GetPathTool() { return m_pPathDialog; }
 	CTrans_Dialog* GetTransTool() { return m_pTransDialog; }
@@ -93,13 +93,14 @@ public: //For. Data
 
 	HRESULT LoadData_Data(CWnd * cwnd);
 
+	HRESULT LoadData_ObjectFile();
+
 	HRESULT Create_ToolObject_Button(wstring name);
 	HRESULT Create_ToolObject_Data(const _tchar* str, const OUTPUT_OBJECTINFO& data);
 
 public:// For Create
 	CObjectTool_ToolObject* Create_New_ToolObject(wstring name, const _tchar* laytag);
 	CObjectTool_ToolObject* Create_Load_MapObject(const OUTPUT_OBJECTINFO& info, const _tchar* laytag);
-
 	CObjectTool_ToolObject* Create_Clone_MapObject(_float3 Pos, const _tchar* laytag);
 
 public:// For Object
@@ -121,11 +122,11 @@ private:
 	// 각 창에대한 정보
 	CMainFrame*			m_pMainFrame;	// 메인 프레임
 	CMyForm*			m_pMyButtomView;// 버튼 뷰
-	CMiniView*			m_pMiniView;	// 미니 뷰
+//	CMiniView*			m_pMiniView;	// 미니 뷰
 	CToolView*			m_pToolView;	// 툴 뷰
 	CPathFind*			m_pPathDialog;	// 경로 창
 	CTrans_Dialog*		m_pTransDialog;	// 위치 조정 창
-	CMapTool*			m_pMapToolDialog;
+	CMapTool*			m_pMapToolDialog;// 맵툴
 
 private:
 	LPDIRECT3DDEVICE9			m_pGraphicDevice;

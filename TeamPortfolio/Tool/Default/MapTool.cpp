@@ -26,24 +26,34 @@ CMapTool::~CMapTool()
 void CMapTool::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LIST1, m_ListBox_Map);
 	DDX_Control(pDX, IDC_EDIT1, m_EditBox[0]);
 	DDX_Control(pDX, IDC_EDIT2, m_EditBox[1]);
 	DDX_Control(pDX, IDC_EDIT3, m_EditBox[2]);
 }
 
-void CMapTool::ListBoxUpdate()
+
+
+void CMapTool::Update_CountText(int offset)
 {
-	m_ListBox_Map.ResetContent();
-
-	auto maplist =  GetSingle(CSuperToolSIngleton)->Get_GameObjectList(TAG_LAY(Layer_Map));
+	auto maplist = GetSingle(CSuperToolSIngleton)->Get_GameObjectList(TAG_LAY(Layer_Map));
 	if (maplist == nullptr)
-		return;
-
-	for (auto map: *maplist)
 	{
-		m_ListBox_Map.AddString(static_cast<CObjectTool_ToolObject*>(map)->GetName());
+		SetDlgItemText(IDC_STATIC1, L"0");
+		return;
 	}
+	int count = 0;
+	for (auto& obj : *maplist)
+	{
+		if(obj->Get_IsDied() == false)
+			count++;
+	}
+
+	
+	count += offset;
+	_tchar countstr[16];
+	_itot_s(count, countstr,10);
+	SetDlgItemText(IDC_STATIC1, countstr);
+
 }
 
 void CMapTool::CreateNewMap(_uint x, _uint y, _uint z, E_BUILDINGTYPE type)
@@ -122,16 +132,18 @@ void CMapTool::CreateNewMap(_uint x, _uint y, _uint z, E_BUILDINGTYPE type)
 			}
 		}
 	}
+	Update_CountText();
 }
 
 
 BEGIN_MESSAGE_MAP(CMapTool, CDialog)
-	ON_LBN_SELCHANGE(IDC_LIST1, &CMapTool::OnLbnSelchangeList1)
-	ON_BN_CLICKED(IDC_BUTTON2, &CMapTool::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMapTool::OnBnClickedButton_PreSet1)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMapTool::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON3, &CMapTool::OnBnClickedButton3)
-	ON_BN_CLICKED(IDC_BUTTON13, &CMapTool::OnBnClickedButton13)
-	ON_BN_CLICKED(IDC_BUTTON14, &CMapTool::OnBnClickedButton14)
+	ON_BN_CLICKED(IDC_BUTTON13, &CMapTool::OnBnClickedButton_PreSet2)
+	ON_BN_CLICKED(IDC_BUTTON14, &CMapTool::OnBnClickedButton_PreSet3)
+
+	ON_BN_CLICKED(IDC_BUTTON4, &CMapTool::OnBnClickedButtonClear)
 END_MESSAGE_MAP()
 
 
@@ -142,24 +154,20 @@ BOOL CMapTool::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	ListBoxUpdate();
 	for (auto& box : m_EditBox)
 	{
-		box.SetWindowText(L"10");
+		box.SetWindowText(L"5");
 	}
 
+	OnBnClickedButton_PreSet1();
+	Update_CountText();
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
 
-void CMapTool::OnLbnSelchangeList1()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}
 
-
-void CMapTool::OnBnClickedButton2()
+void CMapTool::OnBnClickedButton_PreSet1()
 {
 	// 프리셋 버튼1
 	// 내부가 빈 건물
@@ -176,7 +184,7 @@ void CMapTool::OnBnClickedButton2()
 }
 
 
-void CMapTool::OnBnClickedButton13()
+void CMapTool::OnBnClickedButton_PreSet2()
 {
 	// 프리셋 버튼2
 	// 내부가 찬 건물
@@ -193,7 +201,7 @@ void CMapTool::OnBnClickedButton13()
 }
 
 
-void CMapTool::OnBnClickedButton14()
+void CMapTool::OnBnClickedButton_PreSet3()
 {
 	// 프리셋 버튼3
 	// 랜덤한 건물
@@ -240,3 +248,33 @@ void CMapTool::OnBnClickedButton3()
 	GetSingle(CSuperToolSIngleton)->LoadData_Data(this);
 }
 
+
+
+
+BOOL CMapTool::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		//이스케이프키일 경우 함수 종료
+		if (pMsg->wParam == VK_DOWN || pMsg->wParam == VK_UP ||
+			pMsg->wParam == VK_LEFT || pMsg->wParam == VK_RIGHT)
+			return TRUE;
+	}
+
+	return CDialog::PreTranslateMessage(pMsg);
+
+}
+
+void CMapTool::OnBnClickedButtonClear()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	auto objlist = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
+	NULL_CHECK_BREAK(objlist);
+	for (CGameObject* obj: *objlist)
+	{
+		obj->DIED();
+	}
+	Update_CountText();	
+}

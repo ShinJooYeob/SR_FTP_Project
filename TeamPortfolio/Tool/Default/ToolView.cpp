@@ -56,7 +56,6 @@ CToolView::CToolView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 	m_AddPos = _float3(0, 1, 0);
-	m_ePickMode = PICKMODE_NOMAL;
 }
 
 CToolView::~CToolView()
@@ -252,24 +251,9 @@ void CToolView::OnInitialUpdate()
 
 void CToolView::Change_PickVector(bool b)
 {
-	if (m_ePickMode == PICKMODE_Z)
-	{
-		if (m_AddPos == FRONTVEC)
-		{
-			m_AddPos = BACKVEC;
-			return;
-		}
-		if (m_AddPos == BACKVEC)
-		{
-			m_AddPos = FRONTVEC;
-			return;
-		}
-	}
-
 	// 마우스 휠 올렸을 때
 	if (b)
 	{
-
 		if (m_AddPos == UPVEC)
 		{
 			m_AddPos = RIGHTVEC;
@@ -287,11 +271,19 @@ void CToolView::Change_PickVector(bool b)
 		}
 		if (m_AddPos == LEFTVEC)
 		{
+			m_AddPos = FRONTVEC;
+			return;
+		}
+		if (m_AddPos == FRONTVEC)
+		{
+			m_AddPos = BACKVEC;
+			return;
+		}
+		if (m_AddPos == BACKVEC)
+		{
 			m_AddPos = UPVEC;
 			return;
 		}
-
-
 
 	}
 	// 내렸을 때
@@ -312,7 +304,18 @@ void CToolView::Change_PickVector(bool b)
 			m_AddPos = RIGHTVEC;
 			return;
 		}
+
 		if (m_AddPos == RIGHTVEC)
+		{
+			m_AddPos = BACKVEC;
+			return;
+		}
+		if (m_AddPos == BACKVEC)
+		{
+			m_AddPos = FRONTVEC;
+			return;
+		}
+		if (m_AddPos == FRONTVEC)
 		{
 			m_AddPos = UPVEC;
 			return;
@@ -383,8 +386,14 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 			return;
 	}
 
+
+	
 	// 선택한 오브젝트 생성
 	GetSingle(CSuperToolSIngleton)->Create_Clone_MapObject(m_PickPos + m_AddPos, TAG_LAY(Layer_Map));
+	CMapTool* mapToolView = GetSingle(CSuperToolSIngleton)->GetMapTool();
+	if (mapToolView == nullptr)
+		return;
+	mapToolView->Update_CountText();
 }
 void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
 {
@@ -395,6 +404,12 @@ void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
 		return;
 
 	m_Nearobj->DIED();
+
+	CMapTool* map = GetSingle(CSuperToolSIngleton)->GetMapTool();
+	if (map == nullptr)
+		return;
+	map->Update_CountText(-1);
+
 }
 
 
@@ -481,8 +496,12 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	//_float3 AddVec = OneVector(nomalVec);
 	//m_NextPos += AddVec;
 
-
-	 GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_PickPos + m_AddPos);
+	// 현재 선택 오브젝트를 복사해야한다.
+	CObjectTool_ToolObject* selectobj = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject();
+	if (selectobj == nullptr) 
+		return;
+	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_TransformMat(selectobj->Get_Matrix());
+	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_PickPos + m_AddPos);
 
 
 
@@ -523,10 +542,7 @@ BOOL CToolView::OnEraseBkgnd(CDC* pDC)
 
 BOOL CToolView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	
-	
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.	
 	if (zDelta > 0)
 	{
 		Change_PickVector(TRUE);
@@ -536,8 +552,12 @@ BOOL CToolView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		Change_PickVector(FALSE);
 
 	}
-
+	CObjectTool_ToolObject* selectobj = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject();
+	if (selectobj == nullptr)
+		return FALSE;
+	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_TransformMat(selectobj->Get_Matrix());
 	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_PickPos + m_AddPos);
+
 	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 
 
@@ -549,17 +569,10 @@ void CToolView::OnMButtonDown(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 
-	if (m_ePickMode == PICKMODE_NOMAL)
-	{
-		m_ePickMode = PICKMODE_Z;
-		m_AddPos = FRONTVEC;
-	}
-	else
-	{
-		m_ePickMode = PICKMODE_NOMAL;
-		m_AddPos = UPVEC;
-
-	}
+	CObjectTool_ToolObject* selectobj = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject();
+	if (selectobj == nullptr)
+		return;
+	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_TransformMat(selectobj->Get_Matrix());
 	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_PickPos + m_AddPos);
 
 	CScrollView::OnMButtonDown(nFlags, point);

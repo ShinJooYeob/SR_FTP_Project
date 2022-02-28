@@ -69,17 +69,8 @@ namespace Engine
 
 	}IMGPATH;
 
-	// 텍스처의 위치정보를 저장하는 구조체
-	typedef struct tagMyTexturePath
-	{
-		// 파일구분 1 
-		wstring			wFileName = L"";
-		// 전체 상대 경로
-		wstring			wstrFullPath = L"";
-		// 텍스처 개수
-		int				iCount = 0;
 
-	}MYFILEPATH;
+
 
 	// 오브젝트에 대한 정보
 	// 오브젝트 월드 행렬 / 이름 / 텍스처경로 / 키

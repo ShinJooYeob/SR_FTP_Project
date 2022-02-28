@@ -39,6 +39,8 @@ extern HINSTANCE g_hInstance;
 static const wstring g_FilePath_TexturePathData = L"../bin/Resources/textures/TexturePathData/";
 static const wstring g_FilePath_ObjectPathData = L"../bin/Resources/mapdata/";
 static const wstring g_FilePath_ObjectPathData_Save = L"\\bin\\Resources\\mapdata\\";
+// 오브젝트 로드용
+static const wstring g_FilePath_ObjectsPathData_Load = L"../bin/Resources/mapdata/object/";
 
 
 static const TCHAR* g_FileName_Blocktxt = TEXT("Cube_Texture.txt");

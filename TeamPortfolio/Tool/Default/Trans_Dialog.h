@@ -37,6 +37,8 @@ public:
 
 private:
 
+	CTexture *	m_Com_Textures;
+	
 	// 위치 / 크기정보 Set 
 	CEdit m_InputNumber[9];
 	
@@ -45,15 +47,22 @@ private:
 	
 	// 슬라이더
 	CSliderCtrl m_Silder_Rotation[3];
+	
+	// 스핀버튼
+	CSpinButtonCtrl m_SpinButton[3];
 
-	CTexture *	m_Com_Textures;
-
+private:
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
 	afx_msg void OnBnClickedButton1();	
 	afx_msg void OnLbnSelchangeList1();
+	void	Update_SpinButton(int index,int rot = 90);
 
 public:
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnDeltaposSpin0(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin2(NMHDR *pNMHDR, LRESULT *pResult);
+
 };

@@ -31,6 +31,7 @@ public:
 
 public:
 	HRESULT Set_Pos(_float3 pos);
+	HRESULT Set_TransformMat(_Matrix m);
 
 public:
 

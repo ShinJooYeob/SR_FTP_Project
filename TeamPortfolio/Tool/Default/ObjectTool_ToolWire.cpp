@@ -97,12 +97,18 @@ HRESULT CObjectTool_ToolWire::Set_Pos(_float3 pos)
 	return S_OK;
 }
 
+HRESULT CObjectTool_ToolWire::Set_TransformMat(_Matrix m)
+{
+	m_ComTransform->Set_Matrix(m);
+	return S_OK;
+}
+
 
 
 HRESULT CObjectTool_ToolWire::RenderState_Begin()
 {
-	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	m_pGraphicDevice->SetRenderState(D3DRS_COLORVERTEX, D3DFILL_SOLID);
+	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+//	m_pGraphicDevice->SetRenderState(D3DRS_COLORVERTEX, D3DFILL_SOLID);
 	return S_OK;
 }
 
