@@ -43,7 +43,7 @@ private:
 public: // For. Device
 	HRESULT		InitDevice();
 	HRESULT		Update_Tool(_float ftimer);
-	HRESULT		Render_Begin(void);
+	HRESULT		Render_Begin(D3DCOLOR backbuffer = COLOR_GRAY);
 	HRESULT		Render_End(HWND hWnd = NULL);
 
 	// 오브젝트 초기화

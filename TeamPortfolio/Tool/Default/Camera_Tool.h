@@ -19,6 +19,10 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
+	// 각각 시작위치 이동 위치의 뷰 투영 행렬 세잍ㅇ
+	HRESULT Set_StartPosView();
+	HRESULT Set_OriginPosView();
+
 public:
 //	HRESULT Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelta);
 //	HRESULT Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDelta);
@@ -31,6 +35,7 @@ private:
 
 	_float3			m_OffSet;
 	_Matrix			m_StartMat;
+	_Matrix			m_NowMat;
 public:
 	static CCamera_Tool* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg)override;

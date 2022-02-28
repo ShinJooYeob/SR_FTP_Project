@@ -130,7 +130,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->SetRenderTarget(0, pBackBuffer);
 
 	// #Tag Tool Renderer
-	GetSingle(CSuperToolSIngleton)->Render_Begin();
+	GetSingle(CSuperToolSIngleton)->Render_Begin(COLOR_BACK_TOOLA);
 	
 	//·£´õ¸µ
 	GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
@@ -290,9 +290,20 @@ void CToolView::Change_PickVector(bool b)
 	{
 		if (m_AddPos == UPVEC)
 		{
+			m_AddPos = BACKVEC;
+			return;
+		}
+		if (m_AddPos == BACKVEC)
+		{
+			m_AddPos = FRONTVEC;
+			return;
+		}
+		if (m_AddPos == FRONTVEC)
+		{
 			m_AddPos = LEFTVEC;
 			return;
 		}
+
 		if (m_AddPos == LEFTVEC)
 		{
 			m_AddPos = DOWNVEC;
@@ -303,18 +314,7 @@ void CToolView::Change_PickVector(bool b)
 			m_AddPos = RIGHTVEC;
 			return;
 		}
-
 		if (m_AddPos == RIGHTVEC)
-		{
-			m_AddPos = BACKVEC;
-			return;
-		}
-		if (m_AddPos == BACKVEC)
-		{
-			m_AddPos = FRONTVEC;
-			return;
-		}
-		if (m_AddPos == FRONTVEC)
 		{
 			m_AddPos = UPVEC;
 			return;

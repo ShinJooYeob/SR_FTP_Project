@@ -201,8 +201,8 @@ void CMyForm::OnLbnSelchangeList_ObjectSelect()
 	GetSingle(CSuperToolSIngleton)->Set_ViewObject_Index(index);
 
 	GetSingle(CSuperToolSIngleton)->Update_Select_Render_None(TAG_LAY(Layer_View));
-	GetSingle(CSuperToolSIngleton)->Update_Select_Render_Visble(TAG_LAY(Layer_View),
-		GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject());
+//	GetSingle(CSuperToolSIngleton)->Update_Select_Render_Visble(TAG_LAY(Layer_View),
+//		GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject());
 	
 	if (GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject() == nullptr)
 		return;

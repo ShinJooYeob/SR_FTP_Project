@@ -37,8 +37,12 @@ extern HINSTANCE g_hInstance;
 // 저장 파일 이름
 
 static const wstring g_FilePath_TexturePathData = L"../bin/Resources/textures/TexturePathData/";
-static const wstring g_FilePath_ObjectPathData = L"../bin/Resources/mapdata/";
-static const wstring g_FilePath_ObjectPathData_Save = L"\\bin\\Resources\\mapdata\\";
+// static const wstring g_FilePath_ObjectPathData = L"../bin/Resources/mapdata/";
+
+// 오브젝트 세이브
+static const wstring g_FilePath_MapPathData_Save = L"\\bin\\Resources\\mapdata\\map\\";
+static const wstring g_FilePath_ObjectPathData_Save = L"\\bin\\Resources\\mapdata\\object\\";
+
 // 오브젝트 로드용
 static const wstring g_FilePath_ObjectsPathData_Load = L"../bin/Resources/mapdata/object/";
 
@@ -53,6 +57,11 @@ static const TCHAR* g_Filename_Cubetxt = TEXT("Cube_Texture.txt");
 #define  FRONTVEC _float3(0,0,1)
 #define  BACKVEC _float3(0,0,-1)
 #define  ZEROVEC _float3(0,0,0)
+
+
+#define COLOR_BACK_TOOLA		D3DCOLOR_ARGB(255, 0, 0, 0)
+#define COLOR_BACK_TOOLB		D3DCOLOR_ARGB(255, 0, 0, 255)
+#define COLOR_BACK_TOOLC		D3DCOLOR_ARGB(255, 0, 255, 0)
 
 namespace Tool {};
 

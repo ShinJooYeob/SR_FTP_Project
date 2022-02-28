@@ -77,13 +77,13 @@ HRESULT CSuperToolSIngleton::Update_Tool(_float ftimer)
 	return S_OK;
 }
 
-HRESULT CSuperToolSIngleton::Render_Begin(void)
+HRESULT CSuperToolSIngleton::Render_Begin(D3DCOLOR backbuffer)
 {
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
 	Render_Set_State();
 
-	m_pGameInstance->Render_Begin();	
+	m_pGameInstance->Render_Begin(backbuffer);
 	return S_OK;
 }
 
@@ -347,7 +347,7 @@ HRESULT CSuperToolSIngleton::SaveData_Map(list<CGameObject*> objlist, CWnd* cwnd
 	GetCurrentDirectory(MAX_PATH, szPath);
 	PathRemoveFileSpec(szPath);
 
-	lstrcat(szPath, g_FilePath_ObjectPathData_Save.c_str());
+	lstrcat(szPath, g_FilePath_MapPathData_Save.c_str());
 	Dlg.m_ofn.lpstrInitialDir = szPath;
 
 	if (IDOK == Dlg.DoModal())
