@@ -15,6 +15,7 @@
 #include "LobySkyBox.h"
 #include "LobyScroll.h"
 #include "Loby_UI.h"
+#include "PauseUI.h"
 
 #include "Object_FixCube.h"
 #include "Object_GravityCube.h"
@@ -217,6 +218,7 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 #pragma  region PROTOTYPE_GAMEOBJECT
 
+
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainGround), CTerrainGround::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
@@ -303,6 +305,13 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Cube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+
+
+	TextureDesc.szTextFilePath = TEXT("Pause.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Pause"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 #pragma endregion
 
 
@@ -322,6 +331,9 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_BlockCube"), CObject_BlockCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_PauseUI"), CPauseUI::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
 
 
 #pragma endregion

@@ -25,6 +25,7 @@ HRESULT CMiniMapUI::Initialize_Prototype(void * pArg)
 	if (FAILED(Set_UI_Transform(m_ComTransform, UIDesc)))
 		return E_FAIL;
 
+	m_fDepth = 0;
 
 	return S_OK;
 }

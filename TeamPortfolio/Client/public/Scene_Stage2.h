@@ -25,6 +25,23 @@ private:
 
 	HRESULT Ready_Layer_SkyBox(const _tchar* pLayerTag);
 
+
+
+	HRESULT Ready_Layer_PauseUI(const _tchar* pLayerTag); //움직이는 큐브 상호작용 확인용
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	HRESULT Ready_Layer_Cube(const _tchar* pLayerTag); //움직이는 큐브 상호작용 확인용
 	HRESULT Ready_Layer_FixCube(const _tchar* pLayerTag); // 움직이지 않는 큐브 충돌 및 옮기기
 	HRESULT Ready_Layer_PushCube(const _tchar* pLayerTag); //미는 큐브

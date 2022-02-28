@@ -36,6 +36,11 @@ HRESULT CScene_Stage2::Initialize()
 
 	if (FAILED(Ready_Layer_Object_BlockCube(TEXT("Layer_BlockCube"))))
 		return E_FAIL;
+	
+
+	if (FAILED(Ready_Layer_PauseUI(TEXT("Layer_PauseUI"))))
+		return E_FAIL;
+
 
 
 	return S_OK;
@@ -135,6 +140,14 @@ HRESULT CScene_Stage2::Ready_Layer_SkyBox(const _tchar * pLayerTag)
 	return S_OK;
 
 
+}
+
+HRESULT CScene_Stage2::Ready_Layer_PauseUI(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_PauseUI")))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CScene_Stage2::Ready_Layer_Cube(const _tchar * pLayerTag)

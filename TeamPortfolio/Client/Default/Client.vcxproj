@@ -161,6 +161,7 @@
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\LobyCube.h" />
     <ClInclude Include="..\public\LobyPlayer.h" />
+    <ClInclude Include="..\public\PauseUI.h" />
     <ClInclude Include="..\public\LobyScroll.h" />
     <ClInclude Include="..\public\LobySkyBox.h" />
     <ClInclude Include="..\public\Loby_UI.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="..\private\Camera_Main.cpp" />
     <ClCompile Include="..\private\LobyCube.cpp" />
     <ClCompile Include="..\private\LobyPlayer.cpp" />
+    <ClCompile Include="..\private\PauseUI.cpp" />
     <ClCompile Include="..\private\LobyScroll.cpp" />
     <ClCompile Include="..\private\LobySkyBox.cpp" />
     <ClCompile Include="..\private\Loby_UI.cpp" />
