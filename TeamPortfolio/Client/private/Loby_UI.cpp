@@ -60,6 +60,16 @@ _int CLoby_UI::Update(_float fDeltaTime)
 	FAILED_CHECK(Input_ManuIndex(fDeltaTime));
 
 	FAILED_CHECK(Update_MouseButton(fDeltaTime));
+
+	if (m_iPageIndex == 1)
+	{
+		if (m_bIDInput)
+			String_Input(m_szID);
+		else if(m_bPasswordInput)
+			String_Input(m_szPassword);
+
+	}
+
 	return _int();
 
 }
@@ -89,9 +99,10 @@ HRESULT CLoby_UI::First_SetUp_RenderState()
 	m_vUIDesc_Logo.z = 1000;
 	m_vUIDesc_Logo.w = 300;
 
+
+
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc_Logo)))
 		return E_FAIL;
-
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
@@ -245,6 +256,21 @@ _int CLoby_UI::Render()
 	if (m_fTextFrame - 15 > 0)
 		GetSingle(CGameInstance)->Render_UI_Font(L"Shin Joo Yeob\n\nJung Jin Woo\n\nUm Ji Hwan\n\nPark Eun Hyuk", { g_iWinCX - 280,g_iWinCY - 270 }, { 20,30 }, { 83,250,120 }, (_int)(m_fTextFrame - 15));
 
+	if (m_iPageIndex == 1 && !m_IsSceneChange)
+	{
+		GetSingle(CGameInstance)->Render_UI_Font(m_szID, { g_iWinCX *0.5f - 90, 450 }, { 10,15 }, { 83,250,120 });
+
+		_uint stringLen = (_uint)(m_szPassword.length());
+		wstring szHideString = L"";
+		for (_uint i = 0; i < stringLen;i++)
+		{
+			szHideString += L"x ";
+		}
+
+		GetSingle(CGameInstance)->Render_UI_Font(szHideString, { g_iWinCX *0.5f - 90, 570 }, { 10,15 }, { 83,250,120 });
+	}
+
+
 	return _int();
 }
 
@@ -363,7 +389,7 @@ HRESULT CLoby_UI::Update_MouseButton(_float fTimeDelta)
 					m_vUIDesc_FirstSound.x = g_iWinCX * 0.5f - 100;
 				if (m_vUIDesc_FirstSound.x > g_iWinCX * 0.5f + 100)
 					m_vUIDesc_FirstSound.x = g_iWinCX * 0.5f + 100;
-			
+
 				if (m_iPageIndex == 3)
 					pInstance->Channel_VolumeUp(CHANNEL_BGM, ((m_vUIDesc_FirstSound.x - (g_iWinCX * 0.5f - 100))) / 200.f);
 
@@ -399,6 +425,36 @@ HRESULT CLoby_UI::Update_MouseButton(_float fTimeDelta)
 		}
 	}
 
+	else if (m_iPageIndex == 1)
+	{
+
+		if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Down)
+		{
+			m_bIDInput = false;
+			m_bPasswordInput = false;
+
+
+			POINT ptMouse;
+			GetCursorPos(&ptMouse);
+			ScreenToClient(g_hWnd, &ptMouse);
+
+
+
+			if (PtInRect(&TransUIDesc_to_Rect(_float4(g_iWinCX *0.5f - 90, 450, 200, 100)), ptMouse))
+			{
+
+				m_bIDInput = true;
+
+			}
+			else if (PtInRect(&TransUIDesc_to_Rect({ g_iWinCX *0.5f - 90, 570, 200, 100 }), ptMouse))
+			{
+				m_bPasswordInput = true;
+			}
+
+
+		}
+
+	}
 	return S_OK;
 }
 
@@ -440,6 +496,9 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 					m_iPageIndex = 1;
 					m_iManuIndex = 0;
 					m_fIndexAlpha = 510.f;
+					m_szID = L"";
+					m_szPassword = L"";
+
 					m_pLobyCube->Strat_Turning(0);
 					m_bIsNewResgist = true;
 				}
@@ -448,6 +507,9 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 				{
 					m_iPageIndex = 1;
 					m_iManuIndex = 1;
+					m_szID = L"";
+					m_szPassword = L"";
+
 					m_fIndexAlpha = 510.f;
 					m_pLobyCube->Strat_Turning(0);
 				}
@@ -534,6 +596,71 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 	return S_OK;
 }
 
+HRESULT CLoby_UI::String_Input(wstring& wString)
+{
+	_uint iKey = 0;
+
+	CGameInstance* pInstance = GetSingle(CGameInstance);
+
+	if (pInstance->Get_DIKeyState(DIK_BACKSPACE) & DIS_Down)
+	{
+		wString = wString.substr(0, wString.length() - 1);
+	}
+	else {
+		if (pInstance->Get_DIKeyState(DIK_0) & DIS_Down) iKey = 48;
+		else if (pInstance->Get_DIKeyState(DIK_1) & DIS_Down) iKey = 49;
+		else if (pInstance->Get_DIKeyState(DIK_2) & DIS_Down) iKey = 50;
+		else if (pInstance->Get_DIKeyState(DIK_3) & DIS_Down) iKey = 51;
+		else if (pInstance->Get_DIKeyState(DIK_4) & DIS_Down) iKey = 52;
+		else if (pInstance->Get_DIKeyState(DIK_5) & DIS_Down) iKey = 53;
+		else if (pInstance->Get_DIKeyState(DIK_6) & DIS_Down) iKey = 54;
+		else if (pInstance->Get_DIKeyState(DIK_7) & DIS_Down) iKey = 55;
+		else if (pInstance->Get_DIKeyState(DIK_8) & DIS_Down) iKey = 56;
+		else if (pInstance->Get_DIKeyState(DIK_9) & DIS_Down) iKey = 57;
+
+		else if (pInstance->Get_DIKeyState(DIK_A) & DIS_Down) iKey = 97;
+		else if (pInstance->Get_DIKeyState(DIK_B) & DIS_Down) iKey = 98;
+		else if (pInstance->Get_DIKeyState(DIK_C) & DIS_Down) iKey = 99;
+		else if (pInstance->Get_DIKeyState(DIK_D) & DIS_Down) iKey = 100;
+		else if (pInstance->Get_DIKeyState(DIK_E) & DIS_Down) iKey = 101;
+		else if (pInstance->Get_DIKeyState(DIK_F) & DIS_Down) iKey = 102;
+		else if (pInstance->Get_DIKeyState(DIK_G) & DIS_Down) iKey = 103;
+		else if (pInstance->Get_DIKeyState(DIK_H) & DIS_Down) iKey = 104;
+		else if (pInstance->Get_DIKeyState(DIK_I) & DIS_Down) iKey = 105;
+		else if (pInstance->Get_DIKeyState(DIK_J) & DIS_Down) iKey = 106;
+		else if (pInstance->Get_DIKeyState(DIK_K) & DIS_Down) iKey = 107;
+		else if (pInstance->Get_DIKeyState(DIK_L) & DIS_Down) iKey = 108;
+		else if (pInstance->Get_DIKeyState(DIK_M) & DIS_Down) iKey = 109;
+		else if (pInstance->Get_DIKeyState(DIK_N) & DIS_Down) iKey = 110;
+		else if (pInstance->Get_DIKeyState(DIK_O) & DIS_Down) iKey = 111;
+		else if (pInstance->Get_DIKeyState(DIK_P) & DIS_Down) iKey = 112;
+		else if (pInstance->Get_DIKeyState(DIK_Q) & DIS_Down) iKey = 113;
+		else if (pInstance->Get_DIKeyState(DIK_R) & DIS_Down) iKey = 114;
+		else if (pInstance->Get_DIKeyState(DIK_S) & DIS_Down) iKey = 115;
+		else if (pInstance->Get_DIKeyState(DIK_T) & DIS_Down) iKey = 116;
+		else if (pInstance->Get_DIKeyState(DIK_U) & DIS_Down) iKey = 117;
+		else if (pInstance->Get_DIKeyState(DIK_V) & DIS_Down) iKey = 118;
+		else if (pInstance->Get_DIKeyState(DIK_W) & DIS_Down) iKey = 119;
+		else if (pInstance->Get_DIKeyState(DIK_X) & DIS_Down) iKey = 120;
+		else if (pInstance->Get_DIKeyState(DIK_Y) & DIS_Down) iKey = 121;
+		else if (pInstance->Get_DIKeyState(DIK_Z) & DIS_Down) iKey = 122;
+
+		if (iKey >= 97 && pInstance->Get_DIKeyState(DIK_LSHIFT) & DIS_Press)
+			iKey -= 32;
+
+		if (iKey != 0)
+		{
+
+			_tchar tempKeyChar = iKey;
+
+			wString += tempKeyChar;
+		}
+	}
+
+	return S_OK;
+}
+
+
 
 
 
@@ -542,10 +669,10 @@ RECT CLoby_UI::TransUIDesc_to_Rect(_float4 UIDesc)
 {
 	RECT tRsult{};
 
-	tRsult.left = UIDesc.x  - UIDesc.z*0.5f;
-	tRsult.top = UIDesc.y - UIDesc.w*0.5f;
-	tRsult.right = UIDesc.x + UIDesc.z*0.5f;
-	tRsult.bottom = UIDesc.y + UIDesc.w*0.5f;
+	tRsult.left =(LONG)( UIDesc.x  - UIDesc.z*0.5f);
+	tRsult.top = (LONG)(UIDesc.y - UIDesc.w*0.5f);
+	tRsult.right = (LONG)(UIDesc.x + UIDesc.z*0.5f);
+	tRsult.bottom = (LONG)(UIDesc.y + UIDesc.w*0.5f);
 
 
 	return tRsult;

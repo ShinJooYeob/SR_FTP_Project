@@ -70,6 +70,12 @@ private:
 
 	_bool			m_bIsNewResgist = false;
 
+	wstring			m_szID = L"";
+	wstring			m_szPassword = L"";
+
+	_bool			m_bIDInput = false;
+	_bool			m_bPasswordInput = false;
+
 public:
 	//vRect.x,y,z,w=top,left,bottom,right
 	void			Set_UI_TransformRect(_float4 vRect);
@@ -81,6 +87,7 @@ private:
 	HRESULT			Update_Alpha(_float fTimeDelta);
 	HRESULT			Input_ManuIndex(_float fTimeDelta);
 
+	HRESULT			String_Input(wstring& wString);
 
 private:
 	RECT			TransUIDesc_to_Rect(_float4 UIDesc);

@@ -625,35 +625,38 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 	}
 
 
-
-	if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
+	if (m_eNowSceneNum != SCENE_LOBY) 
 	{
 
-
-		m_CameraDesc.vWorldRotAxis = _float3(0,0,16.f).PosVector_Matrix(m_pTransform->Get_WorldMatrix());
-
-
-		m_fStartAngle = (m_eLoookState ) * 90.f;
-		m_fTargetAngle = (m_eLoookState + 1) * 90.f;
-
-		m_fPassedTime = 0;
-		m_IsTurning = true;
-
-	}
-
-	if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
-	{
-
-		m_CameraDesc.vWorldRotAxis = _float3(0, 0, 16.f).PosVector_Matrix(m_pTransform->Get_WorldMatrix());
-
-		m_fStartAngle = (m_eLoookState) * 90.f;
+		if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
+		{
 
 
-		m_fTargetAngle = (m_eLoookState - 1) * 90.f;
+			m_CameraDesc.vWorldRotAxis = _float3(0, 0, 16.f).PosVector_Matrix(m_pTransform->Get_WorldMatrix());
 
-		m_fPassedTime = 0;
-		m_IsTurning = true;
 
+			m_fStartAngle = (m_eLoookState) * 90.f;
+			m_fTargetAngle = (m_eLoookState + 1) * 90.f;
+
+			m_fPassedTime = 0;
+			m_IsTurning = true;
+
+		}
+
+		if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
+		{
+
+			m_CameraDesc.vWorldRotAxis = _float3(0, 0, 16.f).PosVector_Matrix(m_pTransform->Get_WorldMatrix());
+
+			m_fStartAngle = (m_eLoookState) * 90.f;
+
+
+			m_fTargetAngle = (m_eLoookState - 1) * 90.f;
+
+			m_fPassedTime = 0;
+			m_IsTurning = true;
+
+		}
 	}
 	if (m_IsTurning) {
 
