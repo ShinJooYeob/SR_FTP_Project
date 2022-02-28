@@ -66,6 +66,7 @@ private:
 	_float			m_fTimer = 0.f;
 
 	RECT			m_fStartButton;
+	RECT			m_fCancelButton;
 
 
 public:

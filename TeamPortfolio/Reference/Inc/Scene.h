@@ -16,9 +16,15 @@ public:
 	virtual _int Render();
 	virtual _int LateRender();
 
+	//π⁄¿∫«ı¿Ã ∞«µÎ
+	virtual	HRESULT Scene_InGame_Chage(_bool Scene_Chage_Switch, _uint _INextScene) { return S_OK; };
+
 protected:
 	LPDIRECT3DDEVICE9 m_pGraphicDevice = nullptr;
 
+	//π⁄¿∫«ı¿Ã ∞«µÎ
+	_bool			m_bScene_Switch = false;
+	_uint			m_INextScene;
 public:
 	virtual void Free()override;
 };

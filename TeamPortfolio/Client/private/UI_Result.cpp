@@ -2,6 +2,7 @@
 #include "..\public\UI_Result.h"
 #include "MyButton.h"
 #include "UI_Image.h"
+#include "Scene_Loading.h"
 
 CUI_Result::CUI_Result(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CUI(pGraphicDevice)
@@ -80,7 +81,7 @@ _int CUI_Result::Update(_float fDeltaTime)
 
 		if (FAILED(Update_UIButtonList(fDeltaTime)))
 			return E_FAIL;
-
+		
 
 
 		m_bStopSwitch = true;
@@ -172,47 +173,67 @@ HRESULT CUI_Result::Update_UIButtonList(_float fTimeDelta)
 	int hr;
 	for (auto pair : m_UIButtonList) {
 		hr = (pair.second->Update(fTimeDelta));
-		if (hr != SHOP_END)  
+		if (hr != SHOP_END)
+			break;
 			//스위치는 for문 밖에다 쓰도록 하자!
-		switch (hr)
+	}
+	switch (hr)
+	{
+	case RESULT_START:
+	{
+		if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
 		{
-		case RESULT_START:
-		{
-			if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
+			POINT ptMouse;
+			GetCursorPos(&ptMouse);
+			ScreenToClient(g_hWnd, &ptMouse);
+			m_isClicked = false;
+			if (PtInRect(&m_fStartButton, ptMouse))
 			{
-				POINT ptMouse;
-				GetCursorPos(&ptMouse);
-				ScreenToClient(g_hWnd, &ptMouse);
-				m_isClicked = false;
-				if (PtInRect(&m_fStartButton, ptMouse))
-				{
-					m_isClicked = true;
-					CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
-					CTexture* ButtonTexture = (CTexture*)ButtonStart->Get_Component(TEXT("Com_Texture"));
-					ButtonTexture->Change_TextureLayer(L"Button_Result_Start3");
-				}
+				m_isClicked = true;
+				CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
+				CTexture* ButtonTexture = (CTexture*)ButtonStart->Get_Component(TEXT("Com_Texture"));
+				ButtonTexture->Change_TextureLayer(L"Button_Result_Start3");
 			}
-			if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Up)
+		}
+		if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Up)
+		{
+			CScene* TempScene = pGameInstance->Get_Scene();
+			TempScene->Scene_InGame_Chage(true, pGameInstance->Get_NowSceneNum());
+		}
+		break;
+	}
+	case RESULT_CANCEL:
+	{
+		if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
+		{
+			POINT ptMouse;
+			GetCursorPos(&ptMouse);
+			ScreenToClient(g_hWnd, &ptMouse);
+			m_isClicked = false;
+			if (PtInRect(&m_fCancelButton, ptMouse))
 			{
-				//여기에 기능구현하면 될 듯
+				m_isClicked = true;
+				CMyButton* ButtonCancel = (CMyButton*)Find_Button(L"Button_Result_Cancel");
+				CTexture* ButtonTexture = (CTexture*)ButtonCancel->Get_Component(TEXT("Com_Texture"));
+				ButtonTexture->Change_TextureLayer(L"Button_Result_Cancel3");
 			}
-			//CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
-			
-			//이거 되니깐 같이 이동시키면 될 듯 기억하셈
-			//ButtonStart->Set_UI_Transform
-			//내가 원하는 기능
-			break;
 		}
-		case RESULT_CANCEL:
+		if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Up)
 		{
-			break;
+			CScene* TempScene = pGameInstance->Get_Scene();
+			TempScene->Scene_InGame_Chage(true, SCENEID::SCENE_LOBY);
+			//TempScene->Scene_InGame_Chage(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_LOBY), SCENEID::SCENE_LOADING);
+			//if (FAILED(pGameInstance->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_LOBY), SCENEID::SCENE_LOADING)))
+			//	return E_FAIL;
+
+			//여기에 기능구현하면 될 듯
 		}
-		default:
-		{
-			break;
-		}
-		}
-		
+		break;
+	}
+	default:
+	{
+		break;
+	}
 	}
 
 
@@ -306,13 +327,13 @@ void CUI_Result::Button_Picking()
 	m_vButtonDesc = { (g_iWinCX >> 1) - 150,(g_iWinCY >> 1) + 150, 250 ,100 };
 	_float4 vUIDesc = m_vButtonDesc;
 
-	RECT TEST;
-	TEST.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
-	TEST.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
-	TEST.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
-	TEST.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
-	m_fStartButton = TEST;
-	ButtonStart->Set_Rect(m_vButtonDesc, TEST);
+	RECT TempButton;
+	TempButton.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	TempButton.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	TempButton.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	TempButton.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
+	m_fStartButton = TempButton;
+	ButtonStart->Set_Rect(m_vButtonDesc, TempButton);
 	ButtonStart->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
 
 	CMyButton* ButtonCancel = (CMyButton*)Find_Button(L"Button_Result_Cancel");
@@ -320,11 +341,12 @@ void CUI_Result::Button_Picking()
 	//ButtonTransform->Set_MatrixState(CTransform::STATE_POS, _float3(200.f, -100.f, 0));
 	m_vButtonDesc = { (g_iWinCX >> 1) + 150,(g_iWinCY >> 1) + 150, 250 ,100 };
 	vUIDesc = m_vButtonDesc;
-	TEST.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
-	TEST.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
-	TEST.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
-	TEST.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
-	ButtonCancel->Set_Rect(m_vButtonDesc, TEST);
+	TempButton.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	TempButton.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	TempButton.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	TempButton.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
+	m_fCancelButton = TempButton;
+	ButtonCancel->Set_Rect(m_vButtonDesc, TempButton);
 	ButtonCancel->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
 }
 
