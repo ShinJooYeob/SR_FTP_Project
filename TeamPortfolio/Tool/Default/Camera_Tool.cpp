@@ -55,14 +55,19 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 			m_pTransform->Move_Down(fDeltaTime);
 
 		}
+		_float3 newPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
+		_float3 newLook = m_pTransform->Get_MatrixState(CTransform::STATE_LOOK);
+		_float3 newTarget = (newPos + newLook * 5);
 
 		if (GetSingle(CKeyMgr)->Key_Pressing(VK_LEFT))
 		{
-			m_pTransform->Move_Left(fDeltaTime);
+			m_pTransform->Move_Left(fDeltaTime*RotSpeed);
+			Set_NewLookPoint(newTarget);
 		}
 		if (GetSingle(CKeyMgr)->Key_Pressing(VK_RIGHT))
 		{
-			m_pTransform->Move_Right(fDeltaTime);	
+			m_pTransform->Move_Right(fDeltaTime*RotSpeed);
+			Set_NewLookPoint(newTarget);
 
 		}
 
@@ -80,22 +85,18 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 
 		}
 		
-		_float3 newPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
-		_float3 newLook = m_pTransform->Get_MatrixState(CTransform::STATE_LOOK);
-		_float3 newTarget = (newPos + newLook * 5);
+
 
 
 		if (GetSingle(CKeyMgr)->Key_Pressing('A'))
 		{
-			m_pTransform->Move_Left(fDeltaTime*RotSpeed);
-			Set_NewLookPoint(newTarget);
+			m_pTransform->Move_Left(fDeltaTime);
 		}
 
 		if (GetSingle(CKeyMgr)->Key_Pressing('D'))
 		{
-			m_pTransform->Move_Right(fDeltaTime*RotSpeed);
-			Set_NewLookPoint(newTarget);
 
+			m_pTransform->Move_Right(fDeltaTime);
 		}	
 
 
