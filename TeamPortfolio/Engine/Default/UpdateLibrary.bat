@@ -6,6 +6,3 @@ xcopy /y ..\Bin\"*.dll" ..\..\Client\Bin\
 
 // Tool DLL 추가
 xcopy /y ..\Bin\"*.dll" ..\..\Tool\bin\
-xcopy /y ..\..\Tool\Bin\Resources\Textures\TexturePathData\"*.txt"  ..\..\Client\Bin\Resources\Textures\TexturePathData\
-// Tool Mapdata 추가
-xcopy /y ..\..\Tool\Bin\Resources\mapdata\"*.dat"  ..\..\Client\Bin\Resources\mapdata\
