@@ -21,6 +21,8 @@
 #define DIS_DoubleDown		0b00000100
 #define DIS_Press			0b11111111
 
+#define COLOR_GRAY			D3DCOLOR_ARGB(255, 124, 124, 124)
+#define COLOR_BLUE			D3DCOLOR_ARGB(255, 0, 0, 255)
 
 #define BEGIN(p)	namespace p {
 #define END			}

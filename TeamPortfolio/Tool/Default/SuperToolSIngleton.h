@@ -43,7 +43,7 @@ private:
 public: // For. Device
 	HRESULT		InitDevice();
 	HRESULT		Update_Tool(_float ftimer);
-	HRESULT		Render_Begin(void);
+	HRESULT		Render_Begin(D3DCOLOR backbuffer = COLOR_GRAY);
 	HRESULT		Render_End(HWND hWnd = NULL);
 
 	// 오브젝트 초기화
@@ -93,13 +93,14 @@ public: //For. Data
 
 	HRESULT LoadData_Data(CWnd * cwnd);
 
+	HRESULT LoadData_ObjectFile();
+
 	HRESULT Create_ToolObject_Button(wstring name);
 	HRESULT Create_ToolObject_Data(const _tchar* str, const OUTPUT_OBJECTINFO& data);
 
 public:// For Create
 	CObjectTool_ToolObject* Create_New_ToolObject(wstring name, const _tchar* laytag);
 	CObjectTool_ToolObject* Create_Load_MapObject(const OUTPUT_OBJECTINFO& info, const _tchar* laytag);
-
 	CObjectTool_ToolObject* Create_Clone_MapObject(_float3 Pos, const _tchar* laytag);
 
 public:// For Object
@@ -125,7 +126,7 @@ private:
 	CToolView*			m_pToolView;	// 툴 뷰
 	CPathFind*			m_pPathDialog;	// 경로 창
 	CTrans_Dialog*		m_pTransDialog;	// 위치 조정 창
-	CMapTool*			m_pMapToolDialog;
+	CMapTool*			m_pMapToolDialog;// 맵툴
 
 private:
 	LPDIRECT3DDEVICE9			m_pGraphicDevice;

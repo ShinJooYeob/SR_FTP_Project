@@ -45,7 +45,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CObjectTool_ToolObject* m_MouseSelesctObject;
+	CEdit m_GetCubeID;
+
+
 
 public:
 
@@ -65,4 +67,6 @@ public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnBnClickedButtonCubeMap();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+	afx_msg void OnEnChangeCubeID();
 };

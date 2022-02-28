@@ -83,12 +83,12 @@ void CGraphic_Device::SetParameters(D3DPRESENT_PARAMETERS & d3dpp, const GRAPHIC
 	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 }
 
-void CGraphic_Device::Render_Begin(void)
+void CGraphic_Device::Render_Begin(D3DCOLOR color)
 {
 	m_pDevice->Clear(0,
 		nullptr,
 		D3DCLEAR_STENCIL | D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-		D3DCOLOR_ARGB(255, 124, 124, 124),	
+		color,
 		1.f, 
 		0);	
 

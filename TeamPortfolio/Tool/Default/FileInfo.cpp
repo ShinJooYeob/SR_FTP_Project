@@ -121,39 +121,31 @@ void CFileInfo::DirInfoExtraction(const wstring & wstrPath, list<IMGPATH*>& rPat
 	}
 }
 
-void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<MYFILEPATH*>& rPathInfoList,E_FILETYPE type)
+void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<wstring>& FullPathList,E_FILETYPE type)
 {
 
-	// #Tag 파일 경로 받아오는 것 리소스 데이터대로 다시 제작
+	// 모든 파일 FullPath 저장
 
-	// wstrPath 파일 폴더의 경로가 들어온다. / 이 다음 모든 파일을 확인
-	wstring	wstrFilePath;
-	wstrFilePath = wstrPath + L"\\*.*";
-	
+	wstring	wstrFilePath = wstrPath + L"\\*.*";
+
 	// mfc에서 제공하는 파일 및 경로 제어 관련 클래스
 	CFileFind		Find;
-
-	// rPathInfoList : 파일 경로 정보 저장 리스트 
 
 	// 주어진 경로에 파일의 유무를 확인하는 함수
 	// 존재하지 않으면 false 리턴, 존재하면 true리턴
 	BOOL	bContinue = Find.FindFile(wstrFilePath.c_str());
 
-
-	// 파일 탐색
 	while (bContinue)
 	{
 		bContinue = Find.FindNextFile();
 
 		if (Find.IsDots())
 			continue;
-		if (Find.IsHidden())
-			continue;
 
 		else if (Find.IsDirectory())
 		{
 			// GetFilePath : 현재 찾은 경로를 얻어오는 함수
-			DirInfoExtraction_Custom(wstring(Find.GetFilePath()), rPathInfoList, type);
+			DirInfoExtraction_Custom(wstring(Find.GetFilePath()), FullPathList, type);
 		}
 
 		else // 파일을 찾은 상황
@@ -162,36 +154,20 @@ void CFileInfo::DirInfoExtraction_Custom(const wstring & wstrPath, list<MYFILEPA
 			if (Find.IsSystem())
 				continue;
 
-			// 파일 경로
-			MYFILEPATH*		pImgPath = new MYFILEPATH;
-			TCHAR			szPath[MAX_PATH] = L"";
-
 			// 확장자 검사 type
 			if (false == FindType(Find, type))
 				continue;
 
+			// wstring StrFiletype = Find.GetFileName().Right(3);
 
-			lstrcpy(szPath, Find.GetFilePath().GetString());
-
-			// 상대 경로 저장
-			pImgPath->wstrFullPath = ConvertRelativePath(szPath);
-
-			// 파일 이름과 확장자 저장			
-			pImgPath->wFileName = Find.GetFileTitle().GetString();
-			PathRemoveFileSpec(szPath);
-
-		
-
-			// pImgPath->wstrFullPath = szPath;
-			// PathFindFileName(szPath);			
-			rPathInfoList.push_back(pImgPath);
-			Find.FindNextFile();
+			wstring			Fullpath;
+			Fullpath = Find.GetFilePath().GetString();
+			FullPathList.push_back(Fullpath);
+		//	Find.FindNextFile();
 		}
 	}
-
-
-
 }
+
 
 int CFileInfo::DirFileCount(const wstring & wstrPath)
 {

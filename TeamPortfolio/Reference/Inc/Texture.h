@@ -71,6 +71,8 @@ private:
 	TEXTUREDESC									m_TextureDesc;
 	_uint										m_SettingIndex = -1;
 
+
+
 private:
 	HRESULT Read_TextFile(TYPE eTextureType, const _tchar* szFilePath);
 	HRESULT Insert_TextureLayer(TYPE eType, _tchar* szFilePath, _tchar* szStateKey, _int iNumTextureCount);

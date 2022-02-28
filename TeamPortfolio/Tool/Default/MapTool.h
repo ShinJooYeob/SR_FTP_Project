@@ -30,25 +30,27 @@ public:
 	enum { IDD = IDD_MAPTOOL };
 #endif
 
+
+public:
+	void Update_CountText(int offset=0);
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
+
 private:
-	void ListBoxUpdate();
 	void CreateNewMap(_uint  x, _uint  y, _uint z, E_BUILDINGTYPE type);
 
-
-	CListBox m_ListBox_Map;
-	
+private:
 	// XYZ 입력창
 	CEdit m_EditBox[3];
-
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnLbnSelchangeList1();
-	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton3();
-	afx_msg void OnBnClickedButton13();
-	afx_msg void OnBnClickedButton14();
+	afx_msg void OnBnClickedButton_PreSet1();
+	afx_msg void OnBnClickedButton_PreSet2();
+	afx_msg void OnBnClickedButton_PreSet3();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnBnClickedButtonClear();
 };

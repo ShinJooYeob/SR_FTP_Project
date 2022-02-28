@@ -57,6 +57,8 @@ void CMyForm::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK1, m_CheckCameraEnable);
 	DDX_Control(pDX, IDC_CHECK2, m_CheckWirframeEnable);
 	DDX_Control(pDX, IDC_LIST3, m_ListBox_Objects);
+	DDX_Control(pDX, IDC_EDIT1, m_GetCubeID);
+
 }
 
 BEGIN_MESSAGE_MAP(CMyForm, CFormView)
@@ -74,6 +76,7 @@ BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON15, &CMyForm::OnBnClickedButton_Delete)
 	ON_WM_ERASEBKGND()
 	ON_BN_CLICKED(IDC_BUTTON1, &CMyForm::OnBnClickedButtonCubeMap)
+	ON_EN_CHANGE(IDC_EDIT2, &CMyForm::OnEnChangeCubeID)
 END_MESSAGE_MAP()
 
 // CMyForm 진단입니다.
@@ -109,9 +112,6 @@ void CMyForm::OnInitialUpdate()
 	GetDlgItem(IDC_BUTTON12)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON13)->SetFont(&m_Font);
 	GetDlgItem(IDC_BUTTON14)->SetFont(&m_Font);
-
-	m_MouseSelesctObject = nullptr;
-
 	
 }
 
@@ -159,7 +159,10 @@ void CMyForm::OnObjectSave()
 void CMyForm::OnBnClickedButtonLoad()
 {
 	// 오브젝트 로드 해서 새로 생성
-	GetSingle(CSuperToolSIngleton)->LoadData_Data(this);
+	GetSingle(CSuperToolSIngleton)->LoadData_ObjectFile();
+
+	
+//	GetSingle(CSuperToolSIngleton)->LoadData_Data(this);
 }
 
 void CMyForm::OnMapSave()
@@ -169,35 +172,12 @@ void CMyForm::OnMapSave()
 	m_MapToolDialog.ShowWindow(SW_SHOW);
 }
 
-
-//void CMyForm::OnCbnSelchangeCombo2()
-//{
-	//// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	//int a = m_ComboBox.GetCurSel();
-	//int b = 0;
-	//switch (a)
-	//{
-	//case 0:
-	//	b = 0;
-	//	break;
-
-	//case 1:
-	//	b = 1;
-	//	break;
-
-	//case 2:
-	//	b = 2;
-	//	break;
-
-	//}
-//}
-
 void CMyForm::OnBnClickedButtonCube()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// 큐브 컴포넌트로 바꾸기
 	//GetSingle(CSuperToolSIngleton)->Get_ViewObject_Object()->Set_ViBuffer_Change();
-
+	return;
 }
 
 void CMyForm::OnBnClickedButton_CreateObject()
@@ -205,7 +185,7 @@ void CMyForm::OnBnClickedButton_CreateObject()
 	static int num = 0;
 	num++;
 	TCHAR t[64];
-	wsprintf(t,L"new_%d",num);
+	wsprintf(t,L"NewObject_%d",num);
 	wstring filename = t;
 
 	GetSingle(CSuperToolSIngleton)->Create_ToolObject_Button(filename);
@@ -221,8 +201,8 @@ void CMyForm::OnLbnSelchangeList_ObjectSelect()
 	GetSingle(CSuperToolSIngleton)->Set_ViewObject_Index(index);
 
 	GetSingle(CSuperToolSIngleton)->Update_Select_Render_None(TAG_LAY(Layer_View));
-	GetSingle(CSuperToolSIngleton)->Update_Select_Render_Visble(TAG_LAY(Layer_View),
-		GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject());
+//	GetSingle(CSuperToolSIngleton)->Update_Select_Render_Visble(TAG_LAY(Layer_View),
+//		GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject());
 	
 	if (GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject() == nullptr)
 		return;
@@ -230,13 +210,18 @@ void CMyForm::OnLbnSelchangeList_ObjectSelect()
 	// 텍스처와 위치 업데이트
 	if (nullptr != m_TransformDialog.GetSafeHwnd())
 		m_TransformDialog.Set_CurrentUpdate_WorldMat(); // 현재 오브젝트 데이터로 업데이트
-
 	else
 	{
 		m_TransformDialog.Create(IDD_CTrans_Dialog);	
 		m_TransformDialog.Set_CurrentUpdate_WorldMat(); 
 	}
+
 	GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject()->Texture_CurrentBind();
+	// CUBEID 출력
+	_uint cubeid = GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject()->Get_OutputData().CubeID;
+	_tchar buf[16];
+	_itot_s(cubeid, buf, 10);
+	m_GetCubeID.SetWindowText(buf);
 
 }
 
@@ -282,4 +267,26 @@ BOOL CMyForm::PreTranslateMessage(MSG* pMsg)
 
 
 	return false;
+}
+
+
+void CMyForm::OnEnChangeCubeID()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CFormView::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	// 큐브 아이디 업데이트
+	CString str;
+	GetDlgItemText(IDC_EDIT2, str);
+	int getid = _ttoi(str);
+
+	if (getid < 0)
+		getid = 0;
+
+	GetSingle(CSuperToolSIngleton)->Get_ViewObject_SelectObject()->Set_CubeID(getid);
+
 }

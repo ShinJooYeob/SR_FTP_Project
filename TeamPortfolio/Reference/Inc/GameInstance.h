@@ -65,7 +65,7 @@ public: /* For.TimerMgr */
 	HRESULT Add_Timer(const _tchar* tagTimer);
 
 public:  /*For Graphic Device*/
-	void Render_Begin(void);
+	void Render_Begin(D3DXCOLOR backbuffer = COLOR_GRAY);
 	void Render_End();
 
 public: /*For SceneMgr*/

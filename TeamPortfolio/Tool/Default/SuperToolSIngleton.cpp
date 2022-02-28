@@ -7,6 +7,7 @@
 #include "ObjectTool_ToolWire.h"
 
 #include "Camera_Tool.h"
+#include "FileInfo.h"
 
 IMPLEMENT_SINGLETON(CSuperToolSIngleton)
 
@@ -76,13 +77,13 @@ HRESULT CSuperToolSIngleton::Update_Tool(_float ftimer)
 	return S_OK;
 }
 
-HRESULT CSuperToolSIngleton::Render_Begin(void)
+HRESULT CSuperToolSIngleton::Render_Begin(D3DCOLOR backbuffer)
 {
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
 	Render_Set_State();
 
-	m_pGameInstance->Render_Begin();	
+	m_pGameInstance->Render_Begin(backbuffer);
 	return S_OK;
 }
 
@@ -249,11 +250,13 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView()
 {
 	m_pMainFrame = static_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 	m_pToolView = static_cast<CToolView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 1));
-	m_pMiniView = static_cast<CMiniView*>(m_pMainFrame->m_MainSplitter.GetPane(0, 0));
-	m_pMyButtomView = static_cast<CMyForm*>(m_pMainFrame->m_SecondSplitter.GetPane(1, 0));
+
+	m_pMyButtomView = static_cast<CMyForm*>(m_pMainFrame->m_SecondSplitter.GetPane(0, 0));
+	m_pMiniView = static_cast<CMiniView*>(m_pMainFrame->m_SecondSplitter.GetPane(1, 0));
 
 	m_pTransDialog = &m_pMyButtomView->m_TransformDialog;
 	m_pPathDialog = &m_pMyButtomView->m_PathFind;
+	m_pMapToolDialog = &m_pMyButtomView->m_MapToolDialog;
 
 	return S_OK;
 }
@@ -344,7 +347,7 @@ HRESULT CSuperToolSIngleton::SaveData_Map(list<CGameObject*> objlist, CWnd* cwnd
 	GetCurrentDirectory(MAX_PATH, szPath);
 	PathRemoveFileSpec(szPath);
 
-	lstrcat(szPath, g_FilePath_ObjectPathData_Save.c_str());
+	lstrcat(szPath, g_FilePath_MapPathData_Save.c_str());
 	Dlg.m_ofn.lpstrInitialDir = szPath;
 
 	if (IDOK == Dlg.DoModal())
@@ -447,6 +450,53 @@ HRESULT CSuperToolSIngleton::LoadData_Data(CWnd * cwnd)
 	return S_OK;
 }
 
+
+HRESULT CSuperToolSIngleton::LoadData_ObjectFile()
+{
+	// 기본 오브젝트 파일 로드
+	
+	// 1. 디렉토리의 모든 파일 Path 얻어옴
+	CFileFind find;
+
+	list<wstring> objPathList;
+	CFileInfo::DirInfoExtraction_Custom(g_FilePath_ObjectsPathData_Load, objPathList, FILETYPE_DAT);
+	
+
+
+	// 2. 해당 오브젝트 만큼 로드
+
+	for (auto path : objPathList)
+	{
+		HANDLE hFile = CreateFile(path.c_str(), GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+		if (INVALID_HANDLE_VALUE == hFile)
+			return E_FAIL;
+
+		// 해당 공간에 오브젝트 정보에 해당하는 값을 넣는다.
+		DWORD	dwByte = 0;
+		OUTPUT_ID id;
+		OUTPUT_OBJECTINFO data;
+
+		// 로드
+		ReadFile(hFile, &id, sizeof(OUTPUT_ID), &dwByte, nullptr);
+		switch (id.FILEID)
+		{
+		case OUTPUT_OBJECT:
+			ReadFile(hFile, &data, sizeof(OUTPUT_OBJECTINFO), &dwByte, nullptr);
+			// 새 오브젝트 생성
+			Create_ToolObject_Data(id.strObjectName, data);
+			break;
+		case OUTPUT_MAP:
+			break;
+		}
+
+		CloseHandle(hFile);
+	}
+	
+
+	return S_OK;
+}
+
 HRESULT CSuperToolSIngleton::Create_ToolObject_Button(wstring name)
 {
 	// 버튼을 누르면 새 오브젝트 생성.
@@ -513,6 +563,7 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(_float3 Pos
 	// 3. 생성된 오브젝트 가져오기
 	CObjectTool_ToolObject* newobj = (CObjectTool_ToolObject*)GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, laytag)->back();
 	newobj->LoadData(info);
+	newobj->Set_WorldMat(cloneobj->Get_Matrix());
 	newobj->Set_Position(Pos);
 	return newobj;
 }

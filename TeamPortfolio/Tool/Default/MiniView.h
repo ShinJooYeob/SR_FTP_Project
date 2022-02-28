@@ -19,9 +19,13 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 #endif
+	class CCamera_Tool* m_Camera_tool;
 
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	virtual void OnInitialUpdate();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	virtual BOOL DestroyWindow();
 };

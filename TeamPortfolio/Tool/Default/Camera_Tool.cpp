@@ -2,6 +2,7 @@
 #include "Camera_Tool.h"
 
 
+const int RotSpeed = 3;
 
 CCamera_Tool::CCamera_Tool(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CCamera(pGraphicDevice)
@@ -44,9 +45,6 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 	{
 	//	_float3 newCenter = GetSingle(CSuperToolSIngleton)->Get_Center_MapPosition();
 		
-	
-
-
 		if (GetSingle(CKeyMgr)->Key_Pressing(VK_UP))
 		{
 			m_pTransform->Move_Up(fDeltaTime);
@@ -89,13 +87,13 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 
 		if (GetSingle(CKeyMgr)->Key_Pressing('A'))
 		{
-			m_pTransform->Move_Left(fDeltaTime);
+			m_pTransform->Move_Left(fDeltaTime*RotSpeed);
 			Set_NewLookPoint(newTarget);
 		}
 
 		if (GetSingle(CKeyMgr)->Key_Pressing('D'))
 		{
-			m_pTransform->Move_Right(fDeltaTime);
+			m_pTransform->Move_Right(fDeltaTime*RotSpeed);
 			Set_NewLookPoint(newTarget);
 
 		}	
@@ -134,6 +132,22 @@ _int CCamera_Tool::Render()
 _int CCamera_Tool::LateRender()
 {
 	return _int();
+}
+
+HRESULT CCamera_Tool::Set_StartPosView()
+{
+	m_NowMat = m_pTransform->Get_WorldMatrix();
+	m_pTransform->Set_Matrix(m_StartMat);
+	__super::Update(0.03f);
+
+	return S_OK;
+}
+
+HRESULT CCamera_Tool::Set_OriginPosView()
+{
+	m_pTransform->Set_Matrix(m_NowMat);
+
+	return S_OK;
 }
 
 CCamera_Tool * CCamera_Tool::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)

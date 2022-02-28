@@ -19,7 +19,6 @@ CTrans_Dialog::CTrans_Dialog(CWnd* pParent /*=nullptr*/)
 	: CDialog(IDD_CTrans_Dialog, pParent)
 {
 	m_Com_Textures = nullptr;
-
 }
 
 CTrans_Dialog::~CTrans_Dialog()
@@ -50,6 +49,9 @@ void CTrans_Dialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SLIDER1, m_Silder_Rotation[0]);
 	DDX_Control(pDX, IDC_SLIDER2, m_Silder_Rotation[1]);
 	DDX_Control(pDX, IDC_SLIDER3, m_Silder_Rotation[2]);
+	DDX_Control(pDX, IDC_SPIN1, m_SpinButton[0]);
+	DDX_Control(pDX, IDC_SPIN2, m_SpinButton[1]);
+	DDX_Control(pDX, IDC_SPIN3, m_SpinButton[2]);
 }
 
 HRESULT CTrans_Dialog::EditToObjectUpdate(CEdit* edit,_uint editCount)
@@ -74,11 +76,11 @@ HRESULT CTrans_Dialog::EditToObjectUpdate(CEdit* edit,_uint editCount)
 	CurrentToolObject->Set_Position(_float3(newfloat[0], newfloat[1], newfloat[2]));
 	_float3 newRot = _float3(D3DXToRadian(newfloat[3]), D3DXToRadian(newfloat[4]), D3DXToRadian(newfloat[5]));
 
-	for (int i=0;i<3;i++)
+	for (int i = 0; i < 3; i++)
 	{
 		m_Silder_Rotation[i].SetPos(newfloat[i + 3]);
 	}
-	
+
 	CurrentToolObject->Set_Rotation(newRot);
 	CurrentToolObject->Set_Scaled(_float3(newfloat[6], newfloat[7], newfloat[8]));
 
@@ -97,6 +99,10 @@ BEGIN_MESSAGE_MAP(CTrans_Dialog, CDialog)
 	ON_LBN_SELCHANGE(IDC_LIST1, &CTrans_Dialog::OnLbnSelchangeList1)
 	ON_WM_HSCROLL()
 	ON_WM_KEYDOWN()
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN1, &CTrans_Dialog::OnDeltaposSpin0)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN2, &CTrans_Dialog::OnDeltaposSpin1)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN3, &CTrans_Dialog::OnDeltaposSpin2)
+
 END_MESSAGE_MAP()
 
 
@@ -104,7 +110,7 @@ HRESULT CTrans_Dialog::ResetTexture()
 {
 	// 텍스처 리스트 업데이트
 	
-	//모든 텍스처 데이터 업데이트
+	// 모든 텍스처 데이터 업데이트
 	if (m_Com_Textures == nullptr)
 	{
 		CObjectTool_ToolObject* CurrentToolObject = GetSingle(CSuperToolSIngleton)->Get_ViewObject_Object();
@@ -114,9 +120,8 @@ HRESULT CTrans_Dialog::ResetTexture()
 		m_Com_Textures = static_cast<CTexture*>(CurrentToolObject->Get_Component(TAG_COM(Com_Texture)));
 		NULL_CHECK_BREAK(m_Com_Textures);
 		m_Com_Textures->AddRef();
-
-
 	}
+
 	if (m_Com_Textures)
 	{
 		auto iterbegin= m_Com_Textures->Get_SaveTextureMap().begin();
@@ -177,7 +182,6 @@ HRESULT CTrans_Dialog::Set_CurrentUpdate_WorldMat()
 	m_Silder_Rotation[1].SetPos(0);
 	m_Silder_Rotation[2].SetPos(0);
 
-
 	return S_OK;
 }
 
@@ -229,8 +233,8 @@ BOOL CTrans_Dialog::DestroyWindow()
 void CTrans_Dialog::OnBnClickedButton1()
 {
 	// 현재 정보가 오브젝트에 적용된다.
+	ResetTexture();
 	EditToObjectUpdate(m_InputNumber,9);
-
 }
 
 
@@ -260,6 +264,7 @@ void CTrans_Dialog::OnLbnSelchangeList1()
 }
 
 
+
 void CTrans_Dialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
@@ -281,15 +286,93 @@ void CTrans_Dialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
-
-void CTrans_Dialog::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+BOOL CTrans_Dialog::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	//if (nChar == 'C')
-	//{
-	//	CTransform* trans = (CTransform*)m_GameObject_Rect_Tool->Get_Component(TAG_COM(Com_Transform));
-	//	trans->Turn_CCW(_float3(0, 1, 0), 0.3f);
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
-	//}
-	CDialog::OnKeyDown(nChar, nRepCnt, nFlags);
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		//이스케이프키일 경우 함수 종료
+		if (pMsg->wParam == VK_DOWN || pMsg->wParam == VK_UP ||
+			pMsg->wParam == VK_LEFT || pMsg->wParam == VK_RIGHT)
+			return TRUE;
+	}
+	return CDialog::PreTranslateMessage(pMsg);
+
+}
+
+void CTrans_Dialog::Update_SpinButton(int index, int rot)
+{
+
+	int CurRot = m_Silder_Rotation[index].GetPos();
+	int moveRot = CurRot + rot;
+	if (moveRot > 360 || moveRot < 0)
+		return;
+
+	m_Silder_Rotation[index].SetPos(moveRot);
+
+	CString sPos;
+	sPos.Format(_T("%d"), moveRot);
+	m_InputNumber[index + 3].SetWindowText(sPos);
+	EditToObjectUpdate(m_InputNumber, 9);
+
+}
+
+
+void CTrans_Dialog::OnDeltaposSpin0(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	// 90도 씩 회전 하도록 처리
+	int delta = pNMUpDown->iDelta;
+	if (delta>0)
+	{
+		Update_SpinButton(0, -90);
+	}
+	else
+	{
+		Update_SpinButton(0, 90);
+
+	}
+	
+	*pResult = 0;
+}
+
+void CTrans_Dialog::OnDeltaposSpin1(NMHDR * pNMHDR, LRESULT * pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int delta = pNMUpDown->iDelta;
+	if (delta > 0)
+	{
+		Update_SpinButton(1, -90);
+
+	}
+	else
+	{
+		Update_SpinButton(1, 90);
+
+	}
+	*pResult = 0;
+
+}
+
+void CTrans_Dialog::OnDeltaposSpin2(NMHDR * pNMHDR, LRESULT * pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int delta = pNMUpDown->iDelta;
+	if (delta > 0)
+	{
+		Update_SpinButton(2, -90);
+
+	}
+	else
+	{
+		Update_SpinButton(2, 90);
+
+	}
+	*pResult = 0;
+
 }

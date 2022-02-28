@@ -261,12 +261,12 @@ HRESULT CGameInstance::Add_Timer(const _tchar * tagTimer)
 	return m_pTimerMgr->Add_Timer(tagTimer);
 }
 
-void CGameInstance::Render_Begin(void)
+void CGameInstance::Render_Begin(D3DXCOLOR backbuffer)
 {
 	if (m_pGraphicDevice == nullptr)
 		return;
 
-	m_pGraphicDevice->Render_Begin();
+	m_pGraphicDevice->Render_Begin(backbuffer);
 }
 
 void CGameInstance::Render_End()

@@ -108,19 +108,23 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 
 	m_MainSplitter.CreateStatic(this, 1, 2);
 
+//	m_MainSplitter.CreateView(0, 0, RUNTIME_CLASS(CMyForm), CSize(300, TOOL_WINCY), pContext);
 	m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CToolView), CSize(TOOL_WINCX, TOOL_WINCY), pContext);
+
+
 
 	// WS_CHILD : 자식 창이라는 의미
 	// WS_VISIBLE : 생성 후 바로 화면에 표시하겠다는 의미
 	// IdFromRowCol : 지정한 행과 열에 해당하는 창의 id를 반환하는 함수
 
 	m_SecondSplitter.CreateStatic(&m_MainSplitter, 2, 1, WS_CHILD | WS_VISIBLE, m_MainSplitter.IdFromRowCol(0, 0));
+	const _uint second_WinX = 350;
 
-	m_SecondSplitter.CreateView(0, 0, RUNTIME_CLASS(CMiniView), CSize(300, 100), pContext);
-	m_SecondSplitter.CreateView(1, 0, RUNTIME_CLASS(CMyForm), CSize(300, 300), pContext);
+	m_SecondSplitter.CreateView(0, 0, RUNTIME_CLASS(CMyForm), CSize(second_WinX, 500), pContext);
+	m_SecondSplitter.CreateView(1, 0, RUNTIME_CLASS(CMiniView), CSize(second_WinX, 80), pContext);
 
 	// 열 번호, 열의 크기 지정, 허용 가능한 최소 크기
-	m_MainSplitter.SetColumnInfo(0, 300, 10);
+	m_MainSplitter.SetColumnInfo(0, second_WinX, 20);
 
 	return TRUE; //CFrameWnd::OnCreateClient(lpcs, pContext);
 }

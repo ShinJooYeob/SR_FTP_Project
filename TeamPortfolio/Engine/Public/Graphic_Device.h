@@ -29,7 +29,7 @@ public:
 	HRESULT		InitDevice(const GRAPHICDESC& Graphicdesc, LPDIRECT3DDEVICE9* ppOut);
 	void		SetParameters(D3DPRESENT_PARAMETERS& d3dpp, const GRAPHICDESC& Graphicdesc); 
 
-	void		Render_Begin(void);
+	void		Render_Begin(D3DCOLOR color = COLOR_GRAY);
 	void		Render_End();
 
 

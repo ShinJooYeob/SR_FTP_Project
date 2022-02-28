@@ -28,6 +28,8 @@ public:
 	virtual _int LateRender()override;
 
 public: // For. Transform
+	HRESULT Set_MiniRender();
+
 	HRESULT Set_WorldMat(_Matrix world);
 	HRESULT Set_Default(wstring name);
 
@@ -36,16 +38,17 @@ public: // For. Transform
 	HRESULT Set_Position(_float3 Position);
 
 	HRESULT Set_MyCamDistance() { Compute_CamDistance(m_ComTransform); return S_OK; }
+	HRESULT	Set_CubeID(_uint id) { m_tOutputData.CubeID = id; return S_OK; }
 
 	_float3 Get_Pos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS); }
+	_Matrix Get_Matrix() { return m_ComTransform->Get_WorldMatrix(); }
 	_float3 Get_Scale() { return m_ComTransform->Get_MatrixScale(); }
 
 public:	// For. Texture
 	HRESULT Set_StateKey_TextureNum_Bind(const _tchar* state, int num = 0);
-
 	void	Set_Visble(_bool b) { m_isVisble = b; }
-
 	HRESULT Texture_CurrentBind();
+
 
 public: // For. OutputData , 로드랑 세이브시에만 사용
 

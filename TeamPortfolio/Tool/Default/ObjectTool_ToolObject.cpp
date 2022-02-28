@@ -56,10 +56,17 @@ _int CObjectTool_ToolObject::LateUpdate(_float fDeltaTime)
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this)))
 		return E_FAIL;
 
-
-
 	return 0;
 }
+
+HRESULT CObjectTool_ToolObject::Set_MiniRender()
+{
+	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this)))
+		return E_FAIL;
+	return S_OK;
+}
+
+
 
 _int CObjectTool_ToolObject::Render()
 {

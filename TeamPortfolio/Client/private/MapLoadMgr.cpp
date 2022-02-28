@@ -70,8 +70,6 @@ HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index)
 HRESULT CMapLoadMgr::Init_LoadMap()
 {
 
-	// #TODO For Client Load
-
 	// 1. 맵 경로를 txt 파일에서 가져와서 해당 맵을 전부 로드한다.
 
 	wifstream		fin;
