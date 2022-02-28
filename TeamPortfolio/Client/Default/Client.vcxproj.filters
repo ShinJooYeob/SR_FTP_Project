@@ -181,6 +181,9 @@
     <Filter Include="01.GameObject\ForLobyObject\LobyUI\LobyUI">
       <UniqueIdentifier>{fd568e79-6727-4148-a802-fcda54358c5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\UI_Result\UI_RankStar">
+      <UniqueIdentifier>{ec5de813-1b57-4c8a-9179-690f963576f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -342,6 +345,9 @@
     <ClInclude Include="..\public\LobyScroll.h">
       <Filter>01.GameObject\ForLobyObject\LobyUI\LobyScroll</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_RankStar.h">
+      <Filter>01.GameObject\UI\UI_Result\UI_RankStar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -490,6 +496,9 @@
     </ClCompile>
     <ClCompile Include="..\private\LobyScroll.cpp">
       <Filter>01.GameObject\ForLobyObject\LobyUI\LobyScroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_RankStar.cpp">
+      <Filter>01.GameObject\UI\UI_Result\UI_RankStar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,8 @@
 #include "..\public\UI_Result.h"
 #include "MyButton.h"
 #include "UI_Image.h"
+#include "Scene_Loading.h"
+#include "UI_RankStar.h"
 
 CUI_Result::CUI_Result(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CUI(pGraphicDevice)
@@ -25,6 +27,7 @@ HRESULT CUI_Result::Initialize_Prototype(void * pArg)
 
 	//프로토타입 넣는중
 	m_UIPrototypes.emplace(TEXT("ProtoType_GameObject_UI_Button"), CMyButton::Create(m_pGraphicDevice));
+	m_UIPrototypes.emplace(TEXT("ProtoType_GameObject_UI_RankStar"), CUI_RankStar::Create(m_pGraphicDevice));
 
 	return S_OK;
 }
@@ -47,6 +50,8 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	if (FAILED(Ready_Layer_Button(TEXT("Layer_Button"))))
 		return E_FAIL;
+	if (FAILED(Ready_Layer_RankStar(TEXT("Layer_RankStar"))))
+		return E_FAIL;
 
 	//개 중요
 	//if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
@@ -54,6 +59,9 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 
 	m_ComTexture->Change_TextureLayer(TEXT("Result"));
+
+	//최대 시간 1초
+	m_fMaxTime = 1.f;
 
 
 	return S_OK;
@@ -65,24 +73,28 @@ _int CUI_Result::Update(_float fDeltaTime)
 		return E_FAIL;
 	m_fFrame = fDeltaTime;
 
-	//if (m_bStopSwitch == false)
-	//{
-	//	m_fTimer += m_fFrame;
-	//}
+	if (m_bStopSwitch == false)
+	{
+		m_fTimer += m_fFrame;
+		TempMinutes = m_fTimer / 60;
+		TempSeconds = (_uint)m_fTimer % 60;
+	}
 
 
-	//if (m_fTimer > 3.f)
-	//{
-	//	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-	//		return E_FAIL;
+	if (m_fTimer > m_fMaxTime || m_bClear == true)
+	{
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+			return E_FAIL;
 
-	//	if (FAILED(Update_UIButtonList(fDeltaTime)))
-	//		return E_FAIL;
+		Button_Picking();
+
+		if (FAILED(Update_UIButtonList(fDeltaTime)))
+			return E_FAIL;
+		
 
 
-
-	//	m_bStopSwitch = true;
-	//}
+		m_bStopSwitch = true;
+	}
 
 
 
@@ -95,12 +107,12 @@ _int CUI_Result::LateUpdate(_float fDeltaTime)
 		return E_FAIL;
 	//RENDER_PRIORITY ,RENDER_UI
 
-	if (m_fTimer > 3.f)
+	//이걸 함으로써 렌더되지 않게 연산량을 줄여주자!!!
+	if (m_fTimer > m_fMaxTime || m_bClear == true)
 	{
 		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
 			return E_FAIL;
 	}
-
 	if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
 		return E_FAIL;
 
@@ -127,15 +139,61 @@ _int CUI_Result::Render()
 		return E_FAIL;
 
 
-	_tchar tempArr[64];
-	_itow_s(m_fTimer, tempArr, 10);
+	//잊지마라 폰트 매니저는 렌더에서만 사용가능하다.
+	if (m_fTimer > m_fMaxTime || m_bClear == true)
+	{
+		if (m_fTimer > m_fMaxTime)
+		{
+			//삭제하지 말것 테스트가 끝나면 주석을 풀 예정
+			wstring TempString = L"Mission Failed";
 
-	wstring TempString = wstring(tempArr) + L"Sec " + L"Eunhyek";
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
 
-	GetSingle(CGameInstance)->Render_UI_Font(TempString, { 400.f,200.f }, { 20.f,30.f }, _float3(83, 250, 120));
+			if (FAILED(Release_RenderState()))
+				return E_FAIL;
 
-	if (FAILED(Release_RenderState()))
-		return E_FAIL;
+			//이건 사람들한테 공개하는 용도로 사용됨
+			//_tchar tempMinArr[64];
+			//_itow_s(TempMinutes, tempMinArr, 10);
+
+			//_tchar tempSecArr[64];
+			//_itow_s(TempSeconds, tempSecArr, 10);
+
+
+			//wstring TempString = wstring(tempMinArr) + L"Minutes " + wstring(tempSecArr) + L"Seconds";
+
+			//GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			//if (FAILED(Release_RenderState()))
+			//	return E_FAIL;
+		}
+		else
+		{
+			_tchar tempMinArr[64];
+			_itow_s(TempMinutes, tempMinArr, 10);
+
+			_tchar tempSecArr[64];
+			_itow_s(TempSeconds, tempSecArr, 10);
+
+
+			wstring TempString = wstring(tempMinArr) + L"Minutes " + wstring(tempSecArr) + L"Seconds";
+
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			if (FAILED(Release_RenderState()))
+				return E_FAIL;
+
+			//_tchar tempArr[64];
+			//_itow_s(m_fTimer, tempArr, 10);
+
+			//wstring TempString = wstring(tempArr) + L"Sec " + L"Eunhyek";
+
+			//GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			//if (FAILED(Release_RenderState()))
+			//	return E_FAIL;
+		}
+	}
 
 	return _int();
 }
@@ -150,7 +208,7 @@ _int CUI_Result::LateRender()
 
 HRESULT CUI_Result::Ready_Layer_Button(const _tchar * pLayerTag)
 {
-	CMyButton* temp = (CMyButton*)(Find_UI(TEXT("ProtoType_GameObject_UI_Button"))->Clone(&_float4(999.f, 999.f + 100, 250, 100)));
+	CMyButton* temp = (CMyButton*)(Find_UI(TEXT("ProtoType_GameObject_UI_Button"))->Clone(&_float4(999.f, 999.f, 250, 100)));
 	temp->Set_ButtonName(L"Button_Result_Start");
 	m_UIButtonList.emplace(L"Button_Result_Start", (CUI*)temp);
 
@@ -158,41 +216,82 @@ HRESULT CUI_Result::Ready_Layer_Button(const _tchar * pLayerTag)
 	temp->Set_ButtonName(L"Button_Result_Cancel");
 	m_UIButtonList.emplace(L"Button_Result_Cancel", (CUI*)temp);
 
+	//m_vButtonDesc = { g_iWinCX >> 1,g_iWinCY >> 1, 250 ,100 };
+
 	return S_OK;
 }
 
 HRESULT CUI_Result::Update_UIButtonList(_float fTimeDelta)
 {
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	int hr;
-
 	for (auto pair : m_UIButtonList) {
 		hr = (pair.second->Update(fTimeDelta));
-		//if (hr != SHOP_END)
-		//	break;
-		switch (hr)
-		{
-		case RESULT_START:
-		{
-			CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
-			
-			//이거 되니깐 같이 이동시키면 될 듯 기억하셈
-			//ButtonStart->Set_UI_Transform
-			//내가 원하는 기능
+		if (hr != SHOP_END)
 			break;
-		}
-		case RESULT_CANCEL:
+			//스위치는 for문 밖에다 쓰도록 하자!
+	}
+	switch (hr)
+	{
+	case RESULT_START:
+	{
+		if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
 		{
-			break;
+			POINT ptMouse;
+			GetCursorPos(&ptMouse);
+			ScreenToClient(g_hWnd, &ptMouse);
+			m_isClicked = false;
+			if (PtInRect(&m_fStartButton, ptMouse))
+			{
+				m_isClicked = true;
+				CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
+				CTexture* ButtonTexture = (CTexture*)ButtonStart->Get_Component(TEXT("Com_Texture"));
+				ButtonTexture->Change_TextureLayer(L"Button_Result_Start3");
+			}
 		}
-		default:
+		if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Up)
 		{
-			break;
+			CScene* TempScene = pGameInstance->Get_Scene();
+			TempScene->Scene_InGame_Chage(true, pGameInstance->Get_NowSceneNum());
 		}
+		break;
+	}
+	case RESULT_CANCEL:
+	{
+		if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
+		{
+			POINT ptMouse;
+			GetCursorPos(&ptMouse);
+			ScreenToClient(g_hWnd, &ptMouse);
+			m_isClicked = false;
+			if (PtInRect(&m_fCancelButton, ptMouse))
+			{
+				m_isClicked = true;
+				CMyButton* ButtonCancel = (CMyButton*)Find_Button(L"Button_Result_Cancel");
+				CTexture* ButtonTexture = (CTexture*)ButtonCancel->Get_Component(TEXT("Com_Texture"));
+				ButtonTexture->Change_TextureLayer(L"Button_Result_Cancel3");
+			}
 		}
-		
+		if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Up)
+		{
+			CScene* TempScene = pGameInstance->Get_Scene();
+			TempScene->Scene_InGame_Chage(true, SCENEID::SCENE_STAGESELECT);
+			//TempScene->Scene_InGame_Chage(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_LOBY), SCENEID::SCENE_LOADING);
+			//if (FAILED(pGameInstance->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_LOBY), SCENEID::SCENE_LOADING)))
+			//	return E_FAIL;
+
+			//여기에 기능구현하면 될 듯
+		}
+		break;
+	}
+	default:
+	{
+		break;
+	}
 	}
 
 
+	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
 
@@ -225,6 +324,13 @@ CUI * CUI_Result::Find_Button(const _tchar * tagUIList)
 		return nullptr;
 
 	return iter->second;
+}
+
+HRESULT CUI_Result::Ready_Layer_RankStar(const _tchar * pLayerTag)
+{
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_PushCube")))
+	//	return E_FAIL;
+	return S_OK;
 }
 
 HRESULT CUI_Result::SetUp_Components()
@@ -272,6 +378,42 @@ HRESULT CUI_Result::Release_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	return S_OK;
+}
+
+void CUI_Result::Button_Picking()
+{
+	CMyButton* ButtonStart = (CMyButton*)Find_Button(L"Button_Result_Start");
+	CTransform* ButtonTransform = (CTransform*)ButtonStart->Get_Component(TEXT("Com_Transform"));
+	//ButtonTransform->Set_MatrixState(CTransform::STATE_POS, _float3(100.f, 200.f, 0));
+	m_vButtonDesc = { (g_iWinCX >> 1) - 150,(g_iWinCY >> 1) + 150, 250 ,100 };
+	_float4 vUIDesc = m_vButtonDesc;
+
+	RECT TempButton;
+	TempButton.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	TempButton.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	TempButton.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	TempButton.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
+	m_fStartButton = TempButton;
+	ButtonStart->Set_Rect(m_vButtonDesc, TempButton);
+	ButtonStart->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
+
+	CMyButton* ButtonCancel = (CMyButton*)Find_Button(L"Button_Result_Cancel");
+	ButtonTransform = (CTransform*)ButtonCancel->Get_Component(TEXT("Com_Transform"));
+	//ButtonTransform->Set_MatrixState(CTransform::STATE_POS, _float3(200.f, -100.f, 0));
+	m_vButtonDesc = { (g_iWinCX >> 1) + 150,(g_iWinCY >> 1) + 150, 250 ,100 };
+	vUIDesc = m_vButtonDesc;
+	TempButton.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
+	TempButton.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
+	TempButton.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);
+	TempButton.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
+	m_fCancelButton = TempButton;
+	ButtonCancel->Set_Rect(m_vButtonDesc, TempButton);
+	ButtonCancel->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
+}
+
+void CUI_Result::Set_Clear(_bool _bClear)
+{
+	m_bClear = _bClear;
 }
 
 CUI_Result * CUI_Result::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)

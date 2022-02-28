@@ -16,6 +16,8 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
+	//¿∫«ı¿Ã∞° ∞«µÎ
+	virtual HRESULT Scene_InGame_Chage(_bool Scene_Chage_Switch, _uint _INextScene)override;
 
 private:
 	HRESULT Ready_Layer_SkyBox(const _tchar* pLayerTag);

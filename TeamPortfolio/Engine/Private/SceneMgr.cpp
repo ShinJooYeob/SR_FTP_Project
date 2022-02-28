@@ -59,6 +59,11 @@ _int CSceneMgr::LateRender()
 	return m_pScene->LateRender();
 }
 
+CScene * CSceneMgr::Get_Scene()
+{
+	return m_pScene;
+}
+
 
 void CSceneMgr::Free()
 {

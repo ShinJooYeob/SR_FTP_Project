@@ -23,7 +23,6 @@ _int CLayer::Update(_float fDeltaTime)
 
 		if (pGameObject->Update(fDeltaTime) < 0) 
 			return -1;
-
 	}
 
 	return _int();

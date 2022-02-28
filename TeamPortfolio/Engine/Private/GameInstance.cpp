@@ -325,6 +325,11 @@ void CGameInstance::Set_iNowSceneIndx_ExceptLoad(_int iSceneNum)
 	return m_pSceneMgr->Set_iNowSceneIndx_ExceptLoad(iSceneNum);
 }
 
+CScene * CGameInstance::Get_Scene()
+{
+	return m_pSceneMgr->Get_Scene();
+}
+
 HRESULT CGameInstance::Add_Component_Prototype(_uint eSceneIdx, const _tchar * tagPrototypeComponent, CComponent * pComponenet)
 {
 	if (m_pComponenetMgr == nullptr)

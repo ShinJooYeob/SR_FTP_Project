@@ -32,7 +32,7 @@ HRESULT CMyButton::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	_float4 vUIDesc;
+	_float4			vUIDesc;
 	vUIDesc = *(_float4*)pArg;
 	m_vUIDesc = vUIDesc;
 	m_rcRect.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
@@ -53,6 +53,10 @@ _int CMyButton::Update(_float fDeltaTime)
 		return E_FAIL;
 
 	CGameInstance* pInstance = GetSingle(CGameInstance);
+
+
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+		return E_FAIL;
 
 	if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Down)
 	{
@@ -114,16 +118,16 @@ _int CMyButton::Update(_float fDeltaTime)
 			{
 				return 104;
 			}
-			else if (!lstrcmp(L"Button_Result_Start", m_pButtonName))
-			{
-				//다시 하기 기능 만들기
-				return 0;
-			}
-			else if (!lstrcmp(L"Button_Result_Cancel", m_pButtonName))
-			{
-				//로비로 돌아가기 기능 만들기
-				return 0;
-			}
+			//else if (!lstrcmp(L"Button_Result_Start", m_pButtonName))
+			//{
+			//	//다시 하기 기능 만들기
+			//	return RESULT_START;
+			//}
+			//else if (!lstrcmp(L"Button_Result_Cancel", m_pButtonName))
+			//{
+			//	//로비로 돌아가기 기능 만들기
+			//	return RESULT_CANCEL;
+			//}
 
 		}
 	}
@@ -148,6 +152,16 @@ _int CMyButton::Update(_float fDeltaTime)
 				m_ComTexture->Change_TextureLayer(L"Loby_Button4");
 			}
 
+		if (!lstrcmp(L"Button_Result_Start", m_pButtonName))
+		{
+			m_ComTexture->Change_TextureLayer(L"Button_Result_Start2");
+			return RESULT_START;
+		}
+		if (!lstrcmp(L"Button_Result_Cancel", m_pButtonName))
+		{
+			m_ComTexture->Change_TextureLayer(L"Button_Result_Cancel2");
+			return RESULT_CANCEL;
+		}
 	}
 	else if (m_bOnMouse == false)//
 	{
@@ -159,6 +173,14 @@ _int CMyButton::Update(_float fDeltaTime)
 		if (!lstrcmp(L"Loby_Button3", m_pButtonName))
 		{
 			m_ComTexture->Change_TextureLayer(L"Loby_Button3");
+		}
+		if (!lstrcmp(L"Button_Result_Start", m_pButtonName))
+		{
+			m_ComTexture->Change_TextureLayer(L"Button_Result_Start1");
+		}
+		if (!lstrcmp(L"Button_Result_Cancel", m_pButtonName))
+		{
+			m_ComTexture->Change_TextureLayer(L"Button_Result_Cancel1");
 		}
 
 	}
@@ -226,6 +248,12 @@ _int CMyButton::LateUpdate(_float fDeltaTime)
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
 		return E_FAIL;
 	return _int();
+}
+
+void CMyButton::Set_Rect(_float4 RectPos, RECT fRect)
+{
+	m_vUIDesc = RectPos;
+	m_rcRect = fRect;
 }
 
 _int CMyButton::Render()

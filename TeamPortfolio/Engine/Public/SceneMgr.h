@@ -24,6 +24,10 @@ public:
 	_int Render();
 	_int LateRender();
 
+	//¿∫«ı¿Ã∞° ∞«µÎ
+public:
+	CScene*				Get_Scene();
+
 private:
 	_int				m_iNowSceneIndx_ExceptLoad = 0;
 	_int				m_iCurrentSceneIdx = 0;

@@ -202,6 +202,7 @@
     <ClInclude Include="..\public\UI_LoadingBar.h" />
     <ClInclude Include="..\public\UI_Loby.h" />
     <ClInclude Include="..\public\UI_Mouse.h" />
+    <ClInclude Include="..\public\UI_RankStar.h" />
     <ClInclude Include="..\public\UI_Result.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -253,6 +254,7 @@
     <ClCompile Include="..\private\UI_LoadingBar.cpp" />
     <ClCompile Include="..\private\UI_Loby.cpp" />
     <ClCompile Include="..\private\UI_Mouse.cpp" />
+    <ClCompile Include="..\private\UI_RankStar.cpp" />
     <ClCompile Include="..\private\UI_Result.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

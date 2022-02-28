@@ -70,9 +70,11 @@ public:  /*For Graphic Device*/
 
 public: /*For SceneMgr*/
 	HRESULT Scene_Change(CScene* pScene, _int iNextSceneIdx, _bool bIsNotLoadingScene = false);
-	_int	Render_Scene(); // 
+	_int	Render_Scene();
 	_uint	Get_NowSceneNum();
 	void	Set_iNowSceneIndx_ExceptLoad(_int iSceneNum);
+	//¿∫«ı¿Ã∞° ∞«µÎ
+	CScene*	Get_Scene();
 
 public: /*For TreadMgr*/
 	HRESULT		PlayThread(void* _ThreadFunc, void* _pArg);
