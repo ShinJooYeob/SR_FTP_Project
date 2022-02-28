@@ -221,7 +221,7 @@ HRESULT CUI_Result::Update_UIButtonList(_float fTimeDelta)
 		if (pGameInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Up)
 		{
 			CScene* TempScene = pGameInstance->Get_Scene();
-			TempScene->Scene_InGame_Chage(true, SCENEID::SCENE_LOBY);
+			TempScene->Scene_InGame_Chage(true, SCENEID::SCENE_STAGESELECT);
 			//TempScene->Scene_InGame_Chage(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_LOBY), SCENEID::SCENE_LOADING);
 			//if (FAILED(pGameInstance->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_LOBY), SCENEID::SCENE_LOADING)))
 			//	return E_FAIL;
