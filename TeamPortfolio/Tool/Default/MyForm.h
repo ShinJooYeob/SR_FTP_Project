@@ -39,6 +39,7 @@ public:
 
 	HRESULT Update_ViewListBox();
 
+	HRESULT Update_PickPos();
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 

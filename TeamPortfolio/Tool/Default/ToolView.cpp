@@ -326,6 +326,7 @@ void CToolView::Add_Axis_PickVector()
 {
 }
 
+
 _float3 CToolView::OneVector(_float3 nomalVec)
 {
 	bool bMinX= false;
@@ -472,6 +473,8 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		m_Nearobj = newpickobj;
 		m_PickPos = m_Nearobj->Get_Pos();
+		GetSingle(CSuperToolSIngleton)->GetMyButtonView()->Update_PickPos();
+
 	}
 	else
 	{
@@ -501,10 +504,11 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 		return;
 	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_TransformMat(selectobj->Get_Matrix());
 	GetSingle(CSuperToolSIngleton)->Get_WireCube()->Set_Pos(m_PickPos + m_AddPos);
+	
 
+	
 
-
-
+	
 }
 
 void CToolView::OnTimer(UINT_PTR nIDEvent)

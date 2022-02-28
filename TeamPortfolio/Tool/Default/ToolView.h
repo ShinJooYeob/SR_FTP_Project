@@ -53,6 +53,8 @@ public:
 	void Change_PickVector(bool b);
 	void Add_Axis_PickVector();
 
+	_float3 Get_PickPos() { return m_PickPos; }
+
 private:
 	_float3 OneVector(_float3 nomalVec);
 	

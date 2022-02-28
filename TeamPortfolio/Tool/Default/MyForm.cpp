@@ -269,6 +269,24 @@ BOOL CMyForm::PreTranslateMessage(MSG* pMsg)
 	return false;
 }
 
+HRESULT CMyForm::Update_PickPos()
+{
+	_float3 pos = GetSingle(CSuperToolSIngleton)->GetToolView()->Get_PickPos();
+
+	_tchar buf[16];
+	_itot_s(pos.x, buf, 10);
+	SetDlgItemText(IDC_STATIC1, buf);
+
+	_itot_s(pos.y, buf, 10);
+	SetDlgItemText(IDC_STATIC2, buf);
+	_itot_s(pos.z, buf, 10);
+	SetDlgItemText(IDC_STATIC3, buf);
+
+
+	return S_OK;
+}
+
+
 
 void CMyForm::OnEnChangeCubeID()
 {
