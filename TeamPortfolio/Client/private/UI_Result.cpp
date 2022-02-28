@@ -3,6 +3,7 @@
 #include "MyButton.h"
 #include "UI_Image.h"
 #include "Scene_Loading.h"
+#include "UI_RankStar.h"
 
 CUI_Result::CUI_Result(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CUI(pGraphicDevice)
@@ -26,6 +27,7 @@ HRESULT CUI_Result::Initialize_Prototype(void * pArg)
 
 	//프로토타입 넣는중
 	m_UIPrototypes.emplace(TEXT("ProtoType_GameObject_UI_Button"), CMyButton::Create(m_pGraphicDevice));
+	m_UIPrototypes.emplace(TEXT("ProtoType_GameObject_UI_RankStar"), CUI_RankStar::Create(m_pGraphicDevice));
 
 	return S_OK;
 }
@@ -47,6 +49,8 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 	
 
 	if (FAILED(Ready_Layer_Button(TEXT("Layer_Button"))))
+		return E_FAIL;
+	if (FAILED(Ready_Layer_RankStar(TEXT("Layer_RankStar"))))
 		return E_FAIL;
 
 	//개 중요
@@ -320,6 +324,13 @@ CUI * CUI_Result::Find_Button(const _tchar * tagUIList)
 		return nullptr;
 
 	return iter->second;
+}
+
+HRESULT CUI_Result::Ready_Layer_RankStar(const _tchar * pLayerTag)
+{
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_PushCube")))
+	//	return E_FAIL;
+	return S_OK;
 }
 
 HRESULT CUI_Result::SetUp_Components()

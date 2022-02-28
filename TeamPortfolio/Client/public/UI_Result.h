@@ -48,6 +48,8 @@ private:
 	CUI *		Find_UI(const _tchar * tagUI); //UI 겹치는게 있는지 체크
 	CUI *		Find_Button(const _tchar * tagUIList); //이게 클론을 찾음
 
+	HRESULT		Ready_Layer_RankStar(const _tchar * pLayerTag);
+
 private:
 	CTexture*				m_ComTexture = nullptr;
 	CTransform*				m_ComTransform = nullptr;
