@@ -32,6 +32,9 @@ HRESULT CUI_Result::Initialize_Prototype(void * pArg)
 	//m_eNowSceneNum
 	//프로토타입 넣는중
 	m_UIPrototypes.emplace(TEXT("ProtoType_GameObject_UI_Button"), CMyButton::Create(m_pGraphicDevice));
+
+	//if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_Component_Texture_UI"), CMyButton::Create(m_pGraphicDevice))))
+	//	return E_FAIL;
 	
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_UI_RankStar"), CUI_RankStar::Create(m_pGraphicDevice))))
 		return E_FAIL;
