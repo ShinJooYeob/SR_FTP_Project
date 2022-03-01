@@ -14,6 +14,8 @@ enum SCENEID
 	SCENE_END
 };
 
+
+
 enum OBJECTPROTOTYPEID
 {
 	Prototype_Camera_Main, 
@@ -21,11 +23,22 @@ enum OBJECTPROTOTYPEID
 	Prototype_BackGround,
 	Prototype_TerrainGround,
 	Prototype_TerrainCube,
+	Prototype_FixCube,
+	Prototype_GravityCube,
+	Prototype_PortalCube_A,
+	Prototype_PortalCube_B,
+	Prototype_EscalatorCube,
+	Prototype_OrbitButtonCube,
+	Prototype_OrbitCube,
+	Prototype_VanishCube,
+	Prototype_AppearCube,
 	Prototype_Shop,
 	Prototype_Quest,
 	Prototype_UI_Loby,
 	Prototype_UI_Common
 };
+
+
 
 static const _tchar* Tag_Object_Prototype(OBJECTPROTOTYPEID eTag)
 {
@@ -45,6 +58,33 @@ static const _tchar* Tag_Object_Prototype(OBJECTPROTOTYPEID eTag)
 		break;
 	case Prototype_TerrainCube:
 		return TEXT("Prototype_GameObject_TerrainCube");
+		break;
+	case Prototype_FixCube:
+		return TEXT("Prototype_GameObject_Object_FixCube");
+		break;
+	case Prototype_GravityCube:
+		return TEXT("Prototype_GameObject_Object_GravityCube");
+		break;
+	case Prototype_PortalCube_A:
+		return TEXT("Prototype_GameObject_Object_PortalCube_A");
+		break;
+	case Prototype_PortalCube_B:
+		return TEXT("Prototype_GameObject_Object_PortalCube_B");
+		break;
+	case Prototype_EscalatorCube:
+		return TEXT("Prototype_GameObject_Object_EscalatorCube");
+		break;
+	case Prototype_OrbitButtonCube:
+		return TEXT("Prototype_GameObject_Object_OrbitButton");
+		break;
+	case Prototype_OrbitCube:
+		return TEXT("Prototype_GameObject_Object_OrbitCube");
+		break;
+	case Prototype_VanishCube:		
+		return TEXT("Prototype_GameObject_Object_VanishCube");
+		break;
+	case Prototype_AppearCube:
+		return TEXT("Prototype_GameObject_Object_AppearCube");
 		break;
 	case Prototype_Shop:
 		return TEXT("Prototype_GameObject_Shop");
@@ -326,4 +366,18 @@ enum EasingTypeID
 
 
 	TYPE_End
+};
+
+enum E_CUBEID
+{
+	CUBEID_NONE,
+	CUBEID_GRAVITY,
+	CUBEID_JUMP,
+	CUBEID_POTAL,
+	CUBEID_ELEVETOR,
+	CUBEID_ORBIT,
+	CUBEID_VANISH, // 사라짐
+	CUBEID_APPEAR, // 나타남
+	CUBEID_END,
+
 };

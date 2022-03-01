@@ -140,10 +140,10 @@ void CMyForm::OnTransform()
 void CMyForm::OnBnClickedButtonCubeMap()
 {
 
-	if (nullptr == m_CubeMapToolDialog.GetSafeHwnd())
-		m_CubeMapToolDialog.Create(IDD_MYCUBEMAP);	// 해당 id 에 맞는 다이얼로그 생성
-
-	m_CubeMapToolDialog.ShowWindow(SW_SHOW);  // 창 모양으로 출력
+//	if (nullptr == m_CubeMapToolDialog.GetSafeHwnd())
+//		m_CubeMapToolDialog.Create(IDD_MYCUBEMAP);	// 해당 id 에 맞는 다이얼로그 생성
+//
+//	m_CubeMapToolDialog.ShowWindow(SW_SHOW);  // 창 모양으로 출력
 
 }
 
@@ -176,7 +176,9 @@ void CMyForm::OnBnClickedButtonCube()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// 큐브 컴포넌트로 바꾸기
-	//GetSingle(CSuperToolSIngleton)->Get_ViewObject_Object()->Set_ViBuffer_Change();
+	if (nullptr == m_CubeMapToolDialog.GetSafeHwnd())
+		m_CubeMapToolDialog.Create(IDD_MYCUBEMAP);	// 해당 id 에 맞는 다이얼로그 생성
+	m_CubeMapToolDialog.ShowWindow(SW_SHOW);
 	return;
 }
 
@@ -259,7 +261,9 @@ BOOL CMyForm::PreTranslateMessage(MSG* pMsg)
 	{
 		//이스케이프키일 경우 함수 종료
 		if (pMsg->wParam == VK_DOWN || pMsg->wParam == VK_UP ||
-			pMsg->wParam == VK_LEFT || pMsg->wParam == VK_RIGHT)
+			pMsg->wParam == VK_LEFT || pMsg->wParam == VK_RIGHT ||
+			( pMsg->wParam >= 'A' && pMsg->wParam <= 'Z')
+			)
 			return TRUE;
 	}
 
@@ -268,6 +272,24 @@ BOOL CMyForm::PreTranslateMessage(MSG* pMsg)
 
 	return false;
 }
+
+HRESULT CMyForm::Update_PickPos()
+{
+	_float3 pos = GetSingle(CSuperToolSIngleton)->GetToolView()->Get_PickPos();
+
+	_tchar buf[16];
+	_itot_s(pos.x, buf, 10);
+	SetDlgItemText(IDC_STATIC1, buf);
+
+	_itot_s(pos.y, buf, 10);
+	SetDlgItemText(IDC_STATIC2, buf);
+	_itot_s(pos.z, buf, 10);
+	SetDlgItemText(IDC_STATIC3, buf);
+
+
+	return S_OK;
+}
+
 
 
 void CMyForm::OnEnChangeCubeID()

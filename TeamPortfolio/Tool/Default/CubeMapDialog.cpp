@@ -17,6 +17,8 @@ CCubeMapDialog::CCubeMapDialog(CWnd* pParent /*=nullptr*/)
 	: CDialog(IDD_MYCUBEMAP, pParent)
 {
 	srand(time(NULL));
+	m_pComSprite = nullptr;
+	m_pCom_Tex = nullptr;
 }
 
 CCubeMapDialog::~CCubeMapDialog()
@@ -35,95 +37,149 @@ BEGIN_MESSAGE_MAP(CCubeMapDialog, CDialog)
 END_MESSAGE_MAP()
 
 // 큐브맵을 제작
-void CreateCubeMap()
+void CCubeMapDialog::CubeMapMake()
 {
-	// 큐브 텍스처 초기화
-	LPDIRECT3DCUBETEXTURE9 pCubeMap;
 	LPDIRECT3DDEVICE9 device = GetSingle(CSuperToolSIngleton)->Get_Graphics_Device();
 
-	FAILED_CHECK_NONERETURN(device->CreateCubeTexture(256, 1, D3DUSAGE_RENDERTARGET, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &pCubeMap, NULL));
+	if (m_pComSprite == nullptr)
+	{
+		D3DXCreateSprite(device, &m_pComSprite);
+
+	}
+
+
+	wstring path = L"DDS/Test.png";
+	if (m_pCom_Tex == nullptr)
+		CreateTexute(path);
+
+	// 큐브 텍스처 초기화
+	LPDIRECT3DCUBETEXTURE9 pCubeMap;
+
+	device->CreateCubeTexture
+	(256, 1, D3DUSAGE_RENDERTARGET, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &pCubeMap, NULL);
 
 
 	// 백버퍼에 랜더 타겟 변경 
-	LPDIRECT3DSURFACE9 pBackBuffer, pZBuffer;
+	// LPDIRECT3DSURFACE9 pBackBuffer, pZBuffer;
 
 
-	//D3DXVECTOR3 vEyePt2(0, 0, 0.0f);
+	D3DXVECTOR3 vEyePt2(0, 0, 0.0f);
 
-	//for (DWORD i = 0; i < 6; i++)
-	//{
-	//	D3DXVECTOR3* vEnvEyePt = &vEyePt2;
-	//	D3DXVECTOR3 vLookatPt, vUpVec;
-	//	switch (i)
-	//	{
-	//	case D3DCUBEMAP_FACE_POSITIVE_X:
-	//		vLookatPt = D3DXVECTOR3(vEnvEyePt->x + 1.0f, vEnvEyePt->y, vEnvEyePt->z);
-	//		vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	//		break;
-	//	case D3DCUBEMAP_FACE_NEGATIVE_X:
-	//		vLookatPt = D3DXVECTOR3(vEnvEyePt->x - 1.0f, vEnvEyePt->y, vEnvEyePt->z);
-	//		vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	//		break;
-	//	case D3DCUBEMAP_FACE_POSITIVE_Y:
-	//		vLookatPt = D3DXVECTOR3(vEnvEyePt->x, vEnvEyePt->y + 1.0f, vEnvEyePt->z);
-	//		vUpVec = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
-	//		break;
-	//	case D3DCUBEMAP_FACE_NEGATIVE_Y:
-	//		vLookatPt = D3DXVECTOR3(vEnvEyePt->x, vEnvEyePt->y - 1.0f, vEnvEyePt->z);
-	//		vUpVec = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
-	//		break;
-	//	case D3DCUBEMAP_FACE_POSITIVE_Z:
-	//		vLookatPt = D3DXVECTOR3(vEnvEyePt->x, vEnvEyePt->y, vEnvEyePt->z + 1.0f);
-	//		vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	//		break;
-	//	case D3DCUBEMAP_FACE_NEGATIVE_Z:
-	//		vLookatPt = D3DXVECTOR3(vEnvEyePt->x, vEnvEyePt->y, vEnvEyePt->z - 1.0f);
-	//		vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	//		break;
-	//	}
+	for (DWORD i = 0; i < 6; i++)
+	{
 
-	//	D3DXMATRIX matView;
-	//	D3DXMatrixLookAtLH(&matView, vEnvEyePt, &vLookatPt, &vUpVec);
-	//	g_pd3dDevice->SetTransform(D3DTS_VIEW, &matView);
 
-	//	LPDIRECT3DSURFACE9 pFace;
-	//	pCubeMap->GetCubeMapSurface((D3DCUBEMAP_FACES)i, 0, &pFace);
-	//	g_pd3dDevice->SetRenderTarget(0, pFace);
+		/*switch (i)
+		{
+		case D3DCUBEMAP_FACE_POSITIVE_X:
+			vLookatPt = D3DXVECTOR3(vEnvEyePt->x + 1.0f, vEnvEyePt->y, vEnvEyePt->z);
+			vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+			break;
+		case D3DCUBEMAP_FACE_NEGATIVE_X:
+			vLookatPt = D3DXVECTOR3(vEnvEyePt->x - 1.0f, vEnvEyePt->y, vEnvEyePt->z);
+			vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+			break;
+		case D3DCUBEMAP_FACE_POSITIVE_Y:
+			vLookatPt = D3DXVECTOR3(vEnvEyePt->x, vEnvEyePt->y + 1.0f, vEnvEyePt->z);
+			vUpVec = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+			break;
+		case D3DCUBEMAP_FACE_NEGATIVE_Y:
+			vLookatPt = D3DXVECTOR3(vEnvEyePt->x, vEnvEyePt->y - 1.0f, vEnvEyePt->z);
+			vUpVec = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+			break;
+		case D3DCUBEMAP_FACE_POSITIVE_Z:
+			vLookatPt = D3DXVECTOR3(vEnvEyePt->x, vEnvEyePt->y, vEnvEyePt->z + 1.0f);
+			vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+			break;
+		case D3DCUBEMAP_FACE_NEGATIVE_Z:
+			vLookatPt = D3DXVECTOR3(vEnvEyePt->x, vEnvEyePt->y, vEnvEyePt->z - 1.0f);
+			vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+			break;
+		}*/
+		D3DXVECTOR3 vLookatPt, vUpVec;
 
-	//	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		vLookatPt = D3DXVECTOR3(0, 0, 0);
+		vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
-	//	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);
-	//	if (SUCCEEDED(g_pd3dDevice->BeginScene()))
-	//	{
-	//		for (DWORD i = 0; i < g_dwNumMaterials; i++)
-	//		{
-	//			g_pd3dDevice->SetMaterial(&g_pMeshMaterials[i]);
-	//			g_pd3dDevice->SetTexture(0, g_pMeshTextures[i]);
-	//			g_pMesh->DrawSubset(i);
-	//		}
+		LPDIRECT3DSURFACE9 pFace;
+		pCubeMap->GetCubeMapSurface((D3DCUBEMAP_FACES)i, 0, &pFace);
+		device->SetRenderTarget(0, pFace);
 
-	//		g_pd3dDevice->EndScene();
-	//	}
+		device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	//	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		RECT rc; 
+		rc.left = 0;
+		rc.top = 0;
+		rc.right = 32;
+		rc.bottom = 32;
 
-	//	pFace->Release();
-	//}
+		device->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,255, 255, 255), 1.0f, 0);
+
+		device->BeginScene();
+		m_pComSprite->Begin(D3DXSPRITE_ALPHABLEND);
+		m_pComSprite->Draw((LPDIRECT3DTEXTURE9)m_pCom_Tex,
+			// Texture 객체 pointer.
+			&rc, // Sprite 영역. 
+			NULL, // Sprite 중심. 
+			NULL, // Sprite 위치.
+			0xFFFFFFFF // 색상. 
+		);
+
+
+		m_pComSprite->End();
+
+		device->EndScene();
+
+		device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
+		device->Present(NULL, NULL, g_hWnd2, NULL); // 디버그용
+		pFace->Release();
+	}
 	TCHAR str[64] = L"";
 	static int i = 0;
 	i++;
 	wsprintf(str, L"DDS/cubemap_MakeDDS_%d.dds", i);
 	D3DXSaveTextureToFile(str, D3DXIFF_DDS, pCubeMap, NULL);
 
+
+	// 1. png 이미지를 복사한다.
+	// 2. 각 면을 32x32로 복사한다.
+	// 3. png 이미지를 복사한다.
+	// 4. 각 면을 32x32로 복사한다.
+
 }
 
+HRESULT CCubeMapDialog::CreateTexute(wstring path)
+{
+	// _tchar	szFullPath[MAX_PATH] = L"";
+	// wsprintf(szFullPath, tTextureLayerDesc.szFilePath, i);
 
+	LPDIRECT3DBASETEXTURE9		pTexture = nullptr;
+	HRESULT		hr = 0;
+
+	LPDIRECT3DDEVICE9 device = GetSingle(CSuperToolSIngleton)->Get_Graphics_Device();
+	hr = D3DXCreateTextureFromFile(device, path.c_str(), (LPDIRECT3DTEXTURE9*)&pTexture);
+
+	if (FAILED(hr))
+		return E_FAIL;
+	return S_OK;
+
+	//if (tTextureLayerDesc.eTextureType == 0)
+	//	hr = D3DXCreateTextureFromFile(m_pGraphicDevice, szFullPath, (LPDIRECT3DTEXTURE9*)&pTexture);
+	//else
+	//	hr = D3DXCreateCubeTextureFromFile(m_pGraphicDevice, szFullPath, (LPDIRECT3DCUBETEXTURE9*)&pTexture);
+
+	//if (FAILED(hr))
+	//	return E_FAIL;
+
+
+
+}
 
 void CCubeMapDialog::OnBnClickedButton1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CreateCubeMap();
-
+	CubeMapMake();
 }
 
 

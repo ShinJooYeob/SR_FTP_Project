@@ -15,6 +15,7 @@
 #define new DEBUG_NEW
 
 #endif
+HWND g_hWnd2 = NULL;
 
 IMPLEMENT_DYNCREATE(CMiniView, CView)
 #define  MINITIMER 0
@@ -103,7 +104,7 @@ void CMiniView::OnInitialUpdate()
 	CView::OnInitialUpdate();
 	m_Camera_tool = nullptr;
 	SetTimer(MINITIMER, 50, NULL);
-
+	g_hWnd2 = m_hWnd;
 }
 
 
