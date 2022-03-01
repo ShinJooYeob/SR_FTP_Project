@@ -140,10 +140,10 @@ void CMyForm::OnTransform()
 void CMyForm::OnBnClickedButtonCubeMap()
 {
 
-	if (nullptr == m_CubeMapToolDialog.GetSafeHwnd())
-		m_CubeMapToolDialog.Create(IDD_MYCUBEMAP);	// 해당 id 에 맞는 다이얼로그 생성
-
-	m_CubeMapToolDialog.ShowWindow(SW_SHOW);  // 창 모양으로 출력
+//	if (nullptr == m_CubeMapToolDialog.GetSafeHwnd())
+//		m_CubeMapToolDialog.Create(IDD_MYCUBEMAP);	// 해당 id 에 맞는 다이얼로그 생성
+//
+//	m_CubeMapToolDialog.ShowWindow(SW_SHOW);  // 창 모양으로 출력
 
 }
 
@@ -176,7 +176,9 @@ void CMyForm::OnBnClickedButtonCube()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// 큐브 컴포넌트로 바꾸기
-	//GetSingle(CSuperToolSIngleton)->Get_ViewObject_Object()->Set_ViBuffer_Change();
+	if (nullptr == m_CubeMapToolDialog.GetSafeHwnd())
+		m_CubeMapToolDialog.Create(IDD_MYCUBEMAP);	// 해당 id 에 맞는 다이얼로그 생성
+	m_CubeMapToolDialog.ShowWindow(SW_SHOW);
 	return;
 }
 
