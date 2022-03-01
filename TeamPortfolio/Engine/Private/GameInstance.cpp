@@ -28,6 +28,7 @@ CGameInstance::CGameInstance()
 	m_pFrustumMgr(GetSingle(CFrustumMgr)),
 	m_pSoundMgr(GetSingle(CSoundMgr)),
 	m_pFontMgr(GetSingle(CFontMgr))
+
 {
 	m_pThreadMgr->AddRef();
 	m_pTimerMgr->AddRef();
@@ -42,6 +43,7 @@ CGameInstance::CGameInstance()
 	m_pFrustumMgr->AddRef();
 	m_pSoundMgr->AddRef();
 	m_pFontMgr->AddRef();
+	
 }
 
 
@@ -510,7 +512,7 @@ void CGameInstance::Release_Engine()
 
 	if (0 != GetSingle(CThreadMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com ThreadMgr ");
-		
+
 	if (0 != GetSingle(CEasingMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com EasingMgr ");
 
@@ -530,13 +532,13 @@ void CGameInstance::Release_Engine()
 		MSGBOX("Failed to Release Com FrustumMgr ");
 
 	if (0 != GetSingle(CInput_Device)->DestroyInstance())
-		MSGBOX("Failed to Release Com CInput_Device "); 
+		MSGBOX("Failed to Release Com CInput_Device ");
 
 	if (0 != GetSingle(CGraphic_Device)->DestroyInstance())
-		MSGBOX("Failed to Release Com Graphic_Device "); 
-	
+		MSGBOX("Failed to Release Com Graphic_Device ");
+
 	if (0 != GetSingle(CTimeMgr)->DestroyInstance())
-		MSGBOX("Failed to Release Com TimeMgr ");	
+		MSGBOX("Failed to Release Com TimeMgr ");
 
 	if (0 != GetSingle(CSoundMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com CSoundMgr ");
@@ -547,7 +549,6 @@ void CGameInstance::Release_Engine()
 	if (0 != GetSingle(CImguiMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com CImguiMgr ");
 
-	
 }
 
 void CGameInstance::Free()
@@ -565,6 +566,5 @@ void CGameInstance::Free()
 	Safe_Release(m_pPickingMgr);
 	Safe_Release(m_pFrustumMgr);
 	Safe_Release(m_pFontMgr);
-	
 	
 }

@@ -59,7 +59,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 
-	Set_UI_Transform(m_ComTransform, _float4(ptMouse.x, ptMouse.y, 27, 27));
+	Set_UI_Transform(m_ComTransform, _float4((_float)ptMouse.x, (_float)ptMouse.y, 27.f, 27.f));
 
 
 	return _int();

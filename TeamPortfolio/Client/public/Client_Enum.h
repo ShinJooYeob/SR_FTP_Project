@@ -276,6 +276,15 @@ enum RESULTCASE
 	RESULT_END
 };
 
+enum QUEST
+{
+	QUEST_1,
+	QUEST_2,
+	QUEST_3,
+	QUEST_4,
+	QUEST_END
+};
+
 enum EasingTypeID
 {
 	TYPE_Linear = 0,

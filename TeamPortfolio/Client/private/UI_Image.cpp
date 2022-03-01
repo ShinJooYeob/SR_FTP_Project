@@ -70,6 +70,7 @@ _int CUI_Image::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
+	m_fTextFrame += fDeltaTime * 10;
 	if (!lstrcmp(L"Common_1", m_pImageName)|| !lstrcmp(L"Common_2", m_pImageName)|| !lstrcmp(L"Common_3", m_pImageName)|| !lstrcmp(L"Common_4", m_pImageName)|| !lstrcmp(L"Common_5", m_pImageName)
 		)
 	{
@@ -83,7 +84,7 @@ _int CUI_Image::Update(_float fDeltaTime)
 		if (m_bEasingStart == false)
 		{
 			m_vEasingDesc.x = 0.00001f;
-			m_vEasingDesc.y = 200.f;
+			m_vEasingDesc.y = 260.f;
 			m_vEasingDesc.z = 0.f;
 			m_vEasingDesc.w = 1.f;
 			m_bEasingStart = true;
@@ -99,10 +100,17 @@ _int CUI_Image::Update(_float fDeltaTime)
 			else
 			{
 				
-				m_vUIDesc.z = GetSingle(CGameInstance)->Easing(TYPE_BounceIn, m_vEasingDesc.x, m_vEasingDesc.y, m_vEasingDesc.z, m_vEasingDesc.w);
-				m_vUIDesc.w = m_vUIDesc.z * 18 / 20;
+				m_vUIDesc.w = GetSingle(CGameInstance)->Easing(TYPE_BounceIn, m_vEasingDesc.x, m_vEasingDesc.y, m_vEasingDesc.z, m_vEasingDesc.w);
+				m_vUIDesc.z = m_vUIDesc.w * 15 / 20;
 				if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 					return E_FAIL;
+				if (m_vUIDesc.w >= 259.f)
+				{
+					m_fTextFrame = 0;
+					m_TextRenderBegin = true;
+				}
+				else
+					m_TextRenderBegin = false;
 			}
 		}
 	}
@@ -111,10 +119,10 @@ _int CUI_Image::Update(_float fDeltaTime)
 	{
 		if (m_bEasingStart == false)
 		{
-			m_vEasingDesc.x = 200.f;
+			m_vEasingDesc.x = 260.f;
 			m_vEasingDesc.y = 0.00001f;
 			m_vEasingDesc.z = 0.f;
-			m_vEasingDesc.w = 2.f;
+			m_vEasingDesc.w = 1.f;
 			m_bEasingStart = true;
 		}
 		if (m_bEasingStart == true)
@@ -127,10 +135,11 @@ _int CUI_Image::Update(_float fDeltaTime)
 			else
 			{
 				
-				m_vUIDesc.z = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_vEasingDesc.x, m_vEasingDesc.y, m_vEasingDesc.z, m_vEasingDesc.w);
-				m_vUIDesc.w = m_vUIDesc.z * 18 / 20;
+				m_vUIDesc.w = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_vEasingDesc.x, m_vEasingDesc.y, m_vEasingDesc.z, m_vEasingDesc.w);
+				m_vUIDesc.z = m_vUIDesc.w * 15 / 20;
 				if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 					return E_FAIL;
+				m_TextRenderBegin = false;
 			}
 		}
 	}
@@ -229,7 +238,74 @@ _int CUI_Image::Render()
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
 
+	if (!lstrcmp(L"Common_1", m_pImageName))
+	{
 
+		CInventory* Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
+
+		if (Player_Inventory == nullptr)
+			return E_FAIL;
+
+		wstring temp;
+		_tchar szbuf[16];
+		for (_int i = 0; i < SKILL_END; ++i)
+		{
+
+			if (m_iNowSKill == i)
+			{
+				_itow_s(Player_Inventory->Get_Skill_Level(i), szbuf, 10);
+				temp = wstring(szbuf);
+				GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 18.f,m_vUIDesc.y + 18.f }, { 20.f,30.f }, _float3(255, 255, 180));
+			}
+
+		}
+	}
+
+	if (!lstrcmp(L"Quest_2", m_pImageName))
+	{
+		
+		if (m_TextRenderBegin)
+		{
+			wstring temp, temp2, temp3;
+			_tchar szbuf[16];
+			
+				_itow_s(GetSingle(CQuest)->Get_QuestNeedPercent(m_iNowQuest), szbuf, 10);
+				switch (m_iNowQuest)
+				{
+				case QUEST_1:
+					temp = L" [Quest1]";
+					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 110.f }, { 20.f,30.f }, _float3(255, 255, 255));
+
+					temp2 = L"Use Speedup\n6times" ;
+					GetSingle(CGameInstance)->Render_UI_Font(temp2, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 17.5f,27.f }, _float3(139, 0, 139),(_uint)m_fTextFrame);
+					
+					temp3 = L"achievement\nrate:" + wstring(szbuf) + L"%";
+					if (m_fTextFrame > (_uint)(temp2.length()))
+					{
+						GetSingle(CGameInstance)->Render_UI_Font(temp3, { m_vUIDesc.x - 85.f,m_vUIDesc.y + 25.f }, { 17.5f,27.f }, _float3(250, 128, 114));
+					}
+					break;
+				case QUEST_2:
+					/*temp = L"  [Quest2]\nUse Doubble\njump 3times\nachievement\nrate:" + wstring(szbuf) + L"%";
+					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 18.5f,28.5f }, _float3(0, 0, 0));*/
+					break;
+				case QUEST_3:
+					/*temp = L"  [Quest3]\nUse Rotation\n5times\nachievement\nrate:" + wstring(szbuf) + L"%";
+					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 18.5f,28.5f }, _float3(0, 0, 0));*/
+					break;
+				case QUEST_4:
+					/*temp = L" [Quest4]\nUse Timeup\n5times\nachievement\nrate:" + wstring(szbuf) + L"%";
+					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 18.5f,28.5f }, _float3(0, 0, 0));*/
+					break;
+				defalut:
+					break;
+				}
+			
+		
+
+
+		}
+	}
 
 	return _int();
 }
