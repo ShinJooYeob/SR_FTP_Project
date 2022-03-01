@@ -88,6 +88,12 @@ private:
 
 	CCamera_Main*			m_pCamera_Main = nullptr;
 
+	////////¿∫«ı¿Ã∞° ∞«µÎ
+public:
+	void					SetBestClear(_uint _Stage, _float _timer);
+	_float					getBestClear(_uint _Stage) { return StageBestClear[_Stage]; }
+
+	_float					StageBestClear[SCENE_END];
 
 private:
 	HRESULT			SetUp_Components();

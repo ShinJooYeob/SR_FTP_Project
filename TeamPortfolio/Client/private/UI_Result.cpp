@@ -60,7 +60,7 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	//레벨디자인할 때 만져야할 설정들
 
-	m_fMaxTime = 1.f;	//최대 시간 1초
+	m_fMaxTime = 2.f;	//최대 시간 1초
 	RankStarGold = 1000.f;	//등급 하나당 획득 골드량
 
 	return S_OK;
@@ -285,7 +285,7 @@ CUI * CUI_Result::Find_Button(const _tchar * tagUIList)
 
 HRESULT CUI_Result::Ready_Layer_RankStar(const _tchar * pLayerTag)
 {
-	CUI_RankStar::RANKSTARDESC	tagDesc;
+	CUI_RankStar::RANKSTARDESC	tagRankStarDesc;
 	//윈도우 좌표계로 해야함
 	if (TempMinutes <= 1)
 	{
@@ -309,8 +309,9 @@ HRESULT CUI_Result::Ready_Layer_RankStar(const _tchar * pLayerTag)
 	}
 	for (_uint i = 0; i < RankNumber; ++i)
 	{
-		tagDesc.WindowRectPos = _float3(450.f+(i*90), 168.f, 0);
-		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(m_eNowSceneNum, pLayerTag, TEXT("ProtoType_GameObject_UI_RankStar"), &tagDesc))
+		tagRankStarDesc.WindowRectPos = _float3(450.f+(i*90), 168.f, 0); //렉트의 위치
+		tagRankStarDesc.Time = 1.f + i;									//별이 나타나는 시간
+		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(m_eNowSceneNum, pLayerTag, TEXT("ProtoType_GameObject_UI_RankStar"), &tagRankStarDesc))
 			return E_FAIL;
 	}
 
@@ -395,6 +396,21 @@ HRESULT CUI_Result::SetUp_Pont()
 			TempString = wstring(tempGoldArr);
 			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,275.f }, { 20.f,30.f }, _float3(83, 250, 120));
 
+			////베스트 기록을 표시하는중
+			_uint TempBestMinutes = (_uint)TempBestClear / 60;
+			_uint TempBestSeconds = (_uint)TempBestClear % 60;
+			_tchar tempBestMinArr[64];
+			_itow_s(TempBestMinutes, tempBestMinArr, 10);
+
+			_tchar tempBestSecArr[64];
+			_itow_s(TempBestSeconds, tempBestSecArr, 10);
+
+			TempString = wstring(tempBestMinArr) + L"Minutes " + wstring(tempBestSecArr) + L"Seconds";
+
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,350.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			if (FAILED(Release_RenderState()))
+				return E_FAIL;
 
 
 			//////타이머를 표시하는중
@@ -417,6 +433,21 @@ HRESULT CUI_Result::SetUp_Pont()
 			TempString = wstring(tempGoldArr);
 			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,275.f }, { 20.f,30.f }, _float3(83, 250, 120));
 
+			////베스트 기록을 표시하는중
+			_uint TempBestMinutes = (_uint)TempBestClear / 60;
+			_uint TempBestSeconds = (_uint)TempBestClear % 60;
+			_tchar tempBestMinArr[64];
+			_itow_s(TempBestMinutes, tempBestMinArr, 10);
+
+			_tchar tempBestSecArr[64];
+			_itow_s(TempBestSeconds, tempBestSecArr, 10);
+
+			TempString = wstring(tempBestMinArr) + L"Minutes " + wstring(tempBestSecArr) + L"Seconds";
+
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,350.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			if (FAILED(Release_RenderState()))
+				return E_FAIL;
 
 			//////타이머를 표시하는중
 			_tchar tempMinArr[64];
@@ -451,8 +482,10 @@ HRESULT CUI_Result::SetUp_Player()
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	CPlayer* Player = (CPlayer*)pGameInstance->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Player)); // 플레이어 정보
-	
 
+	Player->SetBestClear(m_eNowSceneNum, m_fTimer);
+
+	TempBestClear = Player->getBestClear(m_eNowSceneNum);
 
 	CInventory* Inventory = (CInventory*)pGameInstance->Get_Commponent_By_LayerIndex(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Inventory)); //플레이어의 인벤토리 정보
 	AcquisitionGold = RankNumber * RankStarGold;

@@ -79,6 +79,7 @@ private:
 
 	_uint			RankStarGold = 0.f; //RankStar 하나당 골드량
 	_uint			AcquisitionGold = 0.f;//획득골드량
+	_float			TempBestClear = 0.f;	//최고 기록을 담고 있음
 
 	_bool			m_bSetupGenerate = false; //1회에 한해서 생성함
 

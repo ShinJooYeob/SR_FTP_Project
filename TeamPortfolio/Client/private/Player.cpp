@@ -39,6 +39,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
 
 	ZeroMemory(m_tCoolDown, sizeof(COOL) * SKILL_END);
+	ZeroMemory(StageBestClear, sizeof(_float) *SCENE_END);
 
 	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main))));
 	
@@ -253,6 +254,14 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vStartPos);
 	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"), TEXT("Idle"));
 	return S_OK;
+}
+
+void CPlayer::SetBestClear(_uint _Stage, _float _timer)
+{
+	if (StageBestClear[_Stage] > _timer)
+	{
+		StageBestClear[_Stage] = _timer;
+	}
 }
 
 HRESULT CPlayer::SetUp_Components()

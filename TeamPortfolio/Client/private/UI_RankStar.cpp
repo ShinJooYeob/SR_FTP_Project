@@ -36,7 +36,6 @@ HRESULT CUI_RankStar::Initialize_Clone(void * pArg)
 		vRect.y = m_RankStarDesc.WindowRectPos.y;
 		vRect.z = 60 + m_RankStarDesc.WindowRectPos.x;
 		vRect.w = 70 + m_RankStarDesc.WindowRectPos.y;
-		Set_UI_Transform(m_ComTransform, Set_byRectPos(vRect));
 	}
 	else
 	{
@@ -67,6 +66,12 @@ HRESULT CUI_RankStar::Initialize_Clone(void * pArg)
 
 	//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(280.f, 675.f, 0.f));
 
+	//보간을 위한 변수
+	//TempPos = 350;
+	StartPosW = 350;
+	StartPosZ = 800;
+	TargetPosZ = 60 + m_RankStarDesc.WindowRectPos.x;
+	TargetPosW = 70 + m_RankStarDesc.WindowRectPos.y;
 	return S_OK;
 }
 
@@ -75,6 +80,39 @@ _int CUI_RankStar::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 	m_fFrame = fDeltaTime;
+
+	_float TempW;
+	_float TempZ;
+
+	m_fTimer += fDeltaTime;
+	if (m_RankStarDesc.Time < m_fTimer)
+	{
+		EasingTime += fDeltaTime;
+		TempW = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, StartPosW, TargetPosW, EasingTime, 2.0f);
+		TempZ = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, StartPosZ, TargetPosZ, EasingTime, 2.0f);
+
+		//vRect.z = Temptest + m_RankStarDesc.WindowRectPos.x;
+		if (EasingTime > 2)
+		{
+			TempW = TargetPosW;
+			TempZ = TargetPosZ;
+		}
+		vRect.z = TempZ;
+		vRect.w = TempW;
+		Set_UI_Transform(m_ComTransform, Set_byRectPos(vRect));
+
+	}
+
+	//이걸로 위에서 밑으로 떨어지는 느낌으로 할것.
+	//스태틱하지마럯ㅅ
+	//static _uint	temp = 350;
+	//if (temp > 60)
+	//{
+	//	--temp;
+	//}
+	//vRect.z = temp + m_RankStarDesc.WindowRectPos.x;
+	//vRect.w = temp+10 + m_RankStarDesc.WindowRectPos.y;
+	//Set_UI_Transform(m_ComTransform, Set_byRectPos(vRect));
 
 
 	return _int();
