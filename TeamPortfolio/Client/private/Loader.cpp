@@ -38,6 +38,11 @@
 #include "MyButton.h"
 
 
+
+//////////////////////////////////////////////////////////////////////////
+#include "ParsedObject.h"
+//////////////////////////////////////////////////////////////////////////
+
 _uint CALLBACK LoadingThread(void* _Prameter)
 {
 	THREADARG tThreadArg{};
@@ -214,10 +219,24 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	
 
+	//////////////////////////////////////////////////////////////////////////
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(m_eSceneID, L"Prototype_Component_VIBuffer_Penguine", pGameInstance->Create_ParsedObject(L"PenguinVertex.txt", L"PenguinIndex.txt")));
+
+	//
+	TextureDesc.szTextFilePath = TEXT("Penguine.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, L"Prototype_Component_Texture_Penguine", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+
 #pragma endregion
 
 #pragma  region PROTOTYPE_GAMEOBJECT
 
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Penguine"), CParsedObject::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+
+	//////////////////////////////////////////////////////////////////////////
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainGround), CTerrainGround::Create(m_pGraphicDevice))))
 		return E_FAIL;

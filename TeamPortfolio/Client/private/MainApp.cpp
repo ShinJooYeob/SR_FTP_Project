@@ -9,11 +9,6 @@
 #include "UI_LoadingBar.h"
 #include "UI_Common.h"
 
-
-//////////////////////////////////////////////////////////////////////////
-#include "ParsedObject.h"
-//////////////////////////////////////////////////////////////////////////
-
 CMainApp::CMainApp()
 	:m_pGameInstance(GetSingle(CGameInstance))
 {
@@ -208,18 +203,6 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), CTexture::Create(m_pGraphicDevice,&TextureDesc))))
 		return E_FAIL;
 
-
-	//////////////////////////////////////////////////////////////////////////
-	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Penguine", m_pGameInstance->Create_ParsedObject(L"BigGreenTreeVtx.txt", L"BigGreenTreeIndex.txt")));
-
-	//
-	TextureDesc.szTextFilePath = TEXT("BigGreenTree.txt");
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_Texture_Penguine", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Penguine"), CParsedObject::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	//////////////////////////////////////////////////////////////////////////
 
 
 

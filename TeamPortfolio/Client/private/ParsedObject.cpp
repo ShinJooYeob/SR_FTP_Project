@@ -111,16 +111,16 @@ HRESULT CParsedObject::SetUp_Components()
 		return E_FAIL;
 
 	/* For. ÅØ½ºÃÄ*/
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Texture_Penguine"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Texture_Penguine"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+		return E_FAIL;
+	/* For.Com_VIBuffer_Cube */
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_VIBuffer_Penguine"), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))
 		return E_FAIL;
 
-	/* For.Com_VIBuffer_Cube */
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Penguine"), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
-		return E_FAIL;
 
 
 	///////////////////////////////////////////////////////

@@ -74,11 +74,11 @@ private:
 	_float			m_fTimer = 0.f; // 타이머
 	_float			m_fMaxTime = 0.f; // 최대 시간
 	_bool			m_bClear = false; //클리어 여부
-	_uint			TempMinutes = 0.f; //몇분인지 담는중
-	_uint			TempSeconds = 0.f; //몇초인지 담는중
+	_uint			TempMinutes = 0; //몇분인지 담는중
+	_uint			TempSeconds = 0; //몇초인지 담는중
 
-	_uint			RankStarGold = 0.f; //RankStar 하나당 골드량
-	_uint			AcquisitionGold = 0.f;//획득골드량
+	_uint			RankStarGold = 0; //RankStar 하나당 골드량
+	_uint			AcquisitionGold = 0;//획득골드량
 	_float			TempBestClear = 0.f;	//최고 기록을 담고 있음
 
 	_bool			m_bSetupGenerate = false; //1회에 한해서 생성함
