@@ -160,7 +160,8 @@ BOOL CMapTool::OnInitDialog()
 		box.SetWindowText(L"5");
 	}
 
-	OnBnClickedButton_PreSet1();
+	CreateNewMap(1,1,1,BUILDINGTYPE_FULL);
+
 	Update_CountText();
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
