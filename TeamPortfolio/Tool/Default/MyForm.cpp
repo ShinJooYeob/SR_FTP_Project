@@ -259,7 +259,9 @@ BOOL CMyForm::PreTranslateMessage(MSG* pMsg)
 	{
 		//이스케이프키일 경우 함수 종료
 		if (pMsg->wParam == VK_DOWN || pMsg->wParam == VK_UP ||
-			pMsg->wParam == VK_LEFT || pMsg->wParam == VK_RIGHT)
+			pMsg->wParam == VK_LEFT || pMsg->wParam == VK_RIGHT ||
+			( pMsg->wParam >= 'A' && pMsg->wParam <= 'Z')
+			)
 			return TRUE;
 	}
 
