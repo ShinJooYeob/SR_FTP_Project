@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\public\PauseUI.h"
+#include "Scene.h"
 
 
 
@@ -37,6 +38,7 @@ HRESULT CPauseUI::Initialize_Clone(void * pArg)
 	FAILED_CHECK(SetUp_UIDesc());
 
 	m_bIsClicked = false;
+	m_bIsPauseAnimFinished = true;
 
 
 	return S_OK;
@@ -60,8 +62,10 @@ _int CPauseUI::Update(_float fDeltaTime)
 
 
 
+
 	FAILED_CHECK(Update_MouseButton(fDeltaTime));
 	
+	FAILED_CHECK(Update_Animation(fDeltaTime));
 
 	return _int();
 
@@ -150,6 +154,31 @@ HRESULT CPauseUI::Second_SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 
+	//플레이어 그림
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[8])))
+		return E_FAIL;
+
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
+
+	if (m_bIsOnAnim)
+	{
+		FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"PlayerCarry"));
+		FAILED_CHECK(m_ComTexture->Bind_Texture());
+	}
+	else
+	{
+		FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"PlayerWalk"));
+		FAILED_CHECK(m_ComTexture->Bind_Texture(_uint(m_fWalkingFrame)));
+
+	}
+
+	if (FAILED(m_ComVIBuffer->Render()))
+		return E_FAIL;
+
+	FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"Pause"));
+
+	//판
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[1])))
 		return E_FAIL;
 
@@ -162,6 +191,7 @@ HRESULT CPauseUI::Second_SetUp_RenderState()
 		return E_FAIL;
 
 
+	//버튼들
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 180);
 	for (_uint i = 2; i < 6; i++)
 	{
@@ -253,6 +283,12 @@ HRESULT CPauseUI::SetUp_UIDesc()
 	m_vUIDesc[7].z = 80;
 	m_vUIDesc[7].w = 80;
 
+
+	m_vUIDesc[8].x = m_vUIDesc[1].x;
+	m_vUIDesc[8].y = m_vUIDesc[1].y + 240;
+	m_vUIDesc[8].z = 80;
+	m_vUIDesc[8].w = 80;
+
 	return S_OK;
 }
 
@@ -269,6 +305,13 @@ HRESULT CPauseUI::Update_MouseButton(_float fTimeDelta)
 			if (PtInRect(&TransUIDesc_to_Rect(m_vUIDesc[0]), ptMouse))
 			{
 				m_bIsClicked = true;
+				m_bIsOnAnim = true;
+				m_fStartPoint = -g_iWinCY*0.5f;
+				m_fTargetPoint = g_iWinCY *0.5f;
+				m_vUIDesc[1].x = g_iWinCX - 222.f;
+				m_fPassedTime = 0;
+
+				m_bIsPauseAnimFinished = false;
 				m_fDepth = 1;
 
 				for (_uint i = 0; i < 4; i++)
@@ -302,18 +345,27 @@ HRESULT CPauseUI::Update_MouseButton(_float fTimeDelta)
 			}
 
 		}
-		else {
+		else if(m_bIsPauseAnimFinished)
+		{
 
 
 			if (PtInRect(&TransUIDesc_to_Rect(m_vUIDesc[6]), ptMouse))
 			{
-				m_bIsClicked = false;
-				m_fDepth = -1;
+				m_bIsPauseAnimFinished = false;
+				m_bIsOnAnim = false;
+
+				m_vUIDesc[1].y = g_iWinCY *0.5f;
+				m_fStartPoint = g_iWinCX - 222.f;
+				m_fTargetPoint = g_iWinCX + 222.f;
+				m_fPassedTime = 0;
+
 			}
 			else if (PtInRect(&TransUIDesc_to_Rect(m_vUIDesc[7]), ptMouse))				//////////////스테이지 셀렉 씬으로 돌아가기
 			{
 				m_bIsClicked = false;
 				m_fDepth = -1;
+
+				GetSingle(CGameInstance)->Get_Scene()->Scene_InGame_Chage(true, SCENE_STAGESELECT);
 
 			}
 
@@ -388,6 +440,61 @@ HRESULT CPauseUI::Update_MouseButton(_float fTimeDelta)
 
 		}
 
+	}
+
+
+	return S_OK;
+}
+
+HRESULT CPauseUI::Update_Animation(_float fTimeDelta)
+{
+	if (m_bIsClicked)
+	{
+		m_fWalkingFrame += fTimeDelta * 12.f;
+		if (m_fWalkingFrame > 9)
+			m_fWalkingFrame = 0;
+	}
+
+	if (!m_bIsPauseAnimFinished)
+	{
+		m_fPassedTime += fTimeDelta;
+		if (m_bIsOnAnim)
+		{
+			m_vUIDesc[1].y = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_fStartPoint, m_fTargetPoint, m_fPassedTime, 1.5f);
+			if (m_fPassedTime > 1.5f)
+			{
+				m_vUIDesc[1].y = m_fTargetPoint;
+				m_bIsPauseAnimFinished = true;
+				
+			}
+		}
+		else
+		{
+			m_vUIDesc[1].x = GetSingle(CGameInstance)->Easing(TYPE_Linear, m_fStartPoint, m_fTargetPoint, m_fPassedTime, 1.5f);
+			if (m_fPassedTime > 1.5f)
+			{
+				m_vUIDesc[1].x = m_fTargetPoint;
+				m_bIsPauseAnimFinished = true;
+				m_bIsClicked = false;
+				m_fDepth = -1;
+			}
+
+		}
+
+		m_vUIDesc[2].x = m_vUIDesc[1].x + 80.f; //m_vUIDesc[1].x + 170.f;// m_vUIDesc[1].x - 10.f;
+		m_vUIDesc[2].y = m_vUIDesc[1].y - 170;
+		m_vUIDesc[3].x = m_vUIDesc[1].x + 80.f;
+		m_vUIDesc[3].y = m_vUIDesc[1].y - 80;
+		m_vUIDesc[4].x = m_vUIDesc[1].x + 80.f;
+		m_vUIDesc[4].y = m_vUIDesc[1].y + 10;
+		m_vUIDesc[5].x = m_vUIDesc[1].x + 80.f;
+		m_vUIDesc[5].y = m_vUIDesc[1].y + 100;
+		m_vUIDesc[6].x = m_vUIDesc[1].x - 90.f;
+		m_vUIDesc[6].y = m_vUIDesc[1].y + 190;
+		m_vUIDesc[7].x = m_vUIDesc[1].x + 95.f;
+		m_vUIDesc[7].y = m_vUIDesc[1].y + 190;
+		m_vUIDesc[8].x = m_vUIDesc[1].x;
+		m_vUIDesc[8].y = m_vUIDesc[1].y + 240;
 	}
 
 

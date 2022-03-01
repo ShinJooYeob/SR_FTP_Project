@@ -50,22 +50,26 @@ private:
 
 
 private:
-	_float4			m_vUIDesc[8];
+	_float4			m_vUIDesc[9];
 	_bool			m_SoundChek[4];
+	_float			m_fWalkingFrame = 0;
 
 	_bool			m_bIsClicked = false;
+
+	_bool			m_bIsOnAnim = false;
+	_bool			m_bIsPauseAnimFinished = false;
 
 	_float			m_fStartPoint = 0;
 	_float			m_fTargetPoint = 0;
 	_float			m_fPassedTime = 0;
-	_uint			m_iCount= 0;
-
+	_uint			m_iCount = 0;
 
 
 private:
 	HRESULT			SetUp_Components();
 	HRESULT			SetUp_UIDesc();
 	HRESULT			Update_MouseButton(_float fTimeDelta);
+	HRESULT			Update_Animation(_float fTimeDelta);
 	RECT			TransUIDesc_to_Rect(_float4 UIDesc);
 
 public:

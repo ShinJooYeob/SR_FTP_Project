@@ -57,6 +57,43 @@ _int CScene_Stage2::Update(_float fDeltaTime)
 			return E_FAIL;
 	}
 
+	if (m_bScene_Switch == true)
+	{
+		switch (m_INextScene)
+		{
+		case SCENEID::SCENE_LOBY:
+		{
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_LOBY), SCENEID::SCENE_LOADING)))
+				return E_FAIL;
+			break;
+		}
+		case SCENEID::SCENE_STAGESELECT:
+		{
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
+				return E_FAIL;
+			break;
+		}
+		case SCENEID::SCENE_STAGE1:
+		{
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING)))
+				return E_FAIL;
+			break;
+		}
+		case SCENEID::SCENE_STAGE2:
+		{
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING)))
+				return E_FAIL;
+			break;
+		}
+		case SCENEID::SCENE_STAGE3:
+		{
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING)))
+				return E_FAIL;
+			break;
+		}
+		}
+	}
+
 	return 0;
 }
 
@@ -91,6 +128,7 @@ _int CScene_Stage2::LateRender()
 
 	return 0;
 }
+
 
 HRESULT CScene_Stage2::Ready_Layer_Terrain(const _tchar * pLayerTag)
 {

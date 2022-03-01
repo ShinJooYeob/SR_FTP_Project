@@ -55,7 +55,6 @@ private:
 	_float4			m_vUIDesc[5];
 	_float			m_fTimer = 0;
 	_float			m_fWalkFrame = 0;
-	_int			m_PlayerLife = 3;
 	_float			m_fHurtedTime = 0;
 
 	_bool			m_bIsStatusChage = false;

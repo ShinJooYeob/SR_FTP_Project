@@ -38,6 +38,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
 	m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
 
+	m_iPlayerLife = 3;
 	ZeroMemory(m_tCoolDown, sizeof(COOL) * SKILL_END);
 
 	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main))));
@@ -250,6 +251,7 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 
 	m_fNowJumpPower = 0;
 	m_fJumpPower = 10.f;
+	m_iPlayerLife = 3;
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vStartPos);
 	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"), TEXT("Idle"));
 	return S_OK;
@@ -727,7 +729,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 		}
 		else if (Time > 3.f && m_vReturnStair != NOT_EXIST_BLOCK)
 		{
-			if (m_bReHurtTime < 4.f)
+			if (m_bReHurtTime < 1.5f)
 			{
 				m_bIsDead = true;
 				m_fDeadNPauseTime = 4.0f;

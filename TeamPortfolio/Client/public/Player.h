@@ -41,6 +41,8 @@ public:
 	void Set_PlayerPause(_float TotalPauseTime, const _tchar* TagAnim, _float fFrameTime = 6.0f);
 	virtual HRESULT ReInitialize(void* pArg)override;
 
+	_int Get_PlayerLife() { return m_iPlayerLife; };
+	void Set_PlayerLife(_int iNum) { m_iPlayerLife += iNum; };
 	const _tchar* Get_NowTextureTag();
 	_bool Get_CoolDownStart(_int eSKILL) { return m_tCoolDown[eSKILL].m_bCoolDownStart; }
 	void Set_CoolDownStart_False(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = false; }
@@ -59,6 +61,8 @@ private:
 private:
 	COOL					m_tCoolDown[SKILL_END];
 	_float					m_fFrame = 0.f;
+
+	_int					m_iPlayerLife = 0;
 
 	_float					m_fJumpPower = 5.f;
 	_float					m_fNowJumpPower = 0.f;

@@ -66,10 +66,10 @@ _int CUI_Status::Update(_float fDeltaTime)
 	if (m_fHurtedTime != 0) 
 	{
 		m_fHurtedTime += fDeltaTime;
-		if (m_fHurtedTime > 1.5f)
+		if (m_fHurtedTime > 1.8f)
 		{
 			m_fHurtedTime = 0;
-			m_PlayerLife--;
+			m_pPlayer->Set_PlayerLife(-1);
 		}
 	}
 
@@ -246,9 +246,11 @@ HRESULT CUI_Status::Third_SetUp_RenderState()
 	if (FAILED(m_ComTexture->Bind_Texture(_uint(m_fWalkFrame))))
 		return E_FAIL;
 
-	if (m_PlayerLife > 0) {
+	_int iPlayerLife = m_pPlayer->Get_PlayerLife();
+	if (iPlayerLife > 0  && iPlayerLife <= 3)
+	{
 
-	for (_uint i = 0; i < (_uint)m_PlayerLife; i++)
+	for (_uint i = 0; i < (_uint)iPlayerLife; i++)
 	{
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[i + 2])))
 			return E_FAIL;
@@ -256,7 +258,7 @@ HRESULT CUI_Status::Third_SetUp_RenderState()
 		if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 			return E_FAIL;
 
-		if (i == m_PlayerLife - 1 && m_fHurtedTime)
+		if (i == iPlayerLife - 1 && m_fHurtedTime)
 		{
 			FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"hurt"));
 

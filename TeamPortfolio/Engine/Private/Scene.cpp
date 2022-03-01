@@ -34,6 +34,14 @@ _int CScene::LateRender()
 	return _int();
 }
 
+HRESULT CScene::Scene_InGame_Chage(_bool Scene_Chage_Switch, _uint _INextScene)
+{
+	m_bScene_Switch = Scene_Chage_Switch;
+	m_INextScene = _INextScene;
+
+	return S_OK;
+}
+
 void CScene::Free()
 {
 	Safe_Release(m_pGraphicDevice);

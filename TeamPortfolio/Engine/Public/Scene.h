@@ -17,7 +17,7 @@ public:
 	virtual _int LateRender();
 
 	//π⁄¿∫«ı¿Ã ∞«µÎ
-	virtual	HRESULT Scene_InGame_Chage(_bool Scene_Chage_Switch, _uint _INextScene) { return S_OK; };
+	virtual	HRESULT Scene_InGame_Chage(_bool Scene_Chage_Switch, _uint _INextScene);
 
 protected:
 	LPDIRECT3DDEVICE9 m_pGraphicDevice = nullptr;
