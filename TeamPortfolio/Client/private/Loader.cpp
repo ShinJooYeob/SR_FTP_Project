@@ -297,7 +297,11 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 #pragma region PROTOTYPE_COMPONENT
 
 	CTexture::TEXTUREDESC TextureDesc;
-
+	//////////eunhyuk_UI
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_Result.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_UI_Result_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
 	//미는 큐브
 	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");

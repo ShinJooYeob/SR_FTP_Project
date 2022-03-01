@@ -4,6 +4,8 @@
 #include "UI_Image.h"
 #include "Scene_Loading.h"
 #include "UI_RankStar.h"
+#include "Player.h"
+#include "Inventory.h"
 
 CUI_Result::CUI_Result(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CUI(pGraphicDevice)
@@ -24,10 +26,18 @@ HRESULT CUI_Result::Initialize_Prototype(void * pArg)
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
 
+	CGameInstance* pGameInstance = GetSingle(CGameInstance);
 
+	//SCENEID::SCENE_STATIC
+	//m_eNowSceneNum
 	//프로토타입 넣는중
 	m_UIPrototypes.emplace(TEXT("ProtoType_GameObject_UI_Button"), CMyButton::Create(m_pGraphicDevice));
-	m_UIPrototypes.emplace(TEXT("ProtoType_GameObject_UI_RankStar"), CUI_RankStar::Create(m_pGraphicDevice));
+
+	//if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_Component_Texture_UI"), CMyButton::Create(m_pGraphicDevice))))
+	//	return E_FAIL;
+	
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_UI_RankStar"), CUI_RankStar::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -41,8 +51,6 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	//g_iWinCX >> 1
-	//g_iWinCY >> 1
 	m_vUIDesc = _float4(g_iWinCX >> 1, g_iWinCY >> 1, g_iWinCX >> 1, 500);
 
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(999.f, 999.f, 0.f));
@@ -50,19 +58,13 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	if (FAILED(Ready_Layer_Button(TEXT("Layer_Button"))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_RankStar(TEXT("Layer_RankStar"))))
-		return E_FAIL;
-
-	//개 중요
-	//if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-	//	return E_FAIL;
-
 
 	m_ComTexture->Change_TextureLayer(TEXT("Result"));
 
-	//최대 시간 1초
-	m_fMaxTime = 100000000000.f;
+	//레벨디자인할 때 만져야할 설정들
 
+	m_fMaxTime = 2.f;	//최대 시간 1초
+	RankStarGold = 1000.f;	//등급 하나당 획득 골드량
 
 	return S_OK;
 }
@@ -83,10 +85,20 @@ _int CUI_Result::Update(_float fDeltaTime)
 
 	if (m_fTimer > m_fMaxTime || m_bClear == true)
 	{
-		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-			return E_FAIL;
+		if (m_bSetupGenerate == false)
+		{
+			if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+				return E_FAIL;
+
+			if (FAILED(Ready_Layer_RankStar(TEXT("Layer_RankStar"))))
+				return E_FAIL;
+
+			SetUp_Player();
+			m_bSetupGenerate = true;
+		}
 
 		Button_Picking();
+
 
 		if (FAILED(Update_UIButtonList(fDeltaTime)))
 			return E_FAIL;
@@ -94,6 +106,7 @@ _int CUI_Result::Update(_float fDeltaTime)
 
 
 		m_bStopSwitch = true;
+
 	}
 
 
@@ -138,62 +151,9 @@ _int CUI_Result::Render()
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
 
+	//폰트 관련된건 여기에 있음
+	SetUp_Pont();
 
-	//잊지마라 폰트 매니저는 렌더에서만 사용가능하다.
-	if (m_fTimer > m_fMaxTime || m_bClear == true)
-	{
-		if (m_fTimer > m_fMaxTime)
-		{
-			//삭제하지 말것 테스트가 끝나면 주석을 풀 예정
-			wstring TempString = L"Mission Failed";
-
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
-
-			if (FAILED(Release_RenderState()))
-				return E_FAIL;
-
-			//이건 사람들한테 공개하는 용도로 사용됨
-			//_tchar tempMinArr[64];
-			//_itow_s(TempMinutes, tempMinArr, 10);
-
-			//_tchar tempSecArr[64];
-			//_itow_s(TempSeconds, tempSecArr, 10);
-
-
-			//wstring TempString = wstring(tempMinArr) + L"Minutes " + wstring(tempSecArr) + L"Seconds";
-
-			//GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
-
-			//if (FAILED(Release_RenderState()))
-			//	return E_FAIL;
-		}
-		else
-		{
-			_tchar tempMinArr[64];
-			_itow_s(TempMinutes, tempMinArr, 10);
-
-			_tchar tempSecArr[64];
-			_itow_s(TempSeconds, tempSecArr, 10);
-
-
-			wstring TempString = wstring(tempMinArr) + L"Minutes " + wstring(tempSecArr) + L"Seconds";
-
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
-
-			if (FAILED(Release_RenderState()))
-				return E_FAIL;
-
-			//_tchar tempArr[64];
-			//_itow_s(m_fTimer, tempArr, 10);
-
-			//wstring TempString = wstring(tempArr) + L"Sec " + L"Eunhyek";
-
-			//GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
-
-			//if (FAILED(Release_RenderState()))
-			//	return E_FAIL;
-		}
-	}
 
 	return _int();
 }
@@ -328,8 +288,51 @@ CUI * CUI_Result::Find_Button(const _tchar * tagUIList)
 
 HRESULT CUI_Result::Ready_Layer_RankStar(const _tchar * pLayerTag)
 {
-	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_PushCube")))
-	//	return E_FAIL;
+	CUI_RankStar::RANKSTARDESC	tagRankStarDesc;
+	//윈도우 좌표계로 해야함
+	if (TempMinutes <= 1)
+	{
+		RankNumber = 5;
+	}
+	else if (TempMinutes <= 2)
+	{
+		RankNumber = 4;
+	}
+	else if (TempMinutes <= 3)
+	{
+		RankNumber = 3;
+	}
+	else if (TempMinutes <= 4)
+	{
+		RankNumber = 2;
+	}
+	else
+	{
+		RankNumber = 1;
+	}
+	for (_uint i = 0; i < RankNumber; ++i)
+	{
+		tagRankStarDesc.WindowRectPos = _float3(450.f+(i*90), 168.f, 0); //렉트의 위치
+		tagRankStarDesc.Time = 1.f + i;									//별이 나타나는 시간
+		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(m_eNowSceneNum, pLayerTag, TEXT("ProtoType_GameObject_UI_RankStar"), &tagRankStarDesc))
+			return E_FAIL;
+	}
+
+
+	//여기서부터 시작해야됨
+	//씬 스테이지2 참고하면 될 듯?
+	//획득골드+랭크스타도 만들기 플레이어에 컴 인벤토리로 되어 있고
+	//	거기에 셋 골드해서 넣어주면 됨
+	//	Get_GameObject_By_LayerIndex이거 사용해서 플레이어 불러오자
+	//	1인자에는 스태틱쓰고 2인자에는 레이어 플레이어쓰자 어차피 플레이어는
+	//	하나밖에 없으니 디폴트0으로 되어 있는거 하면 될 듯
+	//	획득골드량은 시간에 따라서 꼴리는대로 넣어주면 됨
+
+	//	그리고 랭크스타는 미리 갯수 만들어놔서
+	//	이동해서 불러오기 또는!!!
+	//	클리어시 레디 레이어 랭크스타 함수 호출해서 이 때 만들어줘도 됨
+	//	이게 괜찮을듯
+
 	return S_OK;
 }
 
@@ -376,6 +379,123 @@ HRESULT CUI_Result::Release_RenderState()
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+
+	return S_OK;
+}
+
+HRESULT CUI_Result::SetUp_Pont()
+{
+	//잊지마라 폰트 매니저는 렌더에서만 사용가능하다.
+	if (m_fTimer > m_fMaxTime || m_bClear == true)
+	{
+		if (m_fTimer > m_fMaxTime)
+		{
+			wstring TempString;
+
+			///////획득 골드량을 표시하는중
+			_tchar tempGoldArr[64];
+			_itow_s(AcquisitionGold, tempGoldArr, 10);
+
+			TempString = wstring(tempGoldArr);
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,275.f }, { 20.f,30.f }, _float3(123, 104, 238));
+
+			////베스트 기록을 표시하는중
+			_uint TempBestMinutes = (_uint)TempBestClear / 60;
+			_uint TempBestSeconds = (_uint)TempBestClear % 60;
+			_tchar tempBestMinArr[64];
+			_itow_s(TempBestMinutes, tempBestMinArr, 10);
+
+			_tchar tempBestSecArr[64];
+			_itow_s(TempBestSeconds, tempBestSecArr, 10);
+
+			TempString = wstring(tempBestMinArr) + L"Minutes " + wstring(tempBestSecArr) + L"Seconds";
+
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,350.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			if (FAILED(Release_RenderState()))
+				return E_FAIL;
+
+
+			//////타이머를 표시하는중
+			TempString = L"Mission Failed";
+
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,425.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			if (FAILED(Release_RenderState()))
+				return E_FAIL;
+
+		}
+		else
+		{
+			wstring TempString;
+
+			///////획득 골드량을 표시하는중
+			_tchar tempGoldArr[64];
+			_itow_s(AcquisitionGold, tempGoldArr, 10);
+
+			TempString = wstring(tempGoldArr);
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,275.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			////베스트 기록을 표시하는중
+			_uint TempBestMinutes = (_uint)TempBestClear / 60;
+			_uint TempBestSeconds = (_uint)TempBestClear % 60;
+			_tchar tempBestMinArr[64];
+			_itow_s(TempBestMinutes, tempBestMinArr, 10);
+
+			_tchar tempBestSecArr[64];
+			_itow_s(TempBestSeconds, tempBestSecArr, 10);
+
+			TempString = wstring(tempBestMinArr) + L"Minutes " + wstring(tempBestSecArr) + L"Seconds";
+
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,350.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			if (FAILED(Release_RenderState()))
+				return E_FAIL;
+
+			//////타이머를 표시하는중
+			_tchar tempMinArr[64];
+			_itow_s(TempMinutes, tempMinArr, 10);
+
+			_tchar tempSecArr[64];
+			_itow_s(TempSeconds, tempSecArr, 10);
+
+			TempString = wstring(tempMinArr) + L"Minutes " + wstring(tempSecArr) + L"Seconds";
+
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			if (FAILED(Release_RenderState()))
+				return E_FAIL;
+
+			//_tchar tempArr[64];
+			//_itow_s(m_fTimer, tempArr, 10);
+
+			//wstring TempString = wstring(tempArr) + L"Sec " + L"Eunhyek";
+
+			//GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
+
+			//if (FAILED(Release_RenderState()))
+			//	return E_FAIL;
+		}
+
+	}
+
+	return S_OK;
+}
+HRESULT CUI_Result::SetUp_Player()
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+	CPlayer* Player = (CPlayer*)pGameInstance->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Player)); // 플레이어 정보
+
+	Player->SetBestClear(m_eNowSceneNum, m_fTimer);
+
+	TempBestClear = Player->getBestClear(m_eNowSceneNum);
+
+	CInventory* Inventory = (CInventory*)pGameInstance->Get_Commponent_By_LayerIndex(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Inventory)); //플레이어의 인벤토리 정보
+	AcquisitionGold = RankNumber * RankStarGold;
+
+	Inventory->Set_Gold(AcquisitionGold);
+
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }

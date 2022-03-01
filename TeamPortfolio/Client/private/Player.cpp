@@ -40,6 +40,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 
 	m_iPlayerLife = 3;
 	ZeroMemory(m_tCoolDown, sizeof(COOL) * SKILL_END);
+	ZeroMemory(StageBestClear, sizeof(_float) *SCENE_END);
 
 	m_pCamera_Main = ((CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main))));
 	
@@ -260,6 +261,14 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 const _tchar * CPlayer::Get_NowTextureTag()
 {
 	return m_ComTexture->Get_NowTextureTag();
+}
+
+void CPlayer::SetBestClear(_uint _Stage, _float _timer)
+{
+	if (StageBestClear[_Stage] > _timer)
+	{
+		StageBestClear[_Stage] = _timer;
+	}
 }
 
 HRESULT CPlayer::SetUp_Components()

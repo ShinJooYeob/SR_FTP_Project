@@ -114,6 +114,12 @@ HRESULT CMainApp::Scene_Change(SCENEID eSceneID)
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Loading_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//결과창 Star
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_Result.txt");
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_RankStar_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 	//이제 오브젝트도 넣어줘야함
 	if (FAILED(m_pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Loading"), CUI_Loading::Create(m_pGraphicDevice))))
 		return E_FAIL;

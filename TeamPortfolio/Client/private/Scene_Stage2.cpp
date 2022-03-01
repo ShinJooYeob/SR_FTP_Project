@@ -25,6 +25,9 @@ HRESULT CScene_Stage2::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_FixCube(TAG_LAY(Layer_Terrain))))
 		return E_FAIL;
+	if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_PushCube(TEXT("Layer_PushCube"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_SelfRotationCube(TEXT("Layer_SelfRotationCube"))))
@@ -41,6 +44,7 @@ HRESULT CScene_Stage2::Initialize()
 
 	if (FAILED(Ready_Layer_PauseUI(TEXT("Layer_PauseUI"))))
 		return E_FAIL;
+
 
 
 
@@ -129,6 +133,14 @@ _int CScene_Stage2::LateRender()
 	return 0;
 }
 
+HRESULT CScene_Stage2::Scene_InGame_Chage(_bool Scene_Chage_Switch, _uint _INextScene)
+{
+	m_bScene_Switch = Scene_Chage_Switch;
+	m_INextScene = _INextScene;
+
+	return S_OK;
+}
+
 
 HRESULT CScene_Stage2::Ready_Layer_Terrain(const _tchar * pLayerTag)
 {
@@ -179,6 +191,14 @@ HRESULT CScene_Stage2::Ready_Layer_SkyBox(const _tchar * pLayerTag)
 	return S_OK;
 
 
+}
+
+HRESULT CScene_Stage2::Ready_Layer_UI_Result(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_UI_Result")))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CScene_Stage2::Ready_Layer_PauseUI(const _tchar * pLayerTag)
