@@ -970,8 +970,8 @@ HRESULT CPlayer::SetUp_RenderState()
 
 HRESULT CPlayer::Release_RenderState()
 {
-	 _float3 Temp = m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0);
-	GetSingle(CGameInstance)->Render_World_Font(L"0ere'sy\nForgive me, girl", Temp,_float2(0.3f,0.45f),_float3(38,240,120));
+	// _float3 Temp = m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0);
+	//GetSingle(CGameInstance)->Render_World_Font(L"0ere'sy\nForgive me, girl", Temp,_float2(0.3f,0.45f),_float3(38,240,120));
 
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
