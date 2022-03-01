@@ -49,10 +49,16 @@ HRESULT CScene_IMGUI::Initialize()
 		_float3(0, 0, 0));
 
 	// 생성되지 않는 특수 큐브 저장
-	list< SPECIALCUBE*>* SpecialCubeList = new list<SPECIALCUBE *>();
-	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_IMGUISCENE,0, SpecialCubeList);
+	list< SPECIALCUBE*> SpecialCubeList;
+	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_IMGUISCENE,0, &SpecialCubeList);
 
-	Ready_Layer_Terrain(SpecialCubeList);
+	Ready_Layer_Terrain(&SpecialCubeList);
+
+	for (auto data: SpecialCubeList)
+	{
+		Safe_Delete(data);
+	}
+	SpecialCubeList.clear();
 
 	return S_OK;
 }
@@ -177,12 +183,12 @@ HRESULT CScene_IMGUI::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
 
 			if (count_Escalator % 2 == 0)
 			{
-				memcpy(escalDesc.vEndPos, &(data->WorldMat.m[3]), sizeof(_float3));
+				memcpy(escalDesc.vStartPos, &(data->WorldMat.m[3]), sizeof(_float3));
 
 			}
 			else
 			{
-				memcpy(escalDesc.vStartPos, &(data->WorldMat.m[3]), sizeof(_float3));
+				memcpy(escalDesc.vEndPos, &(data->WorldMat.m[3]), sizeof(_float3));
 				// 생성
 				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_IMGUISCENE,
 					TAG_LAY(Layer_Terrain), TAG_OP(Prototype_EscalatorCube),
