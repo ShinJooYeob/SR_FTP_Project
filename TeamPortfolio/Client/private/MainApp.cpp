@@ -61,6 +61,8 @@ _int CMainApp::Update(_float fDeltaTime)
 	if (m_pGameInstance == nullptr)
 		return -1;
 
+	g_fDeltaTime = fDeltaTime;
+
 	if (FAILED(m_pGameInstance->Update_Engine(fDeltaTime)))
 	{
 		MSGBOX("Failed to Update_Engine ");

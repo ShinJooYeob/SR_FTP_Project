@@ -2,7 +2,8 @@
 #include "..\Public\Scene_Stage2.h"
 #include "Scene_Loading.h"
 #include "Object_OrbitCube.h"
-#include "Camera_Main.h""
+#include "Camera_Main.h"
+#include "UI_Status.h"
 
 
 CScene_Stage2::CScene_Stage2(LPDIRECT3DDEVICE9 GraphicDevice)
@@ -165,6 +166,13 @@ HRESULT CScene_Stage2::Ready_Layer_Cube(const _tchar * pLayerTag)
 		(pPlayerList->front())->ReInitialize(&_float3(0, 2, 0));
 
 	}
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STAGE2, TEXT("Layer_StatusUI"), TEXT("Prototype_GameObject_StatusUI")))
+		return E_FAIL;
+
+	CUI_Status* pStatusUI = (CUI_Status*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_StatusUI")));
+	FAILED_CHECK(pStatusUI->Set_Player(pPlayerList->front()));
 
 	return S_OK;
 }

@@ -41,6 +41,7 @@ public:
 	void Set_PlayerPause(_float TotalPauseTime, const _tchar* TagAnim, _float fFrameTime = 6.0f);
 	virtual HRESULT ReInitialize(void* pArg)override;
 
+	const _tchar* Get_NowTextureTag();
 	_bool Get_CoolDownStart(_int eSKILL) { return m_tCoolDown[eSKILL].m_bCoolDownStart; }
 	void Set_CoolDownStart_False(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = false; }
 	void Set_CoolDownStart_True(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = true; }

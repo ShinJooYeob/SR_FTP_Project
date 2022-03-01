@@ -76,7 +76,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, const CGraphic_Device:
 
 	FAILED_CHECK(m_pSoundMgr->Initialize_FMOD());
 
-	FAILED_CHECK(m_pFontMgr->Initialize_FontMgr(*ppOut, TEXT("Font.txt"), { _float(GraphicDesc.iWinCX), _float(GraphicDesc.iWinCY) }));
+	FAILED_CHECK(m_pFontMgr->Initialize_FontMgr(*ppOut, TEXT("Font2.txt"), { _float(GraphicDesc.iWinCX), _float(GraphicDesc.iWinCY) }));
 
 
 	return S_OK;

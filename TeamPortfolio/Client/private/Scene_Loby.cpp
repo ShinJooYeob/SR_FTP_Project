@@ -137,6 +137,8 @@ HRESULT CScene_Loby::Ready_Layer_LobyUI(const _tchar * pLayerTag)
 
 	if (m_pUI == nullptr)
 		return E_FAIL;
+
+
 	return S_OK;
 }
 

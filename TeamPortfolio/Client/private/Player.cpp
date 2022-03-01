@@ -255,6 +255,11 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 	return S_OK;
 }
 
+const _tchar * CPlayer::Get_NowTextureTag()
+{
+	return m_ComTexture->Get_NowTextureTag();
+}
+
 HRESULT CPlayer::SetUp_Components()
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
@@ -726,7 +731,11 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 			{
 				m_bIsDead = true;
 				m_fDeadNPauseTime = 4.0f;
-				m_bReHurtTime = 0;
+				m_bReHurtTime = 0;	
+
+				m_fNowJumpPower = 0;
+				m_bIsJumped = 0;
+				Time = 0;
 			}
 			else {
 
@@ -738,6 +747,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 				vResultPos.y += 1.f;
 				m_fNowJumpPower = 0;
 				m_bIsJumped = 0;
+				Time = 0;
 				m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
 
 			}

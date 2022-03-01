@@ -187,6 +187,9 @@
     <Filter Include="01.GameObject\ForLobyObject\PauseUI">
       <UniqueIdentifier>{6ba290b6-c6ff-464f-a43e-f2b6ef4be24c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\UI_Status">
+      <UniqueIdentifier>{b0d327df-b886-4fa6-a911-01336a0275ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -354,6 +357,9 @@
     <ClInclude Include="..\public\PauseUI.h">
       <Filter>01.GameObject\ForLobyObject\PauseUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_Status.h">
+      <Filter>01.GameObject\UI\UI_Status</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -508,6 +514,9 @@
     </ClCompile>
     <ClCompile Include="..\private\PauseUI.cpp">
       <Filter>01.GameObject\ForLobyObject\PauseUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Status.cpp">
+      <Filter>01.GameObject\UI\UI_Status</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

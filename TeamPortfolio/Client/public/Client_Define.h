@@ -5,6 +5,7 @@ static const int g_iWinCX = 1280;
 static const int g_iWinCY = 720;
 extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
+extern _float g_fDeltaTime;
 
 static const _tchar* g_Path_Data = L"../Bin/Resources/Textures/TexturePathData/";
 static const _tchar* g_Path_Data_MapTXT = L"../Bin/Resources/Textures/TexturePathData/map.txt";

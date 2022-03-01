@@ -16,6 +16,7 @@
 #include "LobyScroll.h"
 #include "Loby_UI.h"
 #include "PauseUI.h"
+#include "UI_Status.h"
 
 #include "Object_FixCube.h"
 #include "Object_GravityCube.h"
@@ -127,7 +128,6 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	TextureDesc.szTextFilePath = TEXT("LobyUI.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_LobyUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
-
 
 #pragma endregion
 
@@ -312,6 +312,12 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Pause"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_Status.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StatusUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+
 #pragma endregion
 
 
@@ -333,7 +339,8 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_PauseUI"), CPauseUI::Create(m_pGraphicDevice))))
 		return E_FAIL;
-
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_StatusUI"), CUI_Status::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 
 #pragma endregion
