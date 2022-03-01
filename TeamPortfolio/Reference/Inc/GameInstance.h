@@ -21,6 +21,7 @@ class CPicking;
 class CFrustumMgr;
 class CSoundMgr;
 class CFontMgr;
+class CXMLMgr;
 
 
 class ENGINE_DLL CGameInstance final :public CBase
@@ -112,6 +113,10 @@ public:
 	HRESULT Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2 vFontSize = _float2(20.f, 30.f), _float3 Color_RGB = { 0,0,0 }, _int UntilDrawIndex = -1);
 	HRESULT Render_World_Font(wstring szString, _float3 vOnWorldPos, _float2 vFontSize = _float2(0.3f, 0.45f), _float3 Color_RGB = { 0,0,0 }, _int UntilDrawIndex = -1);
 
+public://XMLParser
+	CVIBuffer_Parsed* Create_ParsedObject(wstring pPosTextFilePath, wstring pIndexTextFilePath);
+
+
 public: /* For. IMGUI Interface */
 	CImguiMgr* GetIMGui();
 
@@ -133,6 +138,7 @@ private:
 	CFrustumMgr*		m_pFrustumMgr = nullptr;
 	CSoundMgr*			m_pSoundMgr = nullptr;
 	CFontMgr*			m_pFontMgr = nullptr;
+	CXMLMgr*			m_pXMLMgr = nullptr;
 
 public:
 	static void Release_Engine();

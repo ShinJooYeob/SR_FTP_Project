@@ -33,7 +33,9 @@ HRESULT CScene_Loby::Initialize()
 	FAILED_CHECK(Ready_Layer_LobyScroll(TEXT("Layer_LobyScroll")));
 	FAILED_CHECK(Ready_Layer_LobyUI(TEXT("Layer_LobyUI")));
 
-	
+
+
+
 	return S_OK;
 }
 

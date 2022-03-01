@@ -11,6 +11,7 @@
 #include "FrustumMgr.h"
 #include "SoundMgr.h"
 #include "FontMgr.h"
+#include "XMLMgr.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -27,7 +28,8 @@ CGameInstance::CGameInstance()
 	m_pPickingMgr(GetSingle(CPicking)),
 	m_pFrustumMgr(GetSingle(CFrustumMgr)),
 	m_pSoundMgr(GetSingle(CSoundMgr)),
-	m_pFontMgr(GetSingle(CFontMgr))
+	m_pFontMgr(GetSingle(CFontMgr)),
+	m_pXMLMgr(GetSingle(CXMLMgr))
 
 {
 	m_pThreadMgr->AddRef();
@@ -43,6 +45,7 @@ CGameInstance::CGameInstance()
 	m_pFrustumMgr->AddRef();
 	m_pSoundMgr->AddRef();
 	m_pFontMgr->AddRef();
+	m_pXMLMgr->AddRef();
 	
 }
 
@@ -79,6 +82,8 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, const CGraphic_Device:
 	FAILED_CHECK(m_pSoundMgr->Initialize_FMOD());
 
 	FAILED_CHECK(m_pFontMgr->Initialize_FontMgr(*ppOut, TEXT("Font2.txt"), { _float(GraphicDesc.iWinCX), _float(GraphicDesc.iWinCY) }));
+
+	FAILED_CHECK(m_pXMLMgr->Initialize_XMLMgr(*ppOut));
 
 
 	return S_OK;
@@ -481,6 +486,13 @@ HRESULT CGameInstance::Render_World_Font(wstring szString, _float3 vOnWorldPos, 
 	return m_pFontMgr->Render_World_Font(szString, vOnWorldPos, vFontSize, Color_RGB, UntilDrawIndex);
 }
 
+CVIBuffer_Parsed * CGameInstance::Create_ParsedObject(wstring pPosTextFilePath, wstring pIndexTextFilePath)
+{
+	NULL_CHECK_BREAK(m_pXMLMgr);
+
+	return m_pXMLMgr->Create_ParsedObject(pPosTextFilePath,pIndexTextFilePath);
+}
+
 
 
 
@@ -542,6 +554,9 @@ void CGameInstance::Release_Engine()
 
 	if (0 != GetSingle(CSoundMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com CSoundMgr ");
+	
+	if (0 != GetSingle(CXMLMgr)->DestroyInstance())
+		MSGBOX("Failed to Release Com XMLMgr ");
 
 	if (0 != GetSingle(CFontMgr)->DestroyInstance())
 		MSGBOX("Failed to Release Com CFontMgr ");
@@ -566,5 +581,6 @@ void CGameInstance::Free()
 	Safe_Release(m_pPickingMgr);
 	Safe_Release(m_pFrustumMgr);
 	Safe_Release(m_pFontMgr);
+	Safe_Release(m_pXMLMgr);
 	
 }

@@ -190,6 +190,9 @@
     <Filter Include="01.GameObject\UI\UI_Status">
       <UniqueIdentifier>{b0d327df-b886-4fa6-a911-01336a0275ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\ParsedObject">
+      <UniqueIdentifier>{d29ef134-3211-4927-b10c-933588aefed3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -360,6 +363,9 @@
     <ClInclude Include="..\public\UI_Status.h">
       <Filter>01.GameObject\UI\UI_Status</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParsedObject.h">
+      <Filter>01.GameObject\ParsedObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -517,6 +523,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Status.cpp">
       <Filter>01.GameObject\UI\UI_Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject.cpp">
+      <Filter>01.GameObject\ParsedObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

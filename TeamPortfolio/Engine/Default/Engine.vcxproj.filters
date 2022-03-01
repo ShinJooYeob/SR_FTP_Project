@@ -136,6 +136,12 @@
     <Filter Include="01.Utility\04.ObjectMgr\01.GameObjects\Camera">
       <UniqueIdentifier>{0dc829ca-7100-4d31-93b7-2c2b122e66a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\11.XMLMgr">
+      <UniqueIdentifier>{7b464a95-7e29-4ba2-a7db-25ab145825ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\Model\ParsedModel">
+      <UniqueIdentifier>{180f00ea-5ee8-45a9-a5e1-f4196445302c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -260,6 +266,12 @@
     </ClCompile>
     <ClCompile Include="..\private\FontMgr.cpp">
       <Filter>01.Utility\10.FontMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\XMLMgr.cpp">
+      <Filter>01.Utility\11.XMLMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Parsed.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Model\ParsedModel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -409,6 +421,12 @@
     </ClInclude>
     <ClInclude Include="..\public\FontMgr.h">
       <Filter>01.Utility\10.FontMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\XMLMgr.h">
+      <Filter>01.Utility\11.XMLMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Parsed.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Model\ParsedModel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
