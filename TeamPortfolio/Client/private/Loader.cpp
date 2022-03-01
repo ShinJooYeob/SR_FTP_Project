@@ -366,13 +366,45 @@ HRESULT CLoader::Load_Scene_IMGUI(_bool * _IsClientQuit, CRITICAL_SECTION * _Cri
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Cube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("GravityTexture.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_GravityTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("PotalTexture.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+
 #pragma endregion
 
 #pragma  region PROTOTYPE_GAMEOBJECT
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Player), CPlayer::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
+
+	// 큐브 오브젝트 프로토타입
+
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_FixCube), CObject_FixCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_GravityCube), CObject_GravityCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_PortalCube_A), CObject_PortalCube_A::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_PortalCube_B), CObject_PortalCube_B::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_EscalatorCube), CObject_EscalatorCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_OrbitButtonCube), CObject_OrbitButton::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_OrbitCube), CObject_OrbitCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_VanishCube), CObject_VanishCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_AppearCube), CObject_AppearCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 #pragma endregion

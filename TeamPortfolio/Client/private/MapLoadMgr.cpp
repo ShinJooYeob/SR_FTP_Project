@@ -10,11 +10,14 @@ CMapLoadMgr::CMapLoadMgr()
 	m_MapObjectList = nullptr;
 	m_MaxMapCount = 0;
 
-	Init_LoadMap();
+	Init_LoadMap(); // 모든 맵 데이터 저장
 
 }
 
-HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index)
+
+
+
+HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index, list<SPECIALCUBE*>* spciallist)
 {
 	if (m_MaxMapCount <= index)
 		return E_FAIL;
@@ -26,7 +29,7 @@ HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index)
 	list<OUTPUT_OBJECTINFO*> currentMap = m_MapObjectList[index];
 
 	// 데이터 대입 부분
-	
+
 	// 1. 오브젝트를 생성함
 	// 2. 큐브 생성후 데이터를 대입받음
 	// 3, 대입받은 오브젝트에 데이터를 적용
@@ -35,32 +38,35 @@ HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index)
 
 	for (auto Infodata : currentMap)
 	{
+		bool bSpecialCube = false;
+
 		// 1. 큐브 ID로 각 큐브 생성
-		_uint cubeID = Infodata->CubeID;
-		switch (cubeID)
+		CubeID2Create(sceneid, *Infodata, spciallist);
+
+
+		if (bSpecialCube)
 		{
-		case 0:
-			GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
-				TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainCube),
-				_float3(0, 0, 0));
-			break;
-		case 1:
-			break;
-		default:
-			break;
+			// 생성 X 위치만 저장하는 특수 큐브
+
 		}
+		else
+		{
 
-		// 2. 생성된 큐브에 컴포넌트 별로 데이터 세팅.
-		CGameObject* newObj = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(sceneid, TAG_LAY(Layer_Terrain))->back();
-		if (newObj == nullptr)
-			continue;
+			CGameObject* newObj = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(sceneid, TAG_LAY(Layer_Terrain))->back();
+			if (newObj == nullptr)
+				continue;
 
-		CTransform* trans = (CTransform*)newObj->Get_Component(TAG_COM(Com_Transform));
-		trans->Set_Matrix(Infodata->WorldMatData);
+			CTransform* trans = (CTransform*)newObj->Get_Component(TAG_COM(Com_Transform));
+			trans->Set_Matrix(Infodata->WorldMatData);
 
-		CTexture* tex = (CTexture*)newObj->Get_Component(TAG_COM(Com_Texture));
-		tex->Change_TextureLayer(Infodata->TexDesc.szStateKey);
-		tex->Set_LoadTexutreNumber(Infodata->TexDesc.StateIndex);
+			// 특수큐브 중 그냥 생성해도 되는 것
+			if (Infodata->CubeID == 0)
+			{
+				CTexture* tex = (CTexture*)newObj->Get_Component(TAG_COM(Com_Texture));
+				tex->Change_TextureLayer(Infodata->TexDesc.szStateKey);
+				tex->Set_LoadTexutreNumber(Infodata->TexDesc.StateIndex);
+			}
+		}
 	}
 
 	return S_OK;
@@ -121,14 +127,14 @@ HRESULT CMapLoadMgr::Init_LoadMap()
 HRESULT CMapLoadMgr::Insert_MapData(const _tchar * filepath, _uint maxcount)
 {
 	// 2. .dat인지 검사하고 데이터 대로 맵 정보를 컨테이너에 저장
-	// 원형 큐브 아무거나 복사해서 사용하자
+	// OUTPUT_OBJECTINFO 리스트로 저장해서 실제 생성시에는 CUBEID를 해석해서 특수큐브 생성
 
 	RemoveMapList();
 	m_MaxMapCount = maxcount;
 	m_MapObjectList = new list<OUTPUT_OBJECTINFO *>[m_MaxMapCount];
 
 
-	for (_uint i=0; i< m_MaxMapCount; i++)
+	for (_uint i = 0; i < m_MaxMapCount; i++)
 	{
 		// 각 Dat 파일 별로 읽는다.
 		// Filename ID Objects
@@ -179,7 +185,7 @@ HRESULT CMapLoadMgr::RemoveMapList()
 {
 	if (m_MapObjectList != nullptr)
 	{
-		for (int i = 0; i<m_MaxMapCount; i++)
+		for (int i = 0; i < m_MaxMapCount; i++)
 		{
 			for (auto pObj : m_MapObjectList[i])
 			{
@@ -189,6 +195,81 @@ HRESULT CMapLoadMgr::RemoveMapList()
 		}
 	}
 	Safe_Delete_Array(m_MapObjectList);
+	return S_OK;
+}
+
+HRESULT CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<SPECIALCUBE*>* spciallist)
+{
+	// 큐브 아이디로 큐브 개별 생성
+	SPECIALCUBE* specialdata = nullptr;
+
+	switch (info.CubeID)
+	{
+	case CUBEID_NONE:
+		GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
+			TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainCube),
+			_float3(0, 0, 0));
+		break;
+
+		// #STOP 모든 큐브 static에 미리 생성 후에 테스트 가능
+	case CUBEID_GRAVITY:
+		GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
+			TAG_LAY(Layer_Terrain), TAG_OP(Prototype_GravityCube),
+			_float3(0, 0, 0));
+		break;
+	case CUBEID_JUMP:
+		GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
+			TAG_LAY(Layer_Terrain), TAG_OP(Prototype_FixCube),
+			_float3(0, 0, 0));
+		break;
+
+
+		// 포탈 엘리베이터 공전 큐브는 인자값으로 여러가지를 전달해야한다. 
+		// 위치만 태그와 위치만 
+	case CUBEID_POTAL:
+		if (spciallist)
+		{
+			specialdata = new SPECIALCUBE(TAG_OP(Prototype_PortalCube_A), info.WorldMatData);
+			spciallist->push_back(specialdata);
+		}
+		break;
+	case CUBEID_ELEVETOR:
+		if (spciallist)
+		{
+			specialdata = new SPECIALCUBE(TAG_OP(Prototype_EscalatorCube), info.WorldMatData);
+			spciallist->push_back(specialdata);
+		}
+		break;
+	case CUBEID_ORBIT:
+		if (spciallist)
+		{
+			specialdata = new SPECIALCUBE(TAG_OP(Prototype_OrbitButtonCube), info.WorldMatData);
+			spciallist->push_back(specialdata);
+		}
+		break;
+
+		// 이외 나타나고 사라지는 큐브는 위치만 넘겨도 된다.
+	case CUBEID_VANISH:
+		GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
+			TAG_LAY(Layer_Terrain), TAG_OP(Prototype_VanishCube),
+			_float3(0, 0, 0));
+		break;
+	case CUBEID_APPEAR:
+		GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
+			TAG_LAY(Layer_Terrain), TAG_OP(Prototype_AppearCube),
+			_float3(0, 0, 0));
+		break;
+	case CUBEID_END:
+		break;
+	default:
+		break;
+	}
+
+	// #Tag 위 코드가 완성되면 지움
+	//GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
+	//	TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainCube),
+	//	_float3(0, 0, 0));
+
 	return S_OK;
 }
 
