@@ -226,6 +226,29 @@ _int CUI_Image::Render()
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
 
+	
+	if (!lstrcmp(L"Common_1", m_pImageName))
+	{
+		
+		CInventory* Player_Inventory = (CInventory*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0));
+
+		if (Player_Inventory == nullptr)
+			return E_FAIL;
+
+		wstring temp;
+		_tchar szbuf[16];
+		for (_int i = 0; i < SKILL_END; ++i)
+		{
+			
+			if (m_iNowSKill == i)
+			{
+				_itow_s(Player_Inventory->Get_Skill_Level(i), szbuf, 10);
+				temp =  wstring(szbuf);
+				GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 18.f,m_vUIDesc.y + 18.f }, { 20.f,30.f }, _float3(255, 255, 180));
+			}
+			
+		}
+	}
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
 
