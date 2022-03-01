@@ -37,6 +37,7 @@ public:
 	HRESULT Third_SetUp_RenderState();
 	HRESULT Release_RenderState();
 
+	HRESULT Set_TotalTimerSec(_uint iTotalSec);
 	HRESULT Set_Player(CGameObject* pPlayer);
 
 public:
@@ -57,6 +58,7 @@ private:
 	_float			m_fWalkFrame = 0;
 	_float			m_fHurtedTime = 0;
 
+
 	_bool			m_bIsStatusChage = false;
 
 	class CPlayer*	m_pPlayer = nullptr;
@@ -65,6 +67,7 @@ private:
 	HRESULT			SetUp_Components();
 	HRESULT			SetUp_UIDesc();
 	HRESULT			Update_MouseButton(_float fTimeDelta);
+	HRESULT			Update_Animation(_float fTimeDelta);
 	RECT			TransUIDesc_to_Rect(_float4 UIDesc);
 
 public:

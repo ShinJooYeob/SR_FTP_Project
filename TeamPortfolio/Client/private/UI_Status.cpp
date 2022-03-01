@@ -54,28 +54,11 @@ _int CUI_Status::Update(_float fDeltaTime)
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
 	
-	m_fTimer += fDeltaTime * m_fTotalTimerTime;
-	if (m_fTimer > 255)
-		m_fTimer = 0;
 
-	m_fWalkFrame += fDeltaTime * 6.f;
-	if (m_fWalkFrame > 6)
-		m_fWalkFrame = 0;
-
-
-	if (m_fHurtedTime != 0) 
-	{
-		m_fHurtedTime += fDeltaTime;
-		if (m_fHurtedTime > 1.8f)
-		{
-			m_fHurtedTime = 0;
-			m_pPlayer->Set_PlayerLife(-1);
-		}
-	}
 
 	FAILED_CHECK(Update_MouseButton(fDeltaTime));
 
-
+	FAILED_CHECK(Update_Animation(fDeltaTime));
 
 	return _int();
 
@@ -151,8 +134,7 @@ HRESULT CUI_Status::First_SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 
-
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, (_uint)m_fTimer);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, _uint(m_fTimer));
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	if (FAILED(m_ComVIBuffer->Render()))
@@ -284,6 +266,12 @@ HRESULT CUI_Status::Release_RenderState()
 	return S_OK;
 }
 
+HRESULT CUI_Status::Set_TotalTimerSec(_uint iTotalSec)
+{
+	m_fTotalTimerTime = 255.f / (_float)iTotalSec;
+	return S_OK	;
+}
+
 HRESULT CUI_Status::Set_Player(CGameObject * pPlayer)
 {
 	if (pPlayer == nullptr)
@@ -337,9 +325,8 @@ HRESULT CUI_Status::SetUp_UIDesc()
 		m_vUIDesc[i + 2].w = 50;
 	}
 
+	FAILED_CHECK(Set_TotalTimerSec(60));
 
-
-	m_fTotalTimerTime = 255 / 100;
 	m_fTimer = 0;
 	m_bIsStatusChage = false;
 
@@ -362,6 +349,29 @@ HRESULT CUI_Status::Update_MouseButton(_float fTimeDelta)
 		}
 	}
 	return S_OK;
+}
+
+HRESULT CUI_Status::Update_Animation(_float fTimeDelta)
+{
+	m_fTimer += fTimeDelta * m_fTotalTimerTime;
+	if (m_fTimer > 255)
+		m_fTimer = 0;
+
+	m_fWalkFrame += fTimeDelta * 6.f;
+	if (m_fWalkFrame > 6)
+		m_fWalkFrame = 0;
+
+
+	if (m_fHurtedTime != 0)
+	{
+		m_fHurtedTime += fTimeDelta;
+		if (m_fHurtedTime > 1.8f)
+		{
+			m_fHurtedTime = 0;
+			m_pPlayer->Set_PlayerLife(-1);
+		}
+	}
+	return S_OK	;
 }
 
 RECT CUI_Status::TransUIDesc_to_Rect(_float4 UIDesc)

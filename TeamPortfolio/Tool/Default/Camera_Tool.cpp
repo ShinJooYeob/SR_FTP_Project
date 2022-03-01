@@ -61,12 +61,13 @@ _int CCamera_Tool::Update(_float fDeltaTime)
 
 		if (GetSingle(CKeyMgr)->Key_Pressing(VK_LEFT))
 		{
-			m_pTransform->Move_Left(fDeltaTime*RotSpeed);
+			m_pTransform->Move_Right(fDeltaTime*RotSpeed);
 			Set_NewLookPoint(newTarget);
+
 		}
 		if (GetSingle(CKeyMgr)->Key_Pressing(VK_RIGHT))
 		{
-			m_pTransform->Move_Right(fDeltaTime*RotSpeed);
+			m_pTransform->Move_Left(fDeltaTime*RotSpeed);
 			Set_NewLookPoint(newTarget);
 
 		}
