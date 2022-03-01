@@ -234,10 +234,16 @@ HRESULT CQuest_Image::Ready_Layer_Button(const _tchar * pLayerTag)
 HRESULT CQuest_Image::Make_Bigger(const _tchar * pLayerTag)
 {
 	CUI_Image* temp=(CUI_Image*)Find_Image(pLayerTag);
-	if(temp->Get_ImageBigger()== CUI_Image::BIGGER_ON)
+	if (temp->Get_ImageBigger() == CUI_Image::BIGGER_ON)
+	{
+		m_bQuestBiggerOn = false;
 		temp->Set_ImageBigger(CUI_Image::BIGGER_OFF);
+	}
 	else if (!(temp->Get_ImageBigger() == CUI_Image::BIGGER_ON))
+	{
+		m_bQuestBiggerOn = true;
 		temp->Set_ImageBigger(CUI_Image::BIGGER_ON);
+	}
 	return S_OK;
 }
 HRESULT CQuest_Image::Update_UIList(_float fTimeDelta)
@@ -260,20 +266,33 @@ HRESULT CQuest_Image::Update_UIButtonList(_float fTimeDelta)
 	switch (hr)
 	{
 	case 101:
-		m_BiggerTag = (L"Quest_Image_1");
-		Make_Bigger(m_BiggerTag);
+		if ( (!lstrcmp(L"Quest_Image_1", m_BiggerTag)) ||m_bQuestBiggerOn==false)
+		{
+			m_BiggerTag = (L"Quest_Image_1");
+			Make_Bigger(m_BiggerTag);
+		}
+		
 		break;
 	case 102:
-		m_BiggerTag = (L"Quest_Image_2");
-		Make_Bigger(m_BiggerTag);
+		if ((!lstrcmp(L"Quest_Image_2", m_BiggerTag)) || m_bQuestBiggerOn == false)
+		{
+			m_BiggerTag = (L"Quest_Image_2");
+			Make_Bigger(m_BiggerTag);
+		}
 		break;
 	case 103:
-		m_BiggerTag = (L"Quest_Image_3");
-		Make_Bigger(m_BiggerTag);
+		if ((!lstrcmp(L"Quest_Image_3", m_BiggerTag)) || m_bQuestBiggerOn == false)
+		{
+			m_BiggerTag = (L"Quest_Image_3");
+			Make_Bigger(m_BiggerTag);
+		}
 		break;
 	case 104:
-		m_BiggerTag = (L"Quest_Image_4");
-		Make_Bigger(m_BiggerTag);
+		if ((!lstrcmp(L"Quest_Image_4", m_BiggerTag)) || m_bQuestBiggerOn == false)
+		{
+			m_BiggerTag = (L"Quest_Image_4");
+			Make_Bigger(m_BiggerTag);
+		}
 		break;
 	default:/*m_iChosenSkill = SKILL_END;*/
 		break;
