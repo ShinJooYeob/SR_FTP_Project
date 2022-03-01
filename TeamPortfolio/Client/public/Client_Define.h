@@ -19,7 +19,7 @@ using namespace Client;
 
 #include "Client_Enum.h"
 #include "Client_Struct.h"
-
+#include "Quest.h"
 
 #define GETIMGUI GetSingle(CGameInstance)->GetIMGui()
 

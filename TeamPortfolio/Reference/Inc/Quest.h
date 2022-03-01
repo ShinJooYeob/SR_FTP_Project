@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CQuest final: public CBase
+class ENGINE_DLL CQuest final: public CBase
 {
 	DECLARE_SINGLETON(CQuest)
 private:
@@ -19,11 +19,11 @@ public:
 
 	_int	Get_QuestGoal(_int eQuest) { return m_iQuestGoalIndex[eQuest]; }
 	_int	Get_QuestCurrent(_int eQuest) { return m_iQuestIndex[eQuest]; }
-	_int	Get_QuestNeed (_int eQuest);
+	_int	Get_QuestNeedPercent (_int eQuest);
 private:
-	_int*		m_iQuestGoalIndex;
+	_int*		m_iQuestGoalIndex=nullptr;
 
-	_int*		m_iQuestIndex;
+	_int*		m_iQuestIndex=nullptr;
 	_int		m_iMaxQuest;
 private:
 	virtual void	Free() override;

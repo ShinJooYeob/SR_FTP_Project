@@ -41,7 +41,11 @@ HRESULT CQuest_Image::Initialize_Clone(void * pArg)
 	m_vUIDesc = _float4(150, g_iWinCY >> 1, 300, 437);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
-
+	GetSingle(CQuest)->Initialize_Quest(QUEST_END);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_1, 6);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_2, 3);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_3, 5);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_4, 5);
 	if (FAILED(Ready_Layer_Button(TEXT("Layer_Button"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Image(TEXT("Layer_UI_Image"))))
@@ -130,8 +134,8 @@ _int CQuest_Image::Render()
 		return E_FAIL;
 
 
-	GetSingle(CGameInstance)->Render_UI_Font(L"0123456789\nShe's gone\nOut of my life\nI was wrong\nI'm to blame\nI was so untrue\nI can't live without her love\nIn my life\nThere's just an empty space\nAll my dreams are lost\nI'm wasting away\nForgive me, girl", 
-	{ 300.f,100.f}, { 30.f,45.f }, _float3(255, 0, 0), (_uint)m_fTextFrame);
+	/*GetSingle(CGameInstance)->Render_UI_Font(L"0123456789\nShe's gone\nOut of my life\nI was wrong\nI'm to blame\nI was so untrue\nI can't live without her love\nIn my life\nThere's just an empty space\nAll my dreams are lost\nI'm wasting away\nForgive me, girl", 
+	{ 300.f,100.f}, { 30.f,45.f }, _float3(255, 0, 0), (_uint)m_fTextFrame);*/
 
 	//GetSingle(CGameInstance)->Render_Font(L"0123456789\nShe's gone\nOut of my life\nI was wrong\nI'm to blame\nI was so untrue\nI can't live without her love\nIn my life\nThere's just an empty space\nAll my dreams are lost\nI'm wasting away\nForgive me, girl", { 300.f,100.f }, { 20.f,30.f }, _float3(_float(rand() % 255), _float(rand() % 255), _float(rand() % 255)), (_uint)m_fTextFrame);
 	//GetSingle(CGameInstance)->Render_Font(L"0123456l\nas    dasdasd", { 600.f,400.f }, { 20.f,30.f }, _float3(255, 0, 0), (_uint)m_fTextFrame);
@@ -170,10 +174,25 @@ HRESULT CQuest_Image::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 {
 
 
-	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 50, 0.01f, 0.01f)));
+	CUI_Image* temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 18, 0.01f, 0.01f)));
 	temp->Set_ImageName(L"Quest_2");
+	temp->Set_NowQuest(QUEST_1);
 	m_UIList.emplace(L"Quest_Image_1", (CUI*)temp);
 
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 18, 0.01f, 0.01f)));
+	temp->Set_ImageName(L"Quest_2");
+	temp->Set_NowQuest(QUEST_2);
+	m_UIList.emplace(L"Quest_Image_2", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 18, 0.01f, 0.01f)));
+	temp->Set_ImageName(L"Quest_2");
+	temp->Set_NowQuest(QUEST_3);
+	m_UIList.emplace(L"Quest_Image_3", (CUI*)temp);
+
+	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y + 18, 0.01f, 0.01f)));
+	temp->Set_ImageName(L"Quest_2");
+	temp->Set_NowQuest(QUEST_4);
+	m_UIList.emplace(L"Quest_Image_4", (CUI*)temp);
 
 
 
@@ -193,19 +212,19 @@ HRESULT CQuest_Image::Set_Image_Render(const _tchar * tagUIList, _bool bCheck)
 HRESULT CQuest_Image::Ready_Layer_Button(const _tchar * pLayerTag)
 {
 
-	CMyButton* temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 76, m_vUIDesc.y - 115, 32, 32)));
+	CMyButton* temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 76, m_vUIDesc.y - 135, 32, 32)));
 	temp->Set_ButtonName(L"Quest_Button1");
 	m_UIButtonList.emplace(L"Quest_Button_1", (CUI*)temp);
 
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 44, m_vUIDesc.y - 115, 32, 32)));
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 44, m_vUIDesc.y - 135, 32, 32)));
 	temp->Set_ButtonName(L"Quest_Button2");
 	m_UIButtonList.emplace(L"Quest_Button_2", (CUI*)temp);
 
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 12, m_vUIDesc.y - 115, 32, 32)));
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x - 12, m_vUIDesc.y - 135, 32, 32)));
 	temp->Set_ButtonName(L"Quest_Button3");
 	m_UIButtonList.emplace(L"Quest_Button_3", (CUI*)temp);
 
-	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x + 20, m_vUIDesc.y - 115, 32, 32)));
+	temp = (CMyButton*)(Find_UI(TEXT("UI_ProtoType_Button"))->Clone(&_float4(m_vUIDesc.x + 20, m_vUIDesc.y - 135, 32, 32)));
 	temp->Set_ButtonName(L"Quest_Button4");
 	m_UIButtonList.emplace(L"Quest_Button_4", (CUI*)temp);
 
@@ -245,15 +264,15 @@ HRESULT CQuest_Image::Update_UIButtonList(_float fTimeDelta)
 		Make_Bigger(m_BiggerTag);
 		break;
 	case 102:
-		m_BiggerTag = (L"Quest_Image_1");
+		m_BiggerTag = (L"Quest_Image_2");
 		Make_Bigger(m_BiggerTag);
 		break;
 	case 103:
-		m_BiggerTag = (L"Quest_Image_1");
+		m_BiggerTag = (L"Quest_Image_3");
 		Make_Bigger(m_BiggerTag);
 		break;
 	case 104:
-		m_BiggerTag = (L"Quest_Image_1");
+		m_BiggerTag = (L"Quest_Image_4");
 		Make_Bigger(m_BiggerTag);
 		break;
 	default:/*m_iChosenSkill = SKILL_END;*/
@@ -373,6 +392,8 @@ void CQuest_Image::Free()
 {
 	__super::Free();
 
+	if (0 != GetSingle(CQuest)->DestroyInstance())
+		MSGBOX("Failed to Release Com CQuest");
 
 	for (auto& pair : m_UIButtonList)
 	{

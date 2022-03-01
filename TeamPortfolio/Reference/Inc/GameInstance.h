@@ -22,6 +22,7 @@ class CFrustumMgr;
 class CSoundMgr;
 class CFontMgr;
 
+
 class ENGINE_DLL CGameInstance final :public CBase
 {
 	DECLARE_SINGLETON(CGameInstance)

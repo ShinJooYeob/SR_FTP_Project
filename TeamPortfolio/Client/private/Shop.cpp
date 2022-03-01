@@ -158,6 +158,9 @@ _int CShop::Render()
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
 	
+	if (FAILED(Release_RenderState()))
+		return E_FAIL;
+
 	wstring temp;
 	_tchar szbuf[64];
 
@@ -207,10 +210,6 @@ _int CShop::Render()
 			m_fTime = 0;//시간 초기화
 		}
 	}
-	
-
-	if (FAILED(Release_RenderState()))
-		return E_FAIL;
 
 	return _int();
 }

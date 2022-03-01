@@ -402,6 +402,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 			}
 			else {
 				m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart = true;
+				GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_2,1);
 			}
 
 		}
@@ -482,6 +483,7 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 						}
 						else {
 							m_tCoolDown[SKILL_SPEEDUP].m_bCoolDownStart = true;
+							GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_1, 1);
 							m_bIsRunning = true;
 							m_ComTransform->Set_MoveSpeed(2.5f + m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP) * 0.25f);
 
