@@ -394,7 +394,7 @@ HRESULT CUI_Result::SetUp_Pont()
 			_itow_s(AcquisitionGold, tempGoldArr, 10);
 
 			TempString = wstring(tempGoldArr);
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,275.f }, { 20.f,30.f }, _float3(83, 250, 120));
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,275.f }, { 20.f,30.f }, _float3(123, 104, 238));
 
 			////베스트 기록을 표시하는중
 			_uint TempBestMinutes = (_uint)TempBestClear / 60;

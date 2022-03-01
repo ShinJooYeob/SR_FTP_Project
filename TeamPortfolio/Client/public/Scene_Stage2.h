@@ -17,13 +17,13 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
+	virtual HRESULT Scene_InGame_Chage(_bool Scene_Chage_Switch, _uint _INextScene)override;
 
 private:
 	HRESULT Ready_Layer_Terrain(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_MainCamera(const _tchar* pLayerTag);
-
-
 	HRESULT Ready_Layer_SkyBox(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);
 
 	HRESULT Ready_Layer_Cube(const _tchar* pLayerTag); //움직이는 큐브 상호작용 확인용
 	HRESULT Ready_Layer_FixCube(const _tchar* pLayerTag); // 움직이지 않는 큐브 충돌 및 옮기기
