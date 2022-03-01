@@ -13,6 +13,10 @@ BEGIN(Client)
 
 class CUI_RankStar final :public CUI
 {
+public:
+	typedef struct tagRankStarDesc {
+		_float3 WindowRectPos;
+	}RANKSTARDESC;
 private:
 	explicit CUI_RankStar(LPDIRECT3DDEVICE9 pGraphicDevice);
 	explicit CUI_RankStar(const CUI_RankStar& rhs);
@@ -45,6 +49,8 @@ private:
 	CRenderer*				m_ComRenderer = nullptr;
 
 private:
+	RANKSTARDESC	m_RankStarDesc;
+
 	_float			m_fFrame = 0.f;
 	_float4			m_vUIDesc;
 

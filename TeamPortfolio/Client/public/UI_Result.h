@@ -34,11 +34,12 @@ private:
 	HRESULT		SetUp_Components();
 	HRESULT		SetUp_RenderState();
 	HRESULT		Release_RenderState();
-
+	HRESULT		SetUp_Pont(); //폰트와 관련된 함수
+	HRESULT		SetUp_Player();	//플레이어에게 전달할 때 쓰이는 함수
 public:
 	void		Button_Picking();
-
 	void		Set_Clear(_bool _bClear);
+	HRESULT		Ready_Layer_RankStar(const _tchar * pLayerTag);
 
 	//진우형 프레임워크
 private:
@@ -47,8 +48,6 @@ private:
 	HRESULT		LateUpdate_UIButtonList(_float fTimeDelta); //이게 버튼의 레이트업데이트를 돌려주고 있다.
 	CUI *		Find_UI(const _tchar * tagUI); //UI 겹치는게 있는지 체크
 	CUI *		Find_Button(const _tchar * tagUIList); //이게 클론을 찾음
-
-	HRESULT		Ready_Layer_RankStar(const _tchar * pLayerTag);
 
 private:
 	CTexture*				m_ComTexture = nullptr;
@@ -69,12 +68,19 @@ private:
 
 	_bool			m_isClicked = false;
 
+	
+	_uint			RankNumber = 0;
 	_bool			m_bStopSwitch = false; //타이며 멈춤 역할
 	_float			m_fTimer = 0.f; // 타이머
 	_float			m_fMaxTime = 0.f; // 최대 시간
 	_bool			m_bClear = false; //클리어 여부
-	_float			TempMinutes = 0.f; //몇분인지 담는중
-	_float			TempSeconds = 0.f; //몇초인지 담는중
+	_uint			TempMinutes = 0.f; //몇분인지 담는중
+	_uint			TempSeconds = 0.f; //몇초인지 담는중
+
+	_uint			RankStarGold = 0.f; //RankStar 하나당 골드량
+	_uint			AcquisitionGold = 0.f;//획득골드량
+
+	_bool			m_bSetupGenerate = false; //1회에 한해서 생성함
 
 
 

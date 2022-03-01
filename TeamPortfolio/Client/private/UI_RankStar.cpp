@@ -29,8 +29,31 @@ HRESULT CUI_RankStar::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	vRect = { 230,655,230,690 };
-	Set_UI_Transform(m_ComTransform, Set_byRectPos(vRect));
+	if (pArg != nullptr)
+	{
+		memcpy(&m_RankStarDesc, pArg, sizeof(RANKSTARDESC));
+		vRect.x = m_RankStarDesc.WindowRectPos.x;
+		vRect.y = m_RankStarDesc.WindowRectPos.y;
+		vRect.z = 60 + m_RankStarDesc.WindowRectPos.x;
+		vRect.w = 70 + m_RankStarDesc.WindowRectPos.y;
+		Set_UI_Transform(m_ComTransform, Set_byRectPos(vRect));
+	}
+	else
+	{
+		MSGBOX("Fail to Clone CUI_RankStar");
+	}
+
+	//vRect = { 230,655,230,690 };
+	//1번째 레프트,2번째 탑,
+	//x: 레프트,y: 탑, z: 라이트,w: 바텀,
+
+	//vRect = { 190,300,250,370 };
+	//Set_UI_Transform(m_ComTransform, Set_byRectPos(vRect));
+
+	//X사이즈60
+	//Y사이즈70
+
+	//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(45.f, -15.f, 0.f));
 
 	m_fDepth = -6666;
 	//850
@@ -78,6 +101,9 @@ _int CUI_RankStar::Render()
 	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(m_fFrame)))
 		return E_FAIL;
 
+	//if (FAILED(m_ComTexture->Bind_Texture(0)))
+	//	return E_FAIL;
+
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
@@ -101,10 +127,10 @@ _int CUI_RankStar::LateRender()
 _float4 CUI_RankStar::Set_byRectPos(_float4 tRect)
 {
 	_float4 Result = {};
-	Result.z = tRect.z - tRect.x;
-	Result.w = tRect.w - tRect.y;
-	Result.x = tRect.x + Result.z * 0.5f;
-	Result.y = tRect.y + Result.w * 0.5f;
+	Result.z = tRect.z - tRect.x; //x의 사이즈
+	Result.w = tRect.w - tRect.y; //y의 사이즈
+	Result.x = tRect.x + Result.z * 0.5f; //x의 좌표 
+	Result.y = tRect.y + Result.w * 0.5f; //y의 좌표
 
 
 	return Result;
@@ -122,7 +148,7 @@ HRESULT CUI_RankStar::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_RankStar_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_RankStar_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	return S_OK;
@@ -130,9 +156,20 @@ HRESULT CUI_RankStar::SetUp_Components()
 
 HRESULT CUI_RankStar::SetUp_RenderState()
 {
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 0);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE); //알파블렌딩하겠단 뜻
+	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	//Sour => 현재 그리려고하는 그림의 색
+	//Dest => 직전까지 화면에 그려진 색
+	//
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
@@ -146,7 +183,10 @@ HRESULT CUI_RankStar::Release_RenderState()
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 

@@ -88,6 +88,7 @@ private:
 
 	CCamera_Main*			m_pCamera_Main = nullptr;
 
+
 private:
 	HRESULT			SetUp_Components();
 
