@@ -50,16 +50,20 @@ _int CObject_AppearCube::Update(_float fTimeDelta)
 {
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
-
-	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
+	if (m_bIsAppear)
+		m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
 
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	//플레이어가 가까이 가면 큐브가 나타남
-	if (FAILED(Cube_Appears(fTimeDelta)))
-		return -1;
+	if (!m_bIsAppear) 
+	{
 
+		//플레이어가 가까이 가면 큐브가 나타남
+		if (FAILED(Cube_Appears(fTimeDelta)))
+			return -1;
+
+	}
 
 	RELEASE_INSTANCE(CGameInstance);
 
@@ -116,6 +120,8 @@ _int CObject_AppearCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 
 
 _int CObject_AppearCube::Cube_Appears(_float fDeltaTime)
 {
+
+
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	CTransform* Player = (CTransform*)pGameInstance->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform));
@@ -124,25 +130,31 @@ _int CObject_AppearCube::Cube_Appears(_float fDeltaTime)
 
 	_float Distance = m_fTempPos.Get_Distance(PlayerPos);
 
-	if (Distance < 4)
+	if (Distance < 1.4142135623f)
 	{
-		m_fTimer += fDeltaTime;
-		if (m_fTimer > 3.f)
-		{
-			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_fTempPos);
-		}
+
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_fTempPos);
+		m_bIsAppear = true;
 	}
-	else
-	{
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
-		m_fTimer = 0;
-	}
+
 
 	RELEASE_INSTANCE(CGameInstance);
 
 
 
 	return _int();
+}
+
+void CObject_AppearCube::Set_AppearDesc(void * pArg)
+{
+	if (pArg != nullptr) {
+		_float3 vSettingPoint;
+		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		memcpy(&m_fTempPos, pArg, sizeof(_float3)); //원래 자리로 돌아가기 위한 템프 포지션
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
+		m_Layer_Tag = (TEXT("Layer_AppearCube"));
+	}
+
 }
 
 

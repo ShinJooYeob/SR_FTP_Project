@@ -7,7 +7,7 @@
 #include "UI_Status.h"
 #include "Object_PortalCube_A.h"
 #include "Object_EscalatorCube.h"
-#include "Object_OrbitCube.h"
+#include "Object_OrbitButton.h"
 
 
 CScene_Stage2::CScene_Stage2(LPDIRECT3DDEVICE9 GraphicDevice)
@@ -32,6 +32,8 @@ HRESULT CScene_Stage2::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
 		return E_FAIL;
+
+	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")))
 
 
 
@@ -204,6 +206,34 @@ HRESULT CScene_Stage2::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	return S_OK;
 }
 
+HRESULT CScene_Stage2::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag)
+{
+
+	CObject_OrbitButton::ORBITDESC tDesc;
+
+	tDesc.vButtonPos = _float3(-7, -8, 2);
+	tDesc.vOrbitRotAxis = _float3(-7, -8, -7);
+	tDesc.vOribitCubeStartPos = _float3(-7, -11, 3);
+	tDesc.vOribitTotalXYZ = _float3(2, 1, 4);
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_OrbitButton"), &tDesc))
+		return E_FAIL;
+
+	tDesc.vButtonPos = _float3(-19, 12, 13);
+	tDesc.vOrbitRotAxis = _float3(-19, -2, -2);
+	tDesc.vOribitCubeStartPos = _float3(-19, 9, 16);
+	tDesc.vOribitTotalXYZ = _float3(1, 1, 3);
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_OrbitButton"), &tDesc))
+		return E_FAIL;
+
+
+
+	return S_OK	;
+}
+
 HRESULT CScene_Stage2::Ready_Layer_PauseUI(const _tchar * pLayerTag)
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_PauseUI")))
@@ -220,7 +250,8 @@ HRESULT CScene_Stage2::Ready_Layer_Player(const _tchar * pLayerTag)
 		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, pLayerTag, TAG_OP(Prototype_Player)))
 			return E_FAIL;
 
-		GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGESELECT);
+		GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGE2);
+		pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
 	}
 	else
 	{
@@ -271,7 +302,7 @@ HRESULT CScene_Stage2::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
 			{
 				memcpy(&potalDesc.vPos_B_Cube, &(data->WorldMat.m[3]), sizeof(_float3));
 				// 持失
-				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_IMGUISCENE,
+				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STAGE2,
 					TAG_LAY(Layer_Terrain), TAG_OP(Prototype_PortalCube_A),
 					&potalDesc);
 
@@ -293,7 +324,7 @@ HRESULT CScene_Stage2::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
 			{
 				memcpy(escalDesc.vEndPos, &(data->WorldMat.m[3]), sizeof(_float3));
 				// 持失
-				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_IMGUISCENE,
+				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STAGE2,
 					TAG_LAY(Layer_Terrain), TAG_OP(Prototype_EscalatorCube),
 					&escalDesc);
 

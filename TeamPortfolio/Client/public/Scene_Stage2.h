@@ -27,6 +27,7 @@ private:
 	HRESULT Ready_Layer_PauseUI(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);
 
+	HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);
 
 
 

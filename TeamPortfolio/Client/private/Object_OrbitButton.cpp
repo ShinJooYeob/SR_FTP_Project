@@ -43,6 +43,7 @@ HRESULT CObject_OrbitButton::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_tOrbitDesc.vButtonPos);
 
+
 	m_ComTexture->Change_TextureLayer(TEXT("DefaultCube"));
 	m_Layer_Tag = TEXT("Layer_OrbitButton");
 
@@ -88,7 +89,6 @@ _int CObject_OrbitButton::Render()
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
-
 
 	if (FAILED(m_ComTexture->Bind_Texture(4)))
 		return E_FAIL;

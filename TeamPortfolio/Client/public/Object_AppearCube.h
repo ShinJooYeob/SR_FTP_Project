@@ -31,6 +31,9 @@ public:
 
 	virtual _int Cube_Appears(_float fDeltaTime);
 
+
+	void	Set_AppearDesc(void* pArg);
+
 private:
 	HRESULT SetUp_Components();
 
@@ -50,6 +53,7 @@ private:
 	bool					m_bCollisionSwitch = false;
 
 
+	_bool					m_bIsAppear = false;
 public:
 	static CObject_AppearCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg) override;

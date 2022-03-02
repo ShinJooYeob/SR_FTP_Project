@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "../public/MapLoadMgr.h"
 #include "Gameobject.h"
+#include "Object_AppearCube.h"
 
 
 IMPLEMENT_SINGLETON(CMapLoadMgr);
@@ -58,6 +59,22 @@ HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index, list<SPECIALCUBE*>* s
 
 			CTransform* trans = (CTransform*)newObj->Get_Component(TAG_COM(Com_Transform));
 			trans->Set_Matrix(Infodata->WorldMatData);
+
+			CTexture* tex = (CTexture*)newObj->Get_Component(TAG_COM(Com_Texture));
+			tex->Change_TextureLayer(Infodata->TexDesc.szStateKey);
+			tex->Set_LoadTexutreNumber(Infodata->TexDesc.StateIndex);
+
+		}
+		else if (Infodata->CubeID == CUBEID_APPEAR)
+		{
+			CObject_AppearCube* newObj = (CObject_AppearCube*)(GetSingle(CGameInstance)->Get_ObjectList_from_Layer(sceneid, TAG_LAY(Layer_Terrain))->back());
+			if (newObj == nullptr)
+				continue;
+
+			CTransform* trans = (CTransform*)newObj->Get_Component(TAG_COM(Com_Transform));
+			trans->Set_Matrix(Infodata->WorldMatData);
+
+			newObj->Set_AppearDesc(&(Infodata->WorldMatData.m[3][0]));
 
 			CTexture* tex = (CTexture*)newObj->Get_Component(TAG_COM(Com_Texture));
 			tex->Change_TextureLayer(Infodata->TexDesc.szStateKey);
