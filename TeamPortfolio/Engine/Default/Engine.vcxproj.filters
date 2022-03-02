@@ -273,6 +273,9 @@
     <ClCompile Include="..\Private\VIBuffer_Parsed.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Model\ParsedModel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cube_Nomal.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Model\Cube</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h">
@@ -427,6 +430,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Parsed.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Model\ParsedModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cube_Nomal.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Model\Cube</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

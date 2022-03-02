@@ -172,6 +172,7 @@
     <ClCompile Include="..\Private\EasingMgr.cpp" />
     <ClCompile Include="..\private\Effect.cpp" />
     <ClCompile Include="..\private\FontMgr.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Cube_Nomal.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Parsed.cpp" />
     <ClCompile Include="..\Private\XMLMgr.cpp" />
     <ClCompile Include="..\private\FrustumMgr.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="..\Public\Engine_Struct.h" />
     <ClInclude Include="..\Public\Engine_Typedef.h" />
     <ClInclude Include="..\public\FontMgr.h" />
+    <ClInclude Include="..\Public\VIBuffer_Cube_Nomal.h" />
     <ClInclude Include="..\Public\VIBuffer_Parsed.h" />
     <ClInclude Include="..\Public\XMLMgr.h" />
     <ClInclude Include="..\public\FrustumMgr.h" />

@@ -14,6 +14,7 @@ IMPLEMENT_SINGLETON(CSuperToolSIngleton)
 CSuperToolSIngleton::E_TOOL_MODE CSuperToolSIngleton::g_MAP_MODE = CSuperToolSIngleton::E_TOOL_MODE::TOOLMODE_OBJECT;
 
 
+
 CSuperToolSIngleton::CSuperToolSIngleton()
 	: m_pGraphicDevice(nullptr), m_pGameInstance(GetSingle(CGameInstance))
 {
@@ -41,11 +42,35 @@ HRESULT CSuperToolSIngleton::InitDevice(void)
 
 	// 랜더링 설정
 
-	//와이어 프레임
-//	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	// 조명 초기화 및 설정
 
-	//잠시 조명연산을 꺼놓자
-	m_pGraphicDevice->SetRenderState(D3DRS_LIGHTING, false);
+	// Direction 조명
+	D3DXVECTOR3 dir(-1,-1, -1);
+	D3DXCOLOR   c = D3DXCOLOR(COLOR_WHITE);
+	D3DLIGHT9 dirLight = InitDirectionalLight(&dir, &c);
+	// Point 조명
+	D3DXVECTOR3 pointPos(0, 5, 0);
+	D3DLIGHT9 pointLight = InitPointLight(&pointPos, &c);
+
+	m_pGraphicDevice->SetLight(0, &dirLight);
+	m_pGraphicDevice->SetLight(1, &pointLight);
+
+	m_pGraphicDevice->LightEnable(0, true);
+	m_pGraphicDevice->LightEnable(1, false);
+
+	////
+	//// Set lighting related render states.
+	////
+
+	// 법선 연산 / 스펙큘러 설정
+	m_WhiteMtrl = InitMtrl(COLOR_WHITE, COLOR_WHITE, COLOR_WHITE, COLOR_BLACK, 2.0f);
+	m_pGraphicDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+	m_pGraphicDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
+
+	// 조명 무효
+	// m_pGraphicDevice->SetRenderState(D3DRS_LIGHTING, false);
+
+
 
 	//// 텍스처
 	//m_pGraphicDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
@@ -81,8 +106,8 @@ HRESULT CSuperToolSIngleton::Render_Begin(D3DCOLOR backbuffer)
 {
 	if (m_pGameInstance == nullptr)
 		return E_FAIL;
-	Render_Set_State();
 
+	Render_Set_State();
 	m_pGameInstance->Render_Begin(backbuffer);
 	return S_OK;
 }
@@ -104,10 +129,14 @@ HRESULT CSuperToolSIngleton::Render_Set_State()
 		return E_FAIL;
 
 	_bool bWire = (_bool)m_pMyButtomView->m_CheckWirframeEnable.GetCheck();
+
 	if (bWire)
 		m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	else
 		m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DRS_FILLMODE);
+
+	m_pGraphicDevice->SetMaterial(&m_WhiteMtrl);
+
 
 	return S_OK;
 }
@@ -143,7 +172,7 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), CVIBuffer_Rect::Create(m_pGraphicDevice)));
 
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
-	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), CVIBuffer_Cube::Create(m_pGraphicDevice)));
+	(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Cube), CVIBuffer_Cube_Normal::Create(m_pGraphicDevice)));
 
 	CVIBuffer_Terrain::TERRAINDESC desc;
 	desc.iCol = 129;
@@ -271,6 +300,74 @@ HRESULT CSuperToolSIngleton::Initialize_ToolView_Data()
 	return S_OK;
 
 }
+
+D3DLIGHT9 CSuperToolSIngleton::InitDirectionalLight(D3DXVECTOR3 * direction, D3DXCOLOR * color)
+{
+
+	D3DLIGHT9 light;
+	::ZeroMemory(&light, sizeof(light));
+
+	light.Type = D3DLIGHT_DIRECTIONAL;
+	light.Ambient = *color * 0.4f;
+	light.Diffuse = *color;
+	light.Specular = *color * 0.6f;
+	light.Direction = *direction;
+
+	return light;
+}
+
+D3DLIGHT9 CSuperToolSIngleton::InitPointLight(D3DXVECTOR3 * position, D3DXCOLOR * color)
+{
+	D3DLIGHT9 light;
+	::ZeroMemory(&light, sizeof(light));
+
+	light.Type = D3DLIGHT_POINT;
+	light.Ambient = *color * 0.2f;
+	light.Diffuse = *color;
+	light.Specular = *color * 0.3f;
+	light.Position = *position;
+	light.Range = 1000.0f;
+	light.Falloff = 1.0f;
+	light.Attenuation0 = 0.5f;
+	light.Attenuation1 = 0.0f;
+	light.Attenuation2 = 0.0f;
+
+	return light;
+}
+
+D3DLIGHT9 CSuperToolSIngleton::InitSpotLight(D3DXVECTOR3 * position, D3DXVECTOR3 * direction, D3DXCOLOR * color)
+{
+	D3DLIGHT9 light;
+	::ZeroMemory(&light, sizeof(light));
+
+	light.Type = D3DLIGHT_SPOT;
+	light.Ambient = *color * 0.0f;
+	light.Diffuse = *color;
+	light.Specular = *color * 0.6f;
+	light.Position = *position;
+	light.Direction = *direction;
+	light.Range = 1000.0f;
+	light.Falloff = 1.0f;
+	light.Attenuation0 = 1.0f;
+	light.Attenuation1 = 0.0f;
+	light.Attenuation2 = 0.0f;
+	light.Theta = 0.4f;
+	light.Phi = 0.9f;
+
+	return light;
+}
+
+D3DMATERIAL9 CSuperToolSIngleton::InitMtrl(D3DXCOLOR a, D3DXCOLOR d, D3DXCOLOR s, D3DXCOLOR e, float p)
+{
+	D3DMATERIAL9 mtrl;
+	mtrl.Ambient = a;
+	mtrl.Diffuse = d;
+	mtrl.Specular = s;
+	mtrl.Emissive = e;
+	mtrl.Power = p;
+	return mtrl;
+}
+
 
 
 HRESULT CSuperToolSIngleton::SaveData_Object(CObjectTool_ToolObject* obj, CWnd* cwnd)
