@@ -57,6 +57,7 @@ private:
 	_int			m_iBigger = BIGGER_DEFAULT;
 	_float4			m_vUIDesc;
 	_float			m_fSeconds = 0;
+	_float			m_fTime = 255;
 	_int			m_iAlpha = 255;
 	_int			m_iNowSKill = 0;
 	_int			m_iNowQuest = 0;
