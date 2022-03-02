@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\public\Object_Star.h"
+#include "UI_Result.h"
 
 CObject_Star::CObject_Star(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
@@ -68,7 +69,7 @@ _int CObject_Star::LateUpdate(_float fTimeDelta)
 	//if (FAILED(SetUp_OnTerrain(fTimeDelta)))
 	//	return -1;
 
-	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
+	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
 
 	return _int();
 }
@@ -108,14 +109,20 @@ _int CObject_Star::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fColli
 {
 	const _tchar* test = pDestObjects->Get_Layer_Tag();
 
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Player)))
 	{
-		DIED();
+		CUI_Result* UI_Result =(CUI_Result*)pGameInstance->Get_GameObject_By_LayerIndex(m_eNowSceneNum,TEXT("Layer_UI_Result"));
+		UI_Result->Set_RankStar();
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
+		//DIED();
 		//m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 
 
 
+	RELEASE_INSTANCE(CGameInstance);
 
 	return _int();
 }

@@ -37,7 +37,7 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_Object_Star(TEXT("Layer_UI_Result"))))
+	if (FAILED(Ready_Layer_Object_Star(TEXT("Layer_Object_Star"))))
 		return E_FAIL;
 
 

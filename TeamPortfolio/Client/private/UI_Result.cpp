@@ -63,7 +63,7 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	//레벨디자인할 때 만져야할 설정들
 
-	m_fMaxTime = 200.f;	//최대 시간 1초
+	m_fMaxTime = 1.f;	//최대 시간 1초
 	RankStarGold = 1000.f;	//등급 하나당 획득 골드량
 
 	return S_OK;
@@ -236,11 +236,6 @@ HRESULT CUI_Result::Update_UIButtonList(_float fTimeDelta)
 		{
 			CScene* TempScene = pGameInstance->Get_Scene();
 			TempScene->Scene_InGame_Chage(true, SCENEID::SCENE_STAGESELECT);
-			//TempScene->Scene_InGame_Chage(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_LOBY), SCENEID::SCENE_LOADING);
-			//if (FAILED(pGameInstance->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_LOBY), SCENEID::SCENE_LOADING)))
-			//	return E_FAIL;
-
-			//여기에 기능구현하면 될 듯
 		}
 		break;
 	}
@@ -290,26 +285,26 @@ HRESULT CUI_Result::Ready_Layer_RankStar(const _tchar * pLayerTag)
 {
 	CUI_RankStar::RANKSTARDESC	tagRankStarDesc;
 	//윈도우 좌표계로 해야함
-	if (TempMinutes <= 1)
-	{
-		RankNumber = 5;
-	}
-	else if (TempMinutes <= 2)
-	{
-		RankNumber = 4;
-	}
-	else if (TempMinutes <= 3)
-	{
-		RankNumber = 3;
-	}
-	else if (TempMinutes <= 4)
-	{
-		RankNumber = 2;
-	}
-	else
-	{
-		RankNumber = 1;
-	}
+	//if (TempMinutes <= 1)
+	//{
+	//	RankNumber = 5;
+	//}
+	//else if (TempMinutes <= 2)
+	//{
+	//	RankNumber = 4;
+	//}
+	//else if (TempMinutes <= 3)
+	//{
+	//	RankNumber = 3;
+	//}
+	//else if (TempMinutes <= 4)
+	//{
+	//	RankNumber = 2;
+	//}
+	//else
+	//{
+	//	RankNumber = 1;
+	//}
 	for (_uint i = 0; i < RankNumber; ++i)
 	{
 		tagRankStarDesc.WindowRectPos = _float3(450.f+(i*90), 168.f, 0); //렉트의 위치
@@ -334,6 +329,11 @@ HRESULT CUI_Result::Ready_Layer_RankStar(const _tchar * pLayerTag)
 	//	이게 괜찮을듯
 
 	return S_OK;
+}
+
+void CUI_Result::Set_RankStar()
+{
+	RankNumber += 1;
 }
 
 HRESULT CUI_Result::SetUp_Components()
@@ -397,7 +397,7 @@ HRESULT CUI_Result::SetUp_Pont()
 			_itow_s(AcquisitionGold, tempGoldArr, 10);
 
 			TempString = wstring(tempGoldArr);
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,275.f }, { 20.f,30.f }, _float3(123, 104, 238));
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,285.f }, { 25.f,50.f }, _float3(123, 104, 238));
 
 			////베스트 기록을 표시하는중
 			_uint TempBestMinutes = (_uint)TempBestClear / 60;
@@ -410,7 +410,7 @@ HRESULT CUI_Result::SetUp_Pont()
 
 			TempString = wstring(tempBestMinArr) + L"Minutes " + wstring(tempBestSecArr) + L"Seconds";
 
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,350.f }, { 20.f,30.f }, _float3(83, 250, 120));
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,360.f }, { 25.f,50.f }, _float3(123, 104, 238));
 
 			if (FAILED(Release_RenderState()))
 				return E_FAIL;
@@ -419,7 +419,7 @@ HRESULT CUI_Result::SetUp_Pont()
 			//////타이머를 표시하는중
 			TempString = L"Mission Failed";
 
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,425.f }, { 20.f,30.f }, _float3(83, 250, 120));
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,435.f }, { 30.f,50.f }, _float3(123, 104, 238));
 
 			if (FAILED(Release_RenderState()))
 				return E_FAIL;

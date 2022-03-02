@@ -40,6 +40,7 @@ public:
 	void		Button_Picking();
 	void		Set_Clear(_bool _bClear);
 	HRESULT		Ready_Layer_RankStar(const _tchar * pLayerTag);
+	void		Set_RankStar();
 
 	//진우형 프레임워크
 private:
