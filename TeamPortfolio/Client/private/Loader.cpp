@@ -151,9 +151,51 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_SkyBox"), CSkyBox::Create(m_pGraphicDevice))))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI")))
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Player), CPlayer::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
+	// 큐브 오브젝트 프로토타입
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_FixCube), CObject_FixCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_GravityCube), CObject_GravityCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_PortalCube_A), CObject_PortalCube_A::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_PortalCube_B), CObject_PortalCube_B::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_EscalatorCube), CObject_EscalatorCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_OrbitButtonCube), CObject_OrbitButton::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_OrbitCube), CObject_OrbitCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_VanishCube), CObject_VanishCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_AppearCube), CObject_AppearCube::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Shop), CShop::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Quest), CQuest_Image::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_UI_Common), CUI_Common::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_UI_Result"), CUI_Result::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_StatusUI"), CUI_Status::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_PauseUI"), CPauseUI::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+
+	if (FAILED(pGameInstance->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI")))
+		return E_FAIL;
 
 #pragma endregion
 
@@ -184,11 +226,6 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 #pragma region PROTOTYPE_COMPONENT
 
-	//¹öÆÛÀÎµ¦½º ÇÁ·ÎÅäÅ¸ÀÔ »ý¼º
-	CVIBuffer_Terrain::TERRAINDESC TerrainDesc;
-	TerrainDesc.szHeightFilePath = TEXT("../Bin/Resources/Textures/Terrain/Height.bmp");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_VIBuffer_Terrain128x128), CVIBuffer_Terrain::Create(m_pGraphicDevice, &TerrainDesc))))
-		return E_FAIL;
 
 	//UI Texture
 	CTexture::TEXTUREDESC TextureDesc;
@@ -235,48 +272,6 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Penguine"), CParsedObject::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-
-	//////////////////////////////////////////////////////////////////////////
-
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainGround), CTerrainGround::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Player), CPlayer::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Shop), CShop::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Quest), CQuest_Image::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_UI_Common), CUI_Common::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_FixCube"), CObject_FixCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_GravityCube"), CObject_GravityCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_PortalCube_A"), CObject_PortalCube_A::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_PortalCube_B"), CObject_PortalCube_B::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_EscalatorCube"), CObject_EscalatorCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_OrbitButton"), CObject_OrbitButton::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_OrbitCube"), CObject_OrbitCube::Create(m_pGraphicDevice))))
-		return E_FAIL;	
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_VanishCube"), CObject_VanishCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_AppearCube"), CObject_AppearCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	//eunhyuk_UI
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_UI_Result"), CUI_Result::Create(m_pGraphicDevice))))
-		return E_FAIL;
 #pragma endregion
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -309,7 +304,6 @@ HRESULT CLoader::Load_Scene_Stage1(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
 
-	///////////////////////////////////¹ÚÀºÇõ Å×½ºÆ® Àå¼Ò
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	//프로토타입 컴포넌트#######################################################################################################
@@ -328,8 +322,6 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Cube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-
-
 	TextureDesc.szTextFilePath = TEXT("Pause.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Pause"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
@@ -344,26 +336,8 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 #pragma endregion
 
 
-	//프로토타입_게임 오브젝트@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #pragma  region PROTOTYPE_GAMEOBJECT
 
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_MoveCube"), CObject_MoveCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_PushCube"), CObject_PushCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_SelfRotationCube"), CObject_SelfRotationCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_ButtonCube"), CObject_ButtonCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_InteractiveCube"), CObject_InteractiveCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_BlockCube"), CObject_BlockCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_PauseUI"), CPauseUI::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_StatusUI"), CUI_Status::Create(m_pGraphicDevice))))
-		return E_FAIL;
 
 
 #pragma endregion
@@ -422,32 +396,7 @@ HRESULT CLoader::Load_Scene_IMGUI(_bool * _IsClientQuit, CRITICAL_SECTION * _Cri
 #pragma endregion
 
 #pragma  region PROTOTYPE_GAMEOBJECT
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Player), CPlayer::Create(m_pGraphicDevice))))
-		return E_FAIL;
 
-
-	// 큐브 오브젝트 프로토타입
-
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainCube), CTerrainCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_FixCube), CObject_FixCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_GravityCube), CObject_GravityCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_PortalCube_A), CObject_PortalCube_A::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_PortalCube_B), CObject_PortalCube_B::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_EscalatorCube), CObject_EscalatorCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_OrbitButtonCube), CObject_OrbitButton::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_OrbitCube), CObject_OrbitCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_VanishCube), CObject_VanishCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_AppearCube), CObject_AppearCube::Create(m_pGraphicDevice))))
-		return E_FAIL;
 
 #pragma endregion
 

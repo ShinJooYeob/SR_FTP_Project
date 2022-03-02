@@ -38,6 +38,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
 	m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
 
+
 	m_iPlayerLife = 3;
 	ZeroMemory(m_tCoolDown, sizeof(COOL) * SKILL_END);
 	ZeroMemory(StageBestClear, sizeof(_float) *SCENE_END);
@@ -50,13 +51,16 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 
 	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"),TEXT("Idle"));
 
+
+
+	m_ComInventory->Set_Skill_LevelUP(SKILL_DUBBLEJUMP);
 	return S_OK;
 }
 
 
 _int CPlayer::Update(_float fDeltaTime)
 {
-	
+	m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart = false;
 
 	if (m_eNowSceneNum == SCENE_LOADING)
 		return S_FALSE;
@@ -570,8 +574,7 @@ HRESULT CPlayer::Find_FootHold_Object(_float fDeltaTime)
 	
 	 list<CGameObject*>* pTerrainLayer= pGameInstance->Get_ObjectList_from_Layer(m_eNowSceneNum, TAG_LAY(Layer_Terrain));
 
-	 if (pTerrainLayer == nullptr)
-		 return E_FAIL;
+	 NULL_CHECK_RETURN(pTerrainLayer,E_FAIL);
 
 	 m_vDownstairsNear = NOT_EXIST_BLOCK;
 	 m_vClimingBlock = NOT_EXIST_BLOCK;

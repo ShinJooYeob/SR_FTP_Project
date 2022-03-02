@@ -20,53 +20,15 @@ public:
 	virtual HRESULT Scene_InGame_Chage(_bool Scene_Chage_Switch, _uint _INextScene)override;
 
 private:
-	HRESULT Ready_Layer_Terrain(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_MainCamera(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_SkyBox(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Player(const _tchar* pLayerTag); 
+	HRESULT Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata);
+	HRESULT Ready_Layer_PauseUI(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);
 
 
 
-	HRESULT Ready_Layer_PauseUI(const _tchar* pLayerTag); //움직이는 큐브 상호작용 확인용
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	HRESULT Ready_Layer_Cube(const _tchar* pLayerTag); //움직이는 큐브 상호작용 확인용
-	HRESULT Ready_Layer_FixCube(const _tchar* pLayerTag); // 움직이지 않는 큐브 충돌 및 옮기기
-	HRESULT Ready_Layer_PushCube(const _tchar* pLayerTag); //미는 큐브
-	HRESULT Ready_Layer_GravityCube(const _tchar* pLayerTag); // 중력 큐브
-	HRESULT Ready_Layer_SelfRotationCube(const _tchar* pLayerTag); // 스스로 자전하는 큐브
-
-	HRESULT Ready_Layer_Object_ButtonCube(const _tchar* pLayerTag); //InteractiveCube와 상호작용하는 큐브로 변수명 변경 가능
-	HRESULT Ready_Layer_Object_InteractiveCube(const _tchar* pLayerTag); //버튼과 상호작용하는 큐브
-
-	HRESULT Ready_Layer_Object_PortalCube_A(const _tchar* pLayerTag); //포탈 A
-	HRESULT Ready_Layer_Object_PortalCube_B(const _tchar* pLayerTag); //포탈 B
-
-	//움직이는 큐브들
-	HRESULT Ready_Layer_Object_RisingCube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Object_EscalatorCube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Object_LeftCube(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Object_RightCube(const _tchar* pLayerTag);
-
-	HRESULT Ready_Layer_Object_VanishCube(const _tchar* pLayerTag);//사라지는 큐브
-	HRESULT Ready_Layer_Object_AppearCube(const _tchar* pLayerTag);//나타나는 큐브
-
-	HRESULT Ready_Layer_Object_BlockCube(const _tchar* pLayerTag);//접근을 막는 큐브
-
-
-	HRESULT Ready_Layer_OrbitCube(const _tchar* pLayerTag);// 공전을 위한 큐브
 
 	D3DLIGHT9		m_Light;
 

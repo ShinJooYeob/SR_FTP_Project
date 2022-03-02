@@ -1,9 +1,13 @@
 #include "stdafx.h"
 #include "..\Public\Scene_Stage2.h"
 #include "Scene_Loading.h"
-#include "Object_OrbitCube.h"
+
 #include "Camera_Main.h"
+#include "MapLoadMgr.h"
 #include "UI_Status.h"
+#include "Object_PortalCube_A.h"
+#include "Object_EscalatorCube.h"
+#include "Object_OrbitCube.h"
 
 
 CScene_Stage2::CScene_Stage2(LPDIRECT3DDEVICE9 GraphicDevice)
@@ -18,35 +22,37 @@ HRESULT CScene_Stage2::Initialize()
 
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
-	////////////////////////////은혁이 테스트Layer_Player
+
+
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_Cube(TAG_LAY(Layer_Player))))
+	if (FAILED(Ready_Layer_Player(TAG_LAY(Layer_Player))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_FixCube(TAG_LAY(Layer_Terrain))))
+	if (FAILED(Ready_Layer_PauseUI(TEXT("Layer_PauseUI"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_PushCube(TEXT("Layer_PushCube"))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_SelfRotationCube(TEXT("Layer_SelfRotationCube"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Object_ButtonCube(TEXT("Layer_ButtonCube"))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_Object_InteractiveCube(TEXT("Layer_InteractiveCube"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Object_BlockCube(TEXT("Layer_BlockCube"))))
-		return E_FAIL;
-	
-
-	if (FAILED(Ready_Layer_PauseUI(TEXT("Layer_PauseUI"))))
-		return E_FAIL;
 
 
+	// 로드된 오브젝트 정보로 그리기
+	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
+		SCENEID::SCENE_STAGE2,
+		TAG_LAY(Layer_Terrain),
+		TAG_OP(Prototype_TerrainCube),
+		_float3(0, 0, 0));
 
+	// 생성되지 않는 특수 큐브 저장
+	list< SPECIALCUBE*> SpecialCubeList;
+	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_STAGE2, 0, &SpecialCubeList);
+
+	FAILED_CHECK(Ready_Layer_Terrain(&SpecialCubeList));
+
+	for (auto data : SpecialCubeList)
+	{
+		Safe_Delete(data);
+	}
+	SpecialCubeList.clear();
 
 	return S_OK;
 }
@@ -142,10 +148,7 @@ HRESULT CScene_Stage2::Scene_InGame_Chage(_bool Scene_Chage_Switch, _uint _INext
 }
 
 
-HRESULT CScene_Stage2::Ready_Layer_Terrain(const _tchar * pLayerTag)
-{
-	return S_OK;
-}
+
 
 HRESULT CScene_Stage2::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {
@@ -209,7 +212,7 @@ HRESULT CScene_Stage2::Ready_Layer_PauseUI(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CScene_Stage2::Ready_Layer_Cube(const _tchar * pLayerTag)
+HRESULT CScene_Stage2::Ready_Layer_Player(const _tchar * pLayerTag)
 {
 	list<CGameObject*>* pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
 	if (pPlayerList == nullptr)
@@ -234,139 +237,76 @@ HRESULT CScene_Stage2::Ready_Layer_Cube(const _tchar * pLayerTag)
 
 	return S_OK;
 }
-HRESULT CScene_Stage2::Ready_Layer_FixCube(const _tchar * pLayerTag)
+
+HRESULT CScene_Stage2::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
 {
-	for (_uint x = 0; x < 20; ++x)
+	CObject_PortalCube_A::POTALDESC potalDesc;
+	CObject_EscalatorCube::ESCALATORDESC escalDesc;
+
+
+	potalDesc.iNowScene = SCENEID::SCENE_IMGUISCENE;
+	potalDesc.vPos_A_Cube = _float3(0, 0, 0);
+	potalDesc.vPos_B_Cube = _float3(0, 0, 0);
+
+	escalDesc.vStartPos = _float3(0, 0, 0);
+	escalDesc.vEndPos = _float3(0, 0, 0);
+
+
+	int count_Potal = 0;
+	int count_Escalator = 0;
+
+	for (auto data : *listdata)
 	{
-		for (_uint z = 0; z < 20; ++z)
+
+		// 포탈 큐브 생성방식
+		if (data->Tagname == TAG_OP(Prototype_PortalCube_A))
 		{
+			if (count_Potal % 2 == 0)
+			{
 
-			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3(-10.f + (_float)x, (_float)-1, (_float)z)))
-				return E_FAIL;
-		}
-	}
-	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_FixCube")))
-	//	return E_FAIL;
+				memcpy(&potalDesc.vPos_A_Cube, &(data->WorldMat.m[3]), sizeof(_float3));
 
-	return S_OK;
-}
-HRESULT CScene_Stage2::Ready_Layer_PushCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_PushCube")))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_GravityCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_GravityCube")))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_SelfRotationCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_SelfRotationCube")))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_ButtonCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_ButtonCube")))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_InteractiveCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_InteractiveCube")))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_PortalCube_A(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_PortalCube_A")))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_PortalCube_B(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_PortalCube_B")))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_RisingCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_RisingCube"),&_float3(1.f, -1.f, 2.f)))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_EscalatorCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_EscalatorCube"),&_float3(-1.f, 2.f, 2.f)))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_LeftCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_LeftCube"), &_float3(-8.f, -1.f, -1.f)))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_RightCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_RightCube"), &_float3(-6.f, -1.f, -1.f)))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_VanishCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_VanishCube"), &_float3(9.f, -1.f, -1.f)))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_AppearCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_AppearCube"), &_float3(10.f, -1.f, -1.f)))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_Object_BlockCube(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_BlockCube"), &_float3(-5.f, 0.f, 1.f)))
-		return E_FAIL;
-	return S_OK;
-}
-
-HRESULT CScene_Stage2::Ready_Layer_OrbitCube(const _tchar * pLayerTag)
-{
-	CObject_OrbitCube::ORBITCUBEDESC OrbitCubeDesc;
-
-	for (_uint Z = 0; Z < 2; Z++)
-	{
-		for (_uint Y = 0; Y < 2; Y++)
-		{
-			for (_uint X = 0; X < 2; X++) {
-				OrbitCubeDesc.fTransform = _float3(5.f+X, 1.f + Y, 7.f+Z);
-				OrbitCubeDesc.fRotAxis = _float3(0.f, 4.f, 0.f);
-				if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_OrbitCube"),&OrbitCubeDesc))
-					return E_FAIL;
-				}
 			}
+			else
+			{
+				memcpy(&potalDesc.vPos_B_Cube, &(data->WorldMat.m[3]), sizeof(_float3));
+				// 생성
+				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_IMGUISCENE,
+					TAG_LAY(Layer_Terrain), TAG_OP(Prototype_PortalCube_A),
+					&potalDesc);
+
+			}
+			count_Potal++;
+
 		}
 
+		// 엘리베이터 생성방식
+		if (data->Tagname == TAG_OP(Prototype_EscalatorCube))
+		{
+
+			if (count_Escalator % 2 == 0)
+			{
+				memcpy(escalDesc.vStartPos, &(data->WorldMat.m[3]), sizeof(_float3));
+
+			}
+			else
+			{
+				memcpy(escalDesc.vEndPos, &(data->WorldMat.m[3]), sizeof(_float3));
+				// 생성
+				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_IMGUISCENE,
+					TAG_LAY(Layer_Terrain), TAG_OP(Prototype_EscalatorCube),
+					&escalDesc);
+
+			}
+			count_Escalator++;
+
+		}
+
+	}
 	return S_OK;
 }
+
+
 
 CScene_Stage2 * CScene_Stage2::Create(LPDIRECT3DDEVICE9 GraphicDevice)
 {
@@ -384,5 +324,7 @@ CScene_Stage2 * CScene_Stage2::Create(LPDIRECT3DDEVICE9 GraphicDevice)
 
 void CScene_Stage2::Free()
 {
+	GetSingle(CMapLoadMgr)->DestroyInstance();
+
 	__super::Free();
 }

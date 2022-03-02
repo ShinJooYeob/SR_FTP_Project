@@ -120,7 +120,8 @@ enum LAYERID
 	Layer_Shop,
 	Layer_Quest,
 	Layer_UI_Loby,
-	Layer_UI_Common
+	Layer_UI_Common,
+	Layer_ArticleObject
 };
 
 static const _tchar* Tag_Layer(LAYERID eTag)
@@ -155,6 +156,9 @@ static const _tchar* Tag_Layer(LAYERID eTag)
 		return TEXT("Layer_Common");
 		break;
 		
+	case Layer_ArticleObject:
+		return TEXT("Layer_ArticleObject");
+		break;
 		//////////////////////////////////////////////////////////////////////////
 	default:
 		MSGBOX("Wrong Type Layer");
@@ -378,6 +382,8 @@ enum E_CUBEID
 	CUBEID_ORBIT,
 	CUBEID_VANISH, // »ç¶óÁü
 	CUBEID_APPEAR, // ³ªÅ¸³²
+
+	CUBEID_ARTICLEOBJECT, //ÁÖ¿±
 	CUBEID_END,
 
 };

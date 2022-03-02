@@ -48,16 +48,23 @@ HRESULT CTerrainCube::Initialize_Clone(void * pArg)
 		Safe_AddRef(m_PlayerTransform);
 	}
 
+	if (!lstrcmp(m_Layer_Tag, TAG_LAY(Layer_ArticleObject)))
+		m_bIsArticle = true;
+
 	return S_OK;
 }
 
 _int CTerrainCube::Update(_float fTimeDelta)
 {
-	if (m_PlayerTransform->Get_MatrixState(CTransform::STATE_POS).Get_Distance(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)) < 3.f)
-		m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
+	if (m_bIsArticle)
+		return 0;
 
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
+
+	if (m_PlayerTransform->Get_MatrixState(CTransform::STATE_POS).Get_Distance(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)) < 3.f)
+		m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FIX, this);
+
 
 
 	return _int();
