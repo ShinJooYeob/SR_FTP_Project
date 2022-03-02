@@ -23,7 +23,7 @@ private:
 	HRESULT Insert_MapData(const _tchar* filepath, _uint count);
 	HRESULT RemoveMapList();
 
-	HRESULT CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<SPECIALCUBE*>* spciallist);
+	bool CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<SPECIALCUBE*>* spciallist);
 
 private:
 	list<OUTPUT_OBJECTINFO*>* m_MapObjectList;

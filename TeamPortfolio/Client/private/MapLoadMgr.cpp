@@ -38,13 +38,14 @@ HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index, list<SPECIALCUBE*>* s
 
 	for (auto Infodata : currentMap)
 	{
-		bool bSpecialCube = false;
 
 		// 1. 큐브 ID로 각 큐브 생성
-		CubeID2Create(sceneid, *Infodata, spciallist);
+		// 생성이 안될때는 그냥 넘김
+		bool bSpecialCube = true;
+		bSpecialCube = CubeID2Create(sceneid, *Infodata, spciallist);
 
 
-		if (bSpecialCube)
+		if (bSpecialCube == false)
 		{
 			// 생성 X 위치만 저장하는 특수 큐브
 
@@ -212,7 +213,7 @@ HRESULT CMapLoadMgr::RemoveMapList()
 	return S_OK;
 }
 
-HRESULT CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<SPECIALCUBE*>* spciallist)
+bool CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<SPECIALCUBE*>* spciallist)
 {
 	// 큐브 아이디로 큐브 개별 생성
 	SPECIALCUBE* specialdata = nullptr;
@@ -245,6 +246,7 @@ HRESULT CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<
 		{
 			specialdata = new SPECIALCUBE(TAG_OP(Prototype_PortalCube_A), info.WorldMatData);
 			spciallist->push_back(specialdata);
+			return false;
 		}
 		break;
 	case CUBEID_ELEVETOR:
@@ -252,6 +254,7 @@ HRESULT CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<
 		{
 			specialdata = new SPECIALCUBE(TAG_OP(Prototype_EscalatorCube), info.WorldMatData);
 			spciallist->push_back(specialdata);
+			return false;
 		}
 		break;
 	case CUBEID_ORBIT:
@@ -259,6 +262,7 @@ HRESULT CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<
 		{
 			specialdata = new SPECIALCUBE(TAG_OP(Prototype_OrbitButtonCube), info.WorldMatData);
 			spciallist->push_back(specialdata);
+			return false;
 		}
 		break;
 
@@ -284,6 +288,7 @@ HRESULT CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<
 		
 		break;
 	case CUBEID_END:
+		return false;
 		break;
 	default:
 		break;
@@ -293,8 +298,7 @@ HRESULT CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<
 	//GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
 	//	TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainCube),
 	//	_float3(0, 0, 0));
-
-	return S_OK;
+	return true;
 }
 
 void CMapLoadMgr::Free()

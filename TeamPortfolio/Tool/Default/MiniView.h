@@ -22,8 +22,7 @@ public:
 	class CCamera_Tool* m_Camera_tool;
 
 
-	void CubeRender();
-	bool bCubeTest = false;
+
 protected:
 	DECLARE_MESSAGE_MAP()
 public:

@@ -50,6 +50,8 @@ public: // For. Device
 public:
 	HRESULT Ready_Initalize_Object();
 private:
+	HRESULT		Init_Light();
+	HRESULT		Update_Light();
 
 	HRESULT Ready_Object_Component();
 	HRESULT Ready_Object_Clone_View(const _tchar* layertag);
@@ -63,6 +65,16 @@ private:
 	HRESULT Initialize_ToolView();
 	HRESULT Initialize_ToolView_Data();
 
+private:
+	// ºû ¸ðµ¨ ÃÊ±âÈ­ 
+	D3DLIGHT9 InitDirectionalLight(D3DXVECTOR3* direction, D3DXCOLOR* color);
+	D3DLIGHT9 InitPointLight(D3DXVECTOR3* position, D3DXCOLOR* color);
+	D3DLIGHT9 InitSpotLight(D3DXVECTOR3* position, D3DXVECTOR3* direction, D3DXCOLOR* color);
+
+
+	D3DMATERIAL9 InitMtrl(D3DXCOLOR a, D3DXCOLOR d, D3DXCOLOR s, D3DXCOLOR e, float p);
+
+	D3DMATERIAL9 m_WhiteMtrl;
 
 public: // Get Set
 	CGameInstance* GetGameInstance()

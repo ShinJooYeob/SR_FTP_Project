@@ -193,6 +193,9 @@
     <Filter Include="01.GameObject\ParsedObject">
       <UniqueIdentifier>{d29ef134-3211-4927-b10c-933588aefed3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Particle">
+      <UniqueIdentifier>{6900191f-c915-4a2a-9b79-b98b627a35bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -366,6 +369,9 @@
     <ClInclude Include="..\public\ParsedObject.h">
       <Filter>01.GameObject\ParsedObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleObejct.h">
+      <Filter>01.GameObject\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -526,6 +532,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParsedObject.cpp">
       <Filter>01.GameObject\ParsedObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleObejct.cpp">
+      <Filter>01.GameObject\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

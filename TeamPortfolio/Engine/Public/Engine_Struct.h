@@ -26,6 +26,13 @@ namespace Engine
 		D3DXVECTOR3			vNormal;
 		D3DXVECTOR2			vTexUV;
 	}VTXNORMTEX;
+	// 법선 벡터 포함 큐브
+	typedef struct tagVertex_Nomal_CubeTexture
+	{
+		D3DXVECTOR3			vPosition;
+		D3DXVECTOR3			vNormal;
+		D3DXVECTOR3			vTexUV;
+	}VTXCUBENORMTEX;
 
 	typedef struct tagVertex_CubeTexture
 	{
