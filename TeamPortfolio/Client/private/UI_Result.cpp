@@ -63,7 +63,7 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	//레벨디자인할 때 만져야할 설정들
 
-	m_fMaxTime = 1.f;	//최대 시간 1초
+	m_fMaxTime = 1000.f;	//최대 시간 1초
 	RankStarGold = 1000.f;	//등급 하나당 획득 골드량
 
 	return S_OK;

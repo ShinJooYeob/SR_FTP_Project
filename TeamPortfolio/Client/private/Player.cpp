@@ -49,14 +49,14 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	Safe_AddRef(m_pCamera_Main);
 
 	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"),TEXT("Idle"));
-
+	m_ComInventory->Set_Skill_LevelUP(SKILL_DUBBLEJUMP);
 	return S_OK;
 }
 
 
 _int CPlayer::Update(_float fDeltaTime)
 {
-	
+	m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart = false;
 
 	if (m_eNowSceneNum == SCENE_LOADING)
 		return S_FALSE;
