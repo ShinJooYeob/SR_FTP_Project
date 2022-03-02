@@ -13,6 +13,9 @@ IMPLEMENT_SINGLETON(CSuperToolSIngleton)
 
 CSuperToolSIngleton::E_TOOL_MODE CSuperToolSIngleton::g_MAP_MODE = CSuperToolSIngleton::E_TOOL_MODE::TOOLMODE_OBJECT;
 
+#define LIGHTID_DIRECTION	0
+#define LIGHTID_POINT		1
+#define LIGHTID_SPOT		2
 
 
 CSuperToolSIngleton::CSuperToolSIngleton()
@@ -43,29 +46,13 @@ HRESULT CSuperToolSIngleton::InitDevice(void)
 	// 랜더링 설정
 
 	// 조명 초기화 및 설정
+	Init_Light();
 
-	// Direction 조명
-	D3DXVECTOR3 dir(-1,-1, -1);
-	D3DXCOLOR   c = D3DXCOLOR(COLOR_WHITE);
-	D3DLIGHT9 dirLight = InitDirectionalLight(&dir, &c);
-	// Point 조명
-	D3DXVECTOR3 pointPos(0, 5, 0);
-	D3DLIGHT9 pointLight = InitPointLight(&pointPos, &c);
 
-	m_pGraphicDevice->SetLight(0, &dirLight);
-	m_pGraphicDevice->SetLight(1, &pointLight);
-
-	m_pGraphicDevice->LightEnable(0, true);
-	m_pGraphicDevice->LightEnable(1, false);
-
-	////
-	//// Set lighting related render states.
-	////
 
 	// 법선 연산 / 스펙큘러 설정
-	m_WhiteMtrl = InitMtrl(COLOR_WHITE, COLOR_WHITE, COLOR_WHITE, COLOR_BLACK, 2.0f);
-	m_pGraphicDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
-	m_pGraphicDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
+	m_WhiteMtrl = InitMtrl(COLOR_WHITE, COLOR_WHITE, COLOR_WHITE, COLOR_BLACK, 1.0f);
+
 
 	// 조명 무효
 	// m_pGraphicDevice->SetRenderState(D3DRS_LIGHTING, false);
@@ -98,6 +85,7 @@ HRESULT CSuperToolSIngleton::Update_Tool(_float ftimer)
 		return E_FAIL;
 
 	int i = m_pGameInstance->Update_Engine_Tool(ftimer);
+	Update_Light();
 
 	return S_OK;
 }
@@ -153,6 +141,56 @@ HRESULT CSuperToolSIngleton::Ready_Initalize_Object()
 	// FAILED_CHECK(Ready_Object_Clone_Map(TAG_LAY(Layer_Map)));
 
 	FAILED_CHECK(Ready_Object_Camera(TAG_LAY(Layer_Camera_Main)));
+	return S_OK;
+}
+
+HRESULT CSuperToolSIngleton::Init_Light()
+{
+	D3DXVECTOR3 dir(-1, -1, -1);
+	D3DXCOLOR   c = D3DXCOLOR(COLOR_WHITE);
+	D3DLIGHT9 dirLight = InitDirectionalLight(&dir, &c);
+	// Point 조명
+	D3DXVECTOR3 pointPos(0, 5, 0);
+	D3DLIGHT9 pointLight = InitPointLight(&pointPos, &c);
+	// Spot 조명
+	D3DXVECTOR3 SpotPos(0, 0, -5);
+	D3DXVECTOR3 SpotDir(0, 0, 1);
+	D3DLIGHT9 SpotLight = InitSpotLight(&SpotPos, &SpotDir, &c);
+
+	m_pGraphicDevice->SetLight(0, &dirLight);
+	m_pGraphicDevice->SetLight(1, &pointLight);
+	m_pGraphicDevice->SetLight(2, &SpotLight);
+	
+
+	m_pGraphicDevice->LightEnable(LIGHTID_DIRECTION, true);
+//	m_pGraphicDevice->LightEnable(LIGHTID_POINT, true);
+//	m_pGraphicDevice->LightEnable(LIGHTID_SPOT, true);
+
+	m_pGraphicDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+	m_pGraphicDevice->SetRenderState(D3DRS_SPECULARENABLE, false);
+
+	return S_OK;
+}
+
+HRESULT CSuperToolSIngleton::Update_Light()
+{
+	// 장치에서 조명을 얻어온다.
+	D3DLIGHT9 spotlight;
+	m_pGraphicDevice->GetLight(LIGHTID_SPOT, &spotlight);
+
+	// 카메라 위치를 얻어온다.
+	_Matrix ViewMat;
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &ViewMat);
+	_Matrix vCamMatirx = ViewMat.InverseMatrix();
+	_float3 vCamPos = (*(_float3*)(&vCamMatirx.m[3][0]));
+	_float3 vCamLook = (*(_float3*)(&vCamMatirx.m[2][0]));
+	vCamLook = vCamLook.Get_Nomalize();
+
+	// 카메라 위치에 조명 위치 업데이트
+	spotlight.Position = vCamPos;
+	spotlight.Direction = vCamLook;
+	m_pGraphicDevice->SetLight(LIGHTID_SPOT, &spotlight);
+
 	return S_OK;
 }
 
@@ -308,9 +346,9 @@ D3DLIGHT9 CSuperToolSIngleton::InitDirectionalLight(D3DXVECTOR3 * direction, D3D
 	::ZeroMemory(&light, sizeof(light));
 
 	light.Type = D3DLIGHT_DIRECTIONAL;
-	light.Ambient = *color * 0.4f;
+	light.Ambient = *color * 0.7f;
 	light.Diffuse = *color;
-	light.Specular = *color * 0.6f;
+	light.Specular = *color * 0.8f;
 	light.Direction = *direction;
 
 	return light;
@@ -341,9 +379,9 @@ D3DLIGHT9 CSuperToolSIngleton::InitSpotLight(D3DXVECTOR3 * position, D3DXVECTOR3
 	::ZeroMemory(&light, sizeof(light));
 
 	light.Type = D3DLIGHT_SPOT;
-	light.Ambient = *color * 0.0f;
+	light.Ambient = *color * 0.4f;
 	light.Diffuse = *color;
-	light.Specular = *color * 0.6f;
+	light.Specular = *color * 0.8f;
 	light.Position = *position;
 	light.Direction = *direction;
 	light.Range = 1000.0f;
@@ -351,8 +389,8 @@ D3DLIGHT9 CSuperToolSIngleton::InitSpotLight(D3DXVECTOR3 * position, D3DXVECTOR3
 	light.Attenuation0 = 1.0f;
 	light.Attenuation1 = 0.0f;
 	light.Attenuation2 = 0.0f;
-	light.Theta = 0.4f;
-	light.Phi = 0.9f;
+	light.Theta = 1.5f;
+	light.Phi = 1.0f;
 
 	return light;
 }

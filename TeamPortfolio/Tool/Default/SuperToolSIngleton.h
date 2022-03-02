@@ -50,6 +50,8 @@ public: // For. Device
 public:
 	HRESULT Ready_Initalize_Object();
 private:
+	HRESULT		Init_Light();
+	HRESULT		Update_Light();
 
 	HRESULT Ready_Object_Component();
 	HRESULT Ready_Object_Clone_View(const _tchar* layertag);
