@@ -22,6 +22,7 @@ IMPLEMENT_DYNCREATE(CMiniView, CView)
 
 CMiniView::CMiniView()
 {
+	bCubeTest = false;
 }
 
 CMiniView::~CMiniView()
@@ -51,24 +52,64 @@ void CMiniView::OnDraw(CDC* pDC)
 		if (m_Camera_tool == nullptr)
 			return;
 	}
-
 	m_Camera_tool->Set_StartPosView();
 	toolObj->Set_MiniRender();
 	toolObj->Set_Visble(true);
-	GetSingle(CSuperToolSIngleton)->Render_Begin(COLOR_GRAY);
+	
+	if (!bCubeTest)
+	{
+		// #TODO 큐브 DDS 만들기??
+		LPDIRECT3DCUBETEXTURE9 pCubeMap;
+		LPDIRECT3DDEVICE9 device = GetSingle(CSuperToolSIngleton)->Get_Graphics_Device();
 
-	// 1. 선택 오브젝트를 가져옴
-	// 2. 선택 오브젝트만 랜더링
+		device->CreateCubeTexture
+		(256, 1, D3DUSAGE_RENDERTARGET, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &pCubeMap, NULL);
 
-	// toolObj->MiniRender();
+		device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		for (DWORD i = 0; i < 6; i++)
+		{
 
-	GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
+			LPDIRECT3DSURFACE9 pFace;
+			pCubeMap->GetCubeMapSurface((D3DCUBEMAP_FACES)i, 0, &pFace);
+			device->SetRenderTarget(0, pFace);
+
+			
 
 
-	GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->EndScene();
-	GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
-	toolObj->Set_Visble(false);
-	m_Camera_tool->Set_OriginPosView();
+			GetSingle(CSuperToolSIngleton)->Render_Begin(COLOR_GRAY);
+
+			GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
+			GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->EndScene();
+			GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);		
+
+			pFace->Release();
+		}
+		device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		TCHAR str[64] = L"";
+		static int i = 0;
+		i++;
+		wsprintf(str, L"DDS/cubemap_MakeDDS_%d.dds", i);
+		D3DXSaveTextureToFile(str, D3DXIFF_DDS, pCubeMap, NULL);
+
+
+		if (i > 10)
+			bCubeTest = true;
+	}
+	else
+	{
+
+
+		GetSingle(CSuperToolSIngleton)->Render_Begin(COLOR_GRAY);
+
+		GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
+		GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->EndScene();
+		GetSingle(CSuperToolSIngleton)->Render_End(m_hWnd);
+		toolObj->Set_Visble(false);
+		m_Camera_tool->Set_OriginPosView();
+
+	}
+
+
 
 
 }
@@ -90,6 +131,54 @@ void CMiniView::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 // CMiniView 메시지 처리기입니다.
+
+void CMiniView::CubeRender()
+{
+	
+	LPDIRECT3DDEVICE9 device = GetSingle(CSuperToolSIngleton)->Get_Graphics_Device();
+
+
+	// 큐브 텍스처 초기화
+	LPDIRECT3DCUBETEXTURE9 pCubeMap;
+
+	device->CreateCubeTexture
+	(256, 1, D3DUSAGE_RENDERTARGET, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &pCubeMap, NULL);
+
+
+	// 백버퍼에 랜더 타겟 변경 
+	// LPDIRECT3DSURFACE9 pBackBuffer, pZBuffer;
+
+	for (DWORD i = 0; i < 6; i++)
+	{
+
+		LPDIRECT3DSURFACE9 pFace;
+		pCubeMap->GetCubeMapSurface((D3DCUBEMAP_FACES)i, 0, &pFace);
+		device->SetRenderTarget(0, pFace);
+
+		device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+		device->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(0, 0, 0, 255), 1.0f, 0);
+
+		device->BeginScene();
+
+		GetSingle(CSuperToolSIngleton)->Get_Component_Renderer()->Render_RenderGroup();
+
+		device->EndScene();
+		device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
+		device->Present(NULL, NULL, g_hWnd2, NULL); // 디버그용
+		pFace->Release();
+	}
+
+	TCHAR str[64] = L"";
+	static int i = 0;
+	i++;
+	wsprintf(str, L"DDS/cubemap_MakeDDS_%d.dds", i);
+	D3DXSaveTextureToFile(str, D3DXIFF_DDS, pCubeMap, NULL);
+
+
+
+}
 
 BOOL CMiniView::OnEraseBkgnd(CDC* pDC)
 {

@@ -140,10 +140,10 @@ void CMyForm::OnTransform()
 void CMyForm::OnBnClickedButtonCubeMap()
 {
 
-//	if (nullptr == m_CubeMapToolDialog.GetSafeHwnd())
-//		m_CubeMapToolDialog.Create(IDD_MYCUBEMAP);	// 해당 id 에 맞는 다이얼로그 생성
-//
-//	m_CubeMapToolDialog.ShowWindow(SW_SHOW);  // 창 모양으로 출력
+	if (nullptr == m_CubeMapToolDialog.GetSafeHwnd())
+		m_CubeMapToolDialog.Create(IDD_MYCUBEMAP);	// 해당 id 에 맞는 다이얼로그 생성
+
+	m_CubeMapToolDialog.ShowWindow(SW_SHOW);  // 창 모양으로 출력
 
 }
 

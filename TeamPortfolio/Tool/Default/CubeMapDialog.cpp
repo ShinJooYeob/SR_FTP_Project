@@ -62,9 +62,6 @@ void CCubeMapDialog::CubeMapMake()
 	// 백버퍼에 랜더 타겟 변경 
 	// LPDIRECT3DSURFACE9 pBackBuffer, pZBuffer;
 
-
-	D3DXVECTOR3 vEyePt2(0, 0, 0.0f);
-
 	for (DWORD i = 0; i < 6; i++)
 	{
 
@@ -96,10 +93,8 @@ void CCubeMapDialog::CubeMapMake()
 			vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 			break;
 		}*/
-		D3DXVECTOR3 vLookatPt, vUpVec;
 
-		vLookatPt = D3DXVECTOR3(0, 0, 0);
-		vUpVec = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+
 
 		LPDIRECT3DSURFACE9 pFace;
 		pCubeMap->GetCubeMapSurface((D3DCUBEMAP_FACES)i, 0, &pFace);
@@ -107,29 +102,20 @@ void CCubeMapDialog::CubeMapMake()
 
 		device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-		RECT rc; 
-		rc.left = 0;
-		rc.top = 0;
-		rc.right = 32;
-		rc.bottom = 32;
-
-		device->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255,255, 255, 255), 1.0f, 0);
+		device->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(0,0, 0, 255), 1.0f, 0);
 
 		device->BeginScene();
 		m_pComSprite->Begin(D3DXSPRITE_ALPHABLEND);
 		m_pComSprite->Draw((LPDIRECT3DTEXTURE9)m_pCom_Tex,
 			// Texture 객체 pointer.
-			&rc, // Sprite 영역. 
+			NULL, // Sprite 영역. 
 			NULL, // Sprite 중심. 
 			NULL, // Sprite 위치.
 			0xFFFFFFFF // 색상. 
 		);
 
-
 		m_pComSprite->End();
-
 		device->EndScene();
-
 		device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 		device->Present(NULL, NULL, g_hWnd2, NULL); // 디버그용
