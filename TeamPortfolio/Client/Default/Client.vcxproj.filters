@@ -190,6 +190,9 @@
     <Filter Include="01.GameObject\UI\UI_Status">
       <UniqueIdentifier>{b0d327df-b886-4fa6-a911-01336a0275ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_Star">
+      <UniqueIdentifier>{a6cdc875-ea14-4a8e-9539-bde19e0517d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -360,6 +363,9 @@
     <ClInclude Include="..\public\UI_Status.h">
       <Filter>01.GameObject\UI\UI_Status</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_Star.h">
+      <Filter>01.GameObject\SubObject\Object_Star</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -517,6 +523,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Status.cpp">
       <Filter>01.GameObject\UI\UI_Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_Star.cpp">
+      <Filter>01.GameObject\SubObject\Object_Star</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

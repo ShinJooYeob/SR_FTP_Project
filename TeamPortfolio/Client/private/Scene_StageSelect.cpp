@@ -5,6 +5,7 @@
 #include "Object_PortalCube_A.h"
 #include "Object_EscalatorCube.h"
 #include "Object_OrbitButton.h"
+#include "Object_Star.h"
 
 
 
@@ -35,6 +36,8 @@ HRESULT CScene_StageSelect::Initialize()
 	if (FAILED(Ready_Layer_UI_Common(TAG_LAY(Layer_UI_Common))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
+		return E_FAIL;
+	if (FAILED(Ready_Layer_Object_Star(TEXT("Layer_UI_Result"))))
 		return E_FAIL;
 
 
@@ -382,6 +385,20 @@ HRESULT CScene_StageSelect::Ready_Layer_Object_AppearCube(const _tchar * pLayerT
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_AppearCube"), &_float3(10.f, -1.f, -1.f)))
 		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_Object_Star(const _tchar * pLayerTag)
+{
+	CObject_Star::STARDESC StarDesc;
+
+
+	for (int i = 0; i < 5; ++i)
+	{
+		StarDesc.fTransform = _float3(1.f+(i*4), 1.f,0.f);
+		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"),&StarDesc))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 
