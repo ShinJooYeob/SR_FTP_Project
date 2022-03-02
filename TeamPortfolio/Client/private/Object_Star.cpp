@@ -76,9 +76,11 @@ _int CObject_Star::LateUpdate(_float fTimeDelta)
 _int CObject_Star::Render()
 {
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		return E_FAIL;
+	//if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+	//	return E_FAIL;
 
+	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera()))
+		return E_FAIL;
 
 	if (FAILED(m_ComTexture->Bind_Texture()))
 		return E_FAIL;
