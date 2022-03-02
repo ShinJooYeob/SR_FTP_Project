@@ -38,7 +38,7 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 
 
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_Penguine", TEXT("Prototype_GameObject_Penguine")));
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Penguine", TEXT("Prototype_GameObject_Penguine")));
 
 
 	return S_OK;

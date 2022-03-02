@@ -37,10 +37,15 @@ HRESULT CObject_EscalatorCube::Initialize_Clone(void * pArg)
 	if (pArg != nullptr) {
 
 
-
 		memcpy(&m_EscalatorDesc, pArg, sizeof(ESCALATORDESC));
 
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_EscalatorDesc.vStartPos);
+
+		CTransform::TRANSFORMDESC		TransformDesc;
+		TransformDesc.fMovePerSec = m_EscalatorDesc.vStartPos.Get_Distance(m_EscalatorDesc.vEndPos) *0.25f;
+		TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
+
+		m_ComTransform->Set_TransformDesc(TransformDesc);
 
 		m_Layer_Tag = TEXT("Layer_EscalatorCube");
 
@@ -70,9 +75,8 @@ _int CObject_EscalatorCube::Update(_float fTimeDelta)
 	else if (m_EscalatorDesc.vStartPos.Get_Distance(RisingPos) > 0.2f)
 	{
 		//속도조절 가능
-		m_fTimer = fTimeDelta * 0.5f;
 
-		m_ComTransform->MovetoTarget(m_EscalatorDesc.vStartPos, m_fTimer);
+		m_ComTransform->MovetoTarget(m_EscalatorDesc.vStartPos, fTimeDelta);
 
 		//_float3 RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 		//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y + m_fTimer, RisingCubePos.z));
@@ -147,8 +151,7 @@ _int CObject_EscalatorCube::Collision_Descent(CGameObject * pDestObjects, _float
 		_float3 CubeToTargetDist = DestTransform->Get_MatrixState(CTransform::STATE_POS) - RisingCubePos;
 
 
-		m_fTimer = fDeltaTime * 0.5f;
-		m_ComTransform->MovetoTarget(m_EscalatorDesc.vEndPos, m_fTimer);
+		m_ComTransform->MovetoTarget(m_EscalatorDesc.vEndPos, fDeltaTime);
 
 		RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
 

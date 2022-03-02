@@ -136,7 +136,7 @@ HRESULT CParsedObject::SetUp_RenderState()
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
-	m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
