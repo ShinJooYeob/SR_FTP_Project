@@ -33,7 +33,7 @@ HRESULT CScene_Stage1::Initialize()
 	if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
 		return E_FAIL;
 
-	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")))
+	//FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")))
 
 
 

@@ -497,7 +497,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 
 	for (int i = 0; i < 5; ++i)
 	{
-		StarDesc.fTransform = _float3(1.f+(i*4), 1.f,0.f);
+		StarDesc.fTransform = _float3(1.f+(i*10), 1.f,0.f);
 		if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"),&StarDesc))
 			return E_FAIL;
 	}
