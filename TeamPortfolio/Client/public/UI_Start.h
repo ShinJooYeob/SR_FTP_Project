@@ -51,17 +51,14 @@ private:
 
 private:
 	_float4			m_vUIDesc[3];
-	_float			m_fWalkingFrame = 0;
+	_float			m_fCountFrame = 0;
 
-	_bool			m_bIsClicked = false;
-
-	_bool			m_bIsOnAnim = false;
-	_bool			m_bIsPauseAnimFinished = false;
+	_bool			m_bStarton = false;
 
 	_float			m_fStartPoint = 0;
 	_float			m_fTargetPoint = 0;
 	_float			m_fPassedTime = 0;
-	_uint			m_iCount = 0;
+	
 
 
 private:

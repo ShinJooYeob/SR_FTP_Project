@@ -35,6 +35,7 @@ HRESULT CScene_Stage1::Initialize()
 
 	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")));
 	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
+	FAILED_CHECK(Ready_Layer_UI_Start(TEXT("Layer_UI_Start")));
 	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
 	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
 
@@ -224,6 +225,14 @@ HRESULT CScene_Stage1::Ready_Layer_PlayerStatusUI(const _tchar * pLayerTag)
 	if (pResult == nullptr)
 		return E_FAIL;
 	FAILED_CHECK(pStatusUI->Set_ResultUI(pResult));
+
+	return S_OK;
+}
+
+HRESULT CScene_Stage1::Ready_Layer_UI_Start(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_UI_Start")))
+		return E_FAIL;
 
 	return S_OK;
 }

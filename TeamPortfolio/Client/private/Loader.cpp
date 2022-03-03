@@ -17,6 +17,7 @@
 #include "Loby_UI.h"
 #include "PauseUI.h"
 #include "UI_Status.h"
+#include "UI_Start.h"
 
 #include "Object_FixCube.h"
 #include "Object_GravityCube.h"
@@ -330,13 +331,18 @@ HRESULT CLoader::Load_Scene_Stage1(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StatusUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-
+	//UI_Start
+	TextureDesc.szTextFilePath = TEXT("UI_Start.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StartUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 #pragma endregion
 
 
 #pragma  region PROTOTYPE_GAMEOBJECT
 
-
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_UI_Start"), CUI_Start::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 #pragma endregion
 
@@ -404,7 +410,9 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 #pragma  region PROTOTYPE_GAMEOBJECT
 
-
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_UI_Start"), CUI_Start::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	
 
 #pragma endregion
 
@@ -443,6 +451,12 @@ HRESULT CLoader::Load_Scene_Stage3(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_UI_Result_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	//UI_Start
+	TextureDesc.szTextFilePath = TEXT("UI_Start.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StartUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 	//미는 큐브
 	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
@@ -474,7 +488,8 @@ HRESULT CLoader::Load_Scene_Stage3(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 #pragma  region PROTOTYPE_GAMEOBJECT
 
-
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_UI_Start"), CUI_Start::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 #pragma endregion
 
