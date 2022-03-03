@@ -33,13 +33,23 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_fNowJumpPower = 0;
-	m_fJumpPower = 10.f;
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0,1.f,0));
-	m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
+
+	if (pArg == nullptr)
+	{
+		m_fNowJumpPower = 0.00001f;
+		m_fJumpPower = 10.f;
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0, 1.f, 0));
+		m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
 
 
-	m_iPlayerLife = 3;
+		m_iPlayerLife = 3;
+		m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"), TEXT("Idle"));
+	}
+	else {
+		FAILED_CHECK(ReInitialize(pArg));
+	}
+
+
 	ZeroMemory(m_tCoolDown, sizeof(COOL) * SKILL_END);
 	ZeroMemory(StageBestClear, sizeof(_float) *SCENE_END);
 
@@ -49,7 +59,6 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 		return E_FAIL;
 	Safe_AddRef(m_pCamera_Main);
 
-	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"),TEXT("Idle"));
 
 
 
@@ -252,11 +261,32 @@ void CPlayer::Set_PlayerPause(_float TotalPauseTime, const _tchar* TagAnim, _flo
 
 HRESULT CPlayer::ReInitialize(void * pArg)
 {
+	if (pArg == nullptr)
+		return E_FAIL;
 	_float3 vStartPos = *(_float3*)(pArg);
 
-	m_fNowJumpPower = 0;
+	m_fNowJumpPower = 0.00001f;
+	m_bIsJumped = 1;
 	m_fJumpPower = 10.f;
 	m_iPlayerLife = 3;
+
+	m_bIsDead = false;
+	m_bReHurtTime = 0;
+	m_fDeadNPauseTime = 0;
+	m_fTotalPauseTime = 0;
+	m_bPause = false;
+
+	m_bTextureReverse = false;
+	m_bIsShdow = false;
+
+	m_bIsCliming = false;
+	m_bIsRunning = false;
+
+	m_vDownstairsNear = NOT_EXIST_BLOCK;
+	m_vClimingBlock = NOT_EXIST_BLOCK;
+	m_vReturnStair = NOT_EXIST_BLOCK;
+
+	m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vStartPos);
 	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"), TEXT("Idle"));
 	return S_OK;

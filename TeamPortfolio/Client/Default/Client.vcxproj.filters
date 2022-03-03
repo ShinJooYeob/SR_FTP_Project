@@ -372,6 +372,12 @@
     <ClInclude Include="..\public\ParticleObejct.h">
       <Filter>01.GameObject\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Scene_Stage1.h">
+      <Filter>02.Scene\04.Scene_GamePlay\01.Scene_Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Scene_Stage3.h">
+      <Filter>02.Scene\04.Scene_GamePlay\03.Scene_Stage3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -535,6 +541,12 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleObejct.cpp">
       <Filter>01.GameObject\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scene_Stage1.cpp">
+      <Filter>02.Scene\04.Scene_GamePlay\01.Scene_Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scene_Stage3.cpp">
+      <Filter>02.Scene\04.Scene_GamePlay\03.Scene_Stage3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

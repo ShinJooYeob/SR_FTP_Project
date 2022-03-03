@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\Scene_StageSelect.h"
 #include "Scene_Loading.h"
-#include "Camera_Main.h"
+#include "Camera_Main.h""
+#include "MapLoadMgr.h"
 #include "Object_PortalCube_A.h"
 #include "Object_EscalatorCube.h"
 #include "Object_OrbitButton.h"
@@ -24,8 +25,6 @@ HRESULT CScene_StageSelect::Initialize()
 
 	FAILED_CHECK(Ready_Layer_SkyBox(TEXT("Layer_SkyBox")))
 
-	if (FAILED(Ready_Layer_Terrain(TAG_LAY(Layer_Terrain))))
-		return E_FAIL;
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
@@ -38,7 +37,27 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 
 
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Penguine", TEXT("Prototype_GameObject_Penguine")));
+
+	// 로드된 오브젝트 정보로 그리기
+	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
+		SCENEID::SCENE_STAGESELECT,
+		TAG_LAY(Layer_Terrain),
+		TAG_OP(Prototype_TerrainCube),
+		_float3(0, 0, 0));
+
+	// 생성되지 않는 특수 큐브 저장
+	list< SPECIALCUBE*> SpecialCubeList;
+	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_STAGESELECT, 0, &SpecialCubeList);
+
+	FAILED_CHECK(Ready_Layer_Terrain(&SpecialCubeList));
+
+	for (auto data : SpecialCubeList)
+	{
+		Safe_Delete(data);
+	}
+	SpecialCubeList.clear();
+
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Penguine", TEXT("Prototype_GameObject_Penguine")));
 
 
 	return S_OK;
@@ -49,9 +68,23 @@ _int CScene_StageSelect::Update(_float fDeltaTime)
 	if (__super::Update(fDeltaTime) < 0)
 		return -1;
 
-	if ( GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
-		if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING)))
-			return E_FAIL;
+	if (GetKeyState(VK_F1) & 0x8000)
+	{
+		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING));
+	}
+	if (GetKeyState(VK_F2) & 0x8000)
+	{
+		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING));
+	}
+
+	if (GetKeyState(VK_F3) & 0x8000)
+	{
+		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING));
+	}
+
+	if (GetKeyState(VK_F4) & 0x8000)
+	{
+		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE3), SCENEID::SCENE_LOADING));
 	}
 
 	if (m_bScene_Switch == true)
@@ -142,69 +175,69 @@ HRESULT CScene_StageSelect::Ready_Layer_SkyBox(const _tchar * pLayerTag)
 
 	return S_OK;
 }
-
-HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
-{
-	for (_uint i = 0; i < 6; i++)
-	{
-		for (_uint j = 0; j < 6; j++) {
-
-			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)0, (_float)j)))
-				return E_FAIL;
-		}
-	}
-	for (_uint k = 0; k < 10; k++)
-	{
-		for (_uint i = 1; i < 10; i++)
-		{
-			for (_uint j = 1; j < 10; j++)
-			{
-				if (i == 1 || i == 9 || j == 3 || j == 7)
-				{
-
-					if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)k, (_float)j)))
-						return E_FAIL;
-				}
-			}
-		}
-	}
-
-
-	for (_uint i = 0; i < 6; i++)
-	{
-		for (_uint j = 0; j < 6; j++) {
-
-			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i + 30, (_float)-24, (_float)j)))
-				return E_FAIL;
-		}
-	}
-
-
-
-	if (FAILED(Ready_Layer_JumpCube(pLayerTag)))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_GravityCube(pLayerTag)))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Object_PortalCube(pLayerTag)))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_ElevetorCube(pLayerTag)))
-		return E_FAIL;
-
-	FAILED_CHECK(Ready_Layer_Object_VanishCube(pLayerTag));
-	FAILED_CHECK(Ready_Layer_Object_AppearCube(pLayerTag));
-	
-
-	if (FAILED(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton"))))
-		return E_FAIL;
-	
-
-
-
-	return S_OK;
-}
+//
+//HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)
+//{
+//	for (_uint i = 0; i < 6; i++)
+//	{
+//		for (_uint j = 0; j < 6; j++) {
+//
+//			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)0, (_float)j)))
+//				return E_FAIL;
+//		}
+//	}
+//	for (_uint k = 0; k < 10; k++)
+//	{
+//		for (_uint i = 1; i < 10; i++)
+//		{
+//			for (_uint j = 1; j < 10; j++)
+//			{
+//				if (i == 1 || i == 9 || j == 3 || j == 7)
+//				{
+//
+//					if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i, (_float)k, (_float)j)))
+//						return E_FAIL;
+//				}
+//			}
+//		}
+//	}
+//
+//
+//	for (_uint i = 0; i < 6; i++)
+//	{
+//		for (_uint j = 0; j < 6; j++) {
+//
+//			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_TerrainCube), &_float3((_float)i + 30, (_float)-24, (_float)j)))
+//				return E_FAIL;
+//		}
+//	}
+//
+//
+//
+//	if (FAILED(Ready_Layer_JumpCube(pLayerTag)))
+//		return E_FAIL;
+//
+//	if (FAILED(Ready_Layer_GravityCube(pLayerTag)))
+//		return E_FAIL;
+//
+//	if (FAILED(Ready_Layer_Object_PortalCube(pLayerTag)))
+//		return E_FAIL;
+//
+//	if (FAILED(Ready_Layer_ElevetorCube(pLayerTag)))
+//		return E_FAIL;
+//
+//	FAILED_CHECK(Ready_Layer_Object_VanishCube(pLayerTag));
+//	FAILED_CHECK(Ready_Layer_Object_AppearCube(pLayerTag));
+//	
+//
+//	if (FAILED(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton"))))
+//		return E_FAIL;
+//	
+//
+//
+//
+//	return S_OK;
+//}
 
 HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {
@@ -372,6 +405,74 @@ HRESULT CScene_StageSelect::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	return S_OK;
 }
 
+HRESULT CScene_StageSelect::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
+{
+	CObject_PortalCube_A::POTALDESC potalDesc;
+	CObject_EscalatorCube::ESCALATORDESC escalDesc;
+
+
+	potalDesc.iNowScene = SCENEID::SCENE_IMGUISCENE;
+	potalDesc.vPos_A_Cube = _float3(0, 0, 0);
+	potalDesc.vPos_B_Cube = _float3(0, 0, 0);
+
+	escalDesc.vStartPos = _float3(0, 0, 0);
+	escalDesc.vEndPos = _float3(0, 0, 0);
+
+
+	int count_Potal = 0;
+	int count_Escalator = 0;
+
+	for (auto data : *listdata)
+	{
+
+		// 포탈 큐브 생성방식
+		if (data->Tagname == TAG_OP(Prototype_PortalCube_A))
+		{
+			if (count_Potal % 2 == 0)
+			{
+
+				memcpy(&potalDesc.vPos_A_Cube, &(data->WorldMat.m[3]), sizeof(_float3));
+
+			}
+			else
+			{
+				memcpy(&potalDesc.vPos_B_Cube, &(data->WorldMat.m[3]), sizeof(_float3));
+				// 생성
+				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STAGESELECT,
+					TAG_LAY(Layer_Terrain), TAG_OP(Prototype_PortalCube_A),
+					&potalDesc);
+
+			}
+			count_Potal++;
+
+		}
+
+		// 엘리베이터 생성방식
+		if (data->Tagname == TAG_OP(Prototype_EscalatorCube))
+		{
+
+			if (count_Escalator % 2 == 0)
+			{
+				memcpy(escalDesc.vStartPos, &(data->WorldMat.m[3]), sizeof(_float3));
+
+			}
+			else
+			{
+				memcpy(escalDesc.vEndPos, &(data->WorldMat.m[3]), sizeof(_float3));
+				// 생성
+				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STAGESELECT,
+					TAG_LAY(Layer_Terrain), TAG_OP(Prototype_EscalatorCube),
+					&escalDesc);
+
+			}
+			count_Escalator++;
+
+		}
+
+	}
+	return S_OK;
+}
+
 HRESULT CScene_StageSelect::Ready_Layer_Object_VanishCube(const _tchar * pLayerTag)
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_VanishCube"), &_float3(9.f, -1.f, -1.f)))
@@ -403,5 +504,6 @@ CScene_StageSelect * CScene_StageSelect::Create(LPDIRECT3DDEVICE9 GraphicDevice)
 
 void CScene_StageSelect::Free()
 {
+	GetSingle(CMapLoadMgr)->DestroyInstance();
 	__super::Free();
 }

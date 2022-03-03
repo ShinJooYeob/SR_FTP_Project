@@ -276,7 +276,7 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 99999999;
+	m_iLoadingMaxCount = 999999;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -296,8 +296,62 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 HRESULT CLoader::Load_Scene_Stage1(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
-	m_bIsLoadingFinished = true;
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
+	//프로토타입 컴포넌트#######################################################################################################
+#pragma region PROTOTYPE_COMPONENT
+
+	CTexture::TEXTUREDESC TextureDesc;
+	//////////eunhyuk_UI
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_Result.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_UI_Result_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	//미는 큐브
+	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Cube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("Pause.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Pause"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_Status.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StatusUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+
+#pragma endregion
+
+
+#pragma  region PROTOTYPE_GAMEOBJECT
+
+
+
+#pragma endregion
+
+
+	RELEASE_INSTANCE(CGameInstance);
+	EnterCriticalSection(_CriSec);
+	m_iLoadingMaxCount = 999999;
+	m_iLoadingProgressCount = 0;
+	LeaveCriticalSection(_CriSec);
+
+	for (int i = 0; i < m_iLoadingMaxCount; ++i)
+	{
+		EnterCriticalSection(_CriSec);
+		m_iLoadingProgressCount = i;
+		LeaveCriticalSection(_CriSec);
+	}
+
+	EnterCriticalSection(_CriSec);
+	m_bIsLoadingFinished = true;
+	LeaveCriticalSection(_CriSec);
+	m_bIsLoadingFinished = true;
 	return S_OK;
 }
 
@@ -345,7 +399,7 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 99999999;
+	m_iLoadingMaxCount = 999999;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -365,8 +419,71 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 HRESULT CLoader::Load_Scene_Stage3(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
-	m_bIsLoadingFinished = true;
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
+	//프로토타입 컴포넌트#######################################################################################################
+#pragma region PROTOTYPE_COMPONENT
+
+	CTexture::TEXTUREDESC TextureDesc;
+	//////////eunhyuk_UI
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_Result.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_UI_Result_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	//미는 큐브
+	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Cube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("Pause.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Pause"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_Status.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StatusUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("GravityTexture.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_GravityTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("PotalTexture.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+
+#pragma endregion
+
+
+#pragma  region PROTOTYPE_GAMEOBJECT
+
+
+
+#pragma endregion
+
+
+	RELEASE_INSTANCE(CGameInstance);
+	EnterCriticalSection(_CriSec);
+	m_iLoadingMaxCount = 999999;
+	m_iLoadingProgressCount = 0;
+	LeaveCriticalSection(_CriSec);
+
+	for (int i = 0; i < m_iLoadingMaxCount; ++i)
+	{
+		EnterCriticalSection(_CriSec);
+		m_iLoadingProgressCount = i;
+		LeaveCriticalSection(_CriSec);
+	}
+
+	EnterCriticalSection(_CriSec);
+	m_bIsLoadingFinished = true;
+	LeaveCriticalSection(_CriSec);
+	m_bIsLoadingFinished = true;
 	return S_OK;
 }
 

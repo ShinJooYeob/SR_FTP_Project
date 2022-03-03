@@ -46,7 +46,7 @@ HRESULT CScene_Stage2::Initialize()
 
 	// 생성되지 않는 특수 큐브 저장
 	list< SPECIALCUBE*> SpecialCubeList;
-	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_STAGE2, 0, &SpecialCubeList);
+	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_STAGE2, 2, &SpecialCubeList);
 
 	FAILED_CHECK(Ready_Layer_Terrain(&SpecialCubeList));
 
@@ -180,7 +180,7 @@ HRESULT CScene_Stage2::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,4))
 
 
-	pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
+	pMainCam->Set_NowSceneNum(SCENE_STAGE2);
 	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, 0.016f);
 
 	return S_OK;
@@ -255,7 +255,7 @@ HRESULT CScene_Stage2::Ready_Layer_Player(const _tchar * pLayerTag)
 	}
 	else
 	{
-		(pPlayerList->front())->ReInitialize(&_float3(0, 2, 0));
+		(pPlayerList->front())->ReInitialize(&_float3(0.f, 1.3f, 0));
 
 	}
 

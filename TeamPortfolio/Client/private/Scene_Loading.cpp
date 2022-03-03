@@ -4,7 +4,9 @@
 #include "Loader.h"
 #include "Scene_Loby.h"
 #include "Scene_StageSelect.h"
+#include "Scene_Stage1.h"
 #include "Scene_Stage2.h"
+#include "Scene_Stage3.h"
 #include "Scene_IMGUI.h"
 #include "UI_LoadingBar.h"
 #include "Camera_Main.h"
@@ -72,6 +74,7 @@ _int CScene_Loading::LateUpdate(_float fDeltaTime)
 			break;
 
 		case SCENEID::SCENE_STAGE1:
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Stage1::Create(m_pGraphicDevice), m_eNextSceneIndex, true)))
 				return E_FAIL;
 			break;
 
@@ -81,6 +84,7 @@ _int CScene_Loading::LateUpdate(_float fDeltaTime)
 			break;
 
 		case SCENEID::SCENE_STAGE3:
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Stage3::Create(m_pGraphicDevice), m_eNextSceneIndex, true)))
 				return E_FAIL;
 			break;
 

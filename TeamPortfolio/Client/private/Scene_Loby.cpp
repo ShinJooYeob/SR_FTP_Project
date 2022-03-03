@@ -60,9 +60,23 @@ _int CScene_Loby::Update(_float fDeltaTime)
 		}
 	}
 	// IMGUI / ¸Ê Åø Å×½ºÆ®¾ÀÀ¸·Î »ç¿ë
+	if (GetKeyState(VK_F1) & 0x8000)
+	{
+		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING));
+	}
 	if (GetKeyState(VK_F2) & 0x8000)
 	{
+		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING));
+	}
+
+	if (GetKeyState(VK_F3) & 0x8000)
+	{
 		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING));
+	}
+
+	if (GetKeyState(VK_F4) & 0x8000)
+	{
+		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE3), SCENEID::SCENE_LOADING));
 	}
 
 
