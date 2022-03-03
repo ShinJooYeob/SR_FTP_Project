@@ -6,6 +6,7 @@
 #include "UI_RankStar.h"
 #include "Player.h"
 #include "Inventory.h"
+#include <time.h>
 
 CUI_Result::CUI_Result(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CUI(pGraphicDevice)
@@ -63,8 +64,10 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	//레벨디자인할 때 만져야할 설정들
 
-	m_fMaxTime = 10.f;	//최대 시간 1초
-	RankStarGold = 1000.f;	//등급 하나당 획득 골드량
+	m_fMaxTime = 1.f;	//최대 시간 1초
+
+	srand(time(NULL));
+	RankStarGold = 900.f + (rand()%200);	//등급 하나당 획득 골드량
 
 	return S_OK;
 }
@@ -404,6 +407,9 @@ HRESULT CUI_Result::SetUp_Pont()
 
 			TempString = wstring(tempGoldArr);
 			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,285.f }, { 25.f,50.f }, _float3(123, 104, 238));
+
+			TempString = L"Gold";
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 600.f,285.f }, { 30.f,60.f }, _float3(255, 255, 51));
 
 			////베스트 기록을 표시하는중
 			_uint TempBestMinutes = (_uint)TempBestClear / 60;
