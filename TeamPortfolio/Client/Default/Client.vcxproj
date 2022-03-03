@@ -162,6 +162,7 @@
     <ClInclude Include="..\public\LobyCube.h" />
     <ClInclude Include="..\public\LobyPlayer.h" />
     <ClInclude Include="..\public\ParsedObject.h" />
+    <ClInclude Include="..\public\UI_Start.h" />
     <ClInclude Include="..\public\UI_Status.h" />
     <ClInclude Include="..\public\PauseUI.h" />
     <ClInclude Include="..\public\LobyScroll.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="..\private\LobyCube.cpp" />
     <ClCompile Include="..\private\LobyPlayer.cpp" />
     <ClCompile Include="..\private\ParsedObject.cpp" />
+    <ClCompile Include="..\private\UI_Start.cpp" />
     <ClCompile Include="..\private\UI_Status.cpp" />
     <ClCompile Include="..\private\PauseUI.cpp" />
     <ClCompile Include="..\private\LobyScroll.cpp" />

@@ -193,6 +193,9 @@
     <Filter Include="01.GameObject\ParsedObject">
       <UniqueIdentifier>{d29ef134-3211-4927-b10c-933588aefed3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\UI_Start">
+      <UniqueIdentifier>{ba2b0fe1-40f1-41df-9670-4762992ffe98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -366,6 +369,9 @@
     <ClInclude Include="..\public\ParsedObject.h">
       <Filter>01.GameObject\ParsedObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_Start.h">
+      <Filter>01.GameObject\UI\UI_Start</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -526,6 +532,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParsedObject.cpp">
       <Filter>01.GameObject\ParsedObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Start.cpp">
+      <Filter>01.GameObject\UI\UI_Start</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
