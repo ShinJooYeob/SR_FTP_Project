@@ -55,6 +55,20 @@ _int CParticleObject::Update(_float fTimeDelta)
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
+	// 자식 객체 업데이트
+	std::list<PARTICLEATT>::iterator i;
+	for (i = m_list_Particles.begin(); i != m_list_Particles.end(); i++)
+	{
+		i->_position += i->_velocity * fTimeDelta;
+
+		// 범위 체크
+		if (m_boundingBox.isPointInside(i->_position) == false)
+		{
+			// 리셋
+			ResetParticle(&(*i));
+		}
+	}
+
 	return 0;
 }
 
@@ -71,6 +85,12 @@ _int CParticleObject::LateUpdate(_float fTimeDelta)
 	//	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
+}
+
+void CParticleObject::ResetParticle(PARTICLEATT * attribute)
+{
+	attribute->_position = _float3(0, 0, 0);
+
 }
 
 _int CParticleObject::Render()
@@ -244,6 +264,20 @@ HRESULT CParticleeObj_Base::Initialize_Child_Clone()
 		m_list_Particles.push_front(part);
 	}
 	return S_OK;
+}
+
+_int CParticleeObj_Base::Update(_float fTimeDelta)
+{
+	if (0 > __super::Update(fTimeDelta))
+		return -1;
+	return 0;
+}
+
+_int CParticleeObj_Base::LateUpdate(_float fTimeDelta)
+{
+	if (0 > __super::LateUpdate(fTimeDelta))
+		return -1;
+	return 0;
 }
 
 

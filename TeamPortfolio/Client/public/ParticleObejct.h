@@ -11,6 +11,8 @@ END
 
 BEGIN(Client)
 
+//#TODO: ParticleObject
+
 //struct Particle
 //{
 //	D3DXVECTOR3 _position;
@@ -111,6 +113,10 @@ public:
 
 	virtual _int Update(_float fTimeDelta)override;
 	virtual _int LateUpdate(_float fTimeDelta)override;
+	// 범위에 벗어나면 재자리
+	virtual void ResetParticle(PARTICLEATT* attribute);
+
+
 
 	virtual _int Render()override;
 	virtual _int LateRender()override;
@@ -163,6 +169,12 @@ private:
 private:
 
 	virtual HRESULT Initialize_Child_Clone() override;
+//	virtual void ResetParticle(PARTICLEATT* attribute);
+
+	virtual _int Update(_float fTimeDelta)override;
+	virtual _int LateUpdate(_float fTimeDelta)override;
+	// 랜더는 부모 것 사용
+
 public:
 
 	static CParticleeObj_Base* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
@@ -171,13 +183,13 @@ public:
 };
 
 
-class CParticleObj_Snow : public CParticleObject
-{
-public:
-
-	CParticleObj_Snow(BoundingBox* boundingBox, int numParticles);
-	void resetParticle(PARTICLEATT* attribute);
-	void update(float timeDelta);
-};
+//class CParticleObj_Snow : public CParticleObject
+//{
+//public:
+//
+//	CParticleObj_Snow(BoundingBox* boundingBox, int numParticles);
+//	virtual void ResetParticle(PARTICLEATT* attribute);
+//	void update(float timeDelta);
+//};
 
 END

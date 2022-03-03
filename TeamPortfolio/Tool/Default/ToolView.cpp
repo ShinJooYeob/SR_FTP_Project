@@ -129,7 +129,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	chain1->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer);
 	GetSingle(CSuperToolSIngleton)->Get_Graphics_Device()->SetRenderTarget(0, pBackBuffer);
 
-	// #Tag Tool Renderer
+	// #ToolTag Tool Renderer
 	GetSingle(CSuperToolSIngleton)->Render_Begin(COLOR_BACK_TOOLA);
 	
 	//·£´õ¸µ

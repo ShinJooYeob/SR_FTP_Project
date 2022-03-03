@@ -76,6 +76,9 @@
     <Filter Include="00. Special\01. View\01. MyButton\04. CubeMapTool">
       <UniqueIdentifier>{886baf77-387a-4a23-982b-51c13356c0e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Object\01.Object\ShaderCube">
+      <UniqueIdentifier>{4ef269ec-c613-41ed-af93-11d5d22a83b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -153,6 +156,9 @@
     <ClInclude Include="CubeMapDialog.h">
       <Filter>00. Special\01. View\01. MyButton\04. CubeMapTool</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectTool_ShaderTestObject.h">
+      <Filter>04.Object\01.Object\ShaderCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tool.cpp">
@@ -208,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="CubeMapDialog.cpp">
       <Filter>00. Special\01. View\01. MyButton\04. CubeMapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTool_ShaderTestObject.cpp">
+      <Filter>04.Object\01.Object\ShaderCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

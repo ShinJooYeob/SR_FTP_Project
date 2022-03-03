@@ -52,7 +52,7 @@ HRESULT CScene_Stage3::Initialize()
 	list< SPECIALCUBE*> SpecialCubeList;
 	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_STAGE3, 3, &SpecialCubeList);
 
-	FAILED_CHECK(Ready_Layer_Terrain(&SpecialCubeList));
+	FAILED_CHECK(Ready_Layer_Terrain(SCENEID::SCENE_STAGE3, &SpecialCubeList));
 
 	for (auto data : SpecialCubeList)
 	{
@@ -314,13 +314,13 @@ HRESULT CScene_Stage3::Ready_Layer_Player(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CScene_Stage3::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
+HRESULT CScene_Stage3::Ready_Layer_Terrain(_uint sceneid,list<SPECIALCUBE*>* listdata)
 {
 	CObject_PortalCube_A::POTALDESC potalDesc;
 	CObject_EscalatorCube::ESCALATORDESC escalDesc;
 
 
-	potalDesc.iNowScene = SCENEID::SCENE_IMGUISCENE;
+	potalDesc.iNowScene = sceneid;
 	potalDesc.vPos_A_Cube = _float3(0, 0, 0);
 	potalDesc.vPos_B_Cube = _float3(0, 0, 0);
 

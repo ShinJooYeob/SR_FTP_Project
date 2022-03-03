@@ -197,7 +197,7 @@ HRESULT CSuperToolSIngleton::Update_Light()
 HRESULT CSuperToolSIngleton::Ready_Object_Component()
 {
 
-	// #Tag 툴 모든 컴포넌트의 원형 생성
+	// #ToolTag 툴 모든 컴포넌트의 원형 생성
 
 	//렌더러 컴객체 프로토타입 생성
 	FAILED_CHECK(m_pGameInstance->Add_Component_Prototype
@@ -237,7 +237,7 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 
 	
 
-	// #Tag 툴 모든 오브젝트의 원형 생성
+	// #ToolTag 툴 모든 오브젝트의 원형 생성
 
 	// Prototype_GameObject_BackGround
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_BackGround), CObjectTool_ToolObject::Create(m_pGraphicDevice)));
@@ -252,7 +252,7 @@ HRESULT CSuperToolSIngleton::Ready_Object_Component()
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_Prototype(TAG_OP(Prototype_TerrainGround), CObjectTool_Terrain::Create(m_pGraphicDevice)));
 
 
-	// #Tag 지형 테스트 까는 것
+	// #ToolTag 지형 테스트 까는 것
 //	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Terrain), TAG_OP(Prototype_TerrainGround)))
 //		return E_FAIL;
 
