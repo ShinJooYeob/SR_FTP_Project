@@ -64,8 +64,7 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	//레벨디자인할 때 만져야할 설정들
 
-	m_fMaxTime = 1.f;	//최대 시간 1초
-
+	m_fMaxTime = 10.f;	//최대 시간 1초
 	srand(time(NULL));
 	RankStarGold = 900.f + (rand()%200);	//등급 하나당 획득 골드량
 
@@ -76,41 +75,41 @@ _int CUI_Result::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-	//m_fFrame = fDeltaTime;
+	m_fFrame = fDeltaTime;
 
-	//if (m_bStopSwitch == false)
-	//{
-	//	m_fTimer += m_fFrame;
-	//	TempMinutes = m_fTimer / 60;
-	//	TempSeconds = (_uint)m_fTimer % 60;
-	//}
-
-
-	//if (m_fTimer > m_fMaxTime || m_bClear == true)
-	//{
-	//	if (m_bSetupGenerate == false)
-	//	{
-	//		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-	//			return E_FAIL;
-
-	//		if (FAILED(Ready_Layer_RankStar(TEXT("Layer_RankStar"))))
-	//			return E_FAIL;
-
-	//		SetUp_Player();
-	//		m_bSetupGenerate = true;
-	//	}
-
-	//	Button_Picking();
+	if (m_bStopSwitch == false)
+	{
+		m_fTimer += m_fFrame;
+		TempMinutes = m_fTimer / 60;
+		TempSeconds = (_uint)m_fTimer % 60;
+	}
 
 
-	//	if (FAILED(Update_UIButtonList(fDeltaTime)))
-	//		return E_FAIL;
-	//	
+	if (m_fTimer > m_fMaxTime || m_bClear == true)
+	{
+		if (m_bSetupGenerate == false)
+		{
+			if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+				return E_FAIL;
+
+			if (FAILED(Ready_Layer_RankStar(TEXT("Layer_RankStar"))))
+				return E_FAIL;
+
+			SetUp_Player();
+			m_bSetupGenerate = true;
+		}
+
+		Button_Picking();
 
 
-	//	m_bStopSwitch = true;
+		if (FAILED(Update_UIButtonList(fDeltaTime)))
+			return E_FAIL;
 
-	//}
+
+
+		m_bStopSwitch = true;
+
+	}
 
 
 

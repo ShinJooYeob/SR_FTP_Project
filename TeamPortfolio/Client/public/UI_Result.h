@@ -42,6 +42,10 @@ public:
 	HRESULT		Ready_Layer_RankStar(const _tchar * pLayerTag);
 	void		Set_RankStar();
 
+
+	void		Set_MaxTime(_float fMaxtime) { m_fMaxTime= fMaxtime; };
+	_float		Get_MaxTime() { return m_fMaxTime; };
+	_float		Get_NowTime() { return m_fTimer; };
 	//진우형 프레임워크
 private:
 	HRESULT		Ready_Layer_Button(const _tchar * pLayerTag);//버튼 클론을 만들고 있음

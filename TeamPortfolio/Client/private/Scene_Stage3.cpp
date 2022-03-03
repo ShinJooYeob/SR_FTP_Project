@@ -8,6 +8,8 @@
 #include "Object_PortalCube_A.h"
 #include "Object_EscalatorCube.h"
 #include "Object_OrbitButton.h"
+#include "..\public\UI_Result.h"
+#include "..\public\Object_Star.h"
 
 
 CScene_Stage3::CScene_Stage3(LPDIRECT3DDEVICE9 GraphicDevice)
@@ -30,11 +32,13 @@ HRESULT CScene_Stage3::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_PauseUI(TEXT("Layer_PauseUI"))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
-		return E_FAIL;
 
-	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")))
 
+	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")));
+
+	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
+	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
+	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
 
 
 	// 로드된 오브젝트 정보로 그리기
@@ -191,6 +195,64 @@ HRESULT CScene_Stage3::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("Prototype_GameObject_UI_Result")))
 		return E_FAIL;
 
+	CUI_Result* pResult = (CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE3, TEXT("Layer_UI_Result")));
+	if (pResult == nullptr)
+		return E_FAIL;
+	pResult->Set_MaxTime(300.f);
+
+	return S_OK;
+}
+
+HRESULT CScene_Stage3::Ready_Layer_PlayerStatusUI(const _tchar * pLayerTag)
+{
+	list<CGameObject*>* pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Player));
+
+	NULL_CHECK_BREAK(pPlayerList);
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STAGE3, pLayerTag, TEXT("Prototype_GameObject_StatusUI")))
+		return E_FAIL;
+
+	CUI_Status* pStatusUI = (CUI_Status*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE3, TEXT("Layer_StatusUI")));
+
+	if (pStatusUI == nullptr)
+		return E_FAIL;
+
+	FAILED_CHECK(pStatusUI->Set_Player(pPlayerList->front()));
+
+
+	CUI_Result* pResult = (CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE3, TEXT("Layer_UI_Result")));
+	if (pResult == nullptr)
+		return E_FAIL;
+	FAILED_CHECK(pStatusUI->Set_ResultUI(pResult));
+
+	return S_OK;
+}
+
+HRESULT CScene_Stage3::Ready_Layer_Object_Star(const _tchar * pLayerTag)
+{
+	CObject_Star::STARDESC StarDesc;
+
+	StarDesc.fTransform = _float3(0, 10.f, -2.f);
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+		return E_FAIL;
+
+	StarDesc.fTransform = _float3(13.f, -14.f, -15.f);
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+		return E_FAIL;
+
+	StarDesc.fTransform = _float3(-7.f, -10.f, -20.f);
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+		return E_FAIL;
+
+	StarDesc.fTransform = _float3(-10.f, 19.f, -12.f);
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+		return E_FAIL;
+
+	StarDesc.fTransform = _float3(0.f, 32.f, -26.f);
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -248,11 +310,6 @@ HRESULT CScene_Stage3::Ready_Layer_Player(const _tchar * pLayerTag)
 	}
 
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STAGE3, TEXT("Layer_StatusUI"), TEXT("Prototype_GameObject_StatusUI")))
-		return E_FAIL;
-
-	CUI_Status* pStatusUI = (CUI_Status*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE3, TEXT("Layer_StatusUI")));
-	FAILED_CHECK(pStatusUI->Set_Player(pPlayerList->front()));
 
 	return S_OK;
 }

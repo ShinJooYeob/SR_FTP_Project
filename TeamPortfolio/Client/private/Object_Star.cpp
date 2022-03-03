@@ -146,10 +146,6 @@ HRESULT CObject_Star::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))
 		return E_FAIL;
 
-	///* For.Com_VIBuffer_Cube */
-	//if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComCubeVIBuffer)))
-	//	return E_FAIL;
-
 	/* For.Com_VIBuffer_Rect */
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComRectVIBuffer)))
 		return E_FAIL;
@@ -189,11 +185,6 @@ HRESULT CObject_Star::Release_RenderState()
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
-	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
-	///////////////////////////
-	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	///////////////////////////////
 
 	return S_OK;
 }

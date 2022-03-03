@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "UI_Result.h"
 #include "..\public\UI_Status.h"
 
 
@@ -133,8 +134,12 @@ HRESULT CUI_Status::First_SetUp_RenderState()
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
-
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, _uint(m_fTimer));
+	_uint iAlpha = (m_pResult->Get_NowTime()) / (_float)m_fTotalTimerTime * 255.f;
+	if (iAlpha > 255)
+		iAlpha = 255;
+	if (iAlpha < 0)
+		iAlpha = 0;
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, iAlpha);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	if (FAILED(m_ComVIBuffer->Render()))
@@ -266,9 +271,9 @@ HRESULT CUI_Status::Release_RenderState()
 	return S_OK;
 }
 
-HRESULT CUI_Status::Set_TotalTimerSec(_uint iTotalSec)
+HRESULT CUI_Status::Set_TotalTimerSec(_float iTotalSec)
 {
-	m_fTotalTimerTime = 255.f / (_float)iTotalSec;
+	m_fTotalTimerTime  = iTotalSec;
 	return S_OK	;
 }
 
@@ -278,6 +283,17 @@ HRESULT CUI_Status::Set_Player(CGameObject * pPlayer)
 		return E_FAIL;
 
 	m_pPlayer = (CPlayer*)(pPlayer);
+
+	return S_OK;
+}
+
+HRESULT CUI_Status::Set_ResultUI(CGameObject * pResult)
+{
+	if (pResult == nullptr)
+		return E_FAIL;
+
+	m_pResult = (CUI_Result*)pResult;
+	Set_TotalTimerSec(m_pResult->Get_MaxTime());
 
 	return S_OK;
 }
@@ -327,8 +343,8 @@ HRESULT CUI_Status::SetUp_UIDesc()
 
 	FAILED_CHECK(Set_TotalTimerSec(60));
 
-	m_fTimer = 0;
 	m_bIsStatusChage = false;
+
 
 	return S_OK;
 }
@@ -353,9 +369,7 @@ HRESULT CUI_Status::Update_MouseButton(_float fTimeDelta)
 
 HRESULT CUI_Status::Update_Animation(_float fTimeDelta)
 {
-	m_fTimer += fTimeDelta * m_fTotalTimerTime;
-	if (m_fTimer > 255)
-		m_fTimer = 0;
+
 
 	m_fWalkFrame += fTimeDelta * 6.f;
 	if (m_fWalkFrame > 6)

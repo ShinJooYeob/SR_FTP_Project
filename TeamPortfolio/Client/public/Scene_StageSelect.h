@@ -27,6 +27,7 @@ private:
 	HRESULT Ready_Layer_Quest(const _tchar * pLayerTag);
 	HRESULT Ready_Layer_UI_Common(const _tchar * pLayerTag);
 	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Object_Star(const _tchar* pLayerTag);//º° È¹µæ
 
 	HRESULT Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata);
 
@@ -38,7 +39,6 @@ private:
 	HRESULT Ready_Layer_Object_VanishCube(const _tchar* pLayerTag);//»ç¶óÁö´Â Å¥ºê
 	HRESULT Ready_Layer_Object_AppearCube(const _tchar* pLayerTag);//³ªÅ¸³ª´Â Å¥ºê
 
-	HRESULT Ready_Layer_Object_Star(const _tchar* pLayerTag);//º° È¹µæ
 
 
 

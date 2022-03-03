@@ -37,8 +37,9 @@ public:
 	HRESULT Third_SetUp_RenderState();
 	HRESULT Release_RenderState();
 
-	HRESULT Set_TotalTimerSec(_uint iTotalSec);
+	HRESULT Set_TotalTimerSec(_float iTotalSec);
 	HRESULT Set_Player(CGameObject* pPlayer);
+	HRESULT Set_ResultUI(CGameObject* pResult);
 
 public:
 	void			Set_UI_TransformRect(_float4 vRect);
@@ -54,12 +55,12 @@ private:
 
 private:
 	_float4			m_vUIDesc[5];
-	_float			m_fTimer = 0;
 	_float			m_fWalkFrame = 0;
 	_float			m_fHurtedTime = 0;
 
 
 	_bool			m_bIsStatusChage = false;
+	class CUI_Result*		m_pResult = nullptr;
 
 	class CPlayer*	m_pPlayer = nullptr;
 
