@@ -20,23 +20,7 @@ BEGIN(Client)
 //	static const DWORD FVF;
 //};
 
-float GetRandomFloat(float lowBound, float highBound)
-{
-	if (lowBound >= highBound) // bad input
-		return lowBound;
-	float f = (rand() % 10000) * 0.0001f;
-	return (f * (highBound - lowBound)) + lowBound;
-}
 
-void GetRandomVector(
-	D3DXVECTOR3* out,
-	D3DXVECTOR3* min,
-	D3DXVECTOR3* max)
-{
-	out->x = GetRandomFloat(min->x, max->x);
-	out->y = GetRandomFloat(min->y, max->y);
-	out->z = GetRandomFloat(min->z, max->z);
-}
 
 // 파티클 속성
 typedef struct tag_ParticleAttribute
@@ -48,16 +32,16 @@ typedef struct tag_ParticleAttribute
 		_isAlive = true;
 	}
 
-	// 위치와 벡터
-	D3DXVECTOR3 _position;
-	D3DXVECTOR3 _velocity;
-	D3DXVECTOR3 _acceleration;
+	// 입차의 위치 / 방향 / 힘 
+	_float3 _position;
+	_float3 _velocity;
+	_float	_force;
 
 	// 시간 크기 색
 	float       _lifeTime;     // how long the particle lives for before dying  
 	float       _age;          // current age of the particle  
-	D3DXCOLOR   _color;        // current color of the particle   
-	D3DXCOLOR   _colorFade;    // how the color fades with respect to time
+//	D3DXCOLOR   _color;        // current color of the particle   
+//	D3DXCOLOR   _colorFade;    // how the color fades with respect to time
 	bool        _isAlive;
 }PARTICLEATT;
 
@@ -97,6 +81,27 @@ struct BoundingBox
 // 파티클 오브젝트 하나에 여러개의 오브젝트 정보를 들고 있어야한다.
 class CParticleObject abstract : public CGameObject
 {
+
+public:
+	// 랜던 함수
+	static float GetRandomFloat(float lowBound, float highBound)
+	{
+		if (lowBound >= highBound) // bad input
+			return lowBound;
+		float f = (rand() % 10000) * 0.0001f;
+		return (f * (highBound - lowBound)) + lowBound;
+	}
+
+	static void GetRandomVector(
+		_float3* out,
+		_float3* min,
+		_float3* max)
+	{
+		out->x = GetRandomFloat(min->x, max->x);
+		out->y = GetRandomFloat(min->y, max->y);
+		out->z = GetRandomFloat(min->z, max->z);
+	}
+
 protected:
 	explicit CParticleObject(LPDIRECT3DDEVICE9 pGraphicDevice);
 	explicit CParticleObject(const CParticleObject&  rhs);
@@ -174,6 +179,7 @@ private:
 	virtual _int Update(_float fTimeDelta)override;
 	virtual _int LateUpdate(_float fTimeDelta)override;
 	// 랜더는 부모 것 사용
+
 
 public:
 

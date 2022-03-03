@@ -33,7 +33,6 @@ HRESULT CScene_Loby::Initialize()
 	FAILED_CHECK(Ready_Layer_LobyScroll(TEXT("Layer_LobyScroll")));
 	FAILED_CHECK(Ready_Layer_LobyUI(TEXT("Layer_LobyUI")));
 
-	FAILED_CHECK(Ready_Layer_LobyParticle(TEXT("Layer_Particle")));
 
 
 
@@ -159,16 +158,6 @@ HRESULT CScene_Loby::Ready_Layer_LobyUI(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CScene_Loby::Ready_Layer_LobyParticle(const _tchar * pLayerTag)
-{
-	// #TODO ÆÄÆ¼Å¬ Test obj Create
-
-	//	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_LOBY, pLayerTag, TEXT("Prototype_GameObject_Particle")))
-//		return E_FAIL;
-//	(CParsedObject*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_LOBY, pLayerTag));
-
-	return S_OK;
-}
 
 HRESULT CScene_Loby::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {

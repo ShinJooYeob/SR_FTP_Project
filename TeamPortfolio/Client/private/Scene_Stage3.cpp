@@ -39,7 +39,7 @@ HRESULT CScene_Stage3::Initialize()
 	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
 	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
 	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
-
+	FAILED_CHECK(Ready_Layer_Object_particle(TEXT("Layer_Particle")));
 
 	// 로드된 오브젝트 정보로 그리기
 	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
@@ -252,6 +252,16 @@ HRESULT CScene_Stage3::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
+
+	return S_OK;
+}
+
+HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
+{
+	// #TODO 파티클 Test obj Create
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_particle")))
+		return E_FAIL;
 
 	return S_OK;
 }
