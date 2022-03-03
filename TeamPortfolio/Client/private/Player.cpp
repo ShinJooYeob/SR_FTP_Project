@@ -36,7 +36,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 
 	if (pArg == nullptr)
 	{
-		m_fNowJumpPower = 0.00001f;
+		m_fNowJumpPower = 0.000001f;
 		m_fJumpPower = 10.f;
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0, 1.f, 0));
 		m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
@@ -264,8 +264,7 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 		return E_FAIL;
 	_float3 vStartPos = *(_float3*)(pArg);
 
-	m_fNowJumpPower = 0.00001f;
-	m_bIsJumped = 1;
+	m_fNowJumpPower = 0.000001f;
 	m_fJumpPower = 10.f;
 	m_iPlayerLife = 3;
 
@@ -283,7 +282,7 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 
 	m_vDownstairsNear = NOT_EXIST_BLOCK;
 	m_vClimingBlock = NOT_EXIST_BLOCK;
-	m_vReturnStair = NOT_EXIST_BLOCK;
+	m_vReturnStair = NOT_EXIST_BLOCK;	
 
 	m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vStartPos);

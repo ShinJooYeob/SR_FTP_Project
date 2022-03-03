@@ -82,8 +82,8 @@ private:
 	_bool					m_bIsCliming = false;
 	_bool					m_bIsRunning = false;
 
-	_float3					m_vDownstairsNear;
-	_float3					m_vClimingBlock;
+	_float3					m_vDownstairsNear = NOT_EXIST_BLOCK;
+	_float3					m_vClimingBlock = NOT_EXIST_BLOCK;
 	_float3					m_vReturnStair = NOT_EXIST_BLOCK;
 
 	_float3					m_vCameraPivot = _float3(3, 3, -14.f);
