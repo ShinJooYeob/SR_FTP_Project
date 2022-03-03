@@ -33,7 +33,7 @@ HRESULT CScene_Stage1::Initialize()
 	if (FAILED(Ready_Layer_PauseUI(TEXT("Layer_PauseUI"))))
 		return E_FAIL;
 
-	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")));
+	//FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")));
 	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
 	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
 	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
