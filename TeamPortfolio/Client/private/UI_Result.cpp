@@ -53,7 +53,7 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	m_vUIDesc = _float4(g_iWinCX >> 1, g_iWinCY >> 1, g_iWinCX >> 1, 500);
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(9999.f, 9999.f, 0.f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
 	
 
 	if (FAILED(Ready_Layer_Button(TEXT("Layer_Button"))))
@@ -63,7 +63,7 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	//레벨디자인할 때 만져야할 설정들
 
-	m_fMaxTime = 1000.f;	//최대 시간 1초
+	m_fMaxTime = 10.f;	//최대 시간 1초
 	RankStarGold = 1000.f;	//등급 하나당 획득 골드량
 
 	return S_OK;
