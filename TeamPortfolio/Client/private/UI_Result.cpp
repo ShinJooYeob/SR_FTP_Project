@@ -64,10 +64,15 @@ HRESULT CUI_Result::Initialize_Clone(void * pArg)
 
 	//레벨디자인할 때 만져야할 설정들
 
-	m_fMaxTime = 200.f;	//최대 시간 1초
 	srand(time(NULL));
 	RankStarGold = 900.f + (rand()%200);	//등급 하나당 획득 골드량
 
+	//보간을 위한 변수 Result 창
+	StartPosY = -900;
+	TargetPosY = g_iWinCY >> 1;
+
+	//보간을 위한 뉴 스타트 창
+	//NTargetPosY
 	return S_OK;
 }
 
@@ -77,6 +82,12 @@ _int CUI_Result::Update(_float fDeltaTime)
 		return E_FAIL;
 	m_fFrame = fDeltaTime;
 
+	if (m_fTimer > 1)  //클리어가 트루일 때 제대로 값이 들어가는지 확인용
+	{
+
+		m_bClear = true;
+	}
+
 	if (m_bStopSwitch == false)
 	{
 		m_fTimer += m_fFrame;
@@ -84,19 +95,48 @@ _int CUI_Result::Update(_float fDeltaTime)
 		TempSeconds = (_uint)m_fTimer % 60;
 	}
 
+	//_float TempY; 보간을 담을 변수... 일단 멤버변수로 빼놔서 주석처리함
 
 	if (m_fTimer > m_fMaxTime || m_bClear == true)
 	{
-		if (m_bSetupGenerate == false)
+		
+		EasingTime += fDeltaTime;
+		TempY = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, StartPosY, TargetPosY, EasingTime, 2.0f);
+		if (EasingTime > 2)
 		{
-			if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-				return E_FAIL;
+			TempY = TargetPosY;
+			//EasingTime = 0;  한번만 실행시킬 예정이기 때문에 주석처리함.
+			EasingSwitch = true;
+		}
+		m_vUIDesc.y = TempY;
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+			return E_FAIL;
 
-			if (FAILED(Ready_Layer_RankStar(TEXT("Layer_RankStar"))))
-				return E_FAIL;
+		if (EasingSwitch == true)
+		{
+			if (m_bSetupGenerate == false)
+			{
 
-			SetUp_Player();
-			m_bSetupGenerate = true;
+				//EasingTime += fDeltaTime;
+				//TempW = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, StartPosW, TargetPosW, EasingTime, 2.0f);
+				//if (EasingTime > 2)
+				//{
+				//	TempW = TargetPosW;
+				//	EasingTime = 0;
+				//}
+				//m_vUIDesc.w = TempW;
+				//if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+				//	return E_FAIL;
+
+				if (FAILED(Ready_Layer_RankStar(TEXT("Layer_RankStar"))))
+					return E_FAIL;
+
+				SetUp_Player();
+				m_bSetupGenerate = true;
+			}
+
+
+			m_fFrameTexture += fDeltaTime * 7.5;
 		}
 
 		Button_Picking();
@@ -154,8 +194,7 @@ _int CUI_Result::Render()
 		return E_FAIL;
 
 	//폰트 관련된건 여기에 있음
-	SetUp_Pont();
-
+		SetUp_Pont();
 
 	return _int();
 }
@@ -398,17 +437,29 @@ HRESULT CUI_Result::SetUp_Pont()
 	{
 		if (m_fTimer > m_fMaxTime)
 		{
+			/*보관용
+			wstring TempString;
+
+			_tchar tempGoldArr[64];
+			_itow_s(AcquisitionGold, tempGoldArr, 10);
+
+
+			TempString = wstring(tempGoldArr) + L" Gold";
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,285.f }, { 20.f,60.f }, _float3(123, 104, 238), m_fFrameTexture );
+
+			*/
 			wstring TempString;
 
 			///////획득 골드량을 표시하는중
 			_tchar tempGoldArr[64];
 			_itow_s(AcquisitionGold, tempGoldArr, 10);
 
-			TempString = wstring(tempGoldArr);
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,285.f }, { 25.f,50.f }, _float3(123, 104, 238));
+			
+			TempString = wstring(tempGoldArr) + L" Gold";
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,285.f }, { 25.f,60.f }, _float3(123, 104, 238), m_fFrameTexture);
 
-			TempString = L"Gold";
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 600.f,285.f }, { 30.f,60.f }, _float3(255, 255, 51));
+			//TempString = L"Gold";
+			//GetSingle(CGameInstance)->Render_UI_Font(TempString, { 600.f,285.f }, { 30.f,60.f }, _float3(123, 104, 238), m_fFrameTexture *2.5);
 
 			////베스트 기록을 표시하는중
 			_uint TempBestMinutes = (_uint)TempBestClear / 60;
@@ -419,9 +470,12 @@ HRESULT CUI_Result::SetUp_Pont()
 			_tchar tempBestSecArr[64];
 			_itow_s(TempBestSeconds, tempBestSecArr, 10);
 
-			TempString = wstring(tempBestMinArr) + L"Minutes " + wstring(tempBestSecArr) + L"Seconds";
+			TempString = wstring(tempBestMinArr) + L" : " + wstring(tempBestSecArr);// + L" Seconds";
 
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,360.f }, { 25.f,50.f }, _float3(123, 104, 238));
+			if (m_fFrameTexture > 10)
+			{
+				GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,360.f }, { 25.f,60.f }, _float3(123, 104, 238), m_fFrameTexture -10);
+			}
 
 			if (FAILED(Release_RenderState()))
 				return E_FAIL;
@@ -430,8 +484,10 @@ HRESULT CUI_Result::SetUp_Pont()
 			//////타이머를 표시하는중
 			TempString = L"Mission Failed";
 
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,435.f }, { 30.f,50.f }, _float3(123, 104, 238));
-
+			if (m_fFrameTexture > 18)
+			{
+				GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,435.f }, { 25.f,60.f }, _float3(123, 104, 238), m_fFrameTexture -18);
+			}
 			if (FAILED(Release_RenderState()))
 				return E_FAIL;
 
@@ -444,8 +500,8 @@ HRESULT CUI_Result::SetUp_Pont()
 			_tchar tempGoldArr[64];
 			_itow_s(AcquisitionGold, tempGoldArr, 10);
 
-			TempString = wstring(tempGoldArr);
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,275.f }, { 20.f,30.f }, _float3(83, 250, 120));
+			TempString = wstring(tempGoldArr) + L" Gold";
+			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,285.f }, { 25.f,60.f }, _float3(123, 104, 238), m_fFrameTexture);
 
 			////베스트 기록을 표시하는중
 			_uint TempBestMinutes = (_uint)TempBestClear / 60;
@@ -456,9 +512,12 @@ HRESULT CUI_Result::SetUp_Pont()
 			_tchar tempBestSecArr[64];
 			_itow_s(TempBestSeconds, tempBestSecArr, 10);
 
-			TempString = wstring(tempBestMinArr) + L"Minutes " + wstring(tempBestSecArr) + L"Seconds";
+			TempString = wstring(tempBestMinArr) + L" : " + wstring(tempBestSecArr);
 
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,350.f }, { 20.f,30.f }, _float3(83, 250, 120));
+			if (m_fFrameTexture > 10)
+			{
+				GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,360.f }, { 25.f,60.f }, _float3(123, 104, 238), m_fFrameTexture - 10);
+			}
 
 			if (FAILED(Release_RenderState()))
 				return E_FAIL;
@@ -470,10 +529,12 @@ HRESULT CUI_Result::SetUp_Pont()
 			_tchar tempSecArr[64];
 			_itow_s(TempSeconds, tempSecArr, 10);
 
-			TempString = wstring(tempMinArr) + L"Minutes " + wstring(tempSecArr) + L"Seconds";
+			TempString = wstring(tempMinArr) + L" : " + wstring(tempSecArr);
 
-			GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,400.f }, { 20.f,30.f }, _float3(83, 250, 120));
-
+			if (m_fFrameTexture > 18)
+			{
+				GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,435.f }, { 25.f,60.f }, _float3(123, 104, 238), m_fFrameTexture -18);
+			}
 			if (FAILED(Release_RenderState()))
 				return E_FAIL;
 
@@ -519,6 +580,9 @@ void CUI_Result::Button_Picking()
 	m_vButtonDesc = { (g_iWinCX >> 1) - 150,(g_iWinCY >> 1) + 150, 250 ,100 };
 	_float4 vUIDesc = m_vButtonDesc;
 
+
+	m_vButtonDesc.y = TempY + 150; //보간 처리중
+
 	RECT TempButton;
 	TempButton.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
 	TempButton.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
@@ -526,6 +590,9 @@ void CUI_Result::Button_Picking()
 	TempButton.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
 	m_fStartButton = TempButton;
 	ButtonStart->Set_Rect(m_vButtonDesc, TempButton);
+
+	//
+	//
 	ButtonStart->Set_UI_Transform(ButtonTransform, m_vButtonDesc);
 
 	CMyButton* ButtonCancel = (CMyButton*)Find_Button(L"Button_Result_Cancel");
@@ -533,6 +600,9 @@ void CUI_Result::Button_Picking()
 	//ButtonTransform->Set_MatrixState(CTransform::STATE_POS, _float3(200.f, -100.f, 0));
 	m_vButtonDesc = { (g_iWinCX >> 1) + 150,(g_iWinCY >> 1) + 150, 250 ,100 };
 	vUIDesc = m_vButtonDesc;
+
+	m_vButtonDesc.y = TempY + 150; //보간 처리중
+
 	TempButton.top = LONG(vUIDesc.y - vUIDesc.w *0.5f);
 	TempButton.bottom = LONG(vUIDesc.y + vUIDesc.w *0.5f);
 	TempButton.right = LONG(vUIDesc.x + vUIDesc.z*0.5f);

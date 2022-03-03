@@ -60,6 +60,11 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	Safe_AddRef(m_pCamera_Main);
 
 
+	for (int i = 0; i < SCENE_END; ++i)
+	{
+		StageBestClear[i] = 100000;
+	}
+
 	m_ComInventory->Set_Skill_LevelUP(SKILL_DUBBLEJUMP);
 
 	return S_OK;
