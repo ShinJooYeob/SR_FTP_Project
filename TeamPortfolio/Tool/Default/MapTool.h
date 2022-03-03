@@ -18,6 +18,7 @@ public:
 		BUILDINGTYPE_EMPTY,
 		BUILDINGTYPE_FULL,
 		BUILDINGTYPE_RAND,
+		BUILDINGTYPE_RAND2,
 		BUILDINGTYPE_END
 	};
 
@@ -39,7 +40,8 @@ protected:
 
 private:
 	void CreateNewMap(_uint  x, _uint  y, _uint z, E_BUILDINGTYPE type);
-
+	void CreateCustomNewMap(_uint  x, _uint  y, _uint z, _uint count, _float3 range = _float3(10,10,10));
+	
 private:
 	// XYZ 입력창
 	CEdit m_EditBox[3];
@@ -49,8 +51,8 @@ public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnBnClickedButton_PreSet1();
-	afx_msg void OnBnClickedButton_PreSet2();
 	afx_msg void OnBnClickedButton_PreSet3();
+	afx_msg void OnBnClickedButton_Custom();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnBnClickedButtonClear();
 };
