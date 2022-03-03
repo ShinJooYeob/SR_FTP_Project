@@ -46,7 +46,7 @@ HRESULT CScene_Stage1::Initialize()
 
 	// 생성되지 않는 특수 큐브 저장
 	list< SPECIALCUBE*> SpecialCubeList;
-	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_STAGE1, 2, &SpecialCubeList);
+	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_STAGE1,1, &SpecialCubeList);
 
 	FAILED_CHECK(Ready_Layer_Terrain(&SpecialCubeList));
 
