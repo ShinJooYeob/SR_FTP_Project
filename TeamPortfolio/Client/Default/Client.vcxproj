@@ -166,6 +166,7 @@
     <ClInclude Include="..\public\Scene_Stage3.h" />
     <ClInclude Include="..\public\Scene_Stage1.h" />
     <ClInclude Include="..\public\Object_Star.h" />
+    <ClInclude Include="..\public\UI_Start.h" />
     <ClInclude Include="..\public\UI_Status.h" />
     <ClInclude Include="..\public\PauseUI.h" />
     <ClInclude Include="..\public\LobyScroll.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="..\private\Scene_Stage3.cpp" />
     <ClCompile Include="..\private\Scene_Stage1.cpp" />
     <ClCompile Include="..\private\Object_Star.cpp" />
+    <ClCompile Include="..\private\UI_Start.cpp" />
     <ClCompile Include="..\private\UI_Status.cpp" />
     <ClCompile Include="..\private\PauseUI.cpp" />
     <ClCompile Include="..\private\LobyScroll.cpp" />
