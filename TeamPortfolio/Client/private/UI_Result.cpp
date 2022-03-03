@@ -76,41 +76,41 @@ _int CUI_Result::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-	m_fFrame = fDeltaTime;
+	//m_fFrame = fDeltaTime;
 
-	if (m_bStopSwitch == false)
-	{
-		m_fTimer += m_fFrame;
-		TempMinutes = m_fTimer / 60;
-		TempSeconds = (_uint)m_fTimer % 60;
-	}
-
-
-	if (m_fTimer > m_fMaxTime || m_bClear == true)
-	{
-		if (m_bSetupGenerate == false)
-		{
-			if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
-				return E_FAIL;
-
-			if (FAILED(Ready_Layer_RankStar(TEXT("Layer_RankStar"))))
-				return E_FAIL;
-
-			SetUp_Player();
-			m_bSetupGenerate = true;
-		}
-
-		Button_Picking();
+	//if (m_bStopSwitch == false)
+	//{
+	//	m_fTimer += m_fFrame;
+	//	TempMinutes = m_fTimer / 60;
+	//	TempSeconds = (_uint)m_fTimer % 60;
+	//}
 
 
-		if (FAILED(Update_UIButtonList(fDeltaTime)))
-			return E_FAIL;
-		
+	//if (m_fTimer > m_fMaxTime || m_bClear == true)
+	//{
+	//	if (m_bSetupGenerate == false)
+	//	{
+	//		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
+	//			return E_FAIL;
+
+	//		if (FAILED(Ready_Layer_RankStar(TEXT("Layer_RankStar"))))
+	//			return E_FAIL;
+
+	//		SetUp_Player();
+	//		m_bSetupGenerate = true;
+	//	}
+
+	//	Button_Picking();
 
 
-		m_bStopSwitch = true;
+	//	if (FAILED(Update_UIButtonList(fDeltaTime)))
+	//		return E_FAIL;
+	//	
 
-	}
+
+	//	m_bStopSwitch = true;
+
+	//}
 
 
 
