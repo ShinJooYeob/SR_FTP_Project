@@ -692,10 +692,10 @@ CObjectTool_ToolObject * CSuperToolSIngleton::Create_Clone_MapObject(_float3 Pos
 	// 데이터 받아옴
 	const OUTPUT_OBJECTINFO& info = cloneobj->Get_OutputData();
 	OUTPUT_OBJECTINFO newinfo(info);
-	if (bRandom)
-	{
-		newinfo.Set_StateIndex(texIndex);
-	}
+	//if (bRandom)
+	//{
+	//	newinfo.Set_StateIndex(texIndex);
+	//}
 
 
 	// 2. 오브젝트 생성
