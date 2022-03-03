@@ -31,6 +31,10 @@ public:
 
 	virtual _int Collision_Vanish(_float fDeltaTime);
 
+
+
+	void	Set_VenishDesc(void* pArg);
+
 private:
 	HRESULT SetUp_Components();
 

@@ -68,7 +68,7 @@ _int CObject_VanishCube::Update(_float fTimeDelta)
 		m_fTimer = 0;
 	}
 	
-	if (m_fTimer > 3.f)
+	if (m_fTimer > 2.f)
 	{
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_fTempPos);
 	}
@@ -157,6 +157,17 @@ _int CObject_VanishCube::Collision_Vanish(_float fDeltaTime)
 }
 
 
+void CObject_VanishCube::Set_VenishDesc(void * pArg)
+{
+	if (pArg != nullptr) {
+		_float3 vSettingPoint;
+		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		memcpy(&m_fTempPos, pArg, sizeof(_float3)); //원래 자리로 돌아가기 위한 템프 포지션
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
+		m_Layer_Tag = (TEXT("Layer_AppearCube"));
+	}
+}
+
 HRESULT CObject_VanishCube::SetUp_Components()
 {
 	/* For.Com_Transform */
@@ -207,9 +218,6 @@ HRESULT CObject_VanishCube::Release_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
-	///////////////////////////
-	m_pGraphicDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	///////////////////////////////
 
 	return S_OK;
 }
