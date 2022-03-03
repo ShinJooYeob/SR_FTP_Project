@@ -333,6 +333,12 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 		return E_FAIL;
 
 
+	//UI_Start
+	TextureDesc.szTextFilePath = TEXT("UI_Start.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StartUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 #pragma endregion
 
 
