@@ -30,6 +30,7 @@ private:
 	HRESULT Ready_Layer_PlayerStatusUI(const _tchar* pLayerTag);
 
 	HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_StageEndCollsionObject(const _tchar* pLayerTag);
 
 
 

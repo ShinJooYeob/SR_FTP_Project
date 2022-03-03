@@ -276,7 +276,7 @@ HRESULT CScene_Stage3::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag
 	tDesc.vOribitTotalXYZ = _float3(1, 1, 3);
 
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_Object_OrbitButton"), &tDesc))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("Prototype_GameObject_Object_OrbitButton"), &tDesc))
 		return E_FAIL;
 
 

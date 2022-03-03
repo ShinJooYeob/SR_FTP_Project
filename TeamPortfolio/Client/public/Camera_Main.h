@@ -24,6 +24,7 @@ public:
 
 		CAM_EFT_SHAKE,
 		CAM_EFT_ACTION,
+		CAM_EFT_VICTORY,
 		CAM_EFT_END
 	};
 
@@ -41,6 +42,7 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 	virtual HRESULT ReInitialize(_float3* ActionPointArr, _uint iArrSize);
+	void Set_VictoryTurnAxis(_float3 vVictoryTurnAxis) { m_VictoryTurnAxis = vVictoryTurnAxis; };
 
 	void		CameraEffect(CameraEffectID eEffect,_float fTimeDelta, _float fTotalFrame = 1.f);
 
@@ -62,6 +64,7 @@ public:
 	void CamShake(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec);
 	void HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec);
 	void CamAction(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec);
+	void CamViectoryEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec);
 
 private:
 	_int						m_eLoookState = Look_Front_Axis;
@@ -86,6 +89,8 @@ private:
 	_Matrix					m_CamEffectMatricx;
 	_float					m_fZoomInTime = 0;
 	_float3*				m_ActionTargetPos = nullptr;
+
+	_float3					m_VictoryTurnAxis = NOT_EXIST_BLOCK;
 	_uint					m_iActionArrSize = 0;
 private:
 	HRESULT			SetUp_DefaultLookAtAxis(void* pArg);

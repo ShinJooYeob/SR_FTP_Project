@@ -13,12 +13,14 @@ END
 
 BEGIN(Client)
 
-class CCollision_ForStageEnd final : public CGameObject
+class CCollision_Object final : public CGameObject
 {
+
+
 private:
-	explicit CCollision_ForStageEnd(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CCollision_ForStageEnd(const CCollision_ForStageEnd& rhs);
-	virtual ~CCollision_ForStageEnd() = default;
+	explicit CCollision_Object(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CCollision_Object(const CCollision_Object& rhs);
+	virtual ~CCollision_Object() = default;
 public:
 	virtual HRESULT Initialize_Prototype(void* pArg)override;
 	virtual HRESULT Initialize_Clone(void* pArg)override;
@@ -32,17 +34,14 @@ public:
 private:
 	HRESULT SetUp_Components();
 
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
-
 private:
 	CTransform*			m_ComTransform = nullptr;
-	CCollision*		m_pCollisionCom = nullptr;
+	CCollision*			m_pCollisionCom = nullptr;
 
 	CTransform*			m_PlayerTransform = nullptr;
 
 public:
-	static CCollision_ForStageEnd* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	static CCollision_Object* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

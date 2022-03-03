@@ -47,6 +47,10 @@ public:
 	_bool Get_CoolDownStart(_int eSKILL) { return m_tCoolDown[eSKILL].m_bCoolDownStart; }
 	void Set_CoolDownStart_False(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = false; }
 	void Set_CoolDownStart_True(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = true; }
+
+	HRESULT Set_StageEnd(_bool IsWin);
+
+
 private:
 	CTexture*				m_ComTexture = nullptr;
 	CTransform*				m_ComTransform = nullptr;
@@ -68,7 +72,7 @@ private:
 	_float					m_fNowJumpPower = 0.f;
 	_uint					m_bIsJumped = 0;
 
-
+	_uint					m_bIsStageEnd = 0;
 	_bool					m_bIsDead = false;
 	_float					m_bReHurtTime = 0;
 	_float					m_fDeadNPauseTime = 0;
