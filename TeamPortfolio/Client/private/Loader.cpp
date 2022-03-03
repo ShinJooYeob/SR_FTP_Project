@@ -34,6 +34,7 @@
 #include "Object_AppearCube.h"
 #include "Object_BlockCube.h"
 #include "UI_Result.h"
+#include "Object_Star.h"
 
 #include "MyButton.h"
 
@@ -192,6 +193,8 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_PauseUI"), CPauseUI::Create(m_pGraphicDevice))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_Star"), CObject_Star::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 
 	if (FAILED(pGameInstance->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI")))
@@ -245,11 +248,13 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_GravityTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	TextureDesc.szTextFilePath = TEXT("PotalTexture.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 	//////////eunhyuk_UI
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	TextureDesc.szTextFilePath = TEXT("UI_Result.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_UI_Result_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
@@ -271,6 +276,7 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Penguine"), CParsedObject::Create(m_pGraphicDevice))))
 		return E_FAIL;
+
 
 #pragma endregion
 

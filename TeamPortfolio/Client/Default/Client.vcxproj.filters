@@ -196,6 +196,10 @@
     <Filter Include="01.GameObject\Particle">
       <UniqueIdentifier>{6900191f-c915-4a2a-9b79-b98b627a35bc}</UniqueIdentifier>
     </Filter>
+    </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_Star">
+      <UniqueIdentifier>{a6cdc875-ea14-4a8e-9539-bde19e0517d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -378,6 +382,10 @@
     <ClInclude Include="..\public\Scene_Stage3.h">
       <Filter>02.Scene\04.Scene_GamePlay\03.Scene_Stage3</Filter>
     </ClInclude>
+    </ClInclude>
+    <ClInclude Include="..\public\Object_Star.h">
+      <Filter>01.GameObject\SubObject\Object_Star</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -547,6 +555,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Scene_Stage3.cpp">
       <Filter>02.Scene\04.Scene_GamePlay\03.Scene_Stage3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_Star.cpp">
+      <Filter>01.GameObject\SubObject\Object_Star</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
