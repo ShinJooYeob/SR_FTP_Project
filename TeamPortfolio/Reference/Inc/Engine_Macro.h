@@ -158,3 +158,4 @@ return _return;}
 #define FAILED_CHECK_RETURN_MSG( _hr, _return, _message) if( ((HRESULT)(_hr)) < 0 ) \
 { MessageBox(NULL, _message, L"System Message"sp,MB_OK); __debugbreak();return _return;}
 
+

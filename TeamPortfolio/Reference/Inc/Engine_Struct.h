@@ -175,6 +175,9 @@ namespace Engine
 			return *this;
 		}
 
+
+		void Set_StateIndex(int i) { TexDesc.StateIndex = i; }
+
 		unsigned int		CubeID;					// 어떤 종류의 큐브인지 판단 
 		OUTPUT_TETURE		TexDesc;				// 텍스처 정보
 		D3DXMATRIX			WorldMatData;			// 월드 행렬 정보 // 

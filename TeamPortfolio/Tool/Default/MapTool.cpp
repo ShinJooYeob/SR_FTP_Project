@@ -77,6 +77,7 @@ void CMapTool::CreateNewMap(_uint x, _uint y, _uint z, E_BUILDINGTYPE type)
 	Floor = y;
 	Depth = z;
 
+
 	for (int y = 0; y < Floor; y++)
 	{
 		for (int z = 0; z < Depth; z++)
@@ -123,6 +124,7 @@ void CMapTool::CreateNewMap(_uint x, _uint y, _uint z, E_BUILDINGTYPE type)
 					}
 
 					break;
+
 				case CMapTool::BUILDINGTYPE_END:
 					break;
 				default:
@@ -136,13 +138,68 @@ void CMapTool::CreateNewMap(_uint x, _uint y, _uint z, E_BUILDINGTYPE type)
 	Update_CountText();
 }
 
+void CMapTool::CreateCustomNewMap(_uint x, _uint y, _uint z, _uint _count, _float3 range )
+{
+	// 1. 현재 맵객체는 삭제
+	GetSingle(CSuperToolSIngleton)->Update_Select_Render_None(TAG_LAY(Layer_View));
+	auto objlist = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(0, TAG_LAY(Layer_Map));
+	if (objlist != nullptr)
+	{
+		for (auto obj : *objlist)
+		{
+			obj->DIED();
+		}
+	}
+
+
+	// 우주맵 생성
+	_uint Length, Floor, Depth;
+	Length = x;
+	Floor = y;
+	Depth = z;
+
+
+	GetSingle(CSuperToolSIngleton)->Create_Clone_MapObject(_float3(0,0,0), TAG_LAY(Layer_Map));
+	int halfX = (int)range.x*0.5;
+	int halfY = (int)range.y*0.5;
+	int halfZ = (int)range.z*0.5;
+
+	for (int count = 0; count < _count; count++)
+	{
+
+		int OffsetX = (rand() % (int)range.x) - halfX;
+		int OffsetY = (rand() % (int)range.y); // 무조건 위로
+		int OffsetZ = (rand() % (int)range.z) - halfZ;
+		_uint RandomTex = rand() % 7;
+
+		for (int y = 0; y < Floor; y++)
+		{
+			for (int z = 0; z < Depth; z++)
+			{
+				for (int x = 0; x < Length; x++)
+				{
+					bool isDraw = false;
+					isDraw = (rand() % 100) % 2;
+					if (isDraw)
+					{
+						_float3 newfloat = _float3(x+ OffsetX, y+ OffsetY, z+ OffsetZ);
+						GetSingle(CSuperToolSIngleton)->Create_Clone_MapObject(newfloat, TAG_LAY(Layer_Map),true, RandomTex);
+					}
+				}
+			}
+		}
+	}
+	Update_CountText();
+
+}
+
 
 BEGIN_MESSAGE_MAP(CMapTool, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMapTool::OnBnClickedButton_PreSet1)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMapTool::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON3, &CMapTool::OnBnClickedButton3)
-	ON_BN_CLICKED(IDC_BUTTON13, &CMapTool::OnBnClickedButton_PreSet2)
 	ON_BN_CLICKED(IDC_BUTTON14, &CMapTool::OnBnClickedButton_PreSet3)
+	ON_BN_CLICKED(IDC_BUTTON13, &CMapTool::OnBnClickedButton_Custom)
 
 	ON_BN_CLICKED(IDC_BUTTON4, &CMapTool::OnBnClickedButtonClear)
 END_MESSAGE_MAP()
@@ -186,10 +243,12 @@ void CMapTool::OnBnClickedButton_PreSet1()
 }
 
 
-void CMapTool::OnBnClickedButton_PreSet2()
+void CMapTool::OnBnClickedButton_Custom()
 {
-	// 프리셋 버튼2
-	// 내부가 찬 건물
+	// 커스턴 버튼 랜덤 수정용
+	// 지금은 막음
+	return;
+	
 	_uint val[3];
 	_uint count = 0;
 	for (auto& box : m_EditBox)
@@ -199,7 +258,7 @@ void CMapTool::OnBnClickedButton_PreSet2()
 		val[count++] = _ttoi(text);
 
 	}
-	CreateNewMap(val[0], val[1], val[2], BUILDINGTYPE_FULL);
+	CreateCustomNewMap(val[0], val[1], val[2],80,_float3(30,200,30));
 }
 
 
