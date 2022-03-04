@@ -199,6 +199,9 @@
     <Filter Include="01.GameObject\UI\UI_Start">
       <UniqueIdentifier>{ba2b0fe1-40f1-41df-9670-4762992ffe98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Npc">
+      <UniqueIdentifier>{bf73a1f5-b1ee-4a42-ba87-e4968c5b4c9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -384,6 +387,10 @@
     <ClInclude Include="..\public\UI_Start.h">
       <Filter>01.GameObject\UI\UI_Start</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_Star.h" />
+    <ClInclude Include="..\public\Npc.h">
+      <Filter>01.GameObject\Npc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -556,6 +563,10 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Start.cpp">
       <Filter>01.GameObject\UI\UI_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_Star.cpp" />
+    <ClCompile Include="..\private\Npc.cpp">
+      <Filter>01.GameObject\Npc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
