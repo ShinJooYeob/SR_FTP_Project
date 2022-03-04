@@ -175,7 +175,7 @@ HRESULT CScene_Stage1::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 
 
 	pMainCam->Set_NowSceneNum(SCENE_STAGE1);
-	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, 0.016f);
+	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, g_fDeltaTime,4.f);
 
 	return S_OK;
 }

@@ -270,8 +270,8 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 
 	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,1))
 
-	pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
-	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, 0.016f);
+		pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
+	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, g_fDeltaTime, 2.5f);
 
 	
 	return S_OK;

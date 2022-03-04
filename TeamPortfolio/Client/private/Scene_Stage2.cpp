@@ -186,8 +186,8 @@ HRESULT CScene_Stage2::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,4))
 
 
-	pMainCam->Set_NowSceneNum(SCENE_STAGE2);
-	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, 0.016f);
+		pMainCam->Set_NowSceneNum(SCENE_STAGE2);
+	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, g_fDeltaTime, 4.f);
 
 	return S_OK;
 }

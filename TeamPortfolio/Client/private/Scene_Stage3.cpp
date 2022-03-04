@@ -171,11 +171,11 @@ HRESULT CScene_Stage3::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 
 	_float3 ActionPos[4] = { _float3(5,5,0) ,_float3(5,-5,0) ,_float3(-5,5,0),_float3(-5,-5,0) };
 
-	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,4))
+	FAILED_CHECK(pMainCam->ReInitialize(ActionPos, 4));
 
 
 	pMainCam->Set_NowSceneNum(SCENE_STAGE3);
-	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, 0.016f);
+	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, g_fDeltaTime, 4.f);
 
 	return S_OK;
 }
