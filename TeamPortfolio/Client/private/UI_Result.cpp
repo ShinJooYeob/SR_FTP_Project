@@ -82,11 +82,11 @@ _int CUI_Result::Update(_float fDeltaTime)
 		return E_FAIL;
 	m_fFrame = fDeltaTime;
 
-	if (m_fTimer > 1)  //클리어가 트루일 때 제대로 값이 들어가는지 확인용
-	{
+	//if (m_fTimer > 1)  //클리어가 트루일 때 제대로 값이 들어가는지 확인용
+	//{
 
-		m_bClear = true;
-	}
+	//	m_bClear = true;
+	//}
 
 	if (m_bStopSwitch == false)
 	{
@@ -100,6 +100,7 @@ _int CUI_Result::Update(_float fDeltaTime)
 	if (m_fTimer > m_fMaxTime || m_bClear == true)
 	{
 		
+
 		EasingTime += fDeltaTime;
 		TempY = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, StartPosY, TargetPosY, EasingTime, 2.0f);
 		if (EasingTime > 2)
@@ -167,9 +168,10 @@ _int CUI_Result::LateUpdate(_float fDeltaTime)
 	{
 		if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this)))
 			return E_FAIL;
+		if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
+			return E_FAIL;
 	}
-	if (FAILED(LateUpdate_UIButtonList(fDeltaTime)))
-		return E_FAIL;
+
 
 	return _int();
 }
@@ -254,6 +256,7 @@ HRESULT CUI_Result::Update_UIButtonList(_float fTimeDelta)
 		{
 			CScene* TempScene = pGameInstance->Get_Scene();
 			TempScene->Scene_InGame_Chage(true, pGameInstance->Get_NowSceneNum());
+			GetSingle(CGameInstance)->PlaySound(L"EH_Button_Result_Start.wav", CHANNEL_UI);
 		}
 		break;
 	}
@@ -277,6 +280,7 @@ HRESULT CUI_Result::Update_UIButtonList(_float fTimeDelta)
 		{
 			CScene* TempScene = pGameInstance->Get_Scene();
 			TempScene->Scene_InGame_Chage(true, SCENEID::SCENE_STAGESELECT);
+			GetSingle(CGameInstance)->PlaySound(L"EH_Button_Result_Cancel.wav", CHANNEL_UI);
 		}
 		break;
 	}
@@ -487,9 +491,18 @@ HRESULT CUI_Result::SetUp_Pont()
 			if (m_fFrameTexture > 18)
 			{
 				GetSingle(CGameInstance)->Render_UI_Font(TempString, { 475.f,435.f }, { 25.f,60.f }, _float3(123, 104, 238), m_fFrameTexture -18);
+
+				if (SoundSwitch == false)
+				{
+
+					GetSingle(CGameInstance)->PlaySound(L"EH_Mission_Failed.wav", CHANNEL_UI);
+					SoundSwitch = true;
+				}
+
 			}
 			if (FAILED(Release_RenderState()))
 				return E_FAIL;
+
 
 		}
 		else
@@ -534,6 +547,13 @@ HRESULT CUI_Result::SetUp_Pont()
 			if (m_fFrameTexture > 18)
 			{
 				GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,435.f }, { 25.f,60.f }, _float3(123, 104, 238), m_fFrameTexture -18);
+
+				if (SoundSwitch == false)
+				{
+
+					GetSingle(CGameInstance)->PlaySound(L"EH_Mission_Clear.wav", CHANNEL_UI);
+					SoundSwitch = true;
+				}
 			}
 			if (FAILED(Release_RenderState()))
 				return E_FAIL;

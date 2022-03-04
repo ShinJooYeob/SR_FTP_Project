@@ -97,6 +97,9 @@ private:
 
 	_bool			EasingSwitch = false;
 
+
+	_bool			SoundSwitch = false;
+
 public:
 	static CUI_Result* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg = nullptr)override;

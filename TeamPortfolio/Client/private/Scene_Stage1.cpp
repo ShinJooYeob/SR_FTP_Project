@@ -197,7 +197,7 @@ HRESULT CScene_Stage1::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	CUI_Result* pResult = (CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE1, TEXT("Layer_UI_Result")));
 	if (pResult == nullptr)
 		return E_FAIL;
-	pResult->Set_MaxTime(100.f); //MAX시간을 나타냄
+	pResult->Set_MaxTime(2.f); //MAX시간을 나타냄
 
 
 	return S_OK;
