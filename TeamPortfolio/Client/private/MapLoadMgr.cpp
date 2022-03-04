@@ -261,7 +261,7 @@ bool CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<SPE
 			_float3(0, 0, 0));
 		break;
 
-		// #STOP 모든 큐브 static에 미리 생성 후에 테스트 가능
+
 	case CUBEID_GRAVITY:
 		GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
 			TAG_LAY(Layer_Terrain), TAG_OP(Prototype_GravityCube),

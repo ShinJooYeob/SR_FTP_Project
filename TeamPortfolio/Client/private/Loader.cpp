@@ -38,6 +38,8 @@
 #include "Object_Star.h"
 #include "Collision_Object.h"
 
+#include "ParticleObejct.h"
+
 #include "MyButton.h"
 
 
@@ -137,6 +139,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_LobyUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+
 #pragma endregion
 
 #pragma  region PROTOTYPE_GAMEOBJECT
@@ -198,6 +201,9 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_Star"), CObject_Star::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Collision_Object"), CCollision_Object::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_particle"), CParticleeObj_Base::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 

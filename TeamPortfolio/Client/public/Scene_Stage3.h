@@ -23,17 +23,18 @@ private:
 	HRESULT Ready_Layer_MainCamera(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_SkyBox(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Player(const _tchar* pLayerTag); 
-	HRESULT Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata);
+	HRESULT Ready_Layer_Terrain(_uint sceneid, list<SPECIALCUBE*>* listdata);
 	HRESULT Ready_Layer_PauseUI(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_PlayerStatusUI(const _tchar* pLayerTag);
 
 	HRESULT Ready_Layer_UI_Start(const _tchar * pLayerTag);
 
 
-	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);							 //==>µû·Î Á÷Á¢ ÇÃ·¹ÀÌ ½Ã°£ ¼³Á¤ÇØÁà¾ßÇÒ °Íµé
-	HRESULT Ready_Layer_Object_Star(const _tchar* pLayerTag);						 //==>µû·Î Á÷Á¢ À§Ä¡ ÁÂÇ¥ ¼³Á¤ÇØÁà¾ßÇÒ °Íµé
-	HRESULT Ready_Layer_StageEndCollsionObject(const _tchar* pLayerTag);			 //==>µû·Î Á÷Á¢ À§Ä¡ ÁÂÇ¥ ¼³Á¤ÇØÁà¾ßÇÒ °Íµé
-	HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);				 //==>¾´´Ù¸é µû·Î Á÷Á¢ À§Ä¡ ÁÂÇ¥ ¼³Á¤ÇØÁà¾ßÇÒ °Íµé
+	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);							 //==>ë”°ë¡œ ì§ì ‘ í”Œë ˆì´ ì‹œê°„ ì„¤ì •í•´ì¤˜ì•¼í•  ê²ƒë“¤
+	HRESULT Ready_Layer_Object_Star(const _tchar* pLayerTag);						 //==>ë”°ë¡œ ì§ì ‘ ìœ„ì¹˜ ì¢Œí‘œ ì„¤ì •í•´ì¤˜ì•¼í•  ê²ƒë“¤
+	HRESULT Ready_Layer_Object_particle(const _tchar* pLayerTag);//Ã†Ã„Ã†Â¼Ã…Â¬
+	HRESULT Ready_Layer_StageEndCollsionObject(const _tchar* pLayerTag);			 //==>ë”°ë¡œ ì§ì ‘ ìœ„ì¹˜ ì¢Œí‘œ ì„¤ì •í•´ì¤˜ì•¼í•  ê²ƒë“¤
+	HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);				 //==>ì“´ë‹¤ë©´ ë”°ë¡œ ì§ì ‘ ìœ„ì¹˜ ì¢Œí‘œ ì„¤ì •í•´ì¤˜ì•¼í•  ê²ƒë“¤
 
 
 	D3DLIGHT9		m_Light;

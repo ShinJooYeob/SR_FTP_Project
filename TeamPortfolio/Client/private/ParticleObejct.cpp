@@ -27,8 +27,8 @@ HRESULT CParticleObject::Initialize_Prototype(void * pArg)
 	m_RateTime = 1.0f;
 	m_Scale = 1.0f;
 	m_MaxParticles = 10;
-	m_boundingBox.minPos = _float3(0,0,0);
-	m_boundingBox.maxPos = _float3(1,1,1);
+	m_boundingBox.minPos = _float3(-10,-10,-10);
+	m_boundingBox.maxPos = _float3(10,10,10);
 
 	return S_OK;
 }
@@ -42,7 +42,11 @@ HRESULT CParticleObject::Initialize_Clone(void * pArg)
 	// 자식 객체들은 부모객체의 컴포넌트를 사용하게 한다.
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-	m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
+
+
+	m_ComTexture->Change_TextureLayer(TEXT("Object_Star"));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0, 1, 0));
+	m_ComTransform->Scaled(_float3(0.3f, 0.3f, 0.3f));
 
 	// 클론 시 자식 객체 생성
 	Initialize_Child_Clone();
@@ -54,6 +58,20 @@ _int CParticleObject::Update(_float fTimeDelta)
 {
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
+
+	// 자식 객체 업데이트
+	std::list<PARTICLEATT>::iterator i;
+	for (i = m_list_Particles.begin(); i != m_list_Particles.end(); i++)
+	{
+		i->_position += i->_velocity * i->_force* fTimeDelta;
+
+		// 범위 체크
+		if (m_boundingBox.isPointInside(i->_position) == false)
+		{
+			// 리셋
+			ResetParticle(&(*i));
+		}
+	}
 
 	return 0;
 }
@@ -67,36 +85,51 @@ _int CParticleObject::LateUpdate(_float fTimeDelta)
 		return -1;
 
 
+	m_ComTexture->Set_LoadTexutreNumber(0);
 	//if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 	//	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
+
+	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_AFTEROBJ, this);
+
 
 	return _int();
 }
 
+void CParticleObject::ResetParticle(PARTICLEATT * attribute)
+{
+	attribute->_position = _float3(0, 0, 0);
+
+}
+
 _int CParticleObject::Render()
 {
+	if (0 > __super::Render())
+		return -1;
+
+
+	// 텍스처 바인딩은 한번만 하면 된다.
+	SetUp_RenderState();
+
+	FAILED_CHECK(m_ComTexture->Bind_Texture());
+
 	// 파티클 리스트를 한번에 Render
 	if (false == m_list_Particles.empty())
 	{
-		SetUp_RenderState();
-
-		// 텍스처 바인딩은 한번만 하면 된다.
-		if (FAILED(m_ComTexture->Bind_Texture()))
-			return E_FAIL;
 
 		for (auto iter: m_list_Particles)
 		{
 			if (iter._isAlive)
 			{
-				// FAILED_CHECK(m_ComTransform->Bind_WorldMatrix()))
-				// FAILED_CHECK(m_ComVIBuffer->Render());
+				m_ComTransform->Set_MatrixState(CTransform::STATE_POS, iter._position);
+				FAILED_CHECK(m_ComTransform->Bind_WorldMatrix());
+				FAILED_CHECK(m_ComVIBuffer->Render());
 			}
 			
 		}
-		Release_RenderState();
 	}
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, Get_ParentPos());
 
-	
+	Release_RenderState();
 
 	return _int();
 }
@@ -126,21 +159,19 @@ HRESULT CParticleObject::SetUp_Components()
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
 
-	// TransformDesc.fMovePerSec = 5.f;
-	// TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
-
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
 
 	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_Default), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
-		return E_FAIL;
-	/* For.Com_VIBuffer_Cube */
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_UI_Result_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))
+		return E_FAIL;
+
+	/* For.Com_VIBuffer_Rect */
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 
 
@@ -152,20 +183,18 @@ HRESULT CParticleObject::SetUp_RenderState()
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
-	m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
-
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 	return S_OK;
 }
 
 HRESULT CParticleObject::Release_RenderState()
 {
-	m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
 
 	return S_OK;
 }
@@ -225,27 +254,46 @@ HRESULT CParticleeObj_Base::Initialize_Child_Clone()
 
 	m_list_Particles.clear();
 	m_RateTime = 1.0f;
-	m_Scale = 2.0f;
+	m_Scale = 1.0f;
 	m_MaxParticles = 10;
 
 	// 자식 객체 생성
 	PARTICLEATT part;
+	_float3 RandomVelocity = _float3(0,0,0);
+	
+
 	part._position = Get_ParentPos();
-	part._velocity = _float3(1, 0, 0);
-	part._acceleration = _float3(1, 0, 0);
+	
 
 	part._lifeTime = m_RateTime;
 	part._age = m_Scale;
-	part._color = COLOR_BLUE;
-	part._colorFade = COLOR_WHITE;
+//	part._color = COLOR_BLUE;
+//	part._colorFade = COLOR_WHITE;
 
 	for (int i = 0;i<m_MaxParticles;i++)
 	{
+		GetRandomVector(&RandomVelocity, &_float3(-5, -5, -5), &_float3(5, 5, 5));
+		part._force = GetRandomFloat(1,10);
+
+		part._velocity = RandomVelocity.Get_Nomalize();
 		m_list_Particles.push_front(part);
 	}
 	return S_OK;
 }
 
+_int CParticleeObj_Base::Update(_float fTimeDelta)
+{
+	if (0 > __super::Update(fTimeDelta))
+		return -1;
+	return 0;
+}
+
+_int CParticleeObj_Base::LateUpdate(_float fTimeDelta)
+{
+	if (0 > __super::LateUpdate(fTimeDelta))
+		return -1;
+	return 0;
+}
 
 CParticleeObj_Base * CParticleeObj_Base::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)
 {

@@ -41,7 +41,7 @@ HRESULT CScene_Stage3::Initialize()
 	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
 	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
 	FAILED_CHECK(Ready_Layer_StageEndCollsionObject(TEXT("Layer_Collision_StageEnd")));
-
+	FAILED_CHECK(Ready_Layer_Object_particle(TEXT("Layer_Particle")));
 
 	// 로드된 오브젝트 정보로 그리기
 	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
@@ -54,7 +54,7 @@ HRESULT CScene_Stage3::Initialize()
 	list< SPECIALCUBE*> SpecialCubeList;
 	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_STAGE3, 3, &SpecialCubeList);
 
-	FAILED_CHECK(Ready_Layer_Terrain(&SpecialCubeList));
+	FAILED_CHECK(Ready_Layer_Terrain(SCENEID::SCENE_STAGE3, &SpecialCubeList));
 
 	for (auto data : SpecialCubeList)
 	{
@@ -266,6 +266,16 @@ HRESULT CScene_Stage3::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 	return S_OK;
 }
 
+HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
+{
+	// #TODO 파티클 Test obj Create
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_particle")))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CScene_Stage3::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag)
 {
 
@@ -333,13 +343,13 @@ HRESULT CScene_Stage3::Ready_Layer_Player(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CScene_Stage3::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
+HRESULT CScene_Stage3::Ready_Layer_Terrain(_uint sceneid,list<SPECIALCUBE*>* listdata)
 {
 	CObject_PortalCube_A::POTALDESC potalDesc;
 	CObject_EscalatorCube::ESCALATORDESC escalDesc;
 
 
-	potalDesc.iNowScene = SCENEID::SCENE_IMGUISCENE;
+	potalDesc.iNowScene = sceneid;
 	potalDesc.vPos_A_Cube = _float3(0, 0, 0);
 	potalDesc.vPos_B_Cube = _float3(0, 0, 0);
 

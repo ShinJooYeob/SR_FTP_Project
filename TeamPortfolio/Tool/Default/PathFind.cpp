@@ -237,7 +237,7 @@ void CPathFind::OnDropFiles(HDROP hDropInfo)
 #pragma region 맵에 이미지파일 저장
 	//int cnt = m_MyPathInfoList.size();
 
-	//// #Bug CImage 메모리릭
+
 	//for (auto filename : m_MyPathInfoList)
 	//{
 	//	filename->wstrFullPath;

@@ -158,6 +158,7 @@ HRESULT CScene_Loby::Ready_Layer_LobyUI(const _tchar * pLayerTag)
 	return S_OK;
 }
 
+
 HRESULT CScene_Loby::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 {
 	CCamera::CAMERADESC CameraDesc;

@@ -104,7 +104,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	m_MainSplitter.CreateView(1, 0, RUNTIME_CLASS(CMyForm), CSize(300, 300), pContext);
 	m_MainSplitter.CreateView(1, 1, RUNTIME_CLASS(CToolView), CSize(WINCX, WINCY), pContext);*/
 
-	// #Tag Ã¢ÂÉ°³±â
+	// #ToolTag Ã¢ÂÉ°³±â
 
 	m_MainSplitter.CreateStatic(this, 1, 2);
 
