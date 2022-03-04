@@ -120,7 +120,7 @@ private:
 	HRESULT			Set_CamPosXYZ(_float fDeltaTime);
 
 
-
+	
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
