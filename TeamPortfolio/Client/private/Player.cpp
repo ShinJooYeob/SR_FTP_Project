@@ -120,6 +120,9 @@ _int CPlayer::Update(_float fDeltaTime)
 			if (m_fNowJumpPower < 0)
 				m_fNowJumpPower = -fDeltaTime;
 	
+			//Æ÷Å» ÀÌµ¿ ÈÄ 
+			//GetSingle(CGameInstance)->PlaySound(TEXT("JY_Player_jump.wav"), CHANNEL_PLAYER);
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_bouncehigh.wav"), CHANNEL_OBJECT);
 
 				m_ComTexture->Change_TextureLayer_Wait(TEXT("jump_up"));
 			m_bPause = false;
@@ -267,7 +270,7 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 			m_bIsDead = true;
 			m_fDeadNPauseTime = 0;
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("suckIn"));
-			GetSingle(CGameInstance)->PlaySound(TEXT("JY_airpanic.wav"), CHANNEL_PLAYER);
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_airpanic.wav"), CHANNEL_PLAYER,2.f);
 			GetSingle(CGameInstance)->PlaySound(L"EH_GravityCube.wav", CHANNEL_OBJECT);
 		}
 		if (m_fDeadNPauseTime < 4.0f)

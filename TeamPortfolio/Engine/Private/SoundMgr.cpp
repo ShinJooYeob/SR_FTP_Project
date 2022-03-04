@@ -5,7 +5,7 @@
 IMPLEMENT_SINGLETON(CSoundMgr)
 
 CSoundMgr::CSoundMgr()
-	:m_iNumOfEachChannel(_uint(32 / (CHANNEL_MAXCHANNEL - 1)))
+	:m_iNumOfEachChannel(_uint(31 / (CHANNEL_MAXCHANNEL - 1)))
 {
 }
 HRESULT CSoundMgr::Initialize_FMOD()

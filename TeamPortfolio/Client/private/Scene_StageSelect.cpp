@@ -39,6 +39,10 @@ HRESULT CScene_StageSelect::Initialize()
 	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
 		return E_FAIL;
 
+
+	if (FAILED(Ready_Layer_Object_PortalCube(TEXT("Layer_PotalCube"))))
+		return E_FAIL;
+
 	
 
 
@@ -334,7 +338,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 
 HRESULT CScene_StageSelect::Ready_Layer_GravityCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_GravityCube"), TEXT("Prototype_GameObject_Object_GravityCube"), &_float3((_float)5, (_float)3, (_float)0)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_GravityCube"), TEXT("Prototype_GameObject_Object_GravityCube"), &_float3((_float)5, (_float)1, (_float)0)))
 		return E_FAIL;
 
 	return S_OK;
@@ -365,8 +369,8 @@ HRESULT CScene_StageSelect::Ready_Layer_Object_PortalCube(const _tchar * pLayerT
 
 	CObject_PortalCube_A::POTALDESC tagDesc;
 
-	tagDesc.vPos_A_Cube = _float3(3,3,0);
-	tagDesc.vPos_B_Cube = _float3(30,-20.f,0);
+	tagDesc.vPos_A_Cube = _float3(0,3,0);
+	tagDesc.vPos_B_Cube = _float3(10,3.f,0);
 	tagDesc.iNowScene = SCENEID::SCENE_STAGESELECT;
 
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_Potal"), TEXT("Prototype_GameObject_Object_PortalCube_A"),&tagDesc))

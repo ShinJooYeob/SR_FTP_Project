@@ -481,6 +481,14 @@ HRESULT CPauseUI::Update_Animation(_float fTimeDelta)
 
 		}
 
+
+
+		m_vUIDesc[2].x = (m_vUIDesc[1].x - 10.f) + GetSingle(CGameInstance)->Get_Channel_Volume(CHANNEL_BGM) * 180.f;
+		m_vUIDesc[3].x = (m_vUIDesc[1].x - 10.f) + GetSingle(CGameInstance)->Get_Channel_Volume(CHANNEL_PLAYER) * 180.f;
+		m_vUIDesc[4].x = (m_vUIDesc[1].x - 10.f) + GetSingle(CGameInstance)->Get_Channel_Volume(CHANNEL_UI) * 180.f;
+		m_vUIDesc[5].x = (m_vUIDesc[1].x - 10.f) + GetSingle(CGameInstance)->Get_Channel_Volume(CHANNEL_EFFECT) * 180.f;
+
+
 		//m_vUIDesc[2].x = m_vUIDesc[1].x + 80.f; //m_vUIDesc[1].x + 170.f;// m_vUIDesc[1].x - 10.f;
 		m_vUIDesc[2].y = m_vUIDesc[1].y - 170;
 		//m_vUIDesc[3].x = m_vUIDesc[1].x + 80.f;
