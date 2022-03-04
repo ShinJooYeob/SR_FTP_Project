@@ -114,6 +114,7 @@ _int CObject_Star::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fColli
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Player)))
 	{
 		CUI_Result* UI_Result =(CUI_Result*)pGameInstance->Get_GameObject_By_LayerIndex(m_eNowSceneNum,TEXT("Layer_UI_Result"));
+		GetSingle(CGameInstance)->PlaySound(L"EH_StarCube.wav", CHANNEL_OBJECT);
 		UI_Result->Set_RankStar();
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
 		DIED();

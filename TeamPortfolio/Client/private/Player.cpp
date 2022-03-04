@@ -61,10 +61,10 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	Safe_AddRef(m_pCamera_Main);
 
 
-	for (int i = 0; i < SCENE_END; ++i)
-	{
-		StageBestClear[i] = 100000;
-	}
+	//for (int i = 0; i < SCENE_END; ++i)
+	//{
+	//	StageBestClear[i] = 100000;
+	//}
 
 	m_ComInventory->Set_Skill_LevelUP(SKILL_DUBBLEJUMP);
 	m_bIsStageEnd = 0;
@@ -240,6 +240,8 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 
 			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carryup"),TEXT("carryIdle"),12.f);
 
+			GetSingle(CGameInstance)->PlaySound(L"EH_CarryUp.wav", CHANNEL_OBJECT);
+
 			m_bIsCliming = false;
 			m_bIsRunning = false;
 			m_ComTransform->Set_MoveSpeed(1.f);
@@ -259,6 +261,7 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 			m_bIsDead = true;
 			m_fDeadNPauseTime = 0;
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("suckIn"));
+			GetSingle(CGameInstance)->PlaySound(L"EH_GravityCube.wav", CHANNEL_OBJECT);
 		}
 		if (m_fDeadNPauseTime < 4.0f)
 			m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
@@ -267,8 +270,10 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_OrbitButton")))
 	{
 		if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_LSHIFT) & DIS_Down)
+		{
 			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("buttonclick"), TEXT("Idle"), 4.f);
-
+			GetSingle(CGameInstance)->PlaySound(L"EH_Orbit.wav", CHANNEL_OBJECT);
+		}
 	}
 	//
 	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Collision_StageEnd")))
@@ -356,7 +361,8 @@ HRESULT CPlayer::Set_StageEnd(_bool IsWin)
 
 void CPlayer::SetBestClear(_uint _Stage, _float _timer)
 {
-	if (StageBestClear[_Stage] > _timer)
+
+	if (!StageBestClear[_Stage] ||StageBestClear[_Stage] > _timer)
 	{
 		StageBestClear[_Stage] = _timer;
 	}
@@ -417,7 +423,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 
 
 		m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carrydown"), TEXT("Idle"),12.f);
-
+		GetSingle(CGameInstance)->PlaySound(L"EH_CarryDown.wav", CHANNEL_OBJECT);
 	}
 	
 	

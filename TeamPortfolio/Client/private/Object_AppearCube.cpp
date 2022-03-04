@@ -132,6 +132,7 @@ _int CObject_AppearCube::Cube_Appears(_float fDeltaTime)
 
 	if (Distance < 1.4142135623f)
 	{
+		GetSingle(CGameInstance)->PlaySound(L"EH_AppearCube.wav", CHANNEL_OBJECT);
 
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_fTempPos);
 		m_bIsAppear = true;

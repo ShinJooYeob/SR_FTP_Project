@@ -129,7 +129,7 @@ _int CObject_VanishCube::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 
 {
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Player)))
 	{
-		Collision_Vanish(fDeltaTime);
+ 		Collision_Vanish(fDeltaTime);
 
 
 	}
@@ -146,6 +146,8 @@ _int CObject_VanishCube::Collision_Vanish(_float fDeltaTime)
 
 	if (m_fTimer > 2)
 	{
+		GetSingle(CGameInstance)->PlaySound(L"EH_VanishCube_1.wav", CHANNEL_OBJECT);
+		//GetSingle(CGameInstance)->PlaySound(L"EH_VanishCube_2.wav", CHANNEL_OBJECT);
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
 
 		m_fTimer = 0;

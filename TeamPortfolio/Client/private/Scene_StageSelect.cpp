@@ -40,7 +40,6 @@ HRESULT CScene_StageSelect::Initialize()
 	//	return E_FAIL;
 
 
-
 	// 로드된 오브젝트 정보로 그리기
 	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
 		SCENEID::SCENE_STAGESELECT,
@@ -478,7 +477,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
 
 HRESULT CScene_StageSelect::Ready_Layer_Object_VanishCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_VanishCube"), &_float3(9.f, -1.f, -1.f)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_VanishCube"), &_float3(9.f, 2.f, 0.f)))
 		return E_FAIL;
 	return S_OK;
 }

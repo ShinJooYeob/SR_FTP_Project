@@ -137,6 +137,8 @@ _int CObject_PortalCube_B::Obsever_On_Trigger(CGameObject * pDestObjects, _float
 
 		m_Seconds += fDeltaTime;
 		m_pTargetCube->UsedPotal(fDeltaTime);
+
+		GetSingle(CGameInstance)->PlaySound(L"EH_PotalCube.wav", CHANNEL_OBJECT);
 	}
 
 	return _int();

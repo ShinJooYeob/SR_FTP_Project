@@ -82,10 +82,16 @@ _int CUI_Result::Update(_float fDeltaTime)
 		return E_FAIL;
 	m_fFrame = fDeltaTime;
 
-	//if (m_fTimer > 1)  //클리어가 트루일 때 제대로 값이 들어가는지 확인용
+	//if (m_fTimer > 3.f)  //클리어가 트루일 때 제대로 값이 들어가는지 확인용
 	//{
 
 	//	m_bClear = true;
+	//}
+
+	//if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
+	//{
+	//	m_bClear = true;
+	//	m_bAfterAnimIsClear = true;
 	//}
 
 	if (m_bStopSwitch == false)
@@ -589,8 +595,10 @@ HRESULT CUI_Result::SetUp_Player()
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	CPlayer* Player = (CPlayer*)pGameInstance->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Player)); // 플레이어 정보
 
-	Player->SetBestClear(m_eNowSceneNum, m_fTimer);
-
+	if(m_fMaxTime>m_fTimer)
+	{
+		Player->SetBestClear(m_eNowSceneNum, m_fTimer);
+	}
 	TempBestClear = Player->getBestClear(m_eNowSceneNum);
 
 	CInventory* Inventory = (CInventory*)pGameInstance->Get_Commponent_By_LayerIndex(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Inventory)); //플레이어의 인벤토리 정보

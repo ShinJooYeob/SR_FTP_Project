@@ -155,6 +155,8 @@ _int CObject_PortalCube_A::Obsever_On_Trigger(CGameObject * pDestObjects, _float
 		m_Seconds += fDeltaTime;
 		m_pTargetCube->UsedPotal(fDeltaTime);
 
+		GetSingle(CGameInstance)->PlaySound(L"EH_PotalCube.wav", CHANNEL_OBJECT);
+
 		//Object_Transfer(pDestObjects, fDeltaTime);
 	}
 
@@ -171,7 +173,6 @@ _int CObject_PortalCube_A::Object_Transfer(CGameObject * pDestObjects, _float fD
 		CTransform* PortalCube_B = (CTransform*)(m_pTargetCube->Get_Component(TAG_COM(Com_Transform)));
 		_float3 PortalCube_B_Pos = PortalCube_B->Get_MatrixState(CTransform::STATE_POS);
 		Player->Set_MatrixState(CTransform::STATE_POS, PortalCube_B_Pos);
-
 
 
 	return _int();
