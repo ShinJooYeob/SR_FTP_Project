@@ -62,6 +62,10 @@ HRESULT CScene_Stage2::Initialize()
 	}
 	SpecialCubeList.clear();
 
+
+	GetSingle(CGameInstance)->PlayBGM(L"JY_Stage2_BGM.mp3");
+	GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.1f);
+
 	return S_OK;
 }
 
@@ -310,10 +314,12 @@ HRESULT CScene_Stage2::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag
 
 HRESULT CScene_Stage2::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
 {
-	
 
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(0.f, 1.f, 0.f)))
+		return E_FAIL; 
+/*
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"),&_float3(5.f, 64.f, -24.f)))
-		return E_FAIL;
+		return E_FAIL;*/
 
 
 	return S_OK;

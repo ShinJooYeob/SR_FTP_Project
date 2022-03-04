@@ -101,8 +101,8 @@ public:
 	_int  Channel_VolumeDown(CHANNELID eID, _float _vol);
 	_int  Channel_Pause(CHANNELID eID);
 
-	HRESULT PlaySound(TCHAR* pSoundKey, CHANNELID eID);
-	HRESULT PlayBGM(TCHAR* pSoundKey);
+	HRESULT PlaySound(TCHAR* pSoundKey, CHANNELID eID, _float fLouderMultiple = 1.f);
+	HRESULT PlayBGM(TCHAR* pSoundKey, _float fLouderMultiple = -1.f);
 	void Stop_ChannelSound(CHANNELID eID);
 	void Stop_AllChannel();
 

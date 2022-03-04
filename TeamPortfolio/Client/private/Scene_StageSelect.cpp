@@ -34,6 +34,14 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Common(TAG_LAY(Layer_UI_Common))))
 		return E_FAIL;
+
+
+	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
+		return E_FAIL;
+
+	
+
+
 	//if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
 	//	return E_FAIL;
 	//if (FAILED(Ready_Layer_Object_Star(TEXT("Layer_Object_Star"))))
@@ -327,7 +335,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Shop(const _tchar * pLayerTag)
 
 HRESULT CScene_StageSelect::Ready_Layer_GravityCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_GravityCube"), TEXT("Prototype_GameObject_Object_GravityCube"), &_float3((_float)6, (_float)10, (_float)3)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_GravityCube"), TEXT("Prototype_GameObject_Object_GravityCube"), &_float3((_float)5, (_float)3, (_float)0)))
 		return E_FAIL;
 
 	return S_OK;

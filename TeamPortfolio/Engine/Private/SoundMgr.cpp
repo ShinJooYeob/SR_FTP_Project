@@ -105,7 +105,7 @@ int CSoundMgr::Channel_Pause(CHANNELID eID)
 
 
 
-HRESULT CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID)
+HRESULT CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID, _float fLouderMultiple)
 {
 	if (eID == CHANNEL_BGM)
 		return E_FAIL;
@@ -129,11 +129,14 @@ HRESULT CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID)
 		//if (FMOD_Channel_IsPlaying(m_pChannelArr[i], &bPlay))
 		if (m_fPassedTimeArr[i] == 0)
 		{
+			FMOD_Channel_Stop(m_pChannelArr[i]);
 			FMOD_System_PlaySound(m_pSystem, iter->second, nullptr, FALSE, &m_pChannelArr[i]);
 
 
-			FMOD_Channel_SetVolume(m_pChannelArr[i], m_VolumeArr[eID]);
+			FMOD_Channel_SetVolume(m_pChannelArr[i], m_VolumeArr[eID]* fLouderMultiple);
 			m_fPassedTimeArr[i] = 0.1f;
+
+
 			FMOD_System_Update(m_pSystem);
 			return S_OK;
 		}
@@ -148,18 +151,22 @@ HRESULT CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID)
 
 
 
+	FMOD_Channel_Stop(m_pChannelArr[fOldSoundIndx]);
 	FMOD_System_PlaySound(m_pSystem, iter->second, nullptr, FALSE, &m_pChannelArr[fOldSoundIndx]);
 
-	FMOD_Channel_SetVolume(m_pChannelArr[fOldSoundIndx], m_VolumeArr[eID]);
+
+	FMOD_Channel_SetVolume(m_pChannelArr[fOldSoundIndx], m_VolumeArr[eID] * fLouderMultiple);
+
 	m_fPassedTimeArr[fOldSoundIndx]  = 0.1f;
 	FMOD_System_Update(m_pSystem);
 	return S_OK;
 
 }
 
-HRESULT CSoundMgr::PlayBGM(TCHAR * pSoundKey)
+HRESULT CSoundMgr::PlayBGM(TCHAR * pSoundKey, _float fLouderMultiple)
 {
 	map<TCHAR*, FMOD_SOUND*>::iterator iter;
+	FMOD_Channel_Stop(m_pChannelArr[31]);
 
 	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)
 	{
@@ -169,7 +176,11 @@ HRESULT CSoundMgr::PlayBGM(TCHAR * pSoundKey)
 	if (iter == m_mapSound.end())
 		return E_FAIL;
 
-	FMOD_System_PlaySound(m_pSystem,  iter->second, nullptr, FALSE, &m_pChannelArr[31]);
+	FMOD_System_PlaySound(m_pSystem, iter->second, nullptr, FALSE, &m_pChannelArr[31]);
+
+
+	FMOD_Channel_SetVolume(m_pChannelArr[31], m_VolumeArr[CHANNEL_BGM] * fLouderMultiple);
+
 	FMOD_Channel_SetMode(m_pChannelArr[31], FMOD_LOOP_NORMAL);
 	FMOD_System_Update(m_pSystem);
 	return S_OK;

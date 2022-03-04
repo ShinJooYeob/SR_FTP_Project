@@ -92,6 +92,9 @@ private:
 
 	_float3					m_vCameraPivot = _float3(3, 3, -14.f);
 
+	_float					m_NowAnimFrameTimeCheckerForSound = 0;
+	_float					m_OldAnimFrameTimeCheckerForSound = 0;
+
 	CGameObject*			m_pCarryObject = nullptr;
 	CTransform*				m_pCarryObjectTransform = nullptr;
 

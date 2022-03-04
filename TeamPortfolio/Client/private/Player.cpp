@@ -182,9 +182,11 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 			return E_FAIL;
 	}
 
+	m_OldAnimFrameTimeCheckerForSound = (_int)(m_NowAnimFrameTimeCheckerForSound);
 	//렌더링 그룹에 넣어주는 역활
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_AFTEROBJ, this)))
 		return E_FAIL;
+
 
 	return _int();
 }
@@ -198,7 +200,7 @@ _int CPlayer::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 	
-	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(m_fFrame)))
+	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(m_fFrame, &m_NowAnimFrameTimeCheckerForSound)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -247,6 +249,10 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 
 			Safe_AddRef(m_pCarryObject);
 			Safe_AddRef(m_pCarryObjectTransform);
+
+
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_dropheavypickup.wav"), CHANNEL_PLAYER, 1.f);
+			
 		}
 		else if(m_pCarryObject != pDestObjects)
 			m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
@@ -259,6 +265,7 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 			m_bIsDead = true;
 			m_fDeadNPauseTime = 0;
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("suckIn"));
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_airpanic.wav"), CHANNEL_PLAYER);
 		}
 		if (m_fDeadNPauseTime < 4.0f)
 			m_pCollisionCom->Collision_Suck_In(m_ComTransform, fCollision_Distance, fDeltaTime);
@@ -340,7 +347,8 @@ HRESULT CPlayer::Set_StageEnd(_bool IsWin)
 			m_pCamera_Main->Set_VictoryTurnAxis(m_ComTransform->Get_MatrixState(CTransform::STATE_POS), m_vCameraPivot);
 			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_VICTORY, g_fDeltaTime, 5.f);
 			((CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")))->Set_Clear_Wait_AnimTime(true,7.f);
-
+			GetSingle(CGameInstance)->Stop_ChannelSound(CHANNEL_BGM);
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_opentreasure.wav"), CHANNEL_PLAYER);
 		}
 		else
 		{
@@ -418,6 +426,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 
 		m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carrydown"), TEXT("Idle"),12.f);
 
+		GetSingle(CGameInstance)->PlaySound(TEXT("JY_droplightpickup.wav"), CHANNEL_PLAYER, 2.f);
 	}
 	
 	
@@ -432,6 +441,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 				m_bIsJumped = 0;
 				m_bIsCliming = true;
 			}
+
 		}
 
 		if (pInstance->Get_DIKeyState(DIK_DOWN) & DIS_Press)
@@ -445,6 +455,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 					{
 						m_fNowJumpPower = -fDeltaTime;
 						m_bIsCliming = false;
+						GetSingle(CGameInstance)->PlaySound(TEXT("JY_climboverladder.wav"), CHANNEL_PLAYER, 2.f);
 					}
 					else
 					{
@@ -455,6 +466,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 						}
 					}
 				}
+		
 			}
 			else
 			{
@@ -477,8 +489,10 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 
 						m_fNowJumpPower = 0;
 						m_bIsCliming = true;
+						//m_ComTexture->Change_TextureLayer_Wait(TEXT("pull_down"),12.f);
 						m_ComTexture->Change_TextureLayer_ReturnToWait(TEXT("pull_down"), TEXT("climing_back"), 12.f, 12.f);
 
+						GetSingle(CGameInstance)->PlaySound(TEXT("JY_ledgeshimmy.wav"), CHANNEL_PLAYER);
 					}
 
 
@@ -496,6 +510,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 	else if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
 	{
 		m_ComTransform->Move_Right(fDeltaTime);
+
 	}
 
 	//점프
@@ -523,8 +538,9 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 		m_bIsJumped++;
 		m_bIsCliming = false;
 		m_ComTransform->MovetoDir(_float3(0, 1.f, 0), fDeltaTime);
+		GetSingle(CGameInstance)->PlaySound(TEXT("JY_Player_jump.wav"), CHANNEL_PLAYER);
 	}
-
+	
 	return S_OK;
 }
 
@@ -548,13 +564,24 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 			if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press || pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
 			{
 				m_ComTexture->Change_TextureLayer_Wait(TEXT("carrywalk"));
+
+				if (_int(m_NowAnimFrameTimeCheckerForSound) != _int(m_OldAnimFrameTimeCheckerForSound) &&
+					_int(m_NowAnimFrameTimeCheckerForSound) % 4 == 0)
+				{
+					
+
+					if (m_bTextureReverse)
+						GetSingle(CGameInstance)->PlaySound(TEXT("JY_step01.wav"), CHANNEL_PLAYER);
+					else
+						GetSingle(CGameInstance)->PlaySound(TEXT("JY_step03.wav"), CHANNEL_PLAYER);
+
+				}
 			}
 
 		}
 
 		return S_OK;
 	}
-
 
 
 	if (m_fNowJumpPower == 0) 
@@ -573,6 +600,15 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 					if (!(m_ComTexture->Get_IsReturnTexture()))
 					{
 						m_ComTexture->Change_TextureLayer_Wait(TEXT("climing_back"), 12.f);
+
+						if (_int(m_NowAnimFrameTimeCheckerForSound) != _int(m_OldAnimFrameTimeCheckerForSound) &&
+							_int(m_NowAnimFrameTimeCheckerForSound) % 3 == 0)
+						{
+								GetSingle(CGameInstance)->PlaySound(TEXT("JY_climbladder.wav"), CHANNEL_PLAYER);
+
+						}
+
+
 					}
 				}
 			}
@@ -604,8 +640,19 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 
 					if (m_bIsRunning)
 						m_ComTexture->Change_TextureLayer(TEXT("run"));
-					else
+					else 
 						m_ComTexture->Change_TextureLayer(TEXT("walk"));
+
+					if (_int(m_NowAnimFrameTimeCheckerForSound) != _int(m_OldAnimFrameTimeCheckerForSound) &&
+						_int(m_NowAnimFrameTimeCheckerForSound) % 3 == 0)
+					{
+
+						if (m_bTextureReverse)
+							GetSingle(CGameInstance)->PlaySound(TEXT("JY_left.wav"), CHANNEL_PLAYER);
+						else
+							GetSingle(CGameInstance)->PlaySound(TEXT("JY_right.wav"), CHANNEL_PLAYER);
+
+					}
 
 				}
 			}
@@ -803,6 +850,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 		fGravity = (m_fNowJumpPower - Time*Time * m_fJumpPower) * fDeltaTime;
 	}
 
+
 	if (!m_bIsCliming)
 	{
 
@@ -882,6 +930,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 				vResultPos.y = m_vDownstairsNear.y + 0.95f;
 				m_fNowJumpPower = 0;
 				m_bIsJumped = 0;
+				GetSingle(CGameInstance)->PlaySound(TEXT("JY_climboverladder.wav"), CHANNEL_PLAYER, 2.f);
 			}
 		}
 		else if (m_vClimingBlock != NOT_EXIST_BLOCK)
@@ -891,6 +940,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 		else 
 		{
 			m_bIsCliming = false;
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_climboverladder.wav"), CHANNEL_PLAYER, 2.f);
 			m_fNowJumpPower -= fDeltaTime * m_fJumpPower * 1.f;
 
 		}

@@ -481,14 +481,15 @@ HRESULT CPauseUI::Update_Animation(_float fTimeDelta)
 
 		}
 
-		m_vUIDesc[2].x = m_vUIDesc[1].x + 80.f; //m_vUIDesc[1].x + 170.f;// m_vUIDesc[1].x - 10.f;
+		//m_vUIDesc[2].x = m_vUIDesc[1].x + 80.f; //m_vUIDesc[1].x + 170.f;// m_vUIDesc[1].x - 10.f;
 		m_vUIDesc[2].y = m_vUIDesc[1].y - 170;
-		m_vUIDesc[3].x = m_vUIDesc[1].x + 80.f;
+		//m_vUIDesc[3].x = m_vUIDesc[1].x + 80.f;
 		m_vUIDesc[3].y = m_vUIDesc[1].y - 80;
-		m_vUIDesc[4].x = m_vUIDesc[1].x + 80.f;
+		//m_vUIDesc[4].x = m_vUIDesc[1].x + 80.f;
 		m_vUIDesc[4].y = m_vUIDesc[1].y + 10;
-		m_vUIDesc[5].x = m_vUIDesc[1].x + 80.f;
+		//m_vUIDesc[5].x = m_vUIDesc[1].x + 80.f;
 		m_vUIDesc[5].y = m_vUIDesc[1].y + 100;
+
 		m_vUIDesc[6].x = m_vUIDesc[1].x - 90.f;
 		m_vUIDesc[6].y = m_vUIDesc[1].y + 190;
 		m_vUIDesc[7].x = m_vUIDesc[1].x + 95.f;

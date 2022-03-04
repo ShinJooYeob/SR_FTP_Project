@@ -779,6 +779,8 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 			m_fPassedTime = 0;
 			m_IsTurning = true;
 
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_rotateleft.wav"), CHANNEL_UI);
+
 		}
 
 		if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
@@ -793,6 +795,7 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 
 			m_fPassedTime = 0;
 			m_IsTurning = true;
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_rotateright.wav"), CHANNEL_UI);
 
 		}
 	}
@@ -808,6 +811,7 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 		if (pInstance->Get_DIKeyState(DIK_W)& DIS_Down)
 		{
 			m_fZoomInTime = 0;
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_trixellogoin.wav"), CHANNEL_UI);
 		}
 		else if (pInstance->Get_DIKeyState(DIK_W)& DIS_Up) 
 		{
@@ -816,7 +820,7 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 		}
 		else {
 			m_fZoomInTime += fDeltaTime;
-			m_fOrthoZoomInOut = pInstance->Easing(TYPE_ElasticInOut, 16, 3, m_fZoomInTime, 2.5f);
+			m_fOrthoZoomInOut = pInstance->Easing(TYPE_QuinticOut, 16, 3, m_fZoomInTime, 2.5f);
 
 
 			if (m_fZoomInTime > 2.5f) 

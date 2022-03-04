@@ -282,7 +282,7 @@ HRESULT CTexture::Change_TextureLayer_Wait(const _tchar * tagTexureLayer, _float
 	return S_OK;
 }
 
-HRESULT CTexture::Bind_Texture_AutoFrame(_float fTimeDelta)
+HRESULT CTexture::Bind_Texture_AutoFrame(_float fTimeDelta, _float* pOutFrameCount)
 {
 	if (m_pBindedTextureLayer == nullptr)
 		return E_FAIL;
@@ -312,6 +312,8 @@ HRESULT CTexture::Bind_Texture_AutoFrame(_float fTimeDelta)
 		}
 	}
 
+	if (pOutFrameCount != nullptr)
+		*pOutFrameCount = m_fFrameTime;
 
 	return m_pBindedTextureLayer->Bind_Texture((_uint)m_fFrameTime);
 

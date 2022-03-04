@@ -40,7 +40,7 @@ public:
 	_bool Get_IsReturnTexture() { return (m_szReturnTag != nullptr); };
 	_bool Get_IsWaitTexture() { return m_bIsWaitTexture; };
 
-	HRESULT Bind_Texture_AutoFrame(_float fTimeDelta);
+	HRESULT Bind_Texture_AutoFrame(_float fTimeDelta, _float* pOutFrameCount = nullptr);
 	HRESULT Bind_Texture(_uint iTextureIndex = 0, _uint iStageIndex = 0);
 
 	_uint CurrentTextureLayerSize();
