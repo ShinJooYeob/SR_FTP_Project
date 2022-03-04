@@ -124,8 +124,10 @@ _int CPlayer::Update(_float fDeltaTime)
 	{
 		if (!m_bIsStageEnd) {
 
+			if(lstrcmp(m_ComTexture->Get_NowTextureTag(),L"hurt"))
 			if (FAILED(Input_Keyboard(fDeltaTime)))
 				return E_FAIL;
+
 
 			if (FAILED(Animation_Change(fDeltaTime)))
 				return E_FAIL;
@@ -166,10 +168,6 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
 
-	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_N) & DIS_Down) {
-		Set_StageEnd(true);
-	}
-
 
 
 	if (!m_bIsStageEnd && m_pCamera_Main->Get_EffectID() != CCamera_Main::CAM_EFT_ACTION)
@@ -178,8 +176,6 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 		if (FAILED(Set_CamPosXYZ(fDeltaTime)))
 			return E_FAIL;
 	}
-
-
 
 	//렌더링 그룹에 넣어주는 역활
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_AFTEROBJ, this)))
@@ -272,7 +268,9 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 	//
 	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Collision_StageEnd")))
 	{
-
+		if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Press) {
+			Set_StageEnd(true);
+		}
 	}
 
 

@@ -555,6 +555,7 @@ void CCamera_Main::CamViectoryEft(_bool * _IsClientQuit, CRITICAL_SECTION * _Cri
 	_float3 vRevPos = m_VictoryTurnAxis;
 	_float3 vOriCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
 	_float3 vOriCameraLookAtPos = vOriCameraPos + m_pTransform->Get_MatrixState(CTransform::STATE_LOOK);
+	_float RevAxisY = vRevPos.y;
 	vRevPos.y = vOriCameraPos.y = 0;
 
 
@@ -603,11 +604,11 @@ void CCamera_Main::CamViectoryEft(_bool * _IsClientQuit, CRITICAL_SECTION * _Cri
 
 			vNewCamPos.x = cosf(D3DXToRadian(fDegreeAngle))*fDist + vRevPos.x;
 			vNewCamPos.z = sinf(D3DXToRadian(fDegreeAngle))*fDist + vRevPos.z;
-			vNewCamPos.y = vOriCameraPos.y;
+			vNewCamPos.y = RevAxisY + (m_vCamPivot * (1 - fPassedTime / m_fTotalEftFrame)).y;
 
 
 			m_pTransform->Set_MatrixState(CTransform::STATE_POS, vNewCamPos);
-			m_pTransform->LookAt(vRevPos + m_vCamPivot*(1 - fPassedTime / m_fTotalEftFrame) + _float3(0,1.f,0));
+			m_pTransform->LookAt(vRevPos + m_vCamPivot * (1 - fPassedTime / m_fTotalEftFrame) + _float3(0, RevAxisY,0));
 			m_fOrthoZoomInOut = 3.f;
 			break;
 		}
@@ -617,12 +618,12 @@ void CCamera_Main::CamViectoryEft(_bool * _IsClientQuit, CRITICAL_SECTION * _Cri
 
 		vNewCamPos.x = cosf(D3DXToRadian(fDegreeAngle))*fDist + vRevPos.x;
 		vNewCamPos.z = sinf(D3DXToRadian(fDegreeAngle))*fDist + vRevPos.z;
-		vNewCamPos.y = vOriCameraPos.y;
+		vNewCamPos.y = RevAxisY + (m_vCamPivot * (1 - fPassedTime / m_fTotalEftFrame)).y;
 
 
 		m_pTransform->Set_MatrixState(CTransform::STATE_POS, vNewCamPos);
 
-		m_pTransform->LookAt(vRevPos + m_vCamPivot * (1- fPassedTime / m_fTotalEftFrame) + _float3(0, 1.f, 0));
+		m_pTransform->LookAt(vRevPos + m_vCamPivot * (1- fPassedTime / m_fTotalEftFrame) + _float3(0, RevAxisY, 0));
 		m_fOrthoZoomInOut = 3.f + 13.f *  (1 - fPassedTime / m_fTotalEftFrame);
 
 	}

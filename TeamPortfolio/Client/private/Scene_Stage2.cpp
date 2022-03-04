@@ -181,7 +181,7 @@ HRESULT CScene_Stage2::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
 		return E_FAIL;
 
-	_float3 ActionPos[4] = { _float3(5,5,0) ,_float3(5,-5,0) ,_float3(-5,5,0),_float3(-5,-5,0) };
+	_float3 ActionPos[5] = { _float3(0, 10.f, -2.f) ,_float3(13.f, -14.f, -15.f) ,_float3(-7.f, -10.f, -20.f),_float3(-10.f, 19.f, -12.f),_float3(0.f, 32.f, -26.f) };
 
 	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,4))
 
@@ -213,7 +213,7 @@ HRESULT CScene_Stage2::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	CUI_Result* pResult = (CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_UI_Result")));
 	if (pResult == nullptr)
 		return E_FAIL;
-	pResult->Set_MaxTime(30.f);
+	pResult->Set_MaxTime(300.f);
 
 	return S_OK;
 }

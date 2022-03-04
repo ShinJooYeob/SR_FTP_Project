@@ -383,12 +383,20 @@ HRESULT CUI_Status::Update_Animation(_float fTimeDelta)
 	if (m_fHurtedTime != 0)
 	{
 		m_fHurtedTime += fTimeDelta;
-		if (m_fHurtedTime > 1.8f)
+		if (m_fHurtedTime > 1.2f)
 		{
 			m_fHurtedTime = 0;
 			m_pPlayer->Set_PlayerLife(-1);
 		}
 	}
+
+	if (m_pPlayer->Get_PlayerLife() <=0 )
+	{
+
+		m_pPlayer->Set_StageEnd(false);
+		m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);
+	}
+
 	return S_OK	;
 }
 

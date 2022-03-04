@@ -39,6 +39,7 @@ HRESULT CScene_Stage3::Initialize()
 	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
 	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
 	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
+	FAILED_CHECK(Ready_Layer_StageEndCollsionObject(TEXT("Layer_Collision_StageEnd")));
 
 
 	// 로드된 오브젝트 정보로 그리기
@@ -283,6 +284,15 @@ HRESULT CScene_Stage3::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag
 
 	return S_OK	;
 }
+
+HRESULT CScene_Stage3::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(5.f, 64.f, -24.f)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 HRESULT CScene_Stage3::Ready_Layer_PauseUI(const _tchar * pLayerTag)
 {

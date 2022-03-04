@@ -25,14 +25,14 @@ private:
 	HRESULT Ready_Layer_Player(const _tchar* pLayerTag); 
 	HRESULT Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata);
 	HRESULT Ready_Layer_PauseUI(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Object_Star(const _tchar* pLayerTag);//º° È¹µæ
 	HRESULT Ready_Layer_PlayerStatusUI(const _tchar* pLayerTag);
 
-	HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);
+
+
+	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Object_Star(const _tchar* pLayerTag);//º° È¹µæ
 	HRESULT Ready_Layer_StageEndCollsionObject(const _tchar* pLayerTag);
-
-
+	HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);
 
 
 	D3DLIGHT9		m_Light;
