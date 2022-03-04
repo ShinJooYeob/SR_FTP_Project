@@ -198,7 +198,7 @@ HRESULT CScene_Stage1::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	CUI_Result* pResult = (CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE1, TEXT("Layer_UI_Result")));
 	if (pResult == nullptr)
 		return E_FAIL;
-	pResult->Set_MaxTime(300.f);
+	pResult->Set_MaxTime(2.f); //MAX시간을 나타냄
 
 
 	return S_OK;
@@ -233,23 +233,23 @@ HRESULT CScene_Stage1::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 {
 	CObject_Star::STARDESC StarDesc;
 
-	StarDesc.fTransform = _float3(0, 10.f, -2.f);
+	StarDesc.fTransform = _float3(0.f, 0.f, 0.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(13.f, -14.f, -15.f);
+	StarDesc.fTransform = _float3(0.f, 0.f, 0.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(-7.f, -10.f, -20.f);
+	StarDesc.fTransform = _float3(0.f, 0.f, 0.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(-10.f, 19.f, -12.f);
+	StarDesc.fTransform = _float3(0.f, 0.f, 0.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(0.f, 32.f, -26.f);
+	StarDesc.fTransform = _float3(0.f, 0.f, 0.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 	return S_OK;

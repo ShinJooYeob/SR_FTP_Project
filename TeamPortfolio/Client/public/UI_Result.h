@@ -71,6 +71,7 @@ private:
 
 
 	_float			m_fFrame = 0.f;
+	_float			m_fFrameTexture = 0.f;
 	_float4			m_vUIDesc; //결과창용
 
 	_float4			m_vButtonDesc; // 버튼용
@@ -95,6 +96,15 @@ private:
 	_bool			m_bSetupGenerate = false; //1회에 한해서 생성함
 
 
+	_float			TempY = 0;
+	_float			StartPosY = 0;
+	_float			TargetPosY = 0;
+	_float			EasingTime = 0;
+
+	_bool			EasingSwitch = false;
+
+
+	_bool			SoundSwitch = false;
 
 public:
 	static CUI_Result* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
