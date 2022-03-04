@@ -25,6 +25,10 @@ private:
 	HRESULT Ready_Layer_Player(const _tchar* pLayerTag); 
 	HRESULT Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata);
 	HRESULT Ready_Layer_PauseUI(const _tchar* pLayerTag);
+
+
+	HRESULT Ready_Layer_UI_Start(const _tchar * pLayerTag);
+
 	HRESULT Ready_Layer_PlayerStatusUI(const _tchar* pLayerTag);
 
 

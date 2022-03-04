@@ -27,6 +27,7 @@ private:
 	HRESULT Ready_Layer_PauseUI(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_PlayerStatusUI(const _tchar* pLayerTag);
 
+	HRESULT Ready_Layer_UI_Start(const _tchar * pLayerTag);
 
 
 	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);							 //==>따로 직접 플레이 시간 설정해줘야할 것들

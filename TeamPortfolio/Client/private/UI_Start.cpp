@@ -37,10 +37,6 @@ HRESULT CUI_Start::Initialize_Clone(void * pArg)
 
 	FAILED_CHECK(SetUp_UIDesc());
 
-	m_bIsClicked = false;
-	m_bIsPauseAnimFinished = true;
-
-
 	return S_OK;
 }
 void CUI_Start::Set_UI_TransformRect(_float4 vRect)
@@ -95,16 +91,12 @@ _int CUI_Start::Render()
 
 
 
-	if (!m_bIsClicked)
+	if (m_fCountFrame < 6)
 	{
 		FAILED_CHECK(First_SetUp_RenderState());
-	}
-	else
-	{
+
 		FAILED_CHECK(Second_SetUp_RenderState());
-
 	}
-
 
 
 
@@ -137,7 +129,8 @@ HRESULT CUI_Start::First_SetUp_RenderState()
 		return E_FAIL;
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
-	if (FAILED(m_ComTexture->Bind_Texture(0)))
+	FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"UI_Stage"));
+	if (FAILED(m_ComTexture->Bind_Texture(m_eNowSceneNum-4)))
 		return E_FAIL;
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
@@ -155,32 +148,37 @@ HRESULT CUI_Start::Second_SetUp_RenderState()
 
 
 	//카운트다운
-	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[1])))
-		return E_FAIL;
+	if (m_bStarton == false)
+	{
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[1])))
+			return E_FAIL;
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		return E_FAIL;
-		
-	FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"UI_Num"));
-	FAILED_CHECK(m_ComTexture->Bind_Texture(_uint(m_fWalkingFrame)));
+		if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+			return E_FAIL;
 
-	if (FAILED(m_ComVIBuffer->Render()))
-		return E_FAIL;
+		FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"UI_Num"));
+		FAILED_CHECK(m_ComTexture->Bind_Texture(_uint(m_fCountFrame)));
 
-	FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"UI_Start"));
+		if (FAILED(m_ComVIBuffer->Render()))
+			return E_FAIL;
+	}
+	
 
 	//스타트
-	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[2])))
-		return E_FAIL;
+	if (m_bStarton)
+	{
+		FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"UI_Start"));
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[2])))
+			return E_FAIL;
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		return E_FAIL;
-	if (FAILED(m_ComTexture->Bind_Texture(1)))
-		return E_FAIL;
+		if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+			return E_FAIL;
+		if (FAILED(m_ComTexture->Bind_Texture(0)))
+			return E_FAIL;
 
-	if (FAILED(m_ComVIBuffer->Render()))
-		return E_FAIL;
-
+		if (FAILED(m_ComVIBuffer->Render()))
+			return E_FAIL;
+	}
 
 
 
@@ -227,14 +225,14 @@ HRESULT CUI_Start::SetUp_UIDesc()
 	m_vUIDesc[0].w = 180;
 	//숫자 카운트다운
 	m_vUIDesc[1].x = (g_iWinCX >> 1);
-	m_vUIDesc[1].y = g_iWinCY >> 1;
+	m_vUIDesc[1].y = (g_iWinCY >> 1);
 	m_vUIDesc[1].z = 180;
 	m_vUIDesc[1].w = 180;
 	//스타트
 	m_vUIDesc[2].x = (g_iWinCX >> 1); //m_vUIDesc[1].x + 170.f;// m_vUIDesc[1].x - 10.f;
-	m_vUIDesc[2].y = (g_iWinCY >> 1) + 200;
-	m_vUIDesc[2].z = 320;
-	m_vUIDesc[2].w = 180;
+	m_vUIDesc[2].y = (g_iWinCY >> 1) ;
+	m_vUIDesc[2].z = 800;
+	m_vUIDesc[2].w = 600;
 
 
 	return S_OK;
@@ -248,53 +246,23 @@ HRESULT CUI_Start::Update_MouseButton(_float fTimeDelta)
 HRESULT CUI_Start::Update_Animation(_float fTimeDelta)
 {
 	
-		m_fWalkingFrame += fTimeDelta ;
-		if (m_fWalkingFrame > 3)
-			m_fWalkingFrame = 0;
+	m_fCountFrame += fTimeDelta ;
+	if (m_fCountFrame > 4)
+		m_bStarton = true;
 	
+	
+	if (m_bStarton&&m_fCountFrame < 6)
+	{
+		m_fStartPoint = g_iWinCX >> 1;
+		m_fTargetPoint = g_iWinCX + 400;
+		m_fDepth = -2;
+		m_fPassedTime += fTimeDelta;
+		
 
-	//if (!m_bIsPauseAnimFinished)
-	//{
-	//	m_fPassedTime += fTimeDelta;
-	//	if (m_bIsOnAnim)
-	//	{
-	//		m_vUIDesc[1].y = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_fStartPoint, m_fTargetPoint, m_fPassedTime, 1.5f);
-	//		if (m_fPassedTime > 1.5f)
-	//		{
-	//			m_vUIDesc[1].y = m_fTargetPoint;
-	//			m_bIsPauseAnimFinished = true;
-
-	//		}
-	//	}
-	//	else
-	//	{
-	//		m_vUIDesc[1].x = GetSingle(CGameInstance)->Easing(TYPE_Linear, m_fStartPoint, m_fTargetPoint, m_fPassedTime, 1.5f);
-	//		if (m_fPassedTime > 1.5f)
-	//		{
-	//			m_vUIDesc[1].x = m_fTargetPoint;
-	//			m_bIsPauseAnimFinished = true;
-	//			m_bIsClicked = false;
-	//			m_fDepth = -1;
-	//		}
-
-	//	}
-
-	//	m_vUIDesc[2].x = m_vUIDesc[1].x + 80.f; //m_vUIDesc[1].x + 170.f;// m_vUIDesc[1].x - 10.f;
-	//	m_vUIDesc[2].y = m_vUIDesc[1].y - 170;
-	//	m_vUIDesc[3].x = m_vUIDesc[1].x + 80.f;
-	//	m_vUIDesc[3].y = m_vUIDesc[1].y - 80;
-	//	m_vUIDesc[4].x = m_vUIDesc[1].x + 80.f;
-	//	m_vUIDesc[4].y = m_vUIDesc[1].y + 10;
-	//	m_vUIDesc[5].x = m_vUIDesc[1].x + 80.f;
-	//	m_vUIDesc[5].y = m_vUIDesc[1].y + 100;
-	//	m_vUIDesc[6].x = m_vUIDesc[1].x - 90.f;
-	//	m_vUIDesc[6].y = m_vUIDesc[1].y + 190;
-	//	m_vUIDesc[7].x = m_vUIDesc[1].x + 95.f;
-	//	m_vUIDesc[7].y = m_vUIDesc[1].y + 190;
-	//	m_vUIDesc[8].x = m_vUIDesc[1].x;
-	//	m_vUIDesc[8].y = m_vUIDesc[1].y + 240;
-	//}
-
+			m_vUIDesc[2].x = GetSingle(CGameInstance)->Easing(TYPE_ElasticInOut, m_fStartPoint, m_fTargetPoint, m_fPassedTime, 2.f);
+			m_vUIDesc[0].x = g_iWinCX -(m_vUIDesc[2].x);
+	}
+	
 
 	return S_OK;
 }

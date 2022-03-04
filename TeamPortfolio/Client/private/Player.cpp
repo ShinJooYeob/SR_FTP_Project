@@ -493,7 +493,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 		m_ComTransform->Move_Right(fDeltaTime);
 	}
 
-	if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
+	else if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
 	{
 		m_ComTransform->Move_Right(fDeltaTime);
 	}

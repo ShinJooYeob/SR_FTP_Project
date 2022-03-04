@@ -202,6 +202,9 @@
     <Filter Include="01.GameObject\Collision_Object">
       <UniqueIdentifier>{5cc78058-c685-4993-917a-aee0d4dea0c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Npc">
+      <UniqueIdentifier>{bf73a1f5-b1ee-4a42-ba87-e4968c5b4c9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -391,6 +394,9 @@
     <ClInclude Include="..\public\Collision_Object.h">
       <Filter>01.GameObject\Collision_Object</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Npc.h">
+      <Filter>01.GameObject\Npc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -567,6 +573,9 @@
     <ClCompile Include="..\private\Object_Star.cpp" />
     <ClCompile Include="..\private\Collision_Object.cpp">
       <Filter>01.GameObject\Collision_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Npc.cpp">
+      <Filter>01.GameObject\Npc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

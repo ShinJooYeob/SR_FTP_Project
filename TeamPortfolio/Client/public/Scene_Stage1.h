@@ -28,6 +28,8 @@ private:
 	HRESULT Ready_Layer_PlayerStatusUI(const _tchar* pLayerTag);
 
 
+	HRESULT Ready_Layer_UI_Start(const _tchar * pLayerTag);
+
 	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);							//==>따로 직접 위치 좌표 설정해줘야할 것들
 	HRESULT Ready_Layer_Object_Star(const _tchar* pLayerTag);//별 획득				//==>따로 직접 위치 좌표 설정해줘야할 것들
 	HRESULT Ready_Layer_StageEndCollsionObject(const _tchar* pLayerTag);			//==>따로 직접 위치 좌표 설정해줘야할 것들
