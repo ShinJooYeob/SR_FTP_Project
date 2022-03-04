@@ -82,6 +82,16 @@ _int CObject_EscalatorCube::Update(_float fTimeDelta)
 		//m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(RisingCubePos.x, RisingCubePos.y + m_fTimer, RisingCubePos.z));
 	}
 
+	if (m_bSoundCollison == true)
+	{
+		m_bSoundCollison = false;
+	}
+	else if (m_bSoundSwitch == true)
+	{
+		GetSingle(CGameInstance)->PlaySound(L"EH_EscalatorCube_Retun.wav", CHANNEL_OBJECT);
+		m_bSoundSwitch = false;
+	}
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	return _int();
@@ -134,6 +144,18 @@ _int CObject_EscalatorCube::Obsever_On_Trigger(CGameObject * pDestObjects, _floa
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Player))||!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
 	{
 		Collision_Descent(pDestObjects, fCollision_Distance, fDeltaTime);
+
+		if(m_bSoundCollison == false)
+		{
+			if (m_bSoundSwitch == false)
+			{
+				GetSingle(CGameInstance)->PlaySound(L"EH_EscalatorCube_advance.wav", CHANNEL_OBJECT);
+
+				m_bSoundSwitch = true;
+			}
+
+			m_bSoundCollison = true;
+		}
 	}
 
 	return _int();
@@ -149,11 +171,10 @@ _int CObject_EscalatorCube::Collision_Descent(CGameObject * pDestObjects, _float
 	{
 		CTransform* DestTransform = (CTransform*)pDestObjects->Get_Component(TAG_COM(Com_Transform));
 		_float3 CubeToTargetDist = DestTransform->Get_MatrixState(CTransform::STATE_POS) - RisingCubePos;
-
-
 		m_ComTransform->MovetoTarget(m_EscalatorDesc.vEndPos, fDeltaTime);
 
 		RisingCubePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+
 
 
 		DestTransform->Set_MatrixState(CTransform::STATE_POS, RisingCubePos + CubeToTargetDist);

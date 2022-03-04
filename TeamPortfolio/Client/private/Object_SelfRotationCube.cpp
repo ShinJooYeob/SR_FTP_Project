@@ -75,6 +75,7 @@ _int CObject_SelfRotationCube::LateUpdate(_float fTimeDelta)
 			seconds = 0;
 			m_RotAngle = m_RotAngle + 90;  //각도를 돌렸으니 m_RotAngle에 넣어준다. 이걸 넣어주지 않는다면 계속 초기화가 된다.
 			TempAngle = m_RotAngle;//시간이 끝날 때 오차가 발생하기 때문에 타겟앵글로 한번 더 예외처리를 해준다. 지금 세컨드를 float으로 받고 델타도 사실 일정하지 않기 때문
+			GetSingle(CGameInstance)->PlaySound(L"EH_SelfRotationCube.wav", CHANNEL_OBJECT);
 		}
 		
 		///////////////////////////임의의 축,       라디안

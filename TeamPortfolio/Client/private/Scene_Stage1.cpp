@@ -60,6 +60,9 @@ HRESULT CScene_Stage1::Initialize()
 	}
 	SpecialCubeList.clear();
 
+
+	//FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"EH_Spiral_of_Secrets.mp3")));
+
 	return S_OK;
 }
 
@@ -67,6 +70,7 @@ _int CScene_Stage1::Update(_float fDeltaTime)
 {
 	if (__super::Update(fDeltaTime) < 0)
 		return -1;
+
 
 	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
 		if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
@@ -169,9 +173,9 @@ HRESULT CScene_Stage1::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
 		return E_FAIL;
 
-	_float3 ActionPos[4] = { _float3(5,5,0) ,_float3(5,-5,0) ,_float3(-5,5,0),_float3(-5,-5,0) };
+	_float3 ActionPos[5] = { _float3(10.f, 40.f, 10.f) ,_float3(20.f, 42.f, -1.f) ,_float3(35.f, 46.f, -32.f),_float3(63.f, 60.f, 65.f),_float3(21.f, 64.f, -3.f) };
 
-	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,4))
+	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,5))
 
 
 	pMainCam->Set_NowSceneNum(SCENE_STAGE1);
@@ -199,7 +203,7 @@ HRESULT CScene_Stage1::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	CUI_Result* pResult = (CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE1, TEXT("Layer_UI_Result")));
 	if (pResult == nullptr)
 		return E_FAIL;
-	pResult->Set_MaxTime(2.f); //MAX시간을 나타냄
+	pResult->Set_MaxTime(300.f); //MAX시간을 나타냄
 
 
 	return S_OK;
@@ -242,25 +246,26 @@ HRESULT CScene_Stage1::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 {
 	CObject_Star::STARDESC StarDesc;
 
-	StarDesc.fTransform = _float3(0.f, 0.f, 0.f);
+	StarDesc.fTransform = _float3(10.f, 40.f, 10.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(0.f, 0.f, 0.f);
+	StarDesc.fTransform = _float3(20.f, 42.f, -1.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(0.f, 0.f, 0.f);
+	StarDesc.fTransform = _float3(35.f, 46.f, -32.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(0.f, 0.f, 0.f);
+	StarDesc.fTransform = _float3(63.f, 60.f, 65.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(0.f, 0.f, 0.f);
+	StarDesc.fTransform = _float3(21.f, 64.f, -3.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
+
 	return S_OK;
 }
 

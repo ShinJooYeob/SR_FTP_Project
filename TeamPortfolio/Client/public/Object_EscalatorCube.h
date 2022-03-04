@@ -61,6 +61,10 @@ private:
 	_bool					m_bCollisionSwitch = false;
 
 
+	_bool					m_bSoundSwitch = false;
+	_bool					m_bSoundCollison = false;
+
+
 	ESCALATORDESC			m_EscalatorDesc;
 
 public:

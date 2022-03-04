@@ -107,6 +107,8 @@ public:
 
 	_float					StageBestClear[SCENE_END];
 
+	_bool					m_bFixSoundSwitch = false;
+
 private:
 	HRESULT			SetUp_Components();
 
