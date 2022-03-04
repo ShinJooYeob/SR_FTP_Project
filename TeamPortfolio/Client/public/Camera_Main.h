@@ -42,7 +42,7 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 	virtual HRESULT ReInitialize(_float3* ActionPointArr, _uint iArrSize);
-	void Set_VictoryTurnAxis(_float3 vVictoryTurnAxis) { m_VictoryTurnAxis = vVictoryTurnAxis; };
+	void Set_VictoryTurnAxis(_float3 vVictoryTurnAxis, _float3 vCamPivot) { m_VictoryTurnAxis = vVictoryTurnAxis; m_vCamPivot = vCamPivot; };
 
 	void		CameraEffect(CameraEffectID eEffect,_float fTimeDelta, _float fTotalFrame = 1.f);
 
@@ -91,6 +91,7 @@ private:
 	_float3*				m_ActionTargetPos = nullptr;
 
 	_float3					m_VictoryTurnAxis = NOT_EXIST_BLOCK;
+	_float3					m_vCamPivot = NOT_EXIST_BLOCK;
 	_uint					m_iActionArrSize = 0;
 private:
 	HRESULT			SetUp_DefaultLookAtAxis(void* pArg);

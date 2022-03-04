@@ -135,8 +135,12 @@ HRESULT CUI_Status::First_SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	_uint iAlpha = (m_pResult->Get_NowTime()) / (_float)m_fTotalTimerTime * 255.f;
-	if (iAlpha > 255)
+	if (iAlpha >= 254)
+	{
 		iAlpha = 255;
+		m_pPlayer->Set_StageEnd(false);
+		m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);
+	}
 	if (iAlpha < 0)
 		iAlpha = 0;
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, iAlpha);

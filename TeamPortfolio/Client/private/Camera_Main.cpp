@@ -178,6 +178,7 @@ HRESULT CCamera_Main::ReInitialize(_float3* ActionPointArr, _uint iArrSize)
 	m_iActionArrSize = iArrSize + 1;
 
 	m_VictoryTurnAxis = NOT_EXIST_BLOCK;
+	m_fOrthoZoomInOut = 16.f;
 
 	return S_OK;
 }
@@ -188,8 +189,11 @@ HRESULT CCamera_Main::ReInitialize(_float3* ActionPointArr, _uint iArrSize)
 
 void CCamera_Main::CameraEffect(CameraEffectID eEffect,_float fTimeDelta, _float fTotalFrame)
 {
-	if (m_eEffectID != CAM_EFT_END || eEffect >= CAM_EFT_END)
-		return;
+	if (m_eEffectID != CAM_EFT_VICTORY) {
+
+		if (m_eEffectID != CAM_EFT_END || eEffect >= CAM_EFT_END)
+			return;
+	}
 
 	m_eEffectID = eEffect;
 	m_fTimeDelta = fTimeDelta;
@@ -298,15 +302,22 @@ void CCamera_Main::FadeIn(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 	_float fPassedTime = 0;
 	_uint  interpolationValue = 0;
-	DWORD SleepTime = DWORD(g_fDeltaTime * 1000);
+
+	DWORD  NowTick = GetTickCount();
+	DWORD  OldTick = NowTick;
 
 	while (true)
 	{
 		if (*_IsClientQuit == true)
 			return;
 
-		Sleep(DWORD(g_fDeltaTime * 1000));
-		fPassedTime += g_fDeltaTime;
+		NowTick = GetTickCount();
+
+		if ((NowTick - OldTick) < g_fDeltaTime * 1000)
+			continue;
+		fPassedTime += (NowTick - OldTick)*0.001f;
+		OldTick = GetTickCount();
+
 		interpolationValue = (_uint)pInstance->Easing(0, 0, 255.f, fPassedTime, m_fTotalEftFrame);
 
 		if (fPassedTime >= m_fTotalEftFrame)
@@ -339,15 +350,22 @@ void CCamera_Main::FadeOut(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 	_float fPassedTime = 0;
 	_uint  interpolationValue = 0;
-	DWORD SleepTime = DWORD(g_fDeltaTime * 1000);
+
+	DWORD  NowTick = GetTickCount();
+	DWORD  OldTick = NowTick;
 
 	while (true)
 	{
 		if (*_IsClientQuit == true)
 			return;
 
-		Sleep(DWORD(g_fDeltaTime * 1000));
-		fPassedTime += g_fDeltaTime;
+		NowTick = GetTickCount();
+
+		if ((NowTick - OldTick) < g_fDeltaTime * 1000)
+			continue;
+		fPassedTime += (NowTick - OldTick)*0.001f;
+		OldTick = GetTickCount();
+
 		interpolationValue = (_uint)pInstance->Easing(0,255.f, 0, fPassedTime, m_fTotalEftFrame);
 
 
@@ -399,15 +417,24 @@ void CCamera_Main::HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 	_float fPassedTime = 0;
 	_uint  interpolationValue = 0;
-	DWORD SleepTime = DWORD(g_fDeltaTime * 1000);
+
+	DWORD  NowTick = GetTickCount();
+	DWORD  OldTick = NowTick;
 
 	while (true)
 	{
 		if (*_IsClientQuit == true)
 			return;
 
-		Sleep(DWORD(g_fDeltaTime * 1000));
-		fPassedTime += g_fDeltaTime;
+		NowTick = GetTickCount();
+
+		if ((NowTick - OldTick) < g_fDeltaTime * 1000)
+			continue;
+		fPassedTime += (NowTick - OldTick)*0.001f;
+		OldTick = GetTickCount();
+
+
+
 		interpolationValue = (_uint)pInstance->Easing(0, 120.f, 0, fPassedTime, m_fTotalEftFrame);
 
 
@@ -429,6 +456,7 @@ void CCamera_Main::HitEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 	m_eEffectID = CCamera_Main::CAM_EFT_END;
 	LeaveCriticalSection(_CriSec);
 	return;
+
 }
 
 void CCamera_Main::CamAction(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
@@ -475,9 +503,9 @@ void CCamera_Main::CamAction(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 	fPassedTime = 0;
 	while (fPassedTime < 1.f)
 	{
-		Sleep(SleepTime);
 		if (*_IsClientQuit == true)
 			return;
+		Sleep(SleepTime);
 		fPassedTime += m_fTimeDelta;
 
 
@@ -506,7 +534,7 @@ void CCamera_Main::CamAction(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 
 void CCamera_Main::CamViectoryEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
 {
-	if (m_VictoryTurnAxis == NOT_EXIST_BLOCK)
+	if (m_VictoryTurnAxis == NOT_EXIST_BLOCK || m_vCamPivot == NOT_EXIST_BLOCK)
 	{
 		EnterCriticalSection(_CriSec);
 		m_eEffectID = CCamera_Main::CAM_EFT_END;
@@ -515,8 +543,15 @@ void CCamera_Main::CamViectoryEft(_bool * _IsClientQuit, CRITICAL_SECTION * _Cri
 	}
 
 	CGameInstance* pInstance = GetSingle(CGameInstance);
-	
 
+	if (abs(m_vCamPivot.x) < abs(m_vCamPivot.y) && abs(m_vCamPivot.z) < abs(m_vCamPivot.y))
+		m_vCamPivot.y = 0;
+	else if (abs(m_vCamPivot.x) < abs(m_vCamPivot.z) && abs(m_vCamPivot.y) < abs(m_vCamPivot.z))
+		m_vCamPivot.z = 0;
+	else if (abs(m_vCamPivot.z) < abs(m_vCamPivot.x) && abs(m_vCamPivot.y) < abs(m_vCamPivot.x))
+		m_vCamPivot.y = 0;
+
+	//m_vCamPivot = m_vCamPivot.Get_Nomalize() * 3.f;
 	_float3 vRevPos = m_VictoryTurnAxis;
 	_float3 vOriCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
 	_float3 vOriCameraLookAtPos = vOriCameraPos + m_pTransform->Get_MatrixState(CTransform::STATE_LOOK);
@@ -532,37 +567,48 @@ void CCamera_Main::CamViectoryEft(_bool * _IsClientQuit, CRITICAL_SECTION * _Cri
 
 	StartAngle = D3DXToDegree(StartAngle);
 
-	//if (vOriCameraPos.z < vRevPos.z)
-	//	StartAngle = 360.f - StartAngle;
+	if (vOriCameraPos.z < vRevPos.z)
+		StartAngle = 360.f - StartAngle;
 
 	vOriCameraPos = m_pTransform->Get_MatrixState(CTransform::STATE_POS);
 	_float TargetAngle = StartAngle + 1080;
 	_float fPassedTime = 0;
 
+
+
+	DWORD  NowTick = GetTickCount();
+	DWORD  OldTick = NowTick;
+
 	while (true)
 	{
-
 		if (*_IsClientQuit == true)
 			return;
-		Sleep(DWORD(g_fDeltaTime * 1000));
-		fPassedTime += g_fDeltaTime;
+
+		NowTick = GetTickCount();
+
+		if((NowTick - OldTick) < g_fDeltaTime * 1000)
+			continue;
+		fPassedTime += (NowTick - OldTick)*0.001f;
+		OldTick = GetTickCount();
 
 
 
 		_float fDegreeAngle = pInstance->Easing(TYPE_Linear, StartAngle, TargetAngle, fPassedTime, m_fTotalEftFrame);
 
-		if (fPassedTime > m_fTotalEftFrame)
+		if (fPassedTime >= m_fTotalEftFrame)
 		{
 			fDegreeAngle = TargetAngle;
+			fPassedTime = m_fTotalEftFrame;
 			_float3 vNewCamPos;
 
 			vNewCamPos.x = cosf(D3DXToRadian(fDegreeAngle))*fDist + vRevPos.x;
-			vNewCamPos.z = -sinf(D3DXToRadian(fDegreeAngle))*fDist + vRevPos.z;
+			vNewCamPos.z = sinf(D3DXToRadian(fDegreeAngle))*fDist + vRevPos.z;
 			vNewCamPos.y = vOriCameraPos.y;
 
 
 			m_pTransform->Set_MatrixState(CTransform::STATE_POS, vNewCamPos);
-			m_pTransform->LookAt(vRevPos + _float3(0, vOriCameraPos.y, 0));
+			m_pTransform->LookAt(vRevPos + m_vCamPivot*(1 - fPassedTime / m_fTotalEftFrame) + _float3(0,1.f,0));
+			m_fOrthoZoomInOut = 3.f;
 			break;
 		}
 
@@ -570,13 +616,14 @@ void CCamera_Main::CamViectoryEft(_bool * _IsClientQuit, CRITICAL_SECTION * _Cri
 		_float3 vNewCamPos;
 
 		vNewCamPos.x = cosf(D3DXToRadian(fDegreeAngle))*fDist + vRevPos.x;
-		vNewCamPos.z = -sinf(D3DXToRadian(fDegreeAngle))*fDist + vRevPos.z;
+		vNewCamPos.z = sinf(D3DXToRadian(fDegreeAngle))*fDist + vRevPos.z;
 		vNewCamPos.y = vOriCameraPos.y;
 
 
 		m_pTransform->Set_MatrixState(CTransform::STATE_POS, vNewCamPos);
 
-		m_pTransform->LookAt(vRevPos +_float3(0,vOriCameraPos.y,0));
+		m_pTransform->LookAt(vRevPos + m_vCamPivot * (1- fPassedTime / m_fTotalEftFrame) + _float3(0, 1.f, 0));
+		m_fOrthoZoomInOut = 3.f + 13.f *  (1 - fPassedTime / m_fTotalEftFrame);
 
 	}
 
@@ -691,24 +738,24 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 
-	/*
+	
 
-		if (pInstance->Get_DIKeyState(DIK_1) & DIS_Down)
-		{
-			CameraEffect(CCamera_Main::CAM_EFT_FADE_IN, fDeltaTime);
-		}
-		if (pInstance->Get_DIKeyState(DIK_2) & DIS_Down)
-		{
-			CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, fDeltaTime);
-		}
-		if (pInstance->Get_DIKeyState(DIK_3) & DIS_Down)
-		{
-			CameraEffect(CCamera_Main::CAM_EFT_SHAKE, fDeltaTime);
-		}
-		if (pInstance->Get_DIKeyState(DIK_4) & DIS_Down)
-		{
-			CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
-		}	*/
+		//if (pInstance->Get_DIKeyState(DIK_1) & DIS_Down)
+		//{
+		//	CameraEffect(CCamera_Main::CAM_EFT_FADE_IN, fDeltaTime);
+		//}
+		//if (pInstance->Get_DIKeyState(DIK_2) & DIS_Down)
+		//{
+		//	CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, fDeltaTime);
+		//}
+		//if (pInstance->Get_DIKeyState(DIK_3) & DIS_Down)
+		//{
+		//	CameraEffect(CCamera_Main::CAM_EFT_SHAKE, fDeltaTime);
+		//}
+		//if (pInstance->Get_DIKeyState(DIK_4) & DIS_Down)
+		//{
+		//	CameraEffect(CCamera_Main::CAM_EFT_HIT, fDeltaTime);
+		//}	
 	if (pInstance->Get_DIKeyState(DIK_5) & DIS_Down)
 	{
 		CameraEffect(CCamera_Main::CAM_EFT_ACTION, fDeltaTime);

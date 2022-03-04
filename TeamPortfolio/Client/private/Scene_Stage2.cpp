@@ -213,7 +213,7 @@ HRESULT CScene_Stage2::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	CUI_Result* pResult = (CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_UI_Result")));
 	if (pResult == nullptr)
 		return E_FAIL;
-	pResult->Set_MaxTime(300.f);
+	pResult->Set_MaxTime(30.f);
 
 	return S_OK;
 }

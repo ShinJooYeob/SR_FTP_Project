@@ -39,6 +39,7 @@ private:
 public:
 	void		Button_Picking();
 	void		Set_Clear(_bool _bClear);
+	void		Set_Clear_Wait_AnimTime(_bool bIsClear, _float MaxAnimTime);
 	HRESULT		Ready_Layer_RankStar(const _tchar * pLayerTag);
 	void		Set_RankStar();
 
@@ -63,6 +64,11 @@ private:
 private:
 	map<const _tchar*, CUI*>			m_UIButtonList;
 	map<const _tchar*, CUI*>			m_UIPrototypes;
+
+	_float			m_fForPlayerAnimationMaxTime = 0;
+	_float			m_fPlayerAnimFrame = 0;
+	_bool			m_bAfterAnimIsClear = false;		//플레이어 애니메이션 이후 클리어로 만들건지 실패로 만들건지 여부를 판단할 변수
+
 
 	_float			m_fFrame = 0.f;
 	_float4			m_vUIDesc; //결과창용

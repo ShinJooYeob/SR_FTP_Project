@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\public\Player.h"
 #include "Camera_Main.h"
+#include "UI_Result.h"
 
 
 
@@ -327,21 +328,25 @@ const _tchar * CPlayer::Get_NowTextureTag()
 
 HRESULT CPlayer::Set_StageEnd(_bool IsWin)
 {
+	if (!m_bIsStageEnd) {
 
-	if (IsWin)
-	{
-		m_bIsStageEnd = 1;
-		m_ComTexture->Change_TextureLayer(TEXT("victory"), 10.f);
-		m_pCamera_Main->Set_VictoryTurnAxis(m_ComTransform->Get_MatrixState(CTransform::STATE_POS));
-		m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_VICTORY, g_fDeltaTime,5.f);
+		if (IsWin)
+		{
+			m_bIsStageEnd = 1;
+			m_ComTexture->Change_TextureLayer(TEXT("victory"), 10.f);
+			m_pCamera_Main->Set_VictoryTurnAxis(m_ComTransform->Get_MatrixState(CTransform::STATE_POS), m_vCameraPivot);
+			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_VICTORY, g_fDeltaTime, 5.f);
+			((CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")))->Set_Clear_Wait_AnimTime(true,7.f);
+
+		}
+		else
+		{
+			m_bIsStageEnd = 2;
+			m_ComTexture->Change_TextureLayer_Wait(TEXT("die"), 10.f);
+
+		}
+
 	}
-	else
-	{
-		m_bIsStageEnd = 2;
-		m_ComTexture->Change_TextureLayer_Wait(TEXT("die"), 10.f);
-
-	}
-
 	return S_OK;
 
 }

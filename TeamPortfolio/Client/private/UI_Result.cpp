@@ -83,6 +83,17 @@ _int CUI_Result::Update(_float fDeltaTime)
 		TempMinutes = m_fTimer / 60;
 		TempSeconds = (_uint)m_fTimer % 60;
 	}
+	else 
+	{
+		m_fPlayerAnimFrame += fDeltaTime;
+		if (m_fPlayerAnimFrame > m_fForPlayerAnimationMaxTime) {
+			if (m_bAfterAnimIsClear)
+				m_bClear = true;
+			else
+				m_fTimer = m_fMaxTime + 1.f;
+
+		}
+	}
 
 
 	if (m_fTimer > m_fMaxTime || m_bClear == true)
@@ -545,6 +556,13 @@ void CUI_Result::Button_Picking()
 void CUI_Result::Set_Clear(_bool _bClear)
 {
 	m_bClear = _bClear;
+}
+
+void CUI_Result::Set_Clear_Wait_AnimTime(_bool bIsClear, _float MaxAnimTime)
+{
+	m_bStopSwitch = true;
+	m_fForPlayerAnimationMaxTime = MaxAnimTime;
+	m_bAfterAnimIsClear = bIsClear;
 }
 
 CUI_Result * CUI_Result::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
