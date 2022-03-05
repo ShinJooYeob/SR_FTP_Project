@@ -45,9 +45,9 @@ private:
 
 
 
-
+private:
 	D3DLIGHT9		m_Light;
-
+	static _float3			m_StageReturnBlock;
 public:
 	static CScene_StageSelect* Create(LPDIRECT3DDEVICE9 GraphicDevice);
 	virtual void Free() override;

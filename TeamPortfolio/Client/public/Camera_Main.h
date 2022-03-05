@@ -7,6 +7,8 @@ BEGIN(Client)
 
 class CCamera_Main :public CCamera
 {
+public:
+
 	enum CameraLookStateID
 	{
 		Look_Left_Axis,
@@ -15,7 +17,6 @@ class CCamera_Main :public CCamera
 		Look_Front_Axis
 	};
 
-public:
 	enum CameraEffectID
 	{
 		CAM_EFT_FADE_IN,
@@ -53,7 +54,7 @@ public:
 	HRESULT Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelta);
 	HRESULT Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDelta);
 
-	HRESULT			Reset_LookAtAxis(void* pArg);
+	HRESULT			Reset_LookAtAxis(void* pArg, CameraLookStateID LookDir = Look_Front_Axis);
 public:
 	_bool	Get_bIsTuring() { return m_IsTurning; };
 

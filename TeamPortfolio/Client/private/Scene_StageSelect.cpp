@@ -9,7 +9,7 @@
 #include "Object_Star.h"
 #include "Collision_Object_StageEntry.h"
 
-
+_float3		CScene_StageSelect::m_StageReturnBlock =NOT_EXIST_BLOCK; 
 
 CScene_StageSelect::CScene_StageSelect(LPDIRECT3DDEVICE9 GraphicDevice)
 	:CScene(GraphicDevice)
@@ -41,10 +41,10 @@ HRESULT CScene_StageSelect::Initialize()
 
 
 
-	if (FAILED(Ready_Layer_Object_PortalCube(TEXT("Layer_PotalCube"))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Object_PortalCube(TEXT("Layer_PotalCube"))))
+	//	return E_FAIL;
+	//if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
+	//	return E_FAIL;
 
 
 	//if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
@@ -122,18 +122,21 @@ _int CScene_StageSelect::Update(_float fDeltaTime)
 		{
 			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
+			m_StageReturnBlock = _float3(12, 5, 6);
 			break;
 		}
 		case SCENEID::SCENE_STAGE2:
 		{
 			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
+			m_StageReturnBlock = _float3(6, 8, 14);
 			break;
 		}
 		case SCENEID::SCENE_STAGE3:
 		{
 			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE3), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
+			m_StageReturnBlock = _float3(13, 15, 13);
 			break;
 		}
 		}
@@ -259,7 +262,12 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	CCamera::CAMERADESC CameraDesc;
 
 	CameraDesc.bIsOrtho = true;
-	CameraDesc.vWorldRotAxis = _float3(0.f, 3.f, 0.f);
+
+	if (m_StageReturnBlock != NOT_EXIST_BLOCK)
+		CameraDesc.vWorldRotAxis = m_StageReturnBlock + _float3(0.f, 3.f, 0.f);
+	else
+		CameraDesc.vWorldRotAxis = _float3(0.f, 3.f, 0.f);
+
 	CameraDesc.vAxisY = _float3(0, 1, 0);
 	CameraDesc.fFovy = D3DXToRadian(60.0f);
 	CameraDesc.fAspect = _float(g_iWinCX) / g_iWinCY;
@@ -274,8 +282,22 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	if (pMainCam == nullptr)
 		return E_FAIL;
 
-	if(FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
-		return E_FAIL;
+	if (m_StageReturnBlock == _float3(6, 8, 14))
+	{
+
+		if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc, CCamera_Main::Look_Back_Axis)))
+			return E_FAIL;
+	}
+	else if (m_StageReturnBlock == _float3(13, 15, 13))
+	{
+		if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc, CCamera_Main::Look_Left_Axis)))
+			return E_FAIL;
+	}
+	else
+	{
+		if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
+			return E_FAIL;
+	}
 
 
 	_float3 ActionPos[1] = { _float3(30,-24,0) };
@@ -284,6 +306,7 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 
 		pMainCam->Set_NowSceneNum(SCENE_STAGESELECT);
 	pMainCam->CameraEffect(CCamera_Main::CAM_EFT_FADE_OUT, g_fDeltaTime, 2.5f);
+
 
 	
 	return S_OK;
@@ -303,8 +326,11 @@ HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 	}
 	else 
 	{
-		(pPlayerList->front())->ReInitialize(&_float3(0,1,0));
-
+		if (m_StageReturnBlock != NOT_EXIST_BLOCK)
+			(pPlayerList->front())->ReInitialize(&m_StageReturnBlock);
+		else
+			(pPlayerList->front())->ReInitialize(&_float3(0, 1, 0));
+		
 	}
 
 

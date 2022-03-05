@@ -66,7 +66,6 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	//	StageBestClear[i] = 100000;
 	//}
 
-	m_ComInventory->Set_Skill_LevelUP(SKILL_DUBBLEJUMP);
 	m_bIsStageEnd = 0;
 	return S_OK;
 }
@@ -74,7 +73,6 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 
 _int CPlayer::Update(_float fDeltaTime)
 {
-	m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart = false;
 
 	if (m_eNowSceneNum == SCENE_LOADING)
 		return S_FALSE;
@@ -323,7 +321,7 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 		return E_FAIL;
 	_float3 vStartPos = *(_float3*)(pArg);
 
-	m_fNowJumpPower = 0.000001f;
+	m_fNowJumpPower = 0.f;
 	m_fJumpPower = 10.f;
 	m_iPlayerLife = 3;
 
@@ -346,7 +344,19 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 
 	m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vStartPos);
-	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"), TEXT("Idle"));
+
+	if (vStartPos != _float3(0, 1, 0))
+	{
+		m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("exit"), TEXT("Idle"), 9.f);
+		GetSingle(CGameInstance)->PlaySound(TEXT("JY_exitdoor.wav"), CHANNEL_PLAYER, 1.f); 
+	}
+	else
+	{
+		m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("wakeup"), TEXT("Idle"));
+
+	}
+
+
 	return S_OK;
 }
 
@@ -388,8 +398,6 @@ HRESULT CPlayer::Set_StageEnd(_int IsKindsOfEnd)
 			m_bIsStageEnd = 3;
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("enter"), 8.f);
 			GetSingle(CGameInstance)->PlaySound(TEXT("JY_enterdoor.wav"), CHANNEL_PLAYER, 1.f);
-			//m_ComTexture->Change_TextureLayer_Wait(TEXT("exit"), 9.f);
-			//GetSingle(CGameInstance)->PlaySound(TEXT("JY_exitdoor.wav"), CHANNEL_PLAYER, 1.f); 
 
 			break;
 		default:

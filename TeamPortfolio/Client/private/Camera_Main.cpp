@@ -249,7 +249,7 @@ HRESULT CCamera_Main::Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDel
 	return S_OK;
 }
 
-HRESULT CCamera_Main::Reset_LookAtAxis(void * pArg)
+HRESULT CCamera_Main::Reset_LookAtAxis(void * pArg, CameraLookStateID LookDir)
 {
 	if (pArg == nullptr && m_pGraphicDevice == nullptr && m_pTransform == nullptr)
 		return E_FAIL;
@@ -257,13 +257,31 @@ HRESULT CCamera_Main::Reset_LookAtAxis(void * pArg)
 
 	memcpy(&m_CameraDesc, pArg, sizeof(CAMERADESC));
 
-	
+	m_eLoookState = LookDir;
 
 	m_pTransform->Set_TransformDesc(m_CameraDesc.TransformDesc);
 
 
 	m_CameraDesc.vEye = m_CameraDesc.vWorldRotAxis;
-	m_CameraDesc.vEye.z -= 20;
+
+	switch (m_eLoookState)
+	{
+	case Client::CCamera_Main::Look_Left_Axis:
+		m_CameraDesc.vEye.x += 20;
+		break;
+	case Client::CCamera_Main::Look_Back_Axis:
+		m_CameraDesc.vEye.z += 20;
+		break;
+	case Client::CCamera_Main::Look_Right_Axis:
+		m_CameraDesc.vEye.x -= 20;
+		break;
+	case Client::CCamera_Main::Look_Front_Axis:
+		m_CameraDesc.vEye.z -= 20;
+		break;
+	default:
+		break;
+	}
+
 	m_CameraDesc.vAt = m_CameraDesc.vWorldRotAxis;
 
 	_float3 vRight, vUp, vLook;
@@ -280,7 +298,7 @@ HRESULT CCamera_Main::Reset_LookAtAxis(void * pArg)
 	m_pTransform->Set_MatrixState(CTransform::STATE_POS, m_CameraDesc.vEye);
 
 
-	m_eLoookState = CameraLookStateID::Look_Front_Axis;
+	//m_eLoookState = CameraLookStateID::Look_Front_Axis;
 
 
 
