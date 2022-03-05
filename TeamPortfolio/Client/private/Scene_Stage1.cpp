@@ -61,7 +61,7 @@ HRESULT CScene_Stage1::Initialize()
 	SpecialCubeList.clear();
 
 
-	//FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"EH_Spiral_of_Secrets.mp3")));
+	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"EH_Spiral_of_Secrets.mp3")));
 
 	return S_OK;
 }

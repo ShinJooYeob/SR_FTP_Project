@@ -356,6 +356,7 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 
 	}
 
+	m_ComTransform->Set_MoveSpeed(2.5f);
 
 	return S_OK;
 }
