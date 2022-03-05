@@ -68,8 +68,9 @@ HRESULT CUI_RankStar::Initialize_Clone(void * pArg)
 
 	//보간을 위한 변수
 	//TempPos = 350;
+
+	StartPosZ = 300 + m_RankStarDesc.WindowRectPos.x;
 	StartPosW = 350;
-	StartPosZ = 800;
 	TargetPosZ = 60 + m_RankStarDesc.WindowRectPos.x;
 	TargetPosW = 70 + m_RankStarDesc.WindowRectPos.y;
 	return S_OK;
@@ -88,14 +89,19 @@ _int CUI_RankStar::Update(_float fDeltaTime)
 	if (m_RankStarDesc.Time < m_fTimer)
 	{
 		EasingTime += fDeltaTime;
-		TempW = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, StartPosW, TargetPosW, EasingTime, 2.0f);
-		TempZ = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, StartPosZ, TargetPosZ, EasingTime, 2.0f);
+		TempW = GetSingle(CGameInstance)->Easing(TYPE_ElasticIn, StartPosW, TargetPosW, EasingTime, 1.0f);
+		TempZ = GetSingle(CGameInstance)->Easing(TYPE_ElasticIn, StartPosZ, TargetPosZ, EasingTime, 1.0f);
 
 		//vRect.z = Temptest + m_RankStarDesc.WindowRectPos.x;
-		if (EasingTime > 2)
+		if (EasingTime > 1)
 		{
 			TempW = TargetPosW;
 			TempZ = TargetPosZ;
+			if (m_bStarSoundSwitch == false)
+			{
+				GetSingle(CGameInstance)->PlaySound(L"EH_Starhit.wav", CHANNEL_UI);
+				m_bStarSoundSwitch = true;
+			}
 		}
 		vRect.z = TempZ;
 		vRect.w = TempW;
@@ -136,7 +142,7 @@ _int CUI_RankStar::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(m_fFrame)))
+	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(m_fFrame*4)))
 		return E_FAIL;
 
 	//if (FAILED(m_ComTexture->Bind_Texture(0)))

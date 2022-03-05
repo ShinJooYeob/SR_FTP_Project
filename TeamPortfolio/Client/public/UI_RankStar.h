@@ -70,6 +70,8 @@ private:
 	_float			TargetPosW = 0;
 	_float			TargetPosZ = 0;
 
+	_bool			m_bStarSoundSwitch = false;
+
 public:
 	static CUI_RankStar* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg = nullptr)override;

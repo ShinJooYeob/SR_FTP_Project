@@ -476,6 +476,9 @@ HRESULT CGameInstance::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _f
 {
 	NULL_CHECK_BREAK(m_pFontMgr);
 
+	
+	//GetSingle(CGameInstance)->PlaySound(L"EH_Mission_Failed.wav", CHANNEL_UI);
+
 	return m_pFontMgr->Render_UI_Font(szString, vOnWindowPos, vFontSize, Color_RGB, UntilDrawIndex);
 }
 

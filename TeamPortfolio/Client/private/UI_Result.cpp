@@ -88,11 +88,11 @@ _int CUI_Result::Update(_float fDeltaTime)
 	//	m_bClear = true;
 	//}
 
-	//if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
-	//{
-	//	m_bClear = true;
-	//	m_bAfterAnimIsClear = true;
-	//}
+	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
+	{
+		m_bClear = true;
+		m_bAfterAnimIsClear = true;
+	}
 
 	if (m_bStopSwitch == false)
 	{
@@ -151,6 +151,15 @@ _int CUI_Result::Update(_float fDeltaTime)
 
 				SetUp_Player();
 				m_bSetupGenerate = true;
+
+				if (m_bClear == true)
+				{
+					GetSingle(CGameInstance)->PlaySound(L"EH_cheer.mp3", CHANNEL_UI);
+				}
+				else
+				{
+					GetSingle(CGameInstance)->PlaySound(L"EH_boo.mp3", CHANNEL_UI);
+				}
 			}
 
 
@@ -456,6 +465,13 @@ HRESULT CUI_Result::SetUp_Pont()
 	//잊지마라 폰트 매니저는 렌더에서만 사용가능하다.
 	if (m_fTimer > m_fMaxTime || m_bClear == true)
 	{
+
+		//텍스쳐 소리를 관리함
+		if (m_fFrameTexture > m_iOldFrameTexture + 1 && SoundSwitch == false)
+		{
+			GetSingle(CGameInstance)->PlaySound(L"EH_Text.wav", CHANNEL_UI);
+			m_iOldFrameTexture = m_fFrameTexture;
+		}
 		if (m_fTimer > m_fMaxTime)
 		{
 			/*보관용
