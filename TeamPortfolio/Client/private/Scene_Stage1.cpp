@@ -61,7 +61,7 @@ HRESULT CScene_Stage1::Initialize()
 	SpecialCubeList.clear();
 
 
-	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"EH_Spiral_of_Secrets.mp3")));
+	//FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"EH_Spiral_of_Secrets.mp3")));
 
 	return S_OK;
 }
@@ -72,10 +72,10 @@ _int CScene_Stage1::Update(_float fDeltaTime)
 		return -1;
 
 
-	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
-		if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
-			return E_FAIL;
-	}
+	//if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
+	//	if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
+	//		return E_FAIL;
+	//}
 
 	if (m_bScene_Switch == true)
 	{
@@ -246,25 +246,48 @@ HRESULT CScene_Stage1::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 {
 	CObject_Star::STARDESC StarDesc;
 
-	StarDesc.fTransform = _float3(10.f, 40.f, 10.f);
+	//테스트중
+	StarDesc.fTransform = _float3(2.f, 1.f, 0.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(20.f, 42.f, -1.f);
+	StarDesc.fTransform = _float3(4.f, 1.f, 0.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(35.f, 46.f, -32.f);
+	StarDesc.fTransform = _float3(5.f, 1.f, 0.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(63.f, 60.f, 65.f);
+	StarDesc.fTransform = _float3(6.f, 1.f, 0.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(21.f, 64.f, -3.f);
+	StarDesc.fTransform = _float3(3.f, 1.f, 0.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
+
+
+
+	//StarDesc.fTransform = _float3(10.f, 40.f, 10.f);
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+	//	return E_FAIL;
+
+	//StarDesc.fTransform = _float3(20.f, 42.f, -1.f);
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+	//	return E_FAIL;
+
+	//StarDesc.fTransform = _float3(35.f, 46.f, -32.f);
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+	//	return E_FAIL;
+
+	//StarDesc.fTransform = _float3(63.f, 60.f, 65.f);
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+	//	return E_FAIL;
+
+	//StarDesc.fTransform = _float3(21.f, 64.f, -3.f);
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -299,7 +322,7 @@ HRESULT CScene_Stage1::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag
 
 HRESULT CScene_Stage1::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(5.f, 64.f, -24.f)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(23.f, 64.f, -4.f)))
 		return E_FAIL;
 
 	return S_OK;

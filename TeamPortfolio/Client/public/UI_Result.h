@@ -106,6 +106,10 @@ private:
 
 	_bool			SoundSwitch = false;
 
+	////////////////////////
+	_uint			m_iOldFrameTexture = 0;
+	_bool			m_bFrameTexture = true;
+
 public:
 	static CUI_Result* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg = nullptr)override;
