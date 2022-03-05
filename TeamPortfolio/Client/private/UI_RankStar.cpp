@@ -99,7 +99,7 @@ _int CUI_RankStar::Update(_float fDeltaTime)
 			TempZ = TargetPosZ;
 			if (m_bStarSoundSwitch == false)
 			{
-				GetSingle(CGameInstance)->PlaySound(L"EH_Starhit.wav", CHANNEL_UI);
+				GetSingle(CGameInstance)->PlaySound(L"EH_Starhit.wav", CHANNEL_OBJECT);
 				m_bStarSoundSwitch = true;
 			}
 		}

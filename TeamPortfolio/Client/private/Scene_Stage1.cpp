@@ -72,10 +72,10 @@ _int CScene_Stage1::Update(_float fDeltaTime)
 		return -1;
 
 
-	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
-		if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
-			return E_FAIL;
-	}
+	//if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
+	//	if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
+	//		return E_FAIL;
+	//}
 
 	if (m_bScene_Switch == true)
 	{
@@ -203,7 +203,7 @@ HRESULT CScene_Stage1::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	CUI_Result* pResult = (CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE1, TEXT("Layer_UI_Result")));
 	if (pResult == nullptr)
 		return E_FAIL;
-	pResult->Set_MaxTime(10.f); //MAX시간을 나타냄
+	pResult->Set_MaxTime(300.f); //MAX시간을 나타냄
 
 
 	return S_OK;
