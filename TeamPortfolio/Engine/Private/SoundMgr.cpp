@@ -61,6 +61,12 @@ int CSoundMgr::Channel_VolumeUp(CHANNELID eID, _float _vol)
 		for (_uint i = eID * m_iNumOfEachChannel; i < (eID + 1)* m_iNumOfEachChannel; i++)
 			FMOD_Channel_SetVolume(m_pChannelArr[i], m_VolumeArr[eID]);
 	}
+	if (eID == CHANNEL_EFFECT)
+	{
+		m_VolumeArr[CHANNEL_OBJECT] = _vol;
+		for (_uint i = CHANNEL_OBJECT * m_iNumOfEachChannel; i < (CHANNEL_OBJECT + 1)* m_iNumOfEachChannel; i++)
+			FMOD_Channel_SetVolume(m_pChannelArr[i], m_VolumeArr[CHANNEL_OBJECT]);
+	}
 
 	return 0;
 }
@@ -79,6 +85,14 @@ int CSoundMgr::Channel_VolumeDown(CHANNELID eID, _float _vol)
 	{
 		for (_uint i = eID * m_iNumOfEachChannel; i < (eID + 1)* m_iNumOfEachChannel; i++)
 			FMOD_Channel_SetVolume(m_pChannelArr[i], m_VolumeArr[eID]);
+	}
+
+	if (eID == CHANNEL_EFFECT)
+	{
+
+		m_VolumeArr[CHANNEL_OBJECT] = _vol;
+		for (_uint i = CHANNEL_OBJECT * m_iNumOfEachChannel; i < (CHANNEL_OBJECT + 1)* m_iNumOfEachChannel; i++)
+			FMOD_Channel_SetVolume(m_pChannelArr[i], m_VolumeArr[CHANNEL_OBJECT]);
 	}
 
 	return 0;

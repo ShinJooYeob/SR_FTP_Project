@@ -217,7 +217,7 @@ HRESULT CScene_Stage2::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	CUI_Result* pResult = (CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STAGE2, TEXT("Layer_UI_Result")));
 	if (pResult == nullptr)
 		return E_FAIL;
-	pResult->Set_MaxTime(3.f);
+	pResult->Set_MaxTime(300.f);
 
 	return S_OK;
 }
@@ -315,11 +315,11 @@ HRESULT CScene_Stage2::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag
 HRESULT CScene_Stage2::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
 {
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(0.f, 1.f, 0.f)))
-		return E_FAIL; 
-/*
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(0.f, 1.f, 0.f)))
+	//	return E_FAIL; 
+
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"),&_float3(5.f, 64.f, -24.f)))
-		return E_FAIL;*/
+		return E_FAIL;
 
 
 	return S_OK;

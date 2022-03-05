@@ -48,7 +48,7 @@ public:
 	void Set_CoolDownStart_False(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = false; }
 	void Set_CoolDownStart_True(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = true; }
 
-	HRESULT Set_StageEnd(_bool IsWin);
+	HRESULT Set_StageEnd(_int IsKindsOfEnd);
 
 
 private:

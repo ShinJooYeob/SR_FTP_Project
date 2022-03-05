@@ -245,7 +245,6 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 
 			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carryup"),TEXT("carryIdle"),12.f);
 
-			GetSingle(CGameInstance)->PlaySound(L"EH_CarryUp.wav", CHANNEL_OBJECT);
 
 			m_bIsCliming = false;
 			m_bIsRunning = false;
@@ -256,7 +255,11 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 			Safe_AddRef(m_pCarryObjectTransform);
 
 
-			GetSingle(CGameInstance)->PlaySound(TEXT("JY_dropheavypickup.wav"), CHANNEL_PLAYER, 1.f);
+			GetSingle(CGameInstance)->PlaySound(L"JY_Bulb_Flash_0.mp3", CHANNEL_OBJECT);
+			//GetSingle(CGameInstance)->PlaySound(L"EH_CarryUp.wav", CHANNEL_OBJECT);
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_Isaac_Hurt_Grunt0.mp3"), CHANNEL_PLAYER, 1.f);
+
+			//GetSingle(CGameInstance)->PlaySound(TEXT("JY_dropheavypickup.wav"), CHANNEL_PLAYER, 1.f);
 			
 		}
 		else if(m_pCarryObject != pDestObjects)
@@ -289,7 +292,14 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Collision_StageEnd")))
 	{
 		if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Press) {
-			Set_StageEnd(true);
+			Set_StageEnd(1);
+		}
+	}
+	else if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_Collision_StageEntry")))
+	{
+		if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
+
+			Set_StageEnd(2);
 		}
 	}
 
@@ -325,7 +335,8 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 	m_bIsStageEnd = 0;
 	m_bTextureReverse = false;
 	m_bIsShdow = false;
-
+	Safe_Release(m_pCarryObject);
+	m_pCarryObject = nullptr;
 	m_bIsCliming = false;
 	m_bIsRunning = false;
 
@@ -344,27 +355,46 @@ const _tchar * CPlayer::Get_NowTextureTag()
 	return m_ComTexture->Get_NowTextureTag();
 }
 
-HRESULT CPlayer::Set_StageEnd(_bool IsWin)
+HRESULT CPlayer::Set_StageEnd(_int IsKindsOfEnd)
 {
 	if (!m_bIsStageEnd) {
 
-		if (IsWin)
+
+		switch (IsKindsOfEnd)
 		{
+		case 0: // Stage End By Die
+
+			m_bIsStageEnd = 2;
+			m_ComTexture->Change_TextureLayer_Wait(TEXT("die"), 10.f);
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_isaacdies.mp3"), CHANNEL_PLAYER, 1.f);
+
+
+			break;
+
+		case 1:	// Stage End By StageClear
+
 			m_bIsStageEnd = 1;
 			m_ComTexture->Change_TextureLayer(TEXT("victory"), 10.f);
 			m_pCamera_Main->Set_VictoryTurnAxis(m_ComTransform->Get_MatrixState(CTransform::STATE_POS), m_vCameraPivot);
 			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_VICTORY, g_fDeltaTime, 5.f);
-			((CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")))->Set_Clear_Wait_AnimTime(true,7.f);
+			((CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")))->Set_Clear_Wait_AnimTime(true, 7.f);
 			GetSingle(CGameInstance)->Stop_ChannelSound(CHANNEL_BGM);
 			GetSingle(CGameInstance)->PlaySound(TEXT("JY_opentreasure.wav"), CHANNEL_PLAYER);
-		}
-		else
-		{
-			m_bIsStageEnd = 2;
-			m_ComTexture->Change_TextureLayer_Wait(TEXT("die"), 10.f);
 
-		}
+			break;
 
+		case 2:
+
+			m_bIsStageEnd = 3;
+			m_ComTexture->Change_TextureLayer_Wait(TEXT("enter"), 8.f);
+			GetSingle(CGameInstance)->PlaySound(TEXT("JY_enterdoor.wav"), CHANNEL_PLAYER, 1.f);
+			//m_ComTexture->Change_TextureLayer_Wait(TEXT("exit"), 9.f);
+			//GetSingle(CGameInstance)->PlaySound(TEXT("JY_exitdoor.wav"), CHANNEL_PLAYER, 1.f); 
+
+			break;
+		default:
+			break;
+		}
 	}
 	return S_OK;
 
@@ -435,8 +465,10 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 
 		m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carrydown"), TEXT("Idle"),12.f);
 
-		GetSingle(CGameInstance)->PlaySound(TEXT("JY_droplightpickup.wav"), CHANNEL_PLAYER, 2.f);
-		GetSingle(CGameInstance)->PlaySound(L"EH_CarryDown.wav", CHANNEL_OBJECT);
+		GetSingle(CGameInstance)->PlaySound(TEXT("JY_Box_Drop.mp3"), CHANNEL_OBJECT);
+		GetSingle(CGameInstance)->PlaySound(TEXT("JY_Isaac_Hurt_Grunt2.mp3"), CHANNEL_PLAYER, 1.f);
+
+		//GetSingle(CGameInstance)->PlaySound(L"EH_CarryDown.wav", CHANNEL_OBJECT);
 	}
 	
 	
@@ -581,9 +613,9 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 					
 
 					if (m_bTextureReverse)
-						GetSingle(CGameInstance)->PlaySound(TEXT("JY_step01.wav"), CHANNEL_PLAYER);
+						GetSingle(CGameInstance)->PlaySound(TEXT("JY_step01.wav"), CHANNEL_PLAYER, 2.f);
 					else
-						GetSingle(CGameInstance)->PlaySound(TEXT("JY_step03.wav"), CHANNEL_PLAYER);
+						GetSingle(CGameInstance)->PlaySound(TEXT("JY_step03.wav"), CHANNEL_PLAYER, 2.f);
 
 				}
 			}

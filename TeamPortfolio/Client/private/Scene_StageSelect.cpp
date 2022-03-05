@@ -7,6 +7,7 @@
 #include "Object_EscalatorCube.h"
 #include "Object_OrbitButton.h"
 #include "Object_Star.h"
+#include "Collision_Object_StageEntry.h"
 
 
 
@@ -35,15 +36,15 @@ HRESULT CScene_StageSelect::Initialize()
 	if (FAILED(Ready_Layer_UI_Common(TAG_LAY(Layer_UI_Common))))
 		return E_FAIL;
 
+	FAILED_CHECK(Ready_Layer_StageEntryCollsionObject(L"Layer_Collision_StageEntry"));
 
-	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
-		return E_FAIL;
+
 
 
 	if (FAILED(Ready_Layer_Object_PortalCube(TEXT("Layer_PotalCube"))))
 		return E_FAIL;
-
-	
+	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
+		return E_FAIL;
 
 
 	//if (FAILED(Ready_Layer_UI_Result(TEXT("Layer_UI_Result"))))
@@ -131,7 +132,7 @@ _int CScene_StageSelect::Update(_float fDeltaTime)
 		}
 		case SCENEID::SCENE_STAGE3:
 		{
-			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING)))
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE3), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
 			break;
 		}
@@ -484,6 +485,47 @@ HRESULT CScene_StageSelect::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
 		}
 
 	}
+	return S_OK;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_StageEntryCollsionObject(const _tchar * pLayerTag)
+{
+	CCollision_Object_StageEntry::STAGEENTERYDESC tDesc;
+
+
+
+	////튜토리얼 입구
+	////tDesc.vPos = _float3(6, 1, 0);
+	////tDesc.eTargetScene =0;////;
+	////if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &_float3(6, 1, 0)))
+	////	return E_FAIL;
+
+	//1스테이지 입구
+	tDesc.vPos = _float3(12, 5, 6);
+	tDesc.eTargetScene = SCENE_STAGE1;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &tDesc))
+		return E_FAIL;
+	//2스테이지 입구
+	tDesc.vPos = _float3(6, 8, 14);
+	tDesc.eTargetScene = SCENE_STAGE2;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &tDesc))
+		return E_FAIL;
+	//3스테이지 입구
+	tDesc.vPos = _float3(13, 15, 13);
+	tDesc.eTargetScene = SCENE_STAGE3;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &tDesc))
+		return E_FAIL;
+
+
+	//보스 스테이지 입구
+	//tDesc.vPos = _float3(8, -9, 7);
+	//tDesc.eTargetScene = SCENE_보스;
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &tDesc))
+	//	return E_FAIL;
+	//tDesc.vPos = _float3(9, -9, 7);
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &tDesc))
+	//	return E_FAIL;
+
 	return S_OK;
 }
 

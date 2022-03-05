@@ -138,7 +138,7 @@ HRESULT CUI_Status::First_SetUp_RenderState()
 	if (iAlpha >= 254)
 	{
 		iAlpha = 255;
-		m_pPlayer->Set_StageEnd(false);
+		m_pPlayer->Set_StageEnd(0);
 		m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);
 	}
 	if (iAlpha < 0)
@@ -393,7 +393,7 @@ HRESULT CUI_Status::Update_Animation(_float fTimeDelta)
 	if (m_pPlayer->Get_PlayerLife() <=0 )
 	{
 
-		m_pPlayer->Set_StageEnd(false);
+		m_pPlayer->Set_StageEnd(0);
 		m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);
 	}
 

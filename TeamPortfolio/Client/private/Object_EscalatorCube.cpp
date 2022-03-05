@@ -88,7 +88,7 @@ _int CObject_EscalatorCube::Update(_float fTimeDelta)
 	}
 	else if (m_bSoundSwitch == true)
 	{
-		GetSingle(CGameInstance)->PlaySound(L"EH_EscalatorCube_Retun.wav", CHANNEL_OBJECT);
+		GetSingle(CGameInstance)->PlaySound(L"EH_EscalatorCube_Retun.wav", CHANNEL_OBJECT, 2.f);
 		m_bSoundSwitch = false;
 	}
 
@@ -149,7 +149,7 @@ _int CObject_EscalatorCube::Obsever_On_Trigger(CGameObject * pDestObjects, _floa
 		{
 			if (m_bSoundSwitch == false)
 			{
-				GetSingle(CGameInstance)->PlaySound(L"EH_EscalatorCube_advance.wav", CHANNEL_OBJECT);
+				GetSingle(CGameInstance)->PlaySound(L"EH_EscalatorCube_advance.wav", CHANNEL_OBJECT, 2.f);
 
 				m_bSoundSwitch = true;
 			}

@@ -31,6 +31,10 @@ private:
 
 	HRESULT Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata);
 
+	HRESULT Ready_Layer_StageEntryCollsionObject(const _tchar* pLayerTag);
+
+
+
 	HRESULT Ready_Layer_GravityCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_JumpCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Object_PortalCube(const _tchar* pLayerTag);

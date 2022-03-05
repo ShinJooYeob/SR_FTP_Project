@@ -25,6 +25,8 @@ HRESULT CScene_Loading::Initialize(SCENEID eSceneID)
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+	GetSingle(CGameInstance)->Stop_AllChannel();
+
 	m_eNextSceneIndex = eSceneID;
 	m_pLoader = CLoader::Create(m_pGraphicDevice,eSceneID);
 

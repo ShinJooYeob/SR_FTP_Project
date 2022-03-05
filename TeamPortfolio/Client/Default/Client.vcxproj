@@ -159,6 +159,7 @@
     <ClInclude Include="..\public\Camera_Main.h" />
     <ClInclude Include="..\public\Client_Define.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
+    <ClInclude Include="..\public\Collision_Object_StageEntry.h" />
     <ClInclude Include="..\public\Collision_Object.h" />
     <ClInclude Include="..\public\LobyCube.h" />
     <ClInclude Include="..\public\LobyPlayer.h" />
@@ -222,6 +223,7 @@
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\private\Camera_Main.cpp" />
+    <ClCompile Include="..\private\Collision_Object_StageEntry.cpp" />
     <ClCompile Include="..\private\Collision_Object.cpp" />
     <ClCompile Include="..\private\LobyCube.cpp" />
     <ClCompile Include="..\private\LobyPlayer.cpp" />

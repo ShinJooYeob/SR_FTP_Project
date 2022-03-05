@@ -208,6 +208,9 @@
     <Filter Include="01.GameObject\SubObject\Object_Star">
       <UniqueIdentifier>{a63589a4-1f2b-4bdf-b067-1b1ca93f4004}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Collision_Object\StageEntry">
+      <UniqueIdentifier>{b10d5a22-d252-4491-8dfd-8c8ae9f51bbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -402,6 +405,9 @@
     <ClInclude Include="..\public\Object_Star.h">
       <Filter>01.GameObject\SubObject\Object_Star</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Collision_Object_StageEntry.h">
+      <Filter>01.GameObject\Collision_Object\StageEntry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -583,6 +589,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Object_Star.cpp">
       <Filter>01.GameObject\SubObject\Object_Star</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Collision_Object_StageEntry.cpp">
+      <Filter>01.GameObject\Collision_Object\StageEntry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
