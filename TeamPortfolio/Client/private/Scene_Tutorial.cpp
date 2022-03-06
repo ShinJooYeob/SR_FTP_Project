@@ -79,8 +79,8 @@ HRESULT CScene_Tutorial::Initialize()
 	_float3 TransformPos = _float3(5.f, 0.f, 0.f);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Blossoms", TEXT("Prototype_GameObject_Blossoms"),&TransformPos));
 	
-	TransformPos = _float3(1.f, 0.f, 0.f);
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Penguin", TEXT("Prototype_GameObject_Penguin"), &TransformPos));
+	_float3 TransformPostest = _float3(1.f, 0.f, 0.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Penguin", TEXT("Prototype_GameObject_Penguin"), &TransformPostest));
 
 	return S_OK;
 }

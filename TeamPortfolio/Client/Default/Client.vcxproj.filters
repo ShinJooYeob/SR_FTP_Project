@@ -157,32 +157,8 @@
     <Filter Include="01.GameObject\UI\UI_Result">
       <UniqueIdentifier>{79db21f3-b9c8-4442-b2f5-568cd0f0bc16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\ForLobyObject">
-      <UniqueIdentifier>{9124556a-141a-4ed0-ba2a-0cdc4459df89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\ForLobyObject\LobyCube">
-      <UniqueIdentifier>{8e188e61-e1e4-44d2-9a6f-26a62a555cfd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\ForLobyObject\LobyPlayer">
-      <UniqueIdentifier>{6a0ae343-3b91-42ce-89d2-5af6fe11926c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\ForLobyObject\LobySkyBox">
-      <UniqueIdentifier>{d302878a-d511-4722-86a6-f5e0b791e832}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\ForLobyObject\LobyUI">
-      <UniqueIdentifier>{baa5b314-a5a5-4dc8-a0f8-aed8b3e22aeb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\ForLobyObject\LobyUI\LobyScroll">
-      <UniqueIdentifier>{10cc8296-9064-4511-9d51-cfe3e4886051}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\ForLobyObject\LobyUI\LobyUI">
-      <UniqueIdentifier>{fd568e79-6727-4148-a802-fcda54358c5f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\UI\UI_Result\UI_RankStar">
       <UniqueIdentifier>{ec5de813-1b57-4c8a-9179-690f963576f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\ForLobyObject\PauseUI">
-      <UniqueIdentifier>{6ba290b6-c6ff-464f-a43e-f2b6ef4be24c}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\UI\UI_Status">
       <UniqueIdentifier>{b0d327df-b886-4fa6-a911-01336a0275ce}</UniqueIdentifier>
@@ -237,6 +213,30 @@
     </Filter>
     <Filter Include="01.GameObject\Npc\oldy">
       <UniqueIdentifier>{7435124d-0652-4ddb-865c-50949114b9c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject">
+      <UniqueIdentifier>{9124556a-141a-4ed0-ba2a-0cdc4459df89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobyCube">
+      <UniqueIdentifier>{8e188e61-e1e4-44d2-9a6f-26a62a555cfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobyPlayer">
+      <UniqueIdentifier>{6a0ae343-3b91-42ce-89d2-5af6fe11926c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobySkyBox">
+      <UniqueIdentifier>{d302878a-d511-4722-86a6-f5e0b791e832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobyUI">
+      <UniqueIdentifier>{baa5b314-a5a5-4dc8-a0f8-aed8b3e22aeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobyUI\LobyScroll">
+      <UniqueIdentifier>{10cc8296-9064-4511-9d51-cfe3e4886051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\LobyUI\LobyUI">
+      <UniqueIdentifier>{fd568e79-6727-4148-a802-fcda54358c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ForLobyObject\PauseUI">
+      <UniqueIdentifier>{6ba290b6-c6ff-464f-a43e-f2b6ef4be24c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
