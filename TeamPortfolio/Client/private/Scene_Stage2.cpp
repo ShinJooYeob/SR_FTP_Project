@@ -63,8 +63,8 @@ HRESULT CScene_Stage2::Initialize()
 	SpecialCubeList.clear();
 
 
-	GetSingle(CGameInstance)->PlayBGM(L"JY_Stage2_BGM.mp3");
-	GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.1f);
+	GetSingle(CGameInstance)->PlayBGM(L"JY_lydiandominant.wav");
+	//GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.1f);
 
 	return S_OK;
 }
