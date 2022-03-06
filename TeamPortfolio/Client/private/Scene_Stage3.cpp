@@ -41,7 +41,7 @@ HRESULT CScene_Stage3::Initialize()
 	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
 	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
 	FAILED_CHECK(Ready_Layer_StageEndCollsionObject(TEXT("Layer_Collision_StageEnd")));
-	FAILED_CHECK(Ready_Layer_Object_particle(TEXT("Layer_Particle")));
+	//FAILED_CHECK(Ready_Layer_Object_particle(TEXT("Layer_Particle")));
 
 	// 로드된 오브젝트 정보로 그리기
 	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
