@@ -35,6 +35,10 @@ CVIBuffer_Parsed * CXMLMgr::Create_ParsedObject(wstring pPosTextFilePath, wstrin
 
 HRESULT CXMLMgr::Read_ObjectFiles(CVIBuffer_Parsed** pOut, wstring pPosTextFilePath, wstring pIndexTextFilePath)
 {
+	m_PosList.clear();
+	m_UVList.clear();
+	m_IndexList.clear();
+
 	wifstream		fPosFile;
 
 	_tchar PosFilePath[MAX_PATH] =L"../Bin/Resources/ModelData/ModelVertexData/";

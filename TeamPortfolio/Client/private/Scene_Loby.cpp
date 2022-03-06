@@ -79,6 +79,11 @@ _int CScene_Loby::Update(_float fDeltaTime)
 		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE3), SCENEID::SCENE_LOADING));
 	}
 
+	if (GetKeyState(VK_F5) & 0x8000)
+	{
+		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_TUTORIAL), SCENEID::SCENE_LOADING));
+	}
+
 
 	return 0;
 }
