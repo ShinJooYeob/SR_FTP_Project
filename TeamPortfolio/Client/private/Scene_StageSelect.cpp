@@ -84,24 +84,24 @@ _int CScene_StageSelect::Update(_float fDeltaTime)
 	if (__super::Update(fDeltaTime) < 0)
 		return -1;
 
-	if (GetKeyState(VK_F1) & 0x8000)
-	{
-		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING));
-	}
-	if (GetKeyState(VK_F2) & 0x8000)
-	{
-		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING));
-	}
+	//if (GetKeyState(VK_F1) & 0x8000)
+	//{
+	//	FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING));
+	//}
+	//if (GetKeyState(VK_F2) & 0x8000)
+	//{
+	//	FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING));
+	//}
 
-	if (GetKeyState(VK_F3) & 0x8000)
-	{
-		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING));
-	}
+	//if (GetKeyState(VK_F3) & 0x8000)
+	//{
+	//	FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING));
+	//}
 
-	if (GetKeyState(VK_F4) & 0x8000)
-	{
-		FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE3), SCENEID::SCENE_LOADING));
-	}
+	//if (GetKeyState(VK_F4) & 0x8000)
+	//{
+	//	FAILED_CHECK(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE3), SCENEID::SCENE_LOADING));
+	//}
 
 	if (m_bScene_Switch == true)
 	{
@@ -138,6 +138,13 @@ _int CScene_StageSelect::Update(_float fDeltaTime)
 			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE3), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
 			m_StageReturnBlock = _float3(13, 15, 13);
+			break;
+		}
+		case SCENEID::SCENE_TUTORIAL:
+		{
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_TUTORIAL), SCENEID::SCENE_LOADING)))
+				return E_FAIL;
+			m_StageReturnBlock = _float3(6, 1, 0);
 			break;
 		}
 		}
@@ -522,10 +529,10 @@ HRESULT CScene_StageSelect::Ready_Layer_StageEntryCollsionObject(const _tchar * 
 
 
 	////튜토리얼 입구
-	////tDesc.vPos = _float3(6, 1, 0);
-	////tDesc.eTargetScene =0;////;
-	////if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &_float3(6, 1, 0)))
-	////	return E_FAIL;
+	tDesc.vPos = _float3(6, 1, 0);
+	tDesc.eTargetScene = SCENE_TUTORIAL;////;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &tDesc))
+		return E_FAIL;
 
 	//1스테이지 입구
 	tDesc.vPos = _float3(12, 5, 6);
