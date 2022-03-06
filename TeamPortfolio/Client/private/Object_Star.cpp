@@ -54,7 +54,7 @@ _int CObject_Star::Update(_float fTimeDelta)
 
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 	RELEASE_INSTANCE(CGameInstance);
-
+	
 	return _int();
 }
 

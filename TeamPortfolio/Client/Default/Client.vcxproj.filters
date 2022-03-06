@@ -226,6 +226,18 @@
     <Filter Include="01.GameObject\Particle\Manager">
       <UniqueIdentifier>{c4a665a0-33d0-42ac-975d-e82d85da76f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Npc\ivy">
+      <UniqueIdentifier>{427fc8f6-5628-4006-864b-559cc1ab6ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Npc\geezer">
+      <UniqueIdentifier>{ecfca1b5-4413-4767-893f-7ec1373a9e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Npc\izaac">
+      <UniqueIdentifier>{3802609a-2940-4579-aa91-1301f3c0f671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\Npc\oldy">
+      <UniqueIdentifier>{7435124d-0652-4ddb-865c-50949114b9c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -435,6 +447,18 @@
     <ClInclude Include="..\public\ParsedObject_Penguin.h">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Penguin</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Npc_ivy.h">
+      <Filter>01.GameObject\Npc\ivy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Npc_geezer.h">
+      <Filter>01.GameObject\Npc\geezer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Npc_izaac.h">
+      <Filter>01.GameObject\Npc\izaac</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Npc_oldy.h">
+      <Filter>01.GameObject\Npc\oldy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -631,6 +655,18 @@
     </ClCompile>
     <ClCompile Include="..\private\ParsedObject_Penguin.cpp">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Penguin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Npc_ivy.cpp">
+      <Filter>01.GameObject\Npc\ivy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Npc_geezer.cpp">
+      <Filter>01.GameObject\Npc\geezer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Npc_izaac.cpp">
+      <Filter>01.GameObject\Npc\izaac</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Npc_oldy.cpp">
+      <Filter>01.GameObject\Npc\oldy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
