@@ -119,7 +119,7 @@ CVIBuffer_Parsed * CVIBuffer_Parsed::Create(LPDIRECT3DDEVICE9 pGraphicDevice, vo
 	if (FAILED(pInstance->Initialize_Prototype(pArg))) 
 	{
 
-		MSGBOX("Failed to Creating VIBuffer_Rect Prototype");
+		MSGBOX("Failed to Creating VIBuffer_Parsed Prototype");
 		Safe_Release(pInstance);
 		return nullptr;
 	}

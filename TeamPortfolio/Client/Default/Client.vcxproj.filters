@@ -211,6 +211,18 @@
     <Filter Include="01.GameObject\Collision_Object\StageEntry">
       <UniqueIdentifier>{b10d5a22-d252-4491-8dfd-8c8ae9f51bbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.Scene\04.Scene_GamePlay\04.Scene_Stage4">
+      <UniqueIdentifier>{db76a875-5a77-4d55-bc45-2d16810fbea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject">
+      <UniqueIdentifier>{ede880bd-90f5-4d73-bd64-2f6bd5dc606d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\Blossoms">
+      <UniqueIdentifier>{faa77db5-94d0-412b-9787-730fb3c25ffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\Penguin">
+      <UniqueIdentifier>{34941510-2132-4775-aa1a-9e49973d4b1c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="01.GameObject\Particle\Manager">
       <UniqueIdentifier>{c4a665a0-33d0-42ac-975d-e82d85da76f7}</UniqueIdentifier>
     </Filter>
@@ -414,6 +426,15 @@
     <ClInclude Include="..\public\ParticleObejct.h">
       <Filter>01.GameObject\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Scene_Tutorial.h">
+      <Filter>02.Scene\04.Scene_GamePlay\04.Scene_Stage4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_Blossoms.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Blossoms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_Penguin.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Penguin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -601,6 +622,15 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleMgr.cpp">
       <Filter>01.GameObject\Particle\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Scene_Tutorial.cpp">
+      <Filter>02.Scene\04.Scene_GamePlay\04.Scene_Stage4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_Blossoms.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Blossoms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_Penguin.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Penguin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

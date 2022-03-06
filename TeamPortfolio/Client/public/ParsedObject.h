@@ -2,20 +2,11 @@
 
 #include "GameObject.h"
 
-BEGIN(Engine)
-class CTexture;
-class CRenderer;
-class CTransform;
-class CVIBuffer_Rect;
-class CCollision;
-class CVIBuffer_Parsed;
-END
-
 BEGIN(Client)
 
-class CParsedObject final : public CGameObject
+class CParsedObject : public CGameObject
 {
-private:
+protected:
 	explicit CParsedObject(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CParsedObject(const CParsedObject& rhs);
 	virtual ~CParsedObject() = default;
@@ -32,21 +23,6 @@ public:
 	virtual _int LateRender()override;
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
-
-
-private:
-	HRESULT SetUp_Components();
-
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
-
-private:
-	CTransform*				m_ComTransform = nullptr;
-	CRenderer*				m_ComRenderer = nullptr;
-	CTexture*				m_ComTexture = nullptr;
-	CVIBuffer_Parsed*		m_ComVIBuffer = nullptr;
-
-	CCollision*				m_pCollisionCom = nullptr;
 
 
 
