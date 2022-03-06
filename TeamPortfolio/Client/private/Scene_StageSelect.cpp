@@ -39,7 +39,7 @@ HRESULT CScene_StageSelect::Initialize()
 	FAILED_CHECK(Ready_Layer_StageEntryCollsionObject(L"Layer_Collision_StageEntry"));
 
 
-	FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
+	//FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
 
 
 	//if (FAILED(Ready_Layer_Object_PortalCube(TEXT("Layer_PotalCube"))))
