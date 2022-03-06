@@ -69,7 +69,6 @@ void CMapTool::CreateNewMap(_uint x, _uint y, _uint z, E_BUILDINGTYPE type)
 			obj->DIED();
 		}
 	}
-	
 
 	// 2. 내부가 빈 맵 오브젝트 생성
 	_uint Length, Floor, Depth;

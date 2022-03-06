@@ -360,7 +360,7 @@ HRESULT CScene_Stage2::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
 	CObject_EscalatorCube::ESCALATORDESC escalDesc;
 
 
-	potalDesc.iNowScene = SCENEID::SCENE_IMGUISCENE;
+	potalDesc.iNowScene = SCENEID::SCENE_STAGE2;
 	potalDesc.vPos_A_Cube = _float3(0, 0, 0);
 	potalDesc.vPos_B_Cube = _float3(0, 0, 0);
 

@@ -384,6 +384,8 @@ enum E_CUBEID
 	CUBEID_APPEAR, // 나타남
 
 	CUBEID_ARTICLEOBJECT, //주엽
+	CUBEID_STAR=10, //별생성
+
 	CUBEID_END,
 
 };

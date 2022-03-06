@@ -24,31 +24,23 @@ HRESULT CScene_Stage3::Initialize()
 
 	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
 		return E_FAIL;
-
-
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
-	if (FAILED(Ready_Layer_Player(TAG_LAY(Layer_Player))))
-		return E_FAIL;
-	if (FAILED(Ready_Layer_PauseUI(TEXT("Layer_PauseUI"))))
-		return E_FAIL;
-
-
-	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")));
-
+	
+	FAILED_CHECK(Ready_Layer_Player(TAG_LAY(Layer_Player)));
+	FAILED_CHECK(Ready_Layer_PauseUI(TEXT("Layer_PauseUI")));
 	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
 	FAILED_CHECK(Ready_Layer_UI_Start(TEXT("Layer_UI_Start")));
-	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
 	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
-	FAILED_CHECK(Ready_Layer_StageEndCollsionObject(TEXT("Layer_Collision_StageEnd")));
-	FAILED_CHECK(Ready_Layer_Object_particle(TEXT("Layer_Particle")));
+//	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
+
+//	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")));
+//	FAILED_CHECK(Ready_Layer_StageEndCollsionObject(TEXT("Layer_Collision_StageEnd")));
+
+
+//	FAILED_CHECK(Ready_Layer_Object_particle(TEXT("Layer_Particle")));
 
 	// 로드된 오브젝트 정보로 그리기
-	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
-		SCENEID::SCENE_STAGE3,
-		TAG_LAY(Layer_Terrain),
-		TAG_OP(Prototype_TerrainCube),
-		_float3(0, 0, 0));
 
 	// 생성되지 않는 특수 큐브 저장
 	list< SPECIALCUBE*> SpecialCubeList;
@@ -61,6 +53,7 @@ HRESULT CScene_Stage3::Initialize()
 		Safe_Delete(data);
 	}
 	SpecialCubeList.clear();
+;
 
 	return S_OK;
 }
@@ -331,6 +324,8 @@ HRESULT CScene_Stage3::Ready_Layer_Player(const _tchar * pLayerTag)
 
 		GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGE3);
 		pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
+		(pPlayerList->front())->ReInitialize(&_float3(0.f, 1.f, 0));
+
 	}
 	else
 	{
@@ -348,7 +343,6 @@ HRESULT CScene_Stage3::Ready_Layer_Terrain(_uint sceneid,list<SPECIALCUBE*>* lis
 	CObject_PortalCube_A::POTALDESC potalDesc;
 	CObject_EscalatorCube::ESCALATORDESC escalDesc;
 
-
 	potalDesc.iNowScene = sceneid;
 	potalDesc.vPos_A_Cube = _float3(0, 0, 0);
 	potalDesc.vPos_B_Cube = _float3(0, 0, 0);
@@ -357,8 +351,10 @@ HRESULT CScene_Stage3::Ready_Layer_Terrain(_uint sceneid,list<SPECIALCUBE*>* lis
 	escalDesc.vEndPos = _float3(0, 0, 0);
 
 
+
 	int count_Potal = 0;
 	int count_Escalator = 0;
+	int count_Oribit = 0;
 
 	for (auto data : *listdata)
 	{
@@ -406,6 +402,65 @@ HRESULT CScene_Stage3::Ready_Layer_Terrain(_uint sceneid,list<SPECIALCUBE*>* lis
 			count_Escalator++;
 
 		}
+
+		// 공전 큐브 생성 테스트
+		if (data->Tagname == TAG_OP(Prototype_OrbitButtonCube))
+		{
+			CObject_OrbitButton::ORBITDESC orbitDesc;
+
+			_float3 buttonPos = _float3(0, 0, 0);
+			_float3 oriPos = _float3(0, 0, 0);
+			memcpy(buttonPos, &(data->WorldMat.m[3]), sizeof(_float3));
+
+			if (count_Oribit == 0)
+			{
+
+				orbitDesc.vButtonPos = buttonPos;
+				orbitDesc.vOrbitRotAxis = buttonPos;
+				oriPos = buttonPos;
+				oriPos.x += 2;
+				oriPos.y += 2;
+				// 공전 큐브 위치
+				orbitDesc.vOribitCubeStartPos = oriPos;
+
+				// 공전큐브 xyz 개수
+				orbitDesc.vOribitTotalXYZ = _float3(1, 2, 2);
+				if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, TAG_LAY(Layer_Terrain), TAG_OP(Prototype_OrbitButtonCube), &orbitDesc))
+					return E_FAIL;				
+			}
+
+			if (count_Oribit == 1)
+			{
+				// 자전 큐브
+				orbitDesc.vButtonPos = buttonPos;
+				
+				oriPos = buttonPos;
+				oriPos.x += 3;
+				oriPos.y += 3;
+				// 공전 큐브 위치
+				orbitDesc.vOribitCubeStartPos = oriPos;
+				orbitDesc.vOrbitRotAxis = oriPos;
+
+				// 공전큐브 xyz 개수
+				orbitDesc.vOribitTotalXYZ = _float3(6, 3, 2);
+				if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, TAG_LAY(Layer_Terrain), TAG_OP(Prototype_OrbitButtonCube), &orbitDesc))
+					return E_FAIL;
+			}
+			count_Oribit++;
+
+		}
+
+		// 별생성
+		if (data->Tagname == TEXT("ProtoType_GameObject_Object_Star"))
+		{
+			CObject_Star::STARDESC StarDesc;
+
+			memcpy(StarDesc.fTransform, &(data->WorldMat.m[3]), sizeof(_float3));
+
+			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, TEXT("Layer_Object_Star"), TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
+				return E_FAIL;
+		}
+
 
 	}
 	return S_OK;
