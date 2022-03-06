@@ -99,7 +99,7 @@ _int CNpc_geezer::Render()
 		return E_FAIL;
 
 
-	if (m_fPassedTime < 5)
+	if (m_fPassedTime < 5.3)
 	{
 		if (m_bTextStart)
 		{

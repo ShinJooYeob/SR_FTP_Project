@@ -489,6 +489,7 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 		{
 			if (m_iPageIndex == 0)
 			{
+				GetSingle(CGameInstance)->PlaySound(L"JW_loby_enter.wav", CHANNEL_UI,2.f);
 				switch (m_iManuIndex)
 				{
 				case 0:
@@ -540,6 +541,7 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 
 				if (false || m_bIsNewResgist) //로그인 성공 or 신규 가입시 씬 전환
 				{
+					GetSingle(CGameInstance)->PlaySound(L"JW_startgame.wav", CHANNEL_UI);
 					CCamera_Main* pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
 					if (pMainCam == nullptr)
 						return E_FAIL;
@@ -560,6 +562,7 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 			}
 			else if (m_iPageIndex == 2)
 			{
+				GetSingle(CGameInstance)->PlaySound(L"JW_loby_enter.wav", CHANNEL_UI, 2.f);
 				m_iPageIndex = 0;
 				m_fIndexAlpha = 510.f;
 				m_iManuIndex = 2;
@@ -567,6 +570,7 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 			}
 			else if (m_iPageIndex == 3)
 			{
+				GetSingle(CGameInstance)->PlaySound(L"JW_loby_enter.wav", CHANNEL_UI, 2.f);
 				m_iPageIndex = 2;
 				m_fIndexAlpha = 510.f;
 				m_iManuIndex = 2;
@@ -579,6 +583,7 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 		}
 		if (pInstace->Get_DIKeyState(DIK_UP) & DIS_Down)
 		{
+			GetSingle(CGameInstance)->PlaySound(L"JW_lobyselect.wav", CHANNEL_UI,2.f);
 			m_fIndexAlpha = 255.f;
 			m_iManuIndex--;
 			if (m_iManuIndex < 0)
@@ -586,6 +591,7 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 		}
 		else if (pInstace->Get_DIKeyState(DIK_DOWN) & DIS_Down)
 		{
+			GetSingle(CGameInstance)->PlaySound(L"JW_lobyselect.wav", CHANNEL_UI,2.f);
 			m_fIndexAlpha = 255.f;
 			m_iManuIndex++;
 			if (m_iManuIndex > 3)
