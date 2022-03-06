@@ -462,6 +462,7 @@ HRESULT CShop::Buy_Skill(_int ChosenSkill)
 			m_bIsExcessMaxLevel = true;
 			return S_OK;
 		}
+		GetSingle(CGameInstance)->PlaySound(L"JW_Coins.mp3", CHANNEL_UI);
 		m_Player_Inventory->Set_Skill_LevelUP(ChosenSkill);
 		m_Player_Inventory->Set_Gold(-m_Skill[ChosenSkill].Price);
 	}
