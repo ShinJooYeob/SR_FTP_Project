@@ -39,6 +39,7 @@ HRESULT CScene_StageSelect::Initialize()
 	FAILED_CHECK(Ready_Layer_StageEntryCollsionObject(L"Layer_Collision_StageEntry"));
 
 
+	FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
 
 
 	//if (FAILED(Ready_Layer_Object_PortalCube(TEXT("Layer_PotalCube"))))
@@ -557,7 +558,7 @@ HRESULT CScene_StageSelect::Ready_Layer_StageEntryCollsionObject(const _tchar * 
 
 HRESULT CScene_StageSelect::Ready_Layer_Object_VanishCube(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_VanishCube"), &_float3(9.f, 2.f, 0.f)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_VanishCube"), &_float3(-2.f, 0.f, 0.f)))
 		return E_FAIL;
 	return S_OK;
 }

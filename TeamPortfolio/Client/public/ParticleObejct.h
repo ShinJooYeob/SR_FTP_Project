@@ -40,9 +40,12 @@ typedef struct tag_ParticleAttribute
 	// 시간 크기 색
 	float       _lifeTime;     // how long the particle lives for before dying  
 	float       _age;          // current age of the particle  
+	_float3		_color = _float3(255.f, 255.f, 255.f);
 //	D3DXCOLOR   _color;        // current color of the particle   
 //	D3DXCOLOR   _colorFade;    // how the color fades with respect to time
 	bool        _isAlive;
+
+	_float3		_NowparantPos ;
 }PARTICLEATT;
 
 
@@ -61,10 +64,17 @@ struct BoundingBox
 		maxPos.z = -INFINITY;
 	}
 
+	void ResetBoudingBox(_float3 ParantPos) 
+	{
+		RelativeMinPos = ParantPos + minPos;
+		RelativeMaxPos = ParantPos + maxPos;
+	
+	};
+
 	bool isPointInside(D3DXVECTOR3& p)
 	{
-		if (p.x >= minPos.x && p.y >= minPos.y && p.z >= minPos.z &&
-			p.x <= maxPos.x && p.y <= maxPos.y && p.z <= maxPos.z)
+		if (p.x >= RelativeMinPos.x && p.y >= RelativeMinPos.y && p.z >= RelativeMinPos.z &&
+			p.x <= RelativeMaxPos.x && p.y <= RelativeMaxPos.y && p.z <= RelativeMaxPos.z)
 		{
 			return true;
 		}
@@ -76,6 +86,9 @@ struct BoundingBox
 
 	_float3 minPos;
 	_float3 maxPos;
+
+	_float3 RelativeMinPos;
+	_float3 RelativeMaxPos;
 };
 
 // 파티클 오브젝트 하나에 여러개의 오브젝트 정보를 들고 있어야한다.
@@ -122,6 +135,9 @@ public:
 	virtual void ResetParticle(PARTICLEATT* attribute);
 
 
+	virtual void Reset_Velocity(_float3& fAttVlocity)PURE;
+	virtual void Update_Position_by_Velocity(PARTICLEATT* tParticleAtt, _float fTimeDelta)PURE;
+	virtual void Update_ColorChange(PARTICLEATT* tParticleAtt, _float fTimeDelta);
 
 	virtual _int Render()override;
 	virtual _int LateRender()override;
@@ -135,27 +151,33 @@ protected:
 
 private:
 	HRESULT SetUp_Components();
+	HRESULT SetUp_ParticleDesc(void* pArg);
 	// 랜더스테이트 재정의 할 수 있게 
 	virtual HRESULT SetUp_RenderState();
 	virtual HRESULT Release_RenderState();
 
 protected:
-	CTransform*				m_ComTransform = nullptr;
+	CTransform*				m_ComParticleTransform = nullptr;
+	CTransform*				m_ComParentTransform = nullptr;
+
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
 
 
-	float                   m_RateTime;   
-	float                   m_Scale;       
+	PARTICLEDESC			m_ParticleDesc;
+	//float                   m_RateTime;   
+	//float                   m_Scale;       
 	list<PARTICLEATT>		m_list_Particles;
-	int                     m_MaxParticles; 
+	//int                     m_MaxParticles; 
 	BoundingBox				m_boundingBox;
 
 
 //	DWORD _vbSize;      // size of vb
 //	DWORD _vbOffset;    // offset in vb to lock   
 //	DWORD _vbBatchSize; // number of vertices to lock starting at _vbOffset
+
+	_float					m_fEffectLifeTime = 0;
 
 
 public:
@@ -164,14 +186,23 @@ public:
 	virtual void Free() override;
 };
 
-class CParticleeObj_Base final: public CParticleObject
+
+
+
+///////////구 형태 파티클///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CParticleeObj_Ball final: public CParticleObject
 {
 private:
-	explicit CParticleeObj_Base(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CParticleeObj_Base(const CParticleeObj_Base& rhs);
-	virtual ~CParticleeObj_Base() = default;
+	explicit CParticleeObj_Ball(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CParticleeObj_Ball(const CParticleeObj_Ball& rhs);
+	virtual ~CParticleeObj_Ball() = default;
 
 private:
+
+	virtual void Reset_Velocity(_float3& fAttVlocity)override;
+	virtual void Update_Position_by_Velocity(PARTICLEATT* tParticleAtt, _float fTimeDelta)override;
+
 
 	virtual HRESULT Initialize_Child_Clone() override;
 //	virtual void ResetParticle(PARTICLEATT* attribute);
@@ -183,19 +214,99 @@ private:
 
 public:
 
-	static CParticleeObj_Base* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	static CParticleeObj_Ball* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject * Clone(void * pArg) override;
 
 };
 
 
-//class CParticleObj_Snow : public CParticleObject
-//{
-//public:
-//
-//	CParticleObj_Snow(BoundingBox* boundingBox, int numParticles);
-//	virtual void ResetParticle(PARTICLEATT* attribute);
-//	void update(float timeDelta);
-//};
+///////////분수 형태 파티클///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+class CParticleeObj_Straight final : public CParticleObject
+{
+private:
+	explicit CParticleeObj_Straight(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CParticleeObj_Straight(const CParticleeObj_Straight& rhs);
+	virtual ~CParticleeObj_Straight() = default;
+
+private:
+
+	virtual void Reset_Velocity(_float3& fAttVlocity)override;
+	virtual void Update_Position_by_Velocity(PARTICLEATT* tParticleAtt, _float fTimeDelta)override;
+
+
+	virtual HRESULT Initialize_Child_Clone() override;
+	//	virtual void ResetParticle(PARTICLEATT* attribute);
+
+	virtual _int Update(_float fTimeDelta)override;
+	virtual _int LateUpdate(_float fTimeDelta)override;
+	// 랜더는 부모 것 사용
+
+
+public:
+
+	static CParticleeObj_Straight* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	virtual CGameObject * Clone(void * pArg) override;
+
+};
+
+
+///////////분수 형태 파티클///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CParticleeObj_Fountain final : public CParticleObject
+{
+private:
+	explicit CParticleeObj_Fountain(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CParticleeObj_Fountain(const CParticleeObj_Fountain& rhs);
+	virtual ~CParticleeObj_Fountain() = default;
+
+private:
+
+	virtual void Reset_Velocity(_float3& fAttVlocity)override;
+	virtual void Update_Position_by_Velocity(PARTICLEATT* tParticleAtt, _float fTimeDelta)override;
+	virtual void ResetParticle(PARTICLEATT * attribute)override;
+
+	virtual HRESULT Initialize_Child_Clone() override;
+	//	virtual void ResetParticle(PARTICLEATT* attribute);
+
+	virtual _int Update(_float fTimeDelta)override;
+	virtual _int LateUpdate(_float fTimeDelta)override;
+	// 랜더는 부모 것 사용
+
+
+public:
+
+	static CParticleeObj_Fountain* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	virtual CGameObject * Clone(void * pArg) override;
+
+};
+
+///////////부채 형태 파티클///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CParticleeObj_Cone final : public CParticleObject
+{
+private:
+	explicit CParticleeObj_Cone(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CParticleeObj_Cone(const CParticleeObj_Cone& rhs);
+	virtual ~CParticleeObj_Cone() = default;
+
+private:
+
+	virtual void Reset_Velocity(_float3& fAttVlocity)override;
+	virtual void Update_Position_by_Velocity(PARTICLEATT* tParticleAtt, _float fTimeDelta)override;
+
+	virtual HRESULT Initialize_Child_Clone() override;
+	//	virtual void ResetParticle(PARTICLEATT* attribute);
+
+	virtual _int Update(_float fTimeDelta)override;
+	virtual _int LateUpdate(_float fTimeDelta)override;
+	// 랜더는 부모 것 사용
+
+
+public:
+
+	static CParticleeObj_Cone* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	virtual CGameObject * Clone(void * pArg) override;
+
+};
 END

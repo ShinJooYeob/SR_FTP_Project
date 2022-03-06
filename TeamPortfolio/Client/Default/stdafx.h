@@ -22,3 +22,4 @@
 
 #include "GameInstance.h"
 #include "Client_Define.h"
+#include "ParticleMgr.h"

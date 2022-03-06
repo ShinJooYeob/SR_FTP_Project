@@ -8,6 +8,7 @@
 #include "UI_Loading.h"
 #include "UI_LoadingBar.h"
 #include "UI_Common.h"
+#include "ParticleMgr.h"
 
 CMainApp::CMainApp()
 	:m_pGameInstance(GetSingle(CGameInstance))
@@ -40,6 +41,8 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Default_Setting()))
 		return E_FAIL;
+
+	FAILED_CHECK(GetSingle(CParticleMgr)->Initialize_ParticleMgr(m_pGraphicDevice));
 
 	if (FAILED(Ready_Static_Component_Prototype()))
 		return E_FAIL;
@@ -304,6 +307,10 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
+
+	if (0 != GetSingle(CParticleMgr)->DestroyInstance())
+		MSGBOX("Failed to Release CParticleMgr");
+
 	Safe_Release(m_pCollision);
 	Safe_Release(m_pComRenderer);
 	Safe_Release(m_pGraphicDevice);

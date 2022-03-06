@@ -68,7 +68,7 @@ _int CObject_VanishCube::Update(_float fTimeDelta)
 		m_fTimer = 0;
 	}
 	
-	if (m_fTimer > 2.f)
+	if (m_fTimer > 0.5f)
 	{
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_fTempPos);
 	}
@@ -144,7 +144,7 @@ _int CObject_VanishCube::Collision_Vanish(_float fDeltaTime)
 
 	m_fTimer += fDeltaTime;
 
-	if (m_fTimer > 2)
+	if (m_fTimer > 0.5f)
 	{
 		GetSingle(CGameInstance)->PlaySound(L"EH_VanishCube_1.wav", CHANNEL_OBJECT);
 		//GetSingle(CGameInstance)->PlaySound(L"EH_VanishCube_2.wav", CHANNEL_OBJECT);

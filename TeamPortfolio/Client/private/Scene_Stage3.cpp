@@ -270,8 +270,30 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 {
 	// #TODO ÆÄÆ¼Å¬ Test obj Create
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_particle")))
-		return E_FAIL;
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_particle")))
+	//	return E_FAIL;
+
+	PARTICLEDESC tDesc;
+	tDesc.eParticleID = Particle_Straight;
+
+	tDesc.TotalParticleTime = 30.f;
+	tDesc.EachParticleLifeTime = 1.f;
+
+	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
+	tDesc.Particle_Power = 2;
+	tDesc.MaxParticleCount = 30;
+	
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_UI_Result_Texture");
+	tDesc.szTextureLayerTag = TEXT("Object_Star");
+	//tDesc.FixedTarget = _float3(0,3,0);
+	tDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC,TAG_LAY(Layer_Player))->Get_Component(TAG_COM(Com_Transform)));
+
+	tDesc.MaxBoundary = _float3(10, 10, 10);
+
+	tDesc.ParticleColorChage = true;
+	tDesc.TargetColor = _float3(120,30,80);
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENE_STAGE3, tDesc);
 
 	return S_OK;
 }

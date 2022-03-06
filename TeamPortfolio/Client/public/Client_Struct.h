@@ -11,3 +11,47 @@ typedef struct tag_SpecialCube_DATA
 	wstring Tagname;
 	_Matrix WorldMat;
 }SPECIALCUBE;
+
+
+
+BEGIN(Client)
+
+enum ParticleID
+{
+	Particle_Straight,
+	Particle_Ball,
+	Particle_Cone,
+	Particle_Fountain,
+
+	Particle_End
+};
+
+typedef struct tagParticleDesc
+{
+	ParticleID eParticleID;
+
+	_float3 FixedTarget = _float3(9999.f, 9999.f, 9999.f);
+	CTransform* FollowingTarget = nullptr;
+	const _tchar* szTextureProtoTypeTag = nullptr;
+	const _tchar* szTextureLayerTag = nullptr;
+
+	_float3 ParticleSize;
+
+	_float	TotalParticleTime;
+	_float	EachParticleLifeTime;
+	_uint	MaxParticleCount;
+
+
+	_float Particle_Power;
+
+	_float3 MaxBoundary =_float3(10,10,10);
+
+	_bool	ParticleColorChage = false;
+	_float3 TargetColor = _float3(255.f, 255.f, 255.f);
+
+	//_bool	ParticleAlphaChage = false;
+	//_float TargetAlpha = 255.f;
+
+}PARTICLEDESC;
+
+END

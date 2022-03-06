@@ -211,6 +211,9 @@
     <Filter Include="01.GameObject\Collision_Object\StageEntry">
       <UniqueIdentifier>{b10d5a22-d252-4491-8dfd-8c8ae9f51bbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Particle\Manager">
+      <UniqueIdentifier>{c4a665a0-33d0-42ac-975d-e82d85da76f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -384,9 +387,6 @@
     <ClInclude Include="..\public\ParsedObject.h">
       <Filter>01.GameObject\ParsedObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ParticleObejct.h">
-      <Filter>01.GameObject\Particle</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Scene_Stage1.h">
       <Filter>02.Scene\04.Scene_GamePlay\01.Scene_Stage1</Filter>
     </ClInclude>
@@ -407,6 +407,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Collision_Object_StageEntry.h">
       <Filter>01.GameObject\Collision_Object\StageEntry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleMgr.h">
+      <Filter>01.GameObject\Particle\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleObejct.h">
+      <Filter>01.GameObject\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -592,6 +598,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Collision_Object_StageEntry.cpp">
       <Filter>01.GameObject\Collision_Object\StageEntry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleMgr.cpp">
+      <Filter>01.GameObject\Particle\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

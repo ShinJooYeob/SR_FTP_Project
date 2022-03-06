@@ -165,6 +165,7 @@
     <ClInclude Include="..\public\LobyPlayer.h" />
     <ClInclude Include="..\public\Npc.h" />
     <ClInclude Include="..\public\ParsedObject.h" />
+    <ClInclude Include="..\public\ParticleMgr.h" />
     <ClInclude Include="..\public\ParticleObejct.h" />
     <ClInclude Include="..\public\Scene_Stage3.h" />
     <ClInclude Include="..\public\Scene_Stage1.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="..\private\LobyPlayer.cpp" />
     <ClCompile Include="..\private\Npc.cpp" />
     <ClCompile Include="..\private\ParsedObject.cpp" />
+    <ClCompile Include="..\private\ParticleMgr.cpp" />
     <ClCompile Include="..\private\ParticleObejct.cpp" />
     <ClCompile Include="..\private\Scene_Stage3.cpp" />
     <ClCompile Include="..\private\Scene_Stage1.cpp" />

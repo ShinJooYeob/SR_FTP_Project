@@ -169,6 +169,11 @@ HRESULT CObject_Star::SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 0);
 	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
@@ -185,6 +190,7 @@ HRESULT CObject_Star::Release_RenderState()
 {
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 
 	return S_OK;
