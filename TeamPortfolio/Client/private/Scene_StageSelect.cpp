@@ -87,6 +87,7 @@ HRESULT CScene_StageSelect::Initialize()
 	}
 	SpecialCubeList.clear();
 
+	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"JW_SelectBGM.ogg")));
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Penguine", TEXT("Prototype_GameObject_Penguine")));
 
 

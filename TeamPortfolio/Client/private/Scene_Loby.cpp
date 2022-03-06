@@ -34,7 +34,7 @@ HRESULT CScene_Loby::Initialize()
 	FAILED_CHECK(Ready_Layer_LobyUI(TEXT("Layer_LobyUI")));
 
 
-
+	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"JW_LobyBGM.wav")));
 
 	return S_OK;
 }
