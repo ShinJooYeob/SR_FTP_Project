@@ -32,10 +32,10 @@ HRESULT CScene_Stage3::Initialize()
 	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
 	FAILED_CHECK(Ready_Layer_UI_Start(TEXT("Layer_UI_Start")));
 	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
+	FAILED_CHECK(Ready_Layer_StageEndCollsionObject(TEXT("Layer_Collision_StageEnd")));
 //	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
 
 //	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")));
-//	FAILED_CHECK(Ready_Layer_StageEndCollsionObject(TEXT("Layer_Collision_StageEnd")));
 
 
 //	FAILED_CHECK(Ready_Layer_Object_particle(TEXT("Layer_Particle")));
@@ -63,10 +63,10 @@ _int CScene_Stage3::Update(_float fDeltaTime)
 	if (__super::Update(fDeltaTime) < 0)
 		return -1;
 
-	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
-		if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
-			return E_FAIL;
-	}
+	//if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_RETURN) & DIS_Down) {
+	//	if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGESELECT), SCENEID::SCENE_LOADING)))
+	//		return E_FAIL;
+	//}
 
 	if (m_bScene_Switch == true)
 	{
@@ -299,7 +299,10 @@ HRESULT CScene_Stage3::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag
 
 HRESULT CScene_Stage3::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(5.f, 64.f, -24.f)))
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), 
+		&_float3(-2, 105, -5)))
 		return E_FAIL;
 
 	return S_OK;
