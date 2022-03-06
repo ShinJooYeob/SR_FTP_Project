@@ -54,6 +54,7 @@ HRESULT CScene_Stage3::Initialize()
 	}
 	SpecialCubeList.clear();
 ;
+	GetSingle(CGameInstance)->PlayBGM(L"JH_Stage3_BGM.mp3");
 
 	return S_OK;
 }
