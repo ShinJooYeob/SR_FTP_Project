@@ -163,9 +163,9 @@ HRESULT CScene_Stage3::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
 		return E_FAIL;
 
-	_float3 ActionPos[4] = { _float3(5,5,0) ,_float3(5,-5,0) ,_float3(-5,5,0),_float3(-5,-5,0) };
+	_float3 ActionPos[5] = { _float3(4, 25, - 16) ,_float3(3, 35, - 4) ,_float3(13, 69, - 6),_float3(-2, 86, 14),_float3(2, 105, - 5) };
 
-	FAILED_CHECK(pMainCam->ReInitialize(ActionPos, 4));
+	FAILED_CHECK(pMainCam->ReInitialize(ActionPos, 5));
 
 
 	pMainCam->Set_NowSceneNum(SCENE_STAGE3);

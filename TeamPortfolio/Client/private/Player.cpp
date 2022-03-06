@@ -948,6 +948,9 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 
 				m_bReHurtTime = 0;
 				//피격 이미지 넣어주기/////////////////////////
+				
+				GetSingle(CGameInstance)->PlaySound(TEXT("JY_Isaac_Hurt_Grunt0.mp3"), CHANNEL_PLAYER);
+				GetSingle(CGameInstance)->PlaySound(TEXT("JY_Scared_Whimper_2.mp3"), CHANNEL_PLAYER);
 				m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
 				//m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
 				vResultPos = m_vReturnStair.PosVector_Matrix(matVeiwSpace);
