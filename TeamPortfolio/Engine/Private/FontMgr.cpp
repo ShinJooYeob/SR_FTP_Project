@@ -109,7 +109,15 @@ HRESULT CFontMgr::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2
 			FAILED_CHECK(m_VIBuffer->Render());
 			continue;
 		}
+		else if (pString[i] == L'?')
+		{
+			m_texFont->Change_TextureLayer(L"number");
 
+			FAILED_CHECK(m_texFont->Bind_Texture(30));
+
+			matTransform.m[3][0] = matTransform.m[3][0] + vFontSize.x;
+			FAILED_CHECK(m_VIBuffer->Render());
+		}
 		else if (pString[i] == L'[')
 		{
 			m_texFont->Change_TextureLayer(L"number");
@@ -148,6 +156,7 @@ HRESULT CFontMgr::Render_UI_Font(wstring szString, _float2 vOnWindowPos, _float2
 			matTransform.m[3][0] = matTransform.m[3][0] + vFontSize.x;
 			FAILED_CHECK(m_VIBuffer->Render());
 		}
+
 		else //나머지 문자는 그냥 띄워쓰기로 대채
 		{
 			matTransform.m[3][0] = matTransform.m[3][0] + vFontSize.x;
@@ -262,6 +271,15 @@ HRESULT CFontMgr::Render_World_Font(wstring szString, _float3 vOnWorldPos, _floa
 			memcpy(&matTransform.m[3][0], &TempPos, sizeof(_float3));
 			FAILED_CHECK(m_VIBuffer->Render());
 			continue;
+		}
+		else if (pString[i] == L'?')
+		{
+			m_texFont->Change_TextureLayer(L"number");
+
+			FAILED_CHECK(m_texFont->Bind_Texture(30));
+
+			matTransform.m[3][0] = matTransform.m[3][0] + vFontSize.x;
+			FAILED_CHECK(m_VIBuffer->Render());
 		}
 		else //나머지 문자는 그냥 띄워쓰기로 대채
 		{

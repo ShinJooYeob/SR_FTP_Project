@@ -7,7 +7,7 @@
 #include "Object_EscalatorCube.h"
 #include "Object_OrbitButton.h"
 #include "Object_Star.h"
-
+#include "Npc.h"
 
 
 CScene_StageSelect::CScene_StageSelect(LPDIRECT3DDEVICE9 GraphicDevice)
@@ -34,14 +34,16 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Common(TAG_LAY(Layer_UI_Common))))
 		return E_FAIL;
+	if (FAILED(Ready_Layer_NPC(TEXT("Layer_NPC"))))
+		return E_FAIL;
 
 
-	if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
+	/*if (FAILED(Ready_Layer_GravityCube(TEXT("Layer_GravityCube"))))
 		return E_FAIL;
 
 
 	if (FAILED(Ready_Layer_Object_PortalCube(TEXT("Layer_PotalCube"))))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	
 
@@ -183,11 +185,44 @@ HRESULT CScene_StageSelect::Scene_InGame_Chage(_bool Scene_Chage_Switch, _uint _
 
 HRESULT CScene_StageSelect::Ready_Layer_SkyBox(const _tchar * pLayerTag)
 {
-
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_SkyBox")))
+	
+	if (FAILED( GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_SkyBox"))))
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_NPC(const _tchar * pLayerTag)
+{
+	CNpc::NPCDESC NpcDesc;
+
+	NpcDesc.vPos = _float3(7.f, 1.f, 0.f);
+	NpcDesc.vDir = _float3(1.f,0.f,0.f);
+	NpcDesc.pNpcTextureName = TEXT("ivy_Idle");
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Npc_ivy"),(void*)&NpcDesc))
+		return E_FAIL;
+
+	NpcDesc.vPos = _float3(15.f, 5.f, 6.f);
+	NpcDesc.vDir = _float3(1.f, 0.f, 0.f);
+	NpcDesc.pNpcTextureName = TEXT("izaac_Idle");
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Npc_izaac"), (void*)&NpcDesc))
+		return E_FAIL;
+
+	NpcDesc.vPos = _float3(7.f, 8.f, 14.f);
+	NpcDesc.vDir = _float3(1.f, 0.f, 0.f);
+	NpcDesc.pNpcTextureName = TEXT("geezer_Idle");
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Npc_geezer"), (void*)&NpcDesc))
+		return E_FAIL;
+
+	NpcDesc.vPos = _float3(13.f, 15.f, 11.f);
+	NpcDesc.vDir = _float3(0.f, 0.f, -1.f);
+	NpcDesc.pNpcTextureName = TEXT("oldy_Idle");
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Npc_oldy"), (void*)&NpcDesc))
+		return E_FAIL;
+
+	return S_OK;
+
+
 }
 //
 //HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)

@@ -18,6 +18,10 @@
 #include "PauseUI.h"
 #include "UI_Status.h"
 #include "UI_Start.h"
+#include "Npc_ivy.h"
+#include "Npc_oldy.h"
+#include "Npc_geezer.h"
+#include "Npc_izaac.h"
 
 #include "Object_FixCube.h"
 #include "Object_GravityCube.h"
@@ -246,6 +250,12 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_UI), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+	
+	//NPC Texture
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("NPC.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_NPC"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
 	//Player Texture
 	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
@@ -286,7 +296,15 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Penguine"), CParsedObject::Create(m_pGraphicDevice))))
 		return E_FAIL;
-
+	//NPC
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Npc_ivy"), CNpc_ivy::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Npc_oldy"), CNpc_oldy::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Npc_geezer"), CNpc_geezer::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Npc_izaac"), CNpc_izaac::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 #pragma endregion
 
