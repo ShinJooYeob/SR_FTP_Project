@@ -173,7 +173,7 @@ HRESULT CScene_Stage1::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
 		return E_FAIL;
 
-	_float3 ActionPos[5] = { _float3(10.f, 40.f, 10.f) ,_float3(20.f, 42.f, -1.f) ,_float3(35.f, 46.f, -32.f),_float3(63.f, 60.f, 65.f),_float3(21.f, 64.f, -3.f) };
+	_float3 ActionPos[5] = { _float3(10.f, 40.f, 10.f) ,_float3(20.f, 42.f, -1.f) ,_float3(35.f, 46.f, -32.f),_float3(62.f, 60.f, 65.f),_float3(21.f, 64.f, -3.f) };
 
 	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,5))
 
@@ -279,7 +279,7 @@ HRESULT CScene_Stage1::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(63.f, 60.f, 65.f);
+	StarDesc.fTransform = _float3(62.f, 60.f, 65.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
@@ -292,12 +292,13 @@ HRESULT CScene_Stage1::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage1::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
 {
-	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(23.f, 64.f, -4.f)))
-	//	return E_FAIL;
+	//_float3(21.f, 64.f, -3.f);
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(21.f, 63.f, -4.f)))
+		return E_FAIL;
 
 	//튜토리얼에 쓰임
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(0.f, 22.f, 75.f)))
-		return E_FAIL;
+	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(0.f, 22.f, 75.f)))
+	//	return E_FAIL;
 
 	return S_OK;
 }
