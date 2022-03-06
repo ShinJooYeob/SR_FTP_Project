@@ -300,7 +300,15 @@ bool CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<SPE
 			return false;
 		}
 		break;
-
+	case CUBEID_STAR:
+		if (spciallist)
+		{
+			specialdata = new SPECIALCUBE(TEXT("ProtoType_GameObject_Object_Star"), info.WorldMatData);
+			spciallist->push_back(specialdata);
+			return false;
+		}
+		break;
+		
 		// 이외 나타나고 사라지는 큐브는 위치만 넘겨도 된다.
 	case CUBEID_VANISH:
 		GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
