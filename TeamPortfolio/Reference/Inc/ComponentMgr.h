@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "Collision.h"
 #include "Inventory.h"
+#include "Shader.h"
 
 BEGIN(Engine)
 class CComponent;

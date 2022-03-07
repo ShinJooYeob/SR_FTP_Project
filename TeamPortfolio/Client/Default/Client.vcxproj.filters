@@ -241,6 +241,15 @@
     <Filter Include="02.Scene\04.Scene_GamePlay\05.Scene_Stage5">
       <UniqueIdentifier>{b0b7a280-f9d2-4862-8e2f-0055ec993cb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\MonsterObject">
+      <UniqueIdentifier>{a855a261-6382-43b5-9872-4bf5b9cb2503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\MonsterObject\Boss">
+      <UniqueIdentifier>{48fba194-117b-4b92-be56-1791d92281fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.ShaderFiles">
+      <UniqueIdentifier>{210d13d9-0219-4de0-9c71-8f894af73bbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -465,6 +474,9 @@
     <ClInclude Include="..\public\Scene_Stage_Boss.h">
       <Filter>02.Scene\04.Scene_GamePlay\05.Scene_Stage5</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MonsterParent.h">
+      <Filter>01.GameObject\MonsterObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -677,6 +689,9 @@
     <ClCompile Include="..\private\Scene_Stage_Boss.cpp">
       <Filter>02.Scene\04.Scene_GamePlay\05.Scene_Stage5</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\MonsterParent.cpp">
+      <Filter>01.GameObject\MonsterObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -695,5 +710,10 @@
     <Text Include="ReadMe.txt">
       <Filter>Default\02.Etc</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Test.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
