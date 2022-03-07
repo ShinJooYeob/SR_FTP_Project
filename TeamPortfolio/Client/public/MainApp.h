@@ -25,6 +25,8 @@ private:
 	HRESULT Scene_Change(SCENEID eSceneID);
 	HRESULT Default_Setting();
 
+	HRESULT Ready_SingletonMgr();
+
 	HRESULT Ready_Static_Component_Prototype();
 	HRESULT Ready_Static_GameObject_Prototype();
 

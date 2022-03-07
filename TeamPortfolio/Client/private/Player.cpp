@@ -409,6 +409,42 @@ HRESULT CPlayer::Set_StageEnd(_int IsKindsOfEnd)
 
 }
 
+HRESULT CPlayer::Get_PlayerLoginDesc(LOGINDESC * pOutLoginData)
+{
+
+	if (m_ComInventory == nullptr)
+		return E_FAIL;
+
+
+	pOutLoginData->szID = m_szID;
+	pOutLoginData->szPassword = m_szPassword;
+
+	for (_uint i = 0 ; i< SCENE_END; i++)
+	{
+		pOutLoginData->iArrStageBestClear[i] = StageBestClear[i];
+	}
+
+
+	for (_uint i = 0;i<SKILL_END;i++)
+	{
+		pOutLoginData->iArrSkillLevel[i] = m_ComInventory->Get_Skill_Level(i);
+	}
+
+	pOutLoginData->iGold = m_ComInventory->Get_Gold();
+
+	for (_uint i = 0; i<QUEST_END; i++)
+	{
+		pOutLoginData->iArrQuestProgress[i] = GetSingle(CQuest)->Get_QuestCurrent(i);
+	}
+
+	return S_OK;
+}
+
+HRESULT CPlayer::Set_PlayerLoginDesc(LOGINDESC pOutLoginData)
+{
+	return S_OK;
+}
+
 void CPlayer::SetBestClear(_uint _Stage, _float _timer)
 {
 

@@ -390,6 +390,15 @@ HRESULT CScene_StageSelect::Ready_Layer_Player(const _tchar * pLayerTag)
 	}
 
 
+	////////////////////////////////////////////////////////////////////////////
+	////로그인 테스트
+
+	//CPlayer* pPlayer = (CPlayer*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player)));
+	//if (pPlayer == nullptr)
+	//	return E_FAIL;
+	//_bool bIsSuccess = false;
+
+	//FAILED_CHECK(GetSingle(CLoginMgr)->Save_PlayerData(pPlayer, &bIsSuccess));
 
 
 	return S_OK;

@@ -41,11 +41,6 @@ HRESULT CQuest_Image::Initialize_Clone(void * pArg)
 	m_vUIDesc = _float4(150, g_iWinCY >> 1, 300, 437);
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
-	GetSingle(CQuest)->Initialize_Quest(QUEST_END);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_1, 6);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_2, 3);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_3, 5);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_4, 5);
 	if (FAILED(Ready_Layer_Button(TEXT("Layer_Button"))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Image(TEXT("Layer_UI_Image"))))
@@ -407,9 +402,6 @@ CGameObject * CQuest_Image::Clone(void * pArg)
 void CQuest_Image::Free()
 {
 	__super::Free();
-
-	if (0 != GetSingle(CQuest)->DestroyInstance())
-		MSGBOX("Failed to Release Com CQuest");
 
 	for (auto& pair : m_UIButtonList)
 	{

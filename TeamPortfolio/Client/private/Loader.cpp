@@ -331,6 +331,11 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Npc_izaac"), CNpc_izaac::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
+
+
+
+
+
 #pragma endregion
 
 	RELEASE_INSTANCE(CGameInstance);

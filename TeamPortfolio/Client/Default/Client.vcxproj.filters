@@ -241,6 +241,9 @@
     <Filter Include="01.GameObject\UI\UI_BossStageEntryUI">
       <UniqueIdentifier>{48a81495-0ff2-4879-99e3-3e823b38eeba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Mgr\LoginMgr">
+      <UniqueIdentifier>{e19cd675-fcde-4bd5-b72b-8221bdceb027}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -465,6 +468,9 @@
     <ClInclude Include="..\public\UI_BossStageEntryUI.h">
       <Filter>01.GameObject\UI\UI_BossStageEntryUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\LoginMgr.h">
+      <Filter>03.Mgr\LoginMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -676,6 +682,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_BossStageEntryUI.cpp">
       <Filter>01.GameObject\UI\UI_BossStageEntryUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LoginMgr.cpp">
+      <Filter>03.Mgr\LoginMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

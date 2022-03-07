@@ -42,7 +42,8 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Default_Setting()))
 		return E_FAIL;
 
-	FAILED_CHECK(GetSingle(CParticleMgr)->Initialize_ParticleMgr(m_pGraphicDevice));
+	FAILED_CHECK(Ready_SingletonMgr());
+
 
 	if (FAILED(Ready_Static_Component_Prototype()))
 		return E_FAIL;
@@ -52,6 +53,8 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Scene_Change(SCENEID::SCENE_LOBY)))
 		return E_FAIL;
+
+
 
 
 	//GetSingle(CGameInstance)->PlayBGM(L"Stage1BG.mp3");
@@ -174,6 +177,22 @@ HRESULT CMainApp::Default_Setting()
 	m_pGraphicDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 	//UV좌표를 1을 넘어가게 작성할 경우 다시 1인 점을 0으로 치환하여 좌표를 찍음
 
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_SingletonMgr()
+{
+
+	FAILED_CHECK(GetSingle(CParticleMgr)->Initialize_ParticleMgr(m_pGraphicDevice));
+
+	GetSingle(CQuest)->Initialize_Quest(QUEST_END);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_1, 6);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_2, 3);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_3, 5);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_4, 5);
+
+	GetSingle(CLoginMgr)->Initialize_LoginMgr();
 
 	return S_OK;
 }
@@ -310,6 +329,15 @@ void CMainApp::Free()
 
 	if (0 != GetSingle(CParticleMgr)->DestroyInstance())
 		MSGBOX("Failed to Release CParticleMgr");
+
+
+	if (0 != GetSingle(CQuest)->DestroyInstance())
+		MSGBOX("Failed to Release  CQuest");
+
+
+	if (0 != GetSingle(CLoginMgr)->DestroyInstance())
+		MSGBOX("Failed to Release  CLoginMgr");
+
 
 	Safe_Release(m_pCollision);
 	Safe_Release(m_pComRenderer);

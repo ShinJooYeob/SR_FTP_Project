@@ -50,6 +50,8 @@ public:
 
 	HRESULT Set_StageEnd(_int IsKindsOfEnd);
 
+	HRESULT Get_PlayerLoginDesc(LOGINDESC* pOutLoginData);
+	HRESULT Set_PlayerLoginDesc(LOGINDESC pOutLoginData);
 
 private:
 	CTexture*				m_ComTexture = nullptr;
@@ -63,6 +65,10 @@ private:
 	CCollision*		m_pCollisionCom = nullptr;
 
 private:
+	wstring					m_szID;
+	wstring					m_szPassword;
+
+
 	COOL					m_tCoolDown[SKILL_END];
 	_float					m_fFrame = 0.f;
 
