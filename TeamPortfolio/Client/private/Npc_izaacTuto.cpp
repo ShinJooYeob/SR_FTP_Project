@@ -196,7 +196,7 @@ _int CNpc_izaacTuto::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCol
 
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Player)))
 	{
-		if ((GetSingle(CGameInstance)->Get_DIKeyState(DIK_LSHIFT) & DIS_Down))
+		if ((GetSingle(CGameInstance)->Get_DIKeyState(DIK_LCONTROL) & DIS_Down))
 		{
 			if (m_bPause == false)
 				GetSingle(CGameInstance)->PlaySound(L"JW_talkloopzuboy.wav", CHANNEL_OBJECT);
