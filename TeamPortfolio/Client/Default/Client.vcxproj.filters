@@ -256,6 +256,42 @@
     <Filter Include="97.ShaderFiles">
       <UniqueIdentifier>{210d13d9-0219-4de0-9c71-8f894af73bbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\BigGreenTree">
+      <UniqueIdentifier>{098fb968-d6f8-4aac-b0a1-b0f924635ec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\TreasureBox">
+      <UniqueIdentifier>{f06bf9cd-9ad6-4df8-ae60-3ec2990f9c9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\DeathSkull">
+      <UniqueIdentifier>{42df4361-dd9e-425f-8d62-7d1a279faa08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\TombStone">
+      <UniqueIdentifier>{7bfab02d-28ce-49ae-9dfd-208e276a6065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\BigOwl">
+      <UniqueIdentifier>{031dee0a-9a72-41c3-b978-2c501eb82db9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\Bell">
+      <UniqueIdentifier>{dd801c1f-2068-4aad-b666-119f2b5ea588}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\LightHouse">
+      <UniqueIdentifier>{e32ec63b-f4d4-4574-9dd6-798102d1a2d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\MiniTree">
+      <UniqueIdentifier>{6565ccd6-3800-4941-8d5b-6b5ca25cffee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\ZuHeadWhite">
+      <UniqueIdentifier>{c491b100-1bf1-4aa1-becf-b55e7f34bc23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\Windmill">
+      <UniqueIdentifier>{4144e964-3b77-4f22-aad3-f9f146c115e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillBlue">
+      <UniqueIdentifier>{f6713ca8-099d-48cb-9f22-6b3af405c134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\Windmill\BigWindmill">
+      <UniqueIdentifier>{9ff06e8d-fd40-4091-b5f5-32b83cdf81ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -492,6 +528,45 @@
     <ClInclude Include="..\public\BossMonster.h">
       <Filter>01.GameObject\MonsterObject\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_BigGreenTree.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\BigGreenTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_TreasureBox.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\TreasureBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_DeathSkull.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\DeathSkull</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_TombStone.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\TombStone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_BigOwl.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\BigOwl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_BigOwlHead.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\BigOwl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_Bell.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Bell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_LightHouse.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\LightHouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_ZuHeadWhite.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\ZuHeadWhite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_MiniTree.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\MiniTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_WindmillStick.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_WindmillBlue.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillBlue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_BigWindmill.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\BigWindmill</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -715,6 +790,45 @@
     </ClCompile>
     <ClCompile Include="..\private\BossMonster.cpp">
       <Filter>01.GameObject\MonsterObject\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_BigGreenTree.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\BigGreenTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_TreasureBox.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\TreasureBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_DeathSkull.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\DeathSkull</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_TombStone.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\TombStone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_BigOwl.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\BigOwl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_BigOwlHead.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\BigOwl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_Bell.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Bell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_LightHouse.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\LightHouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_ZuHeadWhite.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\ZuHeadWhite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_MiniTree.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\MiniTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_WindmillStick.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_WindmillBlue.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillBlue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_BigWindmill.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\BigWindmill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
