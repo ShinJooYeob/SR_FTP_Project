@@ -295,6 +295,15 @@
     <Filter Include="01.GameObject\Npc\izaac_tutorial">
       <UniqueIdentifier>{19b59173-84f9-420c-9544-b4033e001720}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\MonsterObject\Boss\2.Bullet">
+      <UniqueIdentifier>{faf7516e-5289-4c49-9584-33f2b0b60a75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\MonsterObject\Boss\3.GunCom">
+      <UniqueIdentifier>{7de847ed-50a4-47b5-818a-1610fe921377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\MonsterObject\Boss\1.Boss">
+      <UniqueIdentifier>{a5eac6d6-e36f-4bfb-96b3-a3d50c8446ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -528,9 +537,6 @@
     <ClInclude Include="..\public\MonsterParent.h">
       <Filter>01.GameObject\MonsterObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\BossMonster.h">
-      <Filter>01.GameObject\MonsterObject\Boss</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\ParsedObject_BigGreenTree.h">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\BigGreenTree</Filter>
     </ClInclude>
@@ -573,8 +579,17 @@
     <ClInclude Include="..\public\Npc_izaacTuto.h">
       <Filter>01.GameObject\Npc\izaac_tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Bullet.h">
+      <Filter>01.GameObject\MonsterObject\Boss\2.Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BossMonster.h">
+      <Filter>01.GameObject\MonsterObject\Boss\1.Boss</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\BossParttern.h">
-      <Filter>01.GameObject\MonsterObject\Boss</Filter>
+      <Filter>01.GameObject\MonsterObject\Boss\1.Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Com_Gun.h">
+      <Filter>01.GameObject\MonsterObject\Boss\3.GunCom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -797,9 +812,6 @@
     <ClCompile Include="..\private\MonsterParent.cpp">
       <Filter>01.GameObject\MonsterObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\BossMonster.cpp">
-      <Filter>01.GameObject\MonsterObject\Boss</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ParsedObject_BigGreenTree.cpp">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\BigGreenTree</Filter>
     </ClCompile>
@@ -842,8 +854,17 @@
     <ClCompile Include="..\private\Npc_izaacTuto.cpp">
       <Filter>01.GameObject\Npc\izaac_tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Bullet.cpp">
+      <Filter>01.GameObject\MonsterObject\Boss\2.Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BossMonster.cpp">
+      <Filter>01.GameObject\MonsterObject\Boss\1.Boss</Filter>
+    </ClCompile>
     <ClCompile Include="..\private\BossParttern.cpp">
-      <Filter>01.GameObject\MonsterObject\Boss</Filter>
+      <Filter>01.GameObject\MonsterObject\Boss\1.Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Com_Gun.cpp">
+      <Filter>01.GameObject\MonsterObject\Boss\3.GunCom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

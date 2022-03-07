@@ -42,15 +42,12 @@ protected:
 	CTransform*	 m_ComTransform;
 	CRenderer*	 m_ComRenderer;
 	CVIBuffer*	 m_ComVIBuffer;
-	
+	CCollision*  m_ComCollision;
 	
 
 	CTexture*	 m_ComTexture;
-	CCollision*  m_ComCollision;
 	// ºŒ¿Ã¥ı √ﬂ∞°
-	CShader*	 m_ComShader;
-
-	_float		m_DeltaTime;
+	// CShader*	 m_ComShader;
 
 	_int		mHp;
 	_int		mMaxHp;

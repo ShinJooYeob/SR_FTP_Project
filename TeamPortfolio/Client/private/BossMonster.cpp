@@ -108,6 +108,9 @@ HRESULT CBossMonster::SetUp_Components()
 {
 	FAILED_CHECK(__super::SetUp_Components());
 
+	// ÃÑ ÄÄÆ÷³ÍÆ® ÃÊ±âÈ­
+	// mComGun;
+
 	return S_OK;
 }
 
@@ -180,8 +183,6 @@ CBossMonster * CBossMonster::Clone(void * pArg)
 		Safe_Release(pInstance);
 
 	}
-
-
 	return pInstance;
 
 }

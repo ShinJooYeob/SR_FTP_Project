@@ -61,9 +61,12 @@ private:
 protected:
 	CGameObject*	mPlayerTarget;
 
+	// 총알 담당 컴포넌트
+	// 총 컴포넌트를 참조해서 총알 패턴 구현
+	class CGun*			mComGun;
 
+	// 패턴 / 총알 잘 나오는지 보고
 	class IPattern* mCurrentPattern;
-
 	queue<class IPattern*> mQueue_Partern;
 	float mPatternTime;
 
