@@ -86,6 +86,8 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_UI_Result_Texture");
 		//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
 		tDesc.szTextureLayerTag = TEXT("Object_Star");
+		//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+		tDesc.m_bIsTextureAutoFrame = false;
 
 
 		//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
@@ -119,6 +121,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
 
 		//tDesc.vUp = _float3(1, 1, 0);
+
 
 		//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
 		GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);

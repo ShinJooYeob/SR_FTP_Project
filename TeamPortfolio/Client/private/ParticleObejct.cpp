@@ -217,7 +217,14 @@ _int CParticleObject::Render()
 	// 텍스처 바인딩은 한번만 하면 된다.
 	SetUp_RenderState();
 
-	FAILED_CHECK(m_ComTexture->Bind_Texture());
+	if (m_ParticleDesc.m_bIsTextureAutoFrame)
+	{
+		FAILED_CHECK(m_ComTexture->Bind_Texture_AutoFrame(g_fDeltaTime));
+	}
+	else
+	{
+		FAILED_CHECK(m_ComTexture->Bind_Texture());
+	}
 	// 파티클 리스트를 한번에 Render
 	if (false == m_list_Particles.empty())
 	{

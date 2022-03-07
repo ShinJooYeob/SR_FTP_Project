@@ -291,7 +291,9 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
 	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_UI_Result_Texture");
 	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
-	tDesc.szTextureLayerTag = TEXT("Object_Star");
+	tDesc.szTextureLayerTag = TEXT("RankStar");
+	//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+	tDesc.m_bIsTextureAutoFrame = true;
 
 	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
 	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
@@ -308,7 +310,7 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 	//텍스처의 색상을 변경할 수 있는 기능 온오프
 	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
 	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
-	tDesc.ParticleColorChage = true;
+	tDesc.ParticleColorChage = false;
 	tDesc.TargetColor = _float3(120,30,80);
 
 	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것

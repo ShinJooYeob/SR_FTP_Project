@@ -35,6 +35,7 @@ typedef struct tagParticleDesc
 	CTransform* FollowingTarget = nullptr;
 	const _tchar* szTextureProtoTypeTag = nullptr;
 	const _tchar* szTextureLayerTag = nullptr;
+	_bool  m_bIsTextureAutoFrame = false;
 
 	_float3 ParticleSize;
 
