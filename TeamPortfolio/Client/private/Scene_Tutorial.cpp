@@ -76,11 +76,51 @@ HRESULT CScene_Tutorial::Initialize()
 
 	//파서 실험중
 	
-	_float3 TransformPos = _float3(5.f, 0.f, 0.f);
+	_float3 TransformPos = _float3(10.f, 0.f, 0.f);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Blossoms", TEXT("Prototype_GameObject_Blossoms"),&TransformPos));
 	
-	_float3 TransformPostest = _float3(1.f, 0.f, 0.f);
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Penguin", TEXT("Prototype_GameObject_Penguin"), &TransformPostest));
+	//TransformPos = _float3(1.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Penguin", TEXT("Prototype_GameObject_Penguin"), &TransformPos));
+
+	//TransformPos = _float3(8.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_BigGreenTree", TEXT("Prototype_GameObject_BigGreenTree"), &TransformPos));
+
+	//TransformPos = _float3(1.f, 0.f, 4.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_TreasureBox", TEXT("Prototype_GameObject_TreasureBox"), &TransformPos));
+
+	//TransformPos = _float3(2.f, 0.f, 4.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_DeathSkull", TEXT("Prototype_GameObject_DeathSkull"), &TransformPos));
+
+	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+	
+	//올빼미 머리 몸통 세트
+	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_BigOwl", TEXT("Prototype_GameObject_BigOwl"), &TransformPos));
+	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_BigOwlHead", TEXT("Prototype_GameObject_BigOwlHead"), &TransformPos));
+
+	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
+
+	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_LightHouse", TEXT("Prototype_GameObject_LightHouse"), &TransformPos));
+
+	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_MiniTree", TEXT("Prototype_GameObject_MiniTree"), &TransformPos));
+
+	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_ZuHeadWhite", TEXT("Prototype_GameObject_ZuHeadWhite"), &TransformPos));
+
+	//풍차 종류 2개 만드려는중
+	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_WindmillBlue"), &TransformPos));
+	
+	TransformPos = _float3(4.f, 0.f, 0.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+
+	TransformPos = _float3(4.f, 0.f, 0.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_BigWindmill", TEXT("Prototype_GameObject_BigWindmill"), &TransformPos));
 
 	return S_OK;
 }
