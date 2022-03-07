@@ -33,10 +33,6 @@ public:
 protected:
 	virtual HRESULT SetUp_Components();
 
-
-
-
-
 public:
 	static CBossMonster* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CBossMonster* Clone(void* pArg) override;

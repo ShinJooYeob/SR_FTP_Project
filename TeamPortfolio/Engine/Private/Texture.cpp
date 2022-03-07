@@ -330,6 +330,17 @@ HRESULT CTexture::Bind_Texture(_uint iTextureIndex, _uint iStageIndex)
 		return m_pBindedTextureLayer->Bind_Texture(m_SettingIndex, iStageIndex);
 }
 
+HRESULT CTexture::Bind_OnShader(CShader * pShader, D3DXHANDLE hParameter, _uint iTextureIndex)
+{
+	if (m_pBindedTextureLayer == nullptr)
+		return E_FAIL;
+
+	if (m_SettingIndex == -1)
+		return m_pBindedTextureLayer->Bind_ShaderTexture(pShader,hParameter,iTextureIndex);
+	else
+		return m_pBindedTextureLayer->Bind_ShaderTexture(pShader, hParameter,m_SettingIndex);
+}
+
 _uint CTexture::CurrentTextureLayerSize()
 {
 	return m_pBindedTextureLayer->Get_TextureNum();

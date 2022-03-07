@@ -67,7 +67,32 @@ _int CMonsterParent::LateUpdate(_float fDeltaTime)
 _int CMonsterParent::Render()
 {
 
+
 	FAILED_CHECK(__super::Render());
+
+	// 세이더 랜더 방식
+	if (nullptr == m_ComVIBuffer ||
+		nullptr == m_ComShader	 ||
+		nullptr == m_ComTexture)
+		return E_FAIL;
+
+
+
+	_Matrix	projMat,viewMat;
+	m_pGraphicDevice->GetTransform(D3DTS_PROJECTION,&projMat);
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW,&viewMat);
+
+	// 셰이더 월드 설정
+	m_ComShader->SetUp_ValueOnShader("g_WorldMatrix", m_ComTransform->Get_WorldMatrix(), sizeof(_Matrix));
+	m_ComShader->SetUp_ValueOnShader("g_ViewMatrix", &viewMat, sizeof(_Matrix));
+	m_ComShader->SetUp_ValueOnShader("g_ProjMatrix", &projMat, sizeof(_Matrix));
+	// 셰이더 텍스처 설정
+//	m_ComTexture->Bind_OnShader(m_ComShader, "g_Texture");
+
+	m_ComShader->Begin_Shader(0);
+	m_ComVIBuffer->Render();
+	m_ComShader->End_Shader();
+
 	return S_OK;
 }
 
@@ -99,7 +124,10 @@ HRESULT CMonsterParent::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Test), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
 		return E_FAIL;
 
-	// 정의 안한것은 자식클래스에서 정의된다.
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_Default), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
+		return E_FAIL;
+
+	// 정의 안한것은 자식클래스에서
 
 	return S_OK;
 }
