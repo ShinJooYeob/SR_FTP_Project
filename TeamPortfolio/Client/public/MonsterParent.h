@@ -34,6 +34,8 @@ protected:
 	// 컴포넌트 초기화
 	// 몬스터들은 동일한 컴포넌트 사용.
 	virtual	HRESULT SetUp_Components();
+	virtual HRESULT SetUp_RenderState()PURE;
+	virtual HRESULT Release_RenderState()PURE;
 
 protected:
 	// Components
@@ -41,14 +43,16 @@ protected:
 	CRenderer*	 m_ComRenderer;
 	CVIBuffer*	 m_ComVIBuffer;
 	
+	
+
 	CTexture*	 m_ComTexture;
 	CCollision*  m_ComCollision;
 	// 셰이더 추가
 	CShader*	 m_ComShader;
 
+	_float		m_DeltaTime;
 
-//	float mHp;
-//	float mMp;
+
 
 
 

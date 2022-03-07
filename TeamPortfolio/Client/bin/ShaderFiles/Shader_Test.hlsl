@@ -69,10 +69,10 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	Out.vColor = tex2D(DefaultSampler, In.vTexUV);
 
-	Out.vColor.gb = Out.vColor.r;
+//	Out.vColor.gb = Out.vColor.r;
 
 
-	/*Out.vColor = vector(In.vTexUV.y, 0.f, 0.f, 1.f);*/
+//	Out.vColor = vector(In.vTexUV.y, 0.f, 0.f, 1.f);
 
 	return Out;	
 }

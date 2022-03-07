@@ -32,6 +32,14 @@ public:
 	
 protected:
 	virtual HRESULT SetUp_Components();
+	virtual HRESULT SetUp_RenderState()override;
+	virtual HRESULT Release_RenderState()override;
+	
+protected:
+	CGameObject* mPlayerTarget;
+
+	// 패턴 컴포넌트
+//	CStateMachine* m_StateMachine;
 
 public:
 	static CBossMonster* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

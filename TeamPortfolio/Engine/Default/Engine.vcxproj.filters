@@ -145,6 +145,9 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\Shader">
       <UniqueIdentifier>{6b5246be-9820-4296-9cda-e2b90c08bba9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\StateMachine">
+      <UniqueIdentifier>{0d8b35ec-1306-4625-95e0-6108027747ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
