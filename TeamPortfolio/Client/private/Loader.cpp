@@ -51,6 +51,8 @@
 #include "ParsedObject_Blossoms.h"
 #include "ParsedObject_Penguin.h"
 
+#include "BossMonster.h"
+
 _uint CALLBACK LoadingThread(void* _Prameter)
 {
 	THREADARG tThreadArg{};
@@ -623,7 +625,8 @@ HRESULT CLoader::Load_Scene_Stage_Boss(_bool * _IsClientQuit, CRITICAL_SECTION *
 
 #pragma  region PROTOTYPE_GAMEOBJECT
 
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_UI_Start"), CUI_Start::Create(m_pGraphicDevice))))
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_BossObject"),
+		CBossMonster::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 #pragma endregion

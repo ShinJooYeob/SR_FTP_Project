@@ -4,13 +4,31 @@
 CMonsterParent::CMonsterParent(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CGameObject(pGraphicDevice)
 {
-
+	m_ComTransform = nullptr;
+	m_ComRenderer = nullptr;
+	m_ComVIBuffer = nullptr;
+	m_ComTexture = nullptr;
+	m_ComCollision = nullptr;
+	m_ComShader = nullptr;
 }
 
 CMonsterParent::CMonsterParent(const CMonsterParent& rhs)
 	: CGameObject(rhs)
 {
+	
+	m_ComTransform = rhs.m_ComTransform;
+	m_ComRenderer = rhs.m_ComRenderer;
+	m_ComVIBuffer = rhs.m_ComVIBuffer;
+	m_ComTexture = rhs.m_ComTexture;
+	m_ComCollision = rhs.m_ComCollision;
+	m_ComShader = rhs.m_ComShader;
 
+	Safe_AddRef(m_ComTransform);
+	Safe_AddRef(m_ComRenderer);
+	Safe_AddRef(m_ComVIBuffer);
+	Safe_AddRef(m_ComTexture);
+	Safe_AddRef(m_ComCollision);
+	Safe_AddRef(m_ComShader);
 }
 
 
@@ -26,7 +44,7 @@ HRESULT CMonsterParent::Initialize_Clone(void * pArg)
 {
 	FAILED_CHECK(__super::Initialize_Clone(pArg));
 
-
+	FAILED_CHECK(SetUp_Components());
 
 	return S_OK;
 }
@@ -41,6 +59,7 @@ _int CMonsterParent::Update(_float fDeltaTime)
 _int CMonsterParent::LateUpdate(_float fDeltaTime)
 {
 	FAILED_CHECK(__super::LateUpdate(fDeltaTime));
+
 
 	return _int();
 }
@@ -87,6 +106,12 @@ HRESULT CMonsterParent::SetUp_Components()
 
 void CMonsterParent::Free()
 {
+	Safe_Release(m_ComTransform);
+	Safe_Release(m_ComRenderer);
+	Safe_Release(m_ComVIBuffer);
+	Safe_Release(m_ComTexture);
+	Safe_Release(m_ComCollision);	
+	Safe_Release(m_ComShader);
 	__super::Free();
 	
 }

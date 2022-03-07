@@ -115,7 +115,8 @@ static const _tchar* Tag_Object_Prototype(OBJECTPROTOTYPEID eTag)
 enum LAYERID
 {
 	Layer_Camera_Main, 
-	Layer_Player, 
+	Layer_Player,
+	Layer_Monster,
 	Layer_Terrain,
 	Layer_Terrain_Cube,
 	Layer_BackGround,
@@ -136,6 +137,10 @@ static const _tchar* Tag_Layer(LAYERID eTag)
 	case Layer_Player:
 		return TEXT("Layer_Player");
 		break;
+	case Layer_Monster:
+		return TEXT("Layer_Monster");
+		break;
+
 	case Layer_Terrain:
 		return TEXT("Layer_Terrain");
 		break;

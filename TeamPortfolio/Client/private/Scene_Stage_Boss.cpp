@@ -26,7 +26,9 @@ HRESULT CScene_Stage_Boss::Initialize()
 
 	FAILED_CHECK(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main)));
 	FAILED_CHECK(Ready_Layer_SkyBox(TEXT("Layer_SkyBox")));
-	FAILED_CHECK(Ready_Layer_Player(TAG_LAY(Layer_Player),_float3(0,11,0)));
+	FAILED_CHECK(Ready_Layer_Player(TAG_LAY(Layer_Player), _float3(0, 11, 0)));
+	FAILED_CHECK(Ready_Layer_Monster(TAG_LAY(Layer_Monster)));
+
 //	FAILED_CHECK(Ready_Layer_PauseUI(TEXT("Layer_PauseUI")));
 //	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
 //	FAILED_CHECK(Ready_Layer_UI_Start(TEXT("Layer_UI_Start")));
@@ -194,6 +196,14 @@ HRESULT CScene_Stage_Boss::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 	if (pResult == nullptr)
 		return E_FAIL;
 	pResult->Set_MaxTime(300.f);
+
+	return S_OK;
+}
+
+HRESULT CScene_Stage_Boss::Ready_Layer_Monster(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("ProtoType_GameObject_Object_BossObject")))
+		return E_FAIL;
 
 	return S_OK;
 }

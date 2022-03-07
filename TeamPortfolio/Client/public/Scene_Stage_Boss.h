@@ -30,6 +30,11 @@ private:
 	HRESULT Ready_Layer_PlayerStatusUI(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);
 
+	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);
+
+
+
+
 	D3DLIGHT9		m_Light;
 
 public:

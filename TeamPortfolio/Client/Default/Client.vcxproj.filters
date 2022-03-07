@@ -477,6 +477,9 @@
     <ClInclude Include="..\public\MonsterParent.h">
       <Filter>01.GameObject\MonsterObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BossMonster.h">
+      <Filter>01.GameObject\MonsterObject\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -691,6 +694,9 @@
     </ClCompile>
     <ClCompile Include="..\private\MonsterParent.cpp">
       <Filter>01.GameObject\MonsterObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BossMonster.cpp">
+      <Filter>01.GameObject\MonsterObject\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

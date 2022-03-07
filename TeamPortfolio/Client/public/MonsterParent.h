@@ -33,7 +33,7 @@ public:
 protected:
 	// 컴포넌트 초기화
 	// 몬스터들은 동일한 컴포넌트 사용.
-	HRESULT SetUp_Components();
+	virtual	HRESULT SetUp_Components();
 
 protected:
 	// Components
@@ -47,8 +47,8 @@ protected:
 	CShader*	 m_ComShader;
 
 
-	float mHp;
-	float mMp;
+//	float mHp;
+//	float mMp;
 
 
 
