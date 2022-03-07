@@ -41,19 +41,52 @@ HRESULT CUI_Mouse::Initialize_Clone(void * pArg)
 		m_rcRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
 	}
 	m_fDepth = -9999.f;
-
+	m_eMouseType = MOUSETYPEID::MOUSE_DEFAULT;
+	m_ComTexture->Change_TextureLayer(L"cursor_pointer");
 	return S_OK;
 }
 
 _int CUI_Mouse::Update(_float fDeltaTime)
 {
+	
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
+	if(m_bTimeStart)
+		m_fTime += fDeltaTime;
+	if (m_eMouseType == MOUSETYPEID::MOUSE_DEFAULT)
+	{
+		m_ComTexture->Change_TextureLayer(L"cursor_pointer");
+		m_fFrame = 0;
+	}
+	
+	
+	if (m_eMouseType == MOUSETYPEID::MOUSE_CLICK)
+	{
+		m_ComTexture->Change_TextureLayer(L"cursor_clicker");
+		
+		m_fFrame = 0;
+		m_bTimeStart = true;
 
+
+		if (m_fTime > 0.5f)
+		{
+			m_eMouseType = MOUSETYPEID::MOUSE_DEFAULT;
+			m_fTime = 0;
+		}
+	}
 	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Press)
 	{
 		GetSingle(CGameInstance)->PlaySound(L"beep.mp3", CHANNEL_UI);
+		m_eMouseType = MOUSETYPEID::MOUSE_CLICK;
+		m_ComTexture->Change_TextureLayer(L"cursor_clicker");
+
+		m_fFrame = 1;
 	}
+	/*else
+	{
+		m_ComTexture->Change_TextureLayer(L"cursor_pointer");
+		m_fFrame = 0;
+	}*/
 
 	POINT ptMouse;
 	GetCursorPos(&ptMouse);
@@ -199,7 +232,7 @@ _int CUI_Mouse::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
+	if (FAILED(m_ComTexture->Bind_Texture(m_fFrame)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -224,19 +257,6 @@ _int CUI_Mouse::LateRender()
 	return _int();
 }
 
-void CUI_Mouse::Set_ImageName(TCHAR * pImageName)
-{
-	{ m_pImageName = pImageName; };
-	if (!lstrcmp(L"Button1", m_pImageName))
-	{
-		m_ComTexture->Change_TextureLayer(L"Button1");
-	}
-	else if (!lstrcmp(L"Button2", m_pImageName))
-	{
-		m_ComTexture->Change_TextureLayer(L"Button2");
-	}
-	
-}
 
 HRESULT CUI_Mouse::SetUp_Components()
 {

@@ -15,7 +15,6 @@ END
 
 class CUI_Mouse final :public CUI
 {
-
 private:
 	explicit CUI_Mouse(LPDIRECT3DDEVICE9 pGraphicDevice);
 	explicit CUI_Mouse(const CUI_Mouse& rhs);
@@ -45,9 +44,12 @@ private:
 
 private:
 	_float			m_fFrame = 0.f;
+	_float			m_fTime = 0.f;
+	_bool			m_bTimeStart = false;
 	TCHAR*			m_pImageName;
+	MOUSETYPEID		m_eMouseType = MOUSE_END;
 public:
-	void			Set_ImageName(TCHAR* pImageName);
+	void			Set_MouseID(MOUSETYPEID eMOUSETYPEID) { m_eMouseType= eMOUSETYPEID; }
 private:
 	HRESULT			SetUp_Components();
 
