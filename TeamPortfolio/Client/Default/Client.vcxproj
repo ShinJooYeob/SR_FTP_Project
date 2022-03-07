@@ -176,6 +176,7 @@
     <ClInclude Include="..\public\Scene_Stage3.h" />
     <ClInclude Include="..\public\Scene_Stage1.h" />
     <ClInclude Include="..\public\Object_Star.h" />
+    <ClInclude Include="..\public\Scene_Stage_Boss.h" />
     <ClInclude Include="..\public\Scene_Tutorial.h" />
     <ClInclude Include="..\public\UI_Start.h" />
     <ClInclude Include="..\public\UI_Status.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="..\private\Scene_Stage3.cpp" />
     <ClCompile Include="..\private\Scene_Stage1.cpp" />
     <ClCompile Include="..\private\Object_Star.cpp" />
+    <ClCompile Include="..\private\Scene_Stage_Boss.cpp" />
     <ClCompile Include="..\private\Scene_Tutorial.cpp" />
     <ClCompile Include="..\private\UI_Start.cpp" />
     <ClCompile Include="..\private\UI_Status.cpp" />

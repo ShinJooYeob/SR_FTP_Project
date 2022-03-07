@@ -55,6 +55,8 @@ HRESULT CScene_Stage3::Initialize()
 	SpecialCubeList.clear();
 ;
 	GetSingle(CGameInstance)->PlayBGM(L"JH_Stage3_BGM.mp3");
+	GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.5f);
+
 
 	return S_OK;
 }
@@ -482,6 +484,7 @@ HRESULT CScene_Stage3::Ready_Layer_Terrain(_uint sceneid,list<SPECIALCUBE*>* lis
 			CObject_Star::STARDESC StarDesc;
 
 			memcpy(StarDesc.fTransform, &(data->WorldMat.m[3]), sizeof(_float3));
+	
 
 			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, TEXT("Layer_Object_Star"), TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 				return E_FAIL;
