@@ -26,19 +26,11 @@ HRESULT CScene_Stage_Boss::Initialize()
 
 	FAILED_CHECK(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main)));
 	FAILED_CHECK(Ready_Layer_SkyBox(TEXT("Layer_SkyBox")));
-	FAILED_CHECK(Ready_Layer_PauseUI(TEXT("Layer_PauseUI")));
 	FAILED_CHECK(Ready_Layer_Player(TAG_LAY(Layer_Player),_float3(0,11,0)));
-	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
-	FAILED_CHECK(Ready_Layer_UI_Start(TEXT("Layer_UI_Start")));
-	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
-
-	
-
-
-	// 로드된 오브젝트 정보로 그리기
-
-
-	// 생성되지 않는 특수 큐브 저장
+//	FAILED_CHECK(Ready_Layer_PauseUI(TEXT("Layer_PauseUI")));
+//	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
+//	FAILED_CHECK(Ready_Layer_UI_Start(TEXT("Layer_UI_Start")));
+//	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
 
 	list< SPECIALCUBE*> SpecialCubeList;
 	GetSingle(CMapLoadMgr)->LoadMap(SCENEID::SCENE_BOSS, 5, &SpecialCubeList);
@@ -241,20 +233,6 @@ HRESULT CScene_Stage_Boss::Ready_Layer_PlayerStatusUI(const _tchar * pLayerTag)
 
 	return S_OK;
 }
-
-
-//
-//HRESULT CScene_Stage_Boss::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
-//{
-//
-//
-//
-//	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"),&_float3(5.f, 64.f, -24.f)))
-//		return E_FAIL;
-//
-//
-//	return S_OK;
-//}
 
 HRESULT CScene_Stage_Boss::Ready_Layer_PauseUI(const _tchar * pLayerTag)
 {

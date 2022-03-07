@@ -9,6 +9,7 @@
 #include "Scene_Stage3.h"
 #include "Scene_IMGUI.h"
 #include "Scene_Tutorial.h"
+#include "Scene_Stage_Boss.h"
 #include "UI_LoadingBar.h"
 #include "Camera_Main.h"
 
@@ -98,7 +99,10 @@ _int CScene_Loading::LateUpdate(_float fDeltaTime)
 			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Tutorial::Create(m_pGraphicDevice), m_eNextSceneIndex, true)))
 				return E_FAIL;
 			break;
-
+		case SCENEID::SCENE_BOSS:
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Stage_Boss::Create(m_pGraphicDevice), m_eNextSceneIndex, true)))
+				return E_FAIL;
+			break;
 		default:
 			break;
 		}

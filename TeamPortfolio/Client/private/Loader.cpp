@@ -631,7 +631,7 @@ HRESULT CLoader::Load_Scene_Stage_Boss(_bool * _IsClientQuit, CRITICAL_SECTION *
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 1;
+	m_iLoadingMaxCount = 9999;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
