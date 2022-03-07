@@ -270,19 +270,19 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 
 	PARTICLEDESC tDesc;
 	//파티클이 흩날리는 종류 설정
-	tDesc.eParticleID = Particle_Spread;
+	tDesc.eParticleID = Particle_Straight;
 
 	//총 파티클이 몇초동안 흩날릴 것인지 설정
-	tDesc.TotalParticleTime = 30.f;
+	tDesc.TotalParticleTime = 20.f;
 	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
 	tDesc.EachParticleLifeTime = 1.f;
 
 	//파티클의 사이즈를 설정
 	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
 	//파티클의 파워(이동속도)를 결정
-	tDesc.Particle_Power = 2;
+	tDesc.Particle_Power = 5;
 	//파티클의 파워(이동속도)의 랜덤 범위를 결정
-	tDesc.PowerRandomRange = _float2(1, 1);
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
 
 	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
 	tDesc.MaxParticleCount = 30;
@@ -292,7 +292,7 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
 	tDesc.szTextureLayerTag = TEXT("RankStar");
 	//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
-	tDesc.m_bIsTextureAutoFrame = true;
+	tDesc.m_bIsTextureAutoFrame = false;
 
 	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
 	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
@@ -310,8 +310,8 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
 	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
 	tDesc.ParticleColorChage = false;
-	tDesc.TargetColor = _float3(120, 30, 80);
-	tDesc.TargetColor2 = _float3(255.f, 255.f, 255.f);
+	tDesc.TargetColor = _float3(237, 28, 36);
+	tDesc.TargetColor2 = _float3(53, 255.f, 11);
 
 	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
 	//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
@@ -322,7 +322,7 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 	//방향을 설정하고 싶을 때 사용하는 옵션
 	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
 	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
-	//tDesc.vUp = _float3(1, 1, 0);
+	tDesc.vUp = _float3(1, 1, 0);
 
 
 	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨

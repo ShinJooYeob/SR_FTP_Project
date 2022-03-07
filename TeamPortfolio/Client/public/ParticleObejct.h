@@ -134,6 +134,7 @@ public:
 	// 범위에 벗어나면 재자리
 	virtual void ResetParticle(PARTICLEATT* attribute);
 
+	virtual _float Get_CamDistance() const { return m_ParticleDesc.m_bUIDepth; }
 
 	virtual void Reset_Velocity(_float3& fAttVlocity)PURE;
 	virtual void Update_Position_by_Velocity(PARTICLEATT* tParticleAtt, _float fTimeDelta)PURE;

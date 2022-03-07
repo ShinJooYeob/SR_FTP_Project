@@ -57,6 +57,7 @@ typedef struct tagParticleDesc
 
 
 	_bool  m_bIsUI = false;
+	_float  m_bUIDepth = 0;
 	//_bool	ParticleAlphaChage = false;
 	//_float TargetAlpha = 255.f;
 

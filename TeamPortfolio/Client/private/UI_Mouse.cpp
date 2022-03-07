@@ -116,6 +116,8 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
 		//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
 		tDesc.m_bIsUI = true;
+		//UI Depth 설정 (UI 가려지는거 순서 결정할때 쓰는 변수)
+		tDesc.m_bUIDepth = 0;
 
 		//방향을 설정하고 싶을 때 사용하는 옵션
 		//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
