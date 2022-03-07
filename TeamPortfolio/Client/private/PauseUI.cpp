@@ -310,7 +310,7 @@ HRESULT CPauseUI::Update_MouseButton(_float fTimeDelta)
 				m_fTargetPoint = g_iWinCY *0.5f;
 				m_vUIDesc[1].x = g_iWinCX - 222.f;
 				m_fPassedTime = 0;
-
+				GetSingle(CGameInstance)->PlaySound(L"JW_option_button.wav", CHANNEL_UI, 1.f);
 				m_bIsPauseAnimFinished = false;
 				m_fDepth = 1;
 
@@ -353,7 +353,7 @@ HRESULT CPauseUI::Update_MouseButton(_float fTimeDelta)
 			{
 				m_bIsPauseAnimFinished = false;
 				m_bIsOnAnim = false;
-
+				GetSingle(CGameInstance)->PlaySound(L"JW_option_button.wav", CHANNEL_UI, 2.f);
 				m_vUIDesc[1].y = g_iWinCY *0.5f;
 				m_fStartPoint = g_iWinCX - 222.f;
 				m_fTargetPoint = g_iWinCX + 222.f;
@@ -362,6 +362,7 @@ HRESULT CPauseUI::Update_MouseButton(_float fTimeDelta)
 			}
 			else if (PtInRect(&TransUIDesc_to_Rect(m_vUIDesc[7]), ptMouse))				//////////////스테이지 셀렉 씬으로 돌아가기
 			{
+				GetSingle(CGameInstance)->PlaySound(L"JW_option_button.wav", CHANNEL_UI, 2.f);
 				m_bIsClicked = false;
 				m_fDepth = -1;
 

@@ -42,7 +42,7 @@ public:
 	HRESULT Ready_Layer_UI_Image(const _tchar * pLayerTag);
 	HRESULT Set_Image_Render(const _tchar * tagUIList, _bool bCheck);
 	HRESULT Ready_Layer_Button(const _tchar * pLayerTag);
-
+	void Set_bIsPress() { m_bIsPress = !m_bIsPress; }
 
 
 private:

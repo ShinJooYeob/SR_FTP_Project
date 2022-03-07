@@ -158,7 +158,7 @@ HRESULT CUI_Start::Second_SetUp_RenderState()
 
 		FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"UI_Num"));
 		FAILED_CHECK(m_ComTexture->Bind_Texture(_uint(m_fCountFrame)));
-		if ((_uint)m_fCountFrame != (_uint)m_fOldframe)
+		if ((_uint)m_fCountFrame != (_int)m_fOldframe)
 		{
 			GetSingle(CGameInstance)->PlaySound(L"JW_CountDown.ogg", CHANNEL_UI,2.f);
 			m_fOldframe = m_fCountFrame;
@@ -174,11 +174,9 @@ HRESULT CUI_Start::Second_SetUp_RenderState()
 		FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"UI_Start"));
 		if ((_uint)m_fCountFrame != (_uint)m_fOldframe)
 		{
-			if (m_fCountFrame > 5)
-				m_bSound = true;
-			if (m_bSound)
+			if (m_fCountFrame < 5)
 			{
-				GetSingle(CGameInstance)->PlaySound(L"JW_startgame.wav", CHANNEL_UI, 2.f);
+				GetSingle(CGameInstance)->PlaySound(L"JW_stage_start.ogg", CHANNEL_UI, 2.f);
 				m_fOldframe = m_fCountFrame;
 			}
 		}
@@ -262,7 +260,7 @@ HRESULT CUI_Start::Update_Animation(_float fTimeDelta)
 {
 	
 	m_fCountFrame += fTimeDelta ;
-	if (m_fCountFrame > 4)
+	if (m_fCountFrame >= 4)
 		m_bStarton = true;
 	
 	

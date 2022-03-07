@@ -106,7 +106,7 @@ _int CNpc_oldy::Render()
 			wstring temp;
 			temp = L"Hi I'm oldy";
 
-			GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.3f, 0.45f), _float3(90, 125, 255), m_fText);
+			GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.4f, 0.6f), _float3(90, 125, 255), m_fText);
 
 		}
 	}

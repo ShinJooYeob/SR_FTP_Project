@@ -106,7 +106,7 @@ _int CNpc_izaac::Render()
 			wstring temp;
 			temp = L"Hi I'm izaac";
 
-			GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.3f, 0.45f), _float3(255, 0, 255), m_fText);
+			GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.4f, 0.6f), _float3(255, 0, 255), m_fText);
 
 		}
 	}
@@ -144,9 +144,10 @@ HRESULT CNpc_izaac::Move(_float DeltaTime)
 
 
 		if (m_bisMoveRight == true)
-			m_ComTexture->Change_TextureLayer(L"izaac_talk");
-		else if (m_bisMoveRight == false)
 			m_ComTexture->Change_TextureLayer(L"izaac_talk_reverse");
+		
+		else if (m_bisMoveRight == false)
+			m_ComTexture->Change_TextureLayer(L"izaac_talk");
 
 		m_fText += DeltaTime*12.f;
 		m_fPassedTime += DeltaTime;
@@ -236,13 +237,13 @@ HRESULT CNpc_izaac::SetUp_Components()
 
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Renderer), TAG_COM(Com_Renderer), (CComponent**)&m_ComRenderer)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComRectVIBuffer)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComRectVIBuffer)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), TAG_COM(Com_Transform), (CComponent**)&m_ComTransform, (void*)&TransformDesc)))
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Texture_NPC"), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_pCollisionCom)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_pCollisionCom)))
 		return E_FAIL;
 	return S_OK;
 }

@@ -12,12 +12,12 @@ END
 
 BEGIN(Client)
 
-class CNpc_izaac : public CNpc
+class CNpc_izaacTuto : public CNpc
 {
 private:
-	explicit CNpc_izaac(LPDIRECT3DDEVICE9	pGraphicDevice);
-	explicit CNpc_izaac(const CNpc_izaac& rhs);
-	virtual	~CNpc_izaac() = default;
+	explicit CNpc_izaacTuto(LPDIRECT3DDEVICE9	pGraphicDevice);
+	explicit CNpc_izaacTuto(const CNpc_izaacTuto& rhs);
+	virtual	~CNpc_izaacTuto() = default;
 
 protected:
 	virtual HRESULT Initialize_Prototype(void* pArg) override;
@@ -41,16 +41,11 @@ private:
 	CCollision*				m_pCollisionCom = nullptr;
 private:
 	NPCDESC					m_tNpcDesc;
-	_bool					m_bisMoveRight = false;
-	_bool					m_bMove = false;
-	_float					m_fMoveTime = 0.f;
 	_float					m_fPassedTime = 0.f;
-	_float					m_fStartMoveCount = 0.f;
 	_bool					m_bPause = false;
 	_bool					m_bTextStart = false;
 	_float					m_fText = 0.f;
 	_float					m_fFrame = 0.f;
-	_int					m_iRand=0;
 private:
 
 
@@ -61,7 +56,7 @@ private:
 	HRESULT Move(_float DeltaTime);
 	_int Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime);
 public:
-	static CNpc_izaac* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
+	static CNpc_izaacTuto* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg = nullptr);
 	virtual void Free()override;
 };

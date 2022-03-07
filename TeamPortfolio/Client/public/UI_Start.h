@@ -58,7 +58,7 @@ private:
 	_float			m_fStartPoint = 0;
 	_float			m_fTargetPoint = 0;
 	_float			m_fPassedTime = 0;
-	_float			m_fOldframe = 0;
+	_float			m_fOldframe = -1.f;
 	_bool			m_bSound = false;
 
 private:

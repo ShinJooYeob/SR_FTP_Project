@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "..\public\Npc_ivy.h"
-#include "Player.h"
+#include "Shop.h"
 CNpc_ivy::CNpc_ivy(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CNpc(pGraphicDevice)
 {
@@ -104,14 +104,19 @@ _int CNpc_ivy::Render()
 		if (m_bTextStart)
 		{
 			wstring temp;
-			temp = L"Hi I'm ivy. Do you want buy a items?";
+			temp = L"Hi I'm ivy. \nDo you want buy a items?";
 
-			GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.3f, 0.45f), _float3(255, 0, 0), m_fText);
+			GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.4f, 0.6f), _float3(255, 0, 0), m_fText);
 
 		}
 	}
 	else
 	{
+		if (m_bCollision)
+		{
+			CShop* temp = (CShop*)(GetSingle(CGameInstance)->Get_ObjectList_from_Layer(m_eNowSceneNum, TAG_LAY(Layer_Shop))->front());
+			temp->Set_bIsPress();
+		}
 		m_bTextStart = false;
 		m_bPause = false;
 	}
@@ -148,11 +153,12 @@ HRESULT CNpc_ivy::Move(_float DeltaTime)
 		
 
 		if (m_bisMoveRight == true)
-			m_ComTexture->Change_TextureLayer(L"ivy_talk");
-		else if (m_bisMoveRight == false)
 			m_ComTexture->Change_TextureLayer(L"ivy_talk_reverse");
+		
+		else if (m_bisMoveRight == false)
+			m_ComTexture->Change_TextureLayer(L"ivy_talk");
 
-		m_fText += DeltaTime*12.f;
+		m_fText += DeltaTime*10.f;
 		m_fPassedTime += DeltaTime;
 	}
 	if (m_bPause == false)
@@ -202,6 +208,7 @@ HRESULT CNpc_ivy::Move(_float DeltaTime)
 			}
 		}
 	}
+	
 	return S_OK;
 }
 
@@ -213,17 +220,21 @@ _int CNpc_ivy::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision
 
 	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Player)))
 	{
+		m_bCollision = true;
 		if ((GetSingle(CGameInstance)->Get_DIKeyState(DIK_LSHIFT) & DIS_Down))
 		{
-			if(m_bPause==false)
-			GetSingle(CGameInstance)->PlaySound(L"JW_talkloopgirl.wav", CHANNEL_OBJECT);
+			if (m_bPause == false)
+				GetSingle(CGameInstance)->PlaySound(L"JW_talkloopgirl.wav", CHANNEL_OBJECT);
+
 			m_bPause = !m_bPause;
 			m_bTextStart = !m_bTextStart;
+
 		}
 
 	}
 
-
+	else
+		m_bCollision = false;
 
 	RELEASE_INSTANCE(CGameInstance);
 

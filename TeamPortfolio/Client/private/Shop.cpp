@@ -125,8 +125,7 @@ _int CShop::LateUpdate(_float fDeltaTime)
 	//렌더링 그룹에 넣어주는 역활
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 
-	if (pInstance->Get_DIKeyState(DIK_F11) & DIS_Down)
-		m_bIsPress = !m_bIsPress;
+	
 
 	if (m_bIsPress == true)
 	{
