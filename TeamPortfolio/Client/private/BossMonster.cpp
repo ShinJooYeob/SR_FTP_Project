@@ -27,6 +27,7 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 
 	mPlayerTarget = nullptr;
 	m_ComTransform->Scaled(_float3(5, 5, 5));
+	mCurrentState = CBossMonster::BOSS_FSM_INIT;
 
 	// 초기상태 설정
 	//	m_StateMachine.SetState();
@@ -55,6 +56,8 @@ _int CBossMonster::Update(_float fDeltaTime)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, playerPos);
 
 	// 패턴 업데이트
+//	FSMUpdate();
+
 //	m_StateMachine.Update();
 
 

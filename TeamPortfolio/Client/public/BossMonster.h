@@ -16,6 +16,19 @@ BEGIN(Client)
 // 보스 몬스터 
 class CBossMonster final : public CMonsterParent
 {
+public:
+	enum MonsterFSM
+	{
+		BOSS_FSM_INIT,
+		BOSS_FSM_IDLE,
+		BOSS_FSM_PATERN1,
+		BOSS_FSM_PATERN2,
+		BOSS_FSM_PATERN3,
+		BOSS_FSM_HIT,
+		BOSS_FSM_DEAD,
+		
+	};
+
 
 protected:
 	explicit CBossMonster(LPDIRECT3DDEVICE9	pGraphicDevice);
@@ -30,16 +43,20 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 	
+public:
+	MonsterFSM GetCurrentState() { return mCurrentState; }
+
 protected:
 	virtual HRESULT SetUp_Components();
 	virtual HRESULT SetUp_RenderState()override;
 	virtual HRESULT Release_RenderState()override;
 	
 protected:
-	CGameObject* mPlayerTarget;
+	CGameObject*	mPlayerTarget;
+	MonsterFSM		mCurrentState;
 
-	// 패턴 컴포넌트
-//	CStateMachine* m_StateMachine;
+
+//	void FSMUpdate();
 
 public:
 	static CBossMonster* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
