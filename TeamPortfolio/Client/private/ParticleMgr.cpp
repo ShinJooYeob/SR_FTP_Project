@@ -19,7 +19,7 @@ HRESULT CParticleMgr::Initialize_ParticleMgr(LPDIRECT3DDEVICE9 pGraphicDevice)
 	return S_OK;
 }
 
-HRESULT CParticleMgr::Create_ParticleObject(SCENEID eSceneID, PARTICLEDESC tParticleDesc)
+HRESULT CParticleMgr::Create_ParticleObject(_uint eSceneID, PARTICLEDESC tParticleDesc)
 {
 
 	switch (tParticleDesc.eParticleID)

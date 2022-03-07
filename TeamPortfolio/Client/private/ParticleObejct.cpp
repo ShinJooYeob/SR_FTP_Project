@@ -148,7 +148,11 @@ _int CParticleObject::LateUpdate(_float fTimeDelta)
 	//if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 	//	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
-	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_AFTEROBJ, this);
+	if (m_ParticleDesc.m_bIsUI)
+		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_UI, this);
+
+	else
+		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_AFTEROBJ, this);
 
 
 	return _int();
@@ -277,7 +281,10 @@ HRESULT CParticleObject::SetUp_Components()
 
 	/* For. ÅØ½ºÃÄ*/
 	if (FAILED(__super::Add_Component(m_eNowSceneNum, m_ParticleDesc.szTextureProtoTypeTag, TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
-		return E_FAIL;
+	{
+		if (FAILED(__super::Add_Component(SCENE_STATIC, m_ParticleDesc.szTextureProtoTypeTag, TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+			return E_FAIL;
+	}
 
 	/* For.Com_Renderer */
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))

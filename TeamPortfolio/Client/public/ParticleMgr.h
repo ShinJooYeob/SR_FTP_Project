@@ -19,7 +19,7 @@ public:
 
 
 public:
-	HRESULT Create_ParticleObject(SCENEID eSceneID, PARTICLEDESC tParticleDesc);
+	HRESULT Create_ParticleObject(_uint eSceneID, PARTICLEDESC tParticleDesc);
 
 private:
 	LPDIRECT3DDEVICE9 m_pGraphicDevice = nullptr;
