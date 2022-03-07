@@ -146,10 +146,10 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 		return E_FAIL;
 
 
-	////버텍스 파서들 모음
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Penguin", pGameInstance->Create_ParsedObject(L"PenguinVertex.txt", L"PenguinIndex.txt")));
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
-	////
+	//////버텍스 파서들 모음
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Penguin", pGameInstance->Create_ParsedObject(L"PenguinVertex.txt", L"PenguinIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
+	//////
 
 
 #pragma endregion
@@ -225,6 +225,10 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_particle_Straight"), CParticleeObj_Straight::Create(m_pGraphicDevice))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_particle_Spread"), CParticleeObj_Spread::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	
 
 	if (FAILED(pGameInstance->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI")))
 		return E_FAIL;

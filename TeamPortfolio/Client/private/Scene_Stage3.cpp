@@ -38,7 +38,7 @@ HRESULT CScene_Stage3::Initialize()
 //	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton")));
 
 
-//	FAILED_CHECK(Ready_Layer_Object_particle(TEXT("Layer_Particle")));
+	FAILED_CHECK(Ready_Layer_Object_particle(TEXT("Layer_Particle")));
 
 	// 로드된 오브젝트 정보로 그리기
 
@@ -268,13 +268,15 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 	//	return E_FAIL;
 
 	PARTICLEDESC tDesc;
-	tDesc.eParticleID = Particle_Straight;
+	tDesc.eParticleID = Particle_Spread;
 
 	tDesc.TotalParticleTime = 30.f;
 	tDesc.EachParticleLifeTime = 1.f;
 
 	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
 	tDesc.Particle_Power = 2;
+	tDesc.PowerRandomRange = _float2(1, 1);
+
 	tDesc.MaxParticleCount = 30;
 	
 	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_UI_Result_Texture");
@@ -286,6 +288,8 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 
 	tDesc.ParticleColorChage = true;
 	tDesc.TargetColor = _float3(120,30,80);
+
+	//tDesc.vUp = _float3(1, 1, 0);
 
 	GetSingle(CParticleMgr)->Create_ParticleObject(SCENE_STAGE3, tDesc);
 

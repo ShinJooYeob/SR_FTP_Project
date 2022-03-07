@@ -163,7 +163,9 @@ void CParticleObject::ResetParticle(PARTICLEATT * attribute)
 	attribute->_lifeTime = m_ParticleDesc.EachParticleLifeTime * (((_float)(rand() % 1500 + 500))*0.001f);
 	attribute->_age = 0;
 	attribute->_color = _float3(255.f, 255.f, 255.f);
-	attribute->_force = m_ParticleDesc.Particle_Power * (((_float)(rand() % 1500 + 500))*0.001f);
+
+	attribute->_force = m_ParticleDesc.Particle_Power * 
+		((((_float)(rand() % _uint((m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x)*1000.f)) + m_ParticleDesc.PowerRandomRange.x * 1000.f))*0.001f);
 	attribute->_NowparantPos = m_ComParentTransform->Get_MatrixState(CTransform::STATE_POS);
 
 	Reset_Velocity(attribute->_velocity);
@@ -300,6 +302,16 @@ HRESULT CParticleObject::SetUp_ParticleDesc(void * pArg)
 	m_boundingBox.minPos = m_ParticleDesc.MaxBoundary.Get_Inverse();
 	m_boundingBox.maxPos = m_ParticleDesc.MaxBoundary;
 
+	if (m_ParticleDesc.vUp.Get_Nomalize() != _float3(0, 1, 0))
+	{
+		m_vUp = m_ParticleDesc.vUp.Get_Nomalize();
+		m_vRight = (m_vUp.Get_Cross(_float3(0, 1, 0))).Get_Nomalize();
+		m_vLook = (m_vRight.Get_Cross(m_vUp)).Get_Nomalize();
+	}
+
+	if (m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x < 0.1f )
+		m_ParticleDesc.PowerRandomRange.y += 0.1f;
+
 	return S_OK;
 }
 
@@ -402,7 +414,8 @@ HRESULT CParticleeObj_Ball::Initialize_Child_Clone()
 
 		part._NowparantPos = m_ComParentTransform->Get_MatrixState(CTransform::STATE_POS);
 
-		part._force = m_ParticleDesc.Particle_Power * (((_float)(rand() % 1500 + 500))*0.001f);
+		part._force = m_ParticleDesc.Particle_Power *
+			((((_float)(rand() % _uint((m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x)*1000.f)) + m_ParticleDesc.PowerRandomRange.x * 1000.f))*0.001f);
 
 		m_list_Particles.push_front(part);
 	}
@@ -464,10 +477,10 @@ CParticleeObj_Straight::CParticleeObj_Straight(const CParticleeObj_Straight & rh
 
 void CParticleeObj_Straight::Reset_Velocity(_float3 & fAttVlocity)
 {
-	_float3 RandomVelocity = _float3(0, 0, 0);
-	GetRandomVector(&RandomVelocity, &_float3(0, 0, 0), &_float3(0, 1, 0));
+	/*_float3 RandomVelocity = _float3(0, 0, 0);
+	GetRandomVector(&RandomVelocity, &_float3(0, 0, 0), &m_vUp);*/
 
-	fAttVlocity = RandomVelocity.Get_Nomalize();
+	fAttVlocity = m_vUp.Get_Nomalize();
 }
 
 void CParticleeObj_Straight::Update_Position_by_Velocity(PARTICLEATT * tParticleAtt, _float fTimeDelta)
@@ -500,9 +513,12 @@ HRESULT CParticleeObj_Straight::Initialize_Child_Clone()
 
 		Reset_Velocity(part._velocity);
 		part._NowparantPos = m_ComParentTransform->Get_MatrixState(CTransform::STATE_POS);
-		part._force = m_ParticleDesc.Particle_Power * (((_float)(rand() % 1500 + 500))*0.001f);
+		part._force = m_ParticleDesc.Particle_Power *
+			((((_float)(rand() % _uint((m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x)*1000.f)) + m_ParticleDesc.PowerRandomRange.x * 1000.f))*0.001f);
 		m_list_Particles.push_front(part);
 	}
+
+
 	return S_OK;
 }
 
@@ -563,32 +579,43 @@ CParticleeObj_Fountain::CParticleeObj_Fountain(const CParticleeObj_Fountain & rh
 void CParticleeObj_Fountain::Reset_Velocity(_float3 & fAttVlocity)
 {
 	_float3 RandomVelocity = _float3(0, 0, 0);
-	GetRandomVector(&RandomVelocity, &_float3(-2.f, 10.f, -2.f), &_float3(2.f, 20.f, 2.f));
 
-	fAttVlocity = RandomVelocity.Get_Nomalize();
+	_float3 vRightAddLook = _float3(0,0,0);
+
+	GetRandomVector(&RandomVelocity, &(m_vRight.Get_Inverse()), &m_vRight);
+	vRightAddLook += RandomVelocity;
+	GetRandomVector(&RandomVelocity, &(m_vLook.Get_Inverse()), &m_vLook);
+	vRightAddLook += RandomVelocity;
+
+
+	fAttVlocity = vRightAddLook.Get_Nomalize();
 }
 
 void CParticleeObj_Fountain::Update_Position_by_Velocity(PARTICLEATT * tParticleAtt, _float fTimeDelta)
 {
-	_float3 ExceptY = tParticleAtt->_velocity;
-	ExceptY.y = 0;
 
-	tParticleAtt->_position += ExceptY * tParticleAtt->_force * fTimeDelta;
+	tParticleAtt->_position += tParticleAtt->_velocity * tParticleAtt->_force * 0.3f * fTimeDelta;
 
 	if (tParticleAtt->_age < tParticleAtt->_lifeTime * 0.7f )
 	{
-		tParticleAtt->_position.y = GetSingle(CGameInstance)->Easing(TYPE_QuadOut,
-			tParticleAtt->_NowparantPos.y, 
-			tParticleAtt->_NowparantPos.y + tParticleAtt->_velocity.y * tParticleAtt->_force ,
-			tParticleAtt->_age, 
+
+		_float TempForce = GetSingle(CGameInstance)->Easing(TYPE_QuadOut,
+			tParticleAtt->_force, 0,
+			tParticleAtt->_age,
 			tParticleAtt->_lifeTime* 0.7f);
+
+		tParticleAtt->_position += m_vUp * TempForce * fTimeDelta;
+
+
 	}
 	else {
-		tParticleAtt->_position.y = GetSingle(CGameInstance)->Easing(TYPE_QuadIn,
-			tParticleAtt->_NowparantPos.y + tParticleAtt->_velocity.y * tParticleAtt->_force,
-			tParticleAtt->_NowparantPos.y + (tParticleAtt->_velocity.y) * tParticleAtt->_force * 0.5f,
-			tParticleAtt->_age - tParticleAtt->_lifeTime* 0.7f, 
+
+		_float TempForce = GetSingle(CGameInstance)->Easing(TYPE_QuadOut,
+			0, tParticleAtt->_force,
+			tParticleAtt->_age - tParticleAtt->_lifeTime * 0.7f,
 			tParticleAtt->_lifeTime * 0.3f);
+
+		tParticleAtt->_position += _float3(0,-1,0)* TempForce * fTimeDelta;
 
 	}
 
@@ -604,7 +631,9 @@ void CParticleeObj_Fountain::ResetParticle(PARTICLEATT * attribute)
 	attribute->_lifeTime = m_ParticleDesc.EachParticleLifeTime * (((_float)(rand() % 1500 + 500))*0.001f);
 	attribute->_age = 0;
 
-	attribute->_force = m_ParticleDesc.Particle_Power * (((_float)(rand() % 1500 + 500))*0.001f);
+	attribute->_force = m_ParticleDesc.Particle_Power *
+		((((_float)(rand() % _uint((m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x)*1000.f)) + m_ParticleDesc.PowerRandomRange.x * 1000.f))*0.001f);
+
 	attribute->_NowparantPos = m_ComParentTransform->Get_MatrixState(CTransform::STATE_POS);
 
 	Reset_Velocity(attribute->_velocity);
@@ -637,7 +666,8 @@ HRESULT CParticleeObj_Fountain::Initialize_Child_Clone()
 		Reset_Velocity(part._velocity);
 		part._NowparantPos = m_ComParentTransform->Get_MatrixState(CTransform::STATE_POS);
 
-		part._force = m_ParticleDesc.Particle_Power * (((_float)(rand() % 1500 + 500))*0.001f);
+		part._force = m_ParticleDesc.Particle_Power *
+			((((_float)(rand() % _uint((m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x)*1000.f)) + m_ParticleDesc.PowerRandomRange.x * 1000.f))*0.001f); 
 		m_list_Particles.push_front(part);
 	}
 	return S_OK;
@@ -698,7 +728,18 @@ CParticleeObj_Cone::CParticleeObj_Cone(const CParticleeObj_Cone & rhs)
 void CParticleeObj_Cone::Reset_Velocity(_float3 & fAttVlocity)
 {
 	_float3 RandomVelocity = _float3(0, 0, 0);
-	GetRandomVector(&RandomVelocity, &_float3(-50.f, 100.f, -50.f), &_float3(50.f, 150.f, 50.f));
+
+	_float3 vAddedRightLook = _float3(0, 0, 0);
+	vAddedRightLook += m_vRight;
+	//vAddedRightLook += m_vUp;
+	vAddedRightLook += m_vLook;
+
+	
+
+	GetRandomVector(&RandomVelocity, &(vAddedRightLook.Get_Inverse()), &(vAddedRightLook));
+
+	//RandomVelocity += m_vUp * (((_float)(rand() % 500 + 1000))*0.001f);
+	RandomVelocity += m_vUp;
 
 	fAttVlocity = RandomVelocity.Get_Nomalize();
 }
@@ -734,7 +775,8 @@ HRESULT CParticleeObj_Cone::Initialize_Child_Clone()
 
 		Reset_Velocity(part._velocity);
 
-		part._force = m_ParticleDesc.Particle_Power * (((_float)(rand() % 1500 + 500))*0.001f);
+		part._force = m_ParticleDesc.Particle_Power *
+			((((_float)(rand() % _uint((m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x)*1000.f)) + m_ParticleDesc.PowerRandomRange.x * 1000.f))*0.001f); 
 		m_list_Particles.push_front(part);
 	}
 	return S_OK;
@@ -775,6 +817,154 @@ CGameObject * CParticleeObj_Cone::Clone(void * pArg)
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
 		MSGBOX("Fail to Create CParticleeObj_Cone");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+
+///////////퍼지는 형태 파티클///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CParticleeObj_Spread::CParticleeObj_Spread(LPDIRECT3DDEVICE9 pGraphic_Device)
+	:CParticleObject(pGraphic_Device)
+{
+}
+
+CParticleeObj_Spread::CParticleeObj_Spread(const CParticleeObj_Spread & rhs)
+	: CParticleObject(rhs)
+{
+}
+
+void CParticleeObj_Spread::Reset_Velocity(_float3 & fAttVlocity)
+{
+	_float3 RandomVelocity = _float3(0, 0, 0);
+
+	_float3 vRightAddLook = _float3(0, 0, 0);
+
+	GetRandomVector(&RandomVelocity, &(m_vRight.Get_Inverse()), &m_vRight);
+	vRightAddLook += RandomVelocity;
+	GetRandomVector(&RandomVelocity, &(m_vLook.Get_Inverse()), &m_vLook);
+	vRightAddLook += RandomVelocity;
+
+
+	fAttVlocity = vRightAddLook.Get_Nomalize();
+}
+
+void CParticleeObj_Spread::Update_Position_by_Velocity(PARTICLEATT * tParticleAtt, _float fTimeDelta)
+{
+	tParticleAtt->_position += tParticleAtt->_velocity * tParticleAtt->_force * fTimeDelta;
+
+	if (tParticleAtt->_age < tParticleAtt->_lifeTime * 0.7f)
+	{
+
+		_float TempForce = GetSingle(CGameInstance)->Easing(TYPE_QuadOut,
+			tParticleAtt->_force * 0.4f, 0,
+			tParticleAtt->_age,
+			tParticleAtt->_lifeTime* 0.7f);
+
+		tParticleAtt->_position += m_vUp * TempForce * fTimeDelta;
+
+
+	}
+	else {
+
+		_float TempForce = GetSingle(CGameInstance)->Easing(TYPE_QuadOut,
+			0, tParticleAtt->_force * 0.4f,
+			tParticleAtt->_age - tParticleAtt->_lifeTime * 0.7f,
+			tParticleAtt->_lifeTime * 0.3f);
+
+		tParticleAtt->_position += _float3(0, -1, 0)* TempForce * fTimeDelta;
+
+	}
+
+}
+
+void CParticleeObj_Spread::ResetParticle(PARTICLEATT * attribute)
+{
+	_float3 RandomPos = _float3(0, 0, 0);
+	GetRandomVector(&RandomPos, &_float3(-0.5f, -0.5f, -0.5f), &_float3(0.5f, -0.45f, 0.5f));
+	attribute->_position = Get_ParentPos() + RandomPos;
+
+	attribute->_lifeTime = m_ParticleDesc.EachParticleLifeTime * (((_float)(rand() % 1500 + 500))*0.001f);
+	attribute->_age = 0;
+
+	attribute->_force = m_ParticleDesc.Particle_Power *
+		((((_float)(rand() % _uint((m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x)*1000.f)) + m_ParticleDesc.PowerRandomRange.x * 1000.f))*0.001f);
+
+	attribute->_NowparantPos = m_ComParentTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	Reset_Velocity(attribute->_velocity);
+}
+
+HRESULT CParticleeObj_Spread::Initialize_Child_Clone()
+{
+	m_list_Particles.clear();
+
+	// 자식 객체 생성
+	PARTICLEATT part;
+	_float3 RandomVelocity = _float3(0, 0, 0);
+
+
+
+	_float3 RandomPos = _float3(0, 0, 0);
+
+
+	//	part._color = COLOR_BLUE;
+	//	part._colorFade = COLOR_WHITE;
+	for (_uint i = 0; i < m_ParticleDesc.MaxParticleCount; i++)
+	{
+		GetRandomVector(&RandomPos, &_float3(-0.5f, -0.5f, -0.5f), &_float3(0.5f, -0.45f, 0.5f));
+
+		part._lifeTime = m_ParticleDesc.EachParticleLifeTime * (((_float)(rand() % 1500 + 500))*0.001f);
+		part._age = 0;
+
+		part._position = Get_ParentPos() + RandomPos;
+
+		Reset_Velocity(part._velocity);
+		part._NowparantPos = m_ComParentTransform->Get_MatrixState(CTransform::STATE_POS);
+
+		part._force = m_ParticleDesc.Particle_Power *
+			((((_float)(rand() % _uint((m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x)*1000.f)) + m_ParticleDesc.PowerRandomRange.x * 1000.f))*0.001f); 
+		m_list_Particles.push_front(part);
+	}
+	return S_OK;
+}
+
+_int CParticleeObj_Spread::Update(_float fTimeDelta)
+{
+	if (0 > __super::Update(fTimeDelta))
+		return -1;
+	return _int();
+}
+
+_int CParticleeObj_Spread::LateUpdate(_float fTimeDelta)
+{
+	if (0 > __super::LateUpdate(fTimeDelta))
+		return -1;
+	return _int();
+}
+
+CParticleeObj_Spread * CParticleeObj_Spread::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)
+{
+	CParticleeObj_Spread* pInstance = new CParticleeObj_Spread(pGraphic_Device);
+
+	if (FAILED(pInstance->Initialize_Prototype(pArg)))
+	{
+		MSGBOX("Fail to Create CParticleeObj_Spread");
+		Safe_Release(pInstance);
+
+	}
+	return pInstance;
+}
+
+CGameObject * CParticleeObj_Spread::Clone(void * pArg)
+{
+	CParticleeObj_Spread* pInstance = new CParticleeObj_Spread(*this);
+
+	if (FAILED(pInstance->Initialize_Clone(pArg)))
+	{
+		MSGBOX("Fail to Create CParticleeObj_Spread");
 		Safe_Release(pInstance);
 	}
 

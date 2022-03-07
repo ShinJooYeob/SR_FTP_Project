@@ -166,6 +166,9 @@ protected:
 
 
 	PARTICLEDESC			m_ParticleDesc;
+	_float3					m_vUp = _float3(0,1,0);
+	_float3					m_vRight = _float3(1, 0, 0);
+	_float3					m_vLook = _float3(0, 0, 1);
 	//float                   m_RateTime;   
 	//float                   m_Scale;       
 	list<PARTICLEATT>		m_list_Particles;
@@ -306,6 +309,36 @@ private:
 public:
 
 	static CParticleeObj_Cone* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	virtual CGameObject * Clone(void * pArg) override;
+
+};
+
+
+
+class CParticleeObj_Spread final : public CParticleObject
+{
+private:
+	explicit CParticleeObj_Spread(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CParticleeObj_Spread(const CParticleeObj_Spread& rhs);
+	virtual ~CParticleeObj_Spread() = default;
+
+private:
+
+	virtual void Reset_Velocity(_float3& fAttVlocity)override;
+	virtual void Update_Position_by_Velocity(PARTICLEATT* tParticleAtt, _float fTimeDelta)override;
+	virtual void ResetParticle(PARTICLEATT * attribute)override;
+
+	virtual HRESULT Initialize_Child_Clone() override;
+	//	virtual void ResetParticle(PARTICLEATT* attribute);
+
+	virtual _int Update(_float fTimeDelta)override;
+	virtual _int LateUpdate(_float fTimeDelta)override;
+	// 랜더는 부모 것 사용
+
+
+public:
+
+	static CParticleeObj_Spread* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject * Clone(void * pArg) override;
 
 };
