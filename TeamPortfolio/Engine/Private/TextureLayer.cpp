@@ -1,5 +1,5 @@
 #include "..\Public\TextureLayer.h"
-
+#include "Shader.h"
 
 
 
@@ -51,6 +51,14 @@ HRESULT CTextureLayer::Bind_Texture(_uint iTextureIndex,_uint iStageIndex)
 		return E_FAIL;
 
 	return m_pGraphicDevice->SetTexture(iStageIndex, m_vecTexture[iTextureIndex]);
+}
+
+HRESULT CTextureLayer::Bind_ShaderTexture(CShader * pShader, D3DXHANDLE param, _uint iTextureIndex)
+{
+
+	if (iTextureIndex >= m_vecTexture.size())
+		return E_FAIL;
+	return pShader->SetUp_TextureOnShader(param, m_vecTexture[iTextureIndex]);
 }
 
 HRESULT CTextureLayer::ClearTexture()

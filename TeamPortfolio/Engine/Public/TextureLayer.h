@@ -26,6 +26,7 @@ private:
 
 public:
 	HRESULT Bind_Texture(_uint iTextureIndex = 0, _uint iStageIndex = 0);
+	HRESULT Bind_ShaderTexture(class CShader * pShader, D3DXHANDLE param, _uint iTextureIndex=0);
 	HRESULT ClearTexture();
 
 	_uint Get_TextureNum() {return (_uint)(m_vecTexture.size() - 1);	}

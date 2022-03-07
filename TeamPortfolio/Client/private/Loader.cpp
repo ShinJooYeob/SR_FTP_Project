@@ -52,6 +52,8 @@
 #include "ParsedObject_Blossoms.h"
 #include "ParsedObject_Penguin.h"
 
+#include "BossMonster.h"
+
 _uint CALLBACK LoadingThread(void* _Prameter)
 {
 	THREADARG tThreadArg{};
@@ -79,6 +81,9 @@ _uint CALLBACK LoadingThread(void* _Prameter)
 	case SCENEID::SCENE_STAGE3:
 		pLoader->Load_Scene_Stage3(tThreadArg.IsClientQuit, tThreadArg.CriSec);
 		break;
+	case SCENEID::SCENE_BOSS:
+		pLoader->Load_Scene_Stage_Boss(tThreadArg.IsClientQuit, tThreadArg.CriSec);
+		break;		
 	case SCENEID::SCENE_IMGUISCENE:
 		pLoader->Load_Scene_IMGUI(tThreadArg.IsClientQuit, tThreadArg.CriSec);
 		break;
@@ -340,7 +345,7 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 999999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -566,7 +571,85 @@ HRESULT CLoader::Load_Scene_Stage3(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 999999;
+	m_iLoadingMaxCount = 1;
+	m_iLoadingProgressCount = 0;
+	LeaveCriticalSection(_CriSec);
+
+	for (int i = 0; i < m_iLoadingMaxCount; ++i)
+	{
+		EnterCriticalSection(_CriSec);
+		m_iLoadingProgressCount = i;
+		LeaveCriticalSection(_CriSec);
+	}
+
+	EnterCriticalSection(_CriSec);
+	m_bIsLoadingFinished = true;
+	LeaveCriticalSection(_CriSec);
+	m_bIsLoadingFinished = true;
+	return S_OK;
+}
+
+HRESULT CLoader::Load_Scene_Stage_Boss(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	//프로토타입 컴포넌트#######################################################################################################
+#pragma region PROTOTYPE_COMPONENT
+
+	CTexture::TEXTUREDESC TextureDesc;
+	//////////eunhyuk_UI
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_Result.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_UI_Result_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	//UI_Start
+	TextureDesc.szTextFilePath = TEXT("UI_Start.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StartUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	//미는 큐브
+	TextureDesc.szTextFilePath = TEXT("Cube_Texture.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_CUBEMAP;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Cube_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("Pause.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Pause"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_Status.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StatusUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("GravityTexture.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_GravityTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("PotalTexture.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+
+#pragma endregion
+
+
+#pragma  region PROTOTYPE_GAMEOBJECT
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_BossObject"),
+		CBossMonster::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+#pragma endregion
+
+
+	RELEASE_INSTANCE(CGameInstance);
+	EnterCriticalSection(_CriSec);
+	m_iLoadingMaxCount = 9999;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 

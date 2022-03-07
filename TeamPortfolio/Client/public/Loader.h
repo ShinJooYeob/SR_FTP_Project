@@ -28,6 +28,7 @@ public:
 	HRESULT Load_Scene_Stage1(_bool* _IsClientQuit, CRITICAL_SECTION* _CriSec);
 	HRESULT Load_Scene_Stage2(_bool* _IsClientQuit, CRITICAL_SECTION* _CriSec);
 	HRESULT Load_Scene_Stage3(_bool* _IsClientQuit, CRITICAL_SECTION* _CriSec);
+	HRESULT Load_Scene_Stage_Boss(_bool* _IsClientQuit, CRITICAL_SECTION* _CriSec);
 	HRESULT Load_Scene_TUTORIAL(_bool* _IsClientQuit, CRITICAL_SECTION* _CriSec);
 	HRESULT Load_Scene_IMGUI(_bool* _IsClientQuit, CRITICAL_SECTION* _CriSec);
 

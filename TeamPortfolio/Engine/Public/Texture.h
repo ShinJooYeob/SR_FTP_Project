@@ -42,6 +42,7 @@ public:
 
 	HRESULT Bind_Texture_AutoFrame(_float fTimeDelta, _float* pOutFrameCount = nullptr);
 	HRESULT Bind_Texture(_uint iTextureIndex = 0, _uint iStageIndex = 0);
+	HRESULT Bind_OnShader(class CShader* shader, D3DXHANDLE hParameter, _uint iTextureIndex = 0);
 
 	_uint CurrentTextureLayerSize();
 

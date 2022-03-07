@@ -11,6 +11,7 @@ enum SCENEID
 	SCENE_STAGE2,
 	SCENE_STAGE3,
 	SCENE_TUTORIAL,
+	SCENE_BOSS,
 	SCENE_IMGUISCENE,
 	SCENE_END
 };
@@ -114,7 +115,8 @@ static const _tchar* Tag_Object_Prototype(OBJECTPROTOTYPEID eTag)
 enum LAYERID
 {
 	Layer_Camera_Main, 
-	Layer_Player, 
+	Layer_Player,
+	Layer_Monster,
 	Layer_Terrain,
 	Layer_Terrain_Cube,
 	Layer_BackGround,
@@ -135,6 +137,10 @@ static const _tchar* Tag_Layer(LAYERID eTag)
 	case Layer_Player:
 		return TEXT("Layer_Player");
 		break;
+	case Layer_Monster:
+		return TEXT("Layer_Monster");
+		break;
+
 	case Layer_Terrain:
 		return TEXT("Layer_Terrain");
 		break;
@@ -177,6 +183,7 @@ enum COMPONENTPROTOTYPEID
 	Prototype_Transform,
 	Prototype_Inventory,
 	Prototype_Collision,
+	Prototype_Shader_Test,
 	//////////////////////////////////////////////////////////////////////////
 	Prototype_VIBuffer_Rect,
 	Prototype_VIBuffer_Terrain128x128,
@@ -206,7 +213,9 @@ static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 	case Prototype_Inventory:
 		return TEXT("Prototype_Component_Inventory");
 		break;
-
+	case Prototype_Shader_Test:
+		return TEXT("Prototype_Component_Shader_Test");
+		break;
 	case Prototype_VIBuffer_Rect:
 		return TEXT("Prototype_Component_VIBuffer_Rect");
 		break;
@@ -256,7 +265,8 @@ enum COMPONENTID
 	Com_Transform,
 	Com_Texture,
 	Com_Collision,
-	Com_Inventory
+	Com_Inventory,
+	Com_Shader
 
 };
 static const _tchar* Tag_Component(COMPONENTID eTag)
@@ -280,6 +290,9 @@ static const _tchar* Tag_Component(COMPONENTID eTag)
 		break;
 	case Com_Inventory:
 		return TEXT("Com_Inventory");
+		break;
+	case Com_Shader:
+		return TEXT("Com_Shader");
 		break;
 
 		//////////////////////////////////////////////////////////////////////////

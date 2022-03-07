@@ -142,6 +142,12 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\Model\ParsedModel">
       <UniqueIdentifier>{180f00ea-5ee8-45a9-a5e1-f4196445302c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\Shader">
+      <UniqueIdentifier>{6b5246be-9820-4296-9cda-e2b90c08bba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\StateMachine">
+      <UniqueIdentifier>{0d8b35ec-1306-4625-95e0-6108027747ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -275,6 +281,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Cube_Nomal.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Model\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Shader.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -433,6 +442,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Cube_Nomal.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Model\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Shader.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\Shader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
