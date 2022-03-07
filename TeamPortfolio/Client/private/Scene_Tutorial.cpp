@@ -10,7 +10,7 @@
 #include "Object_OrbitButton.h"
 #include "..\public\UI_Result.h"
 #include "..\public\Object_Star.h"
-
+#include "Npc.h"
 
 CScene_Tutorial::CScene_Tutorial(LPDIRECT3DDEVICE9 GraphicDevice)
 	:CScene(GraphicDevice)
@@ -34,11 +34,12 @@ HRESULT CScene_Tutorial::Initialize()
 		return E_FAIL;
 
 	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
-	//FAILED_CHECK(Ready_Layer_UI_Start(TEXT("Layer_UI_Start")));
+	FAILED_CHECK(Ready_Layer_UI_Start(TEXT("Layer_UI_Start")));
 	FAILED_CHECK(Ready_Layer_Object_Star(TEXT("Layer_Object_Star")));
 	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
 	FAILED_CHECK(Ready_Layer_StageEndCollsionObject(TEXT("Layer_Collision_StageEnd")));
-
+	FAILED_CHECK(Ready_Layer_NPC(TEXT("Layer_NPC")));
+		
 
 	//////////////////맵 튜토리얼에 쓰임
 	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton_And_Cube")));
@@ -249,7 +250,63 @@ HRESULT CScene_Tutorial::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 
 	return S_OK;
 }
+HRESULT CScene_Tutorial::Ready_Layer_NPC(const _tchar * pLayerTag)
+{
+	CNpc::NPCDESC NpcDesc;
+//fixed설명충
+	NpcDesc.vPos = _float3(10.f, 1.f, 10.f);
+	NpcDesc.vDir = _float3(1.f, 0.f, 0.f);
+	NpcDesc.pNpcTextureName = TEXT("izaac_Idle");
+	NpcDesc.eCubeInfo = E_CUBEID::CUBEID_FIXED;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("Prototype_GameObject_Npc_izaacTuto"), (void*)&NpcDesc))
+		return E_FAIL;
+//appear설명충
+	NpcDesc.vPos = _float3(19.f, 1.f, 19.f);
+	NpcDesc.vDir = _float3(1.f, 0.f, 0.f);
+	NpcDesc.pNpcTextureName = TEXT("izaac_Idle");
+	NpcDesc.eCubeInfo = E_CUBEID::CUBEID_APPEAR;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("Prototype_GameObject_Npc_izaacTuto"), (void*)&NpcDesc))
+		return E_FAIL;
+//elevator설명충
+	NpcDesc.vPos = _float3(36.f, 1.f, 36.f);
+	NpcDesc.vDir = _float3(1.f, 0.f, 0.f);
+	NpcDesc.pNpcTextureName = TEXT("izaac_Idle");
+	NpcDesc.eCubeInfo = E_CUBEID::CUBEID_ELEVETOR;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("Prototype_GameObject_Npc_izaacTuto"), (void*)&NpcDesc))
+		return E_FAIL;
+//orbit설명충
+	NpcDesc.vPos = _float3(49.f, 11.f, 64.f);
+	NpcDesc.vDir = _float3(1.f, 0.f, 0.f);
+	NpcDesc.pNpcTextureName = TEXT("izaac_Idle");
+	NpcDesc.eCubeInfo = E_CUBEID::CUBEID_ORBIT;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("Prototype_GameObject_Npc_izaacTuto"), (void*)&NpcDesc))
+		return E_FAIL;
+//gravity설명충
+	NpcDesc.vPos = _float3(21.f, 25.f, 74.f);
+	NpcDesc.vDir = _float3(1.f, 0.f, 0.f);
+	NpcDesc.pNpcTextureName = TEXT("izaac_Idle");
+	NpcDesc.eCubeInfo = E_CUBEID::CUBEID_GRAVITY;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("Prototype_GameObject_Npc_izaacTuto"), (void*)&NpcDesc))
+		return E_FAIL;
+//portal설명충
+	NpcDesc.vPos = _float3(16.f, 18.f, 74.f);
+	NpcDesc.vDir = _float3(1.f, 0.f, 0.f);
+	NpcDesc.pNpcTextureName = TEXT("izaac_Idle");
+	NpcDesc.eCubeInfo = E_CUBEID::CUBEID_POTAL;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("Prototype_GameObject_Npc_izaacTuto"), (void*)&NpcDesc))
+		return E_FAIL;
+//vanish설명충
+	NpcDesc.vPos = _float3(7.f, 25.f, 88.f);
+	NpcDesc.vDir = _float3(1.f, 0.f, 0.f);
+	NpcDesc.pNpcTextureName = TEXT("izaac_Idle");
+	NpcDesc.eCubeInfo = E_CUBEID::CUBEID_VANISH;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("Prototype_GameObject_Npc_izaacTuto"), (void*)&NpcDesc))
+		return E_FAIL;
 
+	return S_OK;
+
+
+}
 HRESULT CScene_Tutorial::Ready_Layer_SkyBox(const _tchar * pLayerTag)
 {
 

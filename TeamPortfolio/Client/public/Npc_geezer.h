@@ -42,7 +42,6 @@ private:
 private:
 	NPCDESC					m_tNpcDesc;
 	_int					m_iRand = 0;
-	_bool					m_bIsShdow = false;
 	_bool					m_bisMoveRight = false;
 	_bool					m_bMove = false;
 	_float					m_fMoveTime = 0.f;

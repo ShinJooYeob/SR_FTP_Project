@@ -23,6 +23,7 @@
 #include "Npc_geezer.h"
 #include "Npc_izaac.h"
 #include "UI_BossStageEntryUI.h"
+#include "Npc_izaacTuto.h"
 
 #include "Object_FixCube.h"
 #include "Object_GravityCube.h"
@@ -738,7 +739,11 @@ HRESULT CLoader::Load_Scene_TUTORIAL(_bool * _IsClientQuit, CRITICAL_SECTION * _
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StartUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
-
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("NPC.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_NPC"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+	
 
 	/////////////튜토리얼을 위한 내용들
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
@@ -779,7 +784,8 @@ HRESULT CLoader::Load_Scene_TUTORIAL(_bool * _IsClientQuit, CRITICAL_SECTION * _
 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_UI_Start"), CUI_Start::Create(m_pGraphicDevice))))
 		return E_FAIL;
-
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Npc_izaacTuto"), CNpc_izaacTuto::Create(m_pGraphicDevice))))
+		return E_FAIL;
 	/////////////게임오브젝트 파서들
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Blossoms"), CParsedObject_Blossoms::Create(m_pGraphicDevice))))
 		return E_FAIL;

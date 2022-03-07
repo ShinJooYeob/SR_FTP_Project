@@ -292,6 +292,9 @@
     <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\Windmill\BigWindmill">
       <UniqueIdentifier>{9ff06e8d-fd40-4091-b5f5-32b83cdf81ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Npc\izaac_tutorial">
+      <UniqueIdentifier>{19b59173-84f9-420c-9544-b4033e001720}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -567,6 +570,9 @@
     <ClInclude Include="..\public\ParsedObject_BigWindmill.h">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\BigWindmill</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Npc_izaacTuto.h">
+      <Filter>01.GameObject\Npc\izaac_tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -829,6 +835,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParsedObject_BigWindmill.cpp">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\BigWindmill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Npc_izaacTuto.cpp">
+      <Filter>01.GameObject\Npc\izaac_tutorial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

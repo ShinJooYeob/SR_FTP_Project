@@ -228,7 +228,7 @@ HRESULT CScene_Stage3::Ready_Layer_PlayerStatusUI(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage3::Ready_Layer_UI_Start(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_UI_Start")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("Prototype_GameObject_UI_Start")))
 		return E_FAIL;
 
 	return S_OK;

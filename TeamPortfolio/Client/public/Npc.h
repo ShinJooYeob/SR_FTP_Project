@@ -21,6 +21,7 @@ public:
 		_float3 vDir;
 		_tchar*	pNpcTextureName;
 		_tchar* pText;
+		E_CUBEID eCubeInfo;
 	}NPCDESC;
 protected:
 explicit CNpc(LPDIRECT3DDEVICE9	pGraphicDevice);

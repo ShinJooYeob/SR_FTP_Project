@@ -182,6 +182,7 @@
     <ClInclude Include="..\public\Npc_geezer.h" />
     <ClInclude Include="..\public\Npc_ivy.h" />
     <ClInclude Include="..\public\Npc_izaac.h" />
+    <ClInclude Include="..\public\Npc_izaacTuto.h" />
     <ClInclude Include="..\public\Npc_oldy.h" />
     <ClInclude Include="..\public\ParsedObject.h" />
     <ClInclude Include="..\public\ParsedObject_Bell.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="..\private\Npc_geezer.cpp" />
     <ClCompile Include="..\private\Npc_ivy.cpp" />
     <ClCompile Include="..\private\Npc_izaac.cpp" />
+    <ClCompile Include="..\private\Npc_izaacTuto.cpp" />
     <ClCompile Include="..\private\Npc_oldy.cpp" />
     <ClCompile Include="..\private\ParsedObject.cpp" />
     <ClCompile Include="..\private\ParsedObject_Bell.cpp" />
