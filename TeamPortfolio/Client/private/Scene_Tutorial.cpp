@@ -49,6 +49,12 @@ HRESULT CScene_Tutorial::Initialize()
 	///////////////////
 
 
+	/////////////////////보스 엔트리 테스트/////////////////////////////////////////////////////
+
+	FAILED_CHECK(Ready_Layer_Object_BossEntry(TEXT("Layer_BossEntry")));
+	
+	//////////////////////////////////////////////////////////////////////////
+
 	// 로드된 오브젝트 정보로 그리기
 	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
 		SCENEID::SCENE_TUTORIAL,
@@ -330,6 +336,14 @@ HRESULT CScene_Tutorial::Ready_Layer_Object_PortalCube(const _tchar * pLayerTag)
 	tagDesc.iNowScene = SCENEID::SCENE_TUTORIAL;
 
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, TEXT("Layer_Potal"), TEXT("Prototype_GameObject_Object_PortalCube_A"), &tagDesc))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_Tutorial::Ready_Layer_Object_BossEntry(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("Prototype_GameObject_BossEntry")))
 		return E_FAIL;
 
 	return S_OK;

@@ -238,6 +238,9 @@
     <Filter Include="01.GameObject\ForLobyObject\PauseUI">
       <UniqueIdentifier>{6ba290b6-c6ff-464f-a43e-f2b6ef4be24c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\UI_BossStageEntryUI">
+      <UniqueIdentifier>{48a81495-0ff2-4879-99e3-3e823b38eeba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -459,6 +462,9 @@
     <ClInclude Include="..\public\Npc_oldy.h">
       <Filter>01.GameObject\Npc\oldy</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_BossStageEntryUI.h">
+      <Filter>01.GameObject\UI\UI_BossStageEntryUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -667,6 +673,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Npc_oldy.cpp">
       <Filter>01.GameObject\Npc\oldy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_BossStageEntryUI.cpp">
+      <Filter>01.GameObject\UI\UI_BossStageEntryUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

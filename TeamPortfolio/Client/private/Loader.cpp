@@ -22,6 +22,7 @@
 #include "Npc_oldy.h"
 #include "Npc_geezer.h"
 #include "Npc_izaac.h"
+#include "UI_BossStageEntryUI.h"
 
 #include "Object_FixCube.h"
 #include "Object_GravityCube.h"
@@ -626,6 +627,13 @@ HRESULT CLoader::Load_Scene_TUTORIAL(_bool * _IsClientQuit, CRITICAL_SECTION * _
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 	////////////////////
+	///////////////보스 엔트리용///////////////////////////////////////////////////////////
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_BossEntry.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_BossEntry"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BossEntry"), CUI_BossStageEntryUI::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 	/////////////////파서들 실험중
 	//벚꽃

@@ -264,9 +264,6 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 {
 	// #TODO ÆÄÆ¼Å¬ Test obj Create
 
-	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Object_particle")))
-	//	return E_FAIL;
-
 
 
 	PARTICLEDESC tDesc;
