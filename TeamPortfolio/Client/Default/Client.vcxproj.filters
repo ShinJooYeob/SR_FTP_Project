@@ -573,6 +573,9 @@
     <ClInclude Include="..\public\Npc_izaacTuto.h">
       <Filter>01.GameObject\Npc\izaac_tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BossParttern.h">
+      <Filter>01.GameObject\MonsterObject\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -838,6 +841,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Npc_izaacTuto.cpp">
       <Filter>01.GameObject\Npc\izaac_tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BossParttern.cpp">
+      <Filter>01.GameObject\MonsterObject\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\public\BossMonster.h"
+#include "..\public\BossParttern.h"
 
 CBossMonster::CBossMonster(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CMonsterParent(pGraphicDevice)
@@ -27,10 +28,16 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 
 	mPlayerTarget = nullptr;
 	m_ComTransform->Scaled(_float3(5, 5, 5));
-	mCurrentState = CBossMonster::BOSS_FSM_INIT;
+//	mCurrentState = CBossMonster::BOSS_FSM_INIT;
 
-	// 초기상태 설정
-	//	m_StateMachine.SetState();
+	// 패턴 초기화
+	if (!mQueue_Partern.empty())
+	{
+		mQueue_Partern.pop();
+	}
+
+	Set_RandomPattern();
+
 
 	return S_OK;
 }
@@ -55,17 +62,11 @@ _int CBossMonster::Update(_float fDeltaTime)
 
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, playerPos);
 
-	// 패턴 업데이트
-//	FSMUpdate();
 
-//	m_StateMachine.Update();
+	// AI 업데이트
+	UpdateBossPattern();
+	// 큐에서 하나씩 빼서 패턴을 실행한다.
 
-
-	// 패턴에 따른 움직임 수행
-	// if (m_StateMachine.GetState())
-	// {
-	// 
-	// }
 
 	return _int();
 }
@@ -112,11 +113,45 @@ HRESULT CBossMonster::SetUp_Components()
 
 HRESULT CBossMonster::SetUp_RenderState()
 {
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	return S_OK;
 }
 
 HRESULT CBossMonster::Release_RenderState()
 {
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	return S_OK;
+}
+
+void CBossMonster::UpdateBossPattern()
+{
+	if (mQueue_Partern.empty())
+		Set_RandomPattern();
+
+	// 1. 패턴을 하나씩 꺼낸다.
+	if (mCurrentPattern == nullptr)
+	{
+		mCurrentPattern = mQueue_Partern.back();
+		mQueue_Partern.pop();
+	}
+
+	// 2. 패턴 실행
+
+//	mCurrentPattern->
+
+}
+
+HRESULT CBossMonster::Set_RandomPattern()
+{
+	mQueue_Partern.emplace(new CBoss_Pattern_Move1());
+	mQueue_Partern.emplace(new CBoss_Pattern_Move2());
+
+//	mQueue_Partern.emplace(CBoss_Pattern_Attack1());
 	return S_OK;
 }
 

@@ -52,8 +52,8 @@ protected:
 
 	_float		m_DeltaTime;
 
-
-
+	_int		mHp;
+	_int		mMaxHp;
 
 
 public:
