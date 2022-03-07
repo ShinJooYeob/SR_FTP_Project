@@ -295,6 +295,18 @@
     <Filter Include="01.GameObject\Npc\izaac_tutorial">
       <UniqueIdentifier>{19b59173-84f9-420c-9544-b4033e001720}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillStick">
+      <UniqueIdentifier>{ea6d1ea9-692d-4938-a209-8d8aa6357f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillCore">
+      <UniqueIdentifier>{13852c6d-d169-4cfb-a429-6c6557a6b296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\Alien">
+      <UniqueIdentifier>{7d282834-c7e3-48ab-b90a-7421b7e0a248}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\MapleTree">
+      <UniqueIdentifier>{31c769e7-b99f-47b9-941d-82d9d423f60b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -561,9 +573,6 @@
     <ClInclude Include="..\public\ParsedObject_MiniTree.h">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\MiniTree</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ParsedObject_WindmillStick.h">
-      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\ParsedObject_WindmillBlue.h">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillBlue</Filter>
     </ClInclude>
@@ -572,6 +581,18 @@
     </ClInclude>
     <ClInclude Include="..\public\Npc_izaacTuto.h">
       <Filter>01.GameObject\Npc\izaac_tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_WindmillStick.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillStick</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_WindmillCore.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillCore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_Alien.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Alien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_MapleTree.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\MapleTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -827,9 +848,6 @@
     <ClCompile Include="..\private\ParsedObject_MiniTree.cpp">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\MiniTree</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ParsedObject_WindmillStick.cpp">
-      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ParsedObject_WindmillBlue.cpp">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillBlue</Filter>
     </ClCompile>
@@ -838,6 +856,18 @@
     </ClCompile>
     <ClCompile Include="..\private\Npc_izaacTuto.cpp">
       <Filter>01.GameObject\Npc\izaac_tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_WindmillStick.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillStick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_WindmillCore.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Windmill\WindmillCore</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_Alien.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\Alien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_MapleTree.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\MapleTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
