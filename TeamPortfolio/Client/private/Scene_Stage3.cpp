@@ -310,7 +310,8 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
 	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
 	tDesc.ParticleColorChage = false;
-	tDesc.TargetColor = _float3(120,30,80);
+	tDesc.TargetColor = _float3(120, 30, 80);
+	tDesc.TargetColor2 = _float3(255.f, 255.f, 255.f);
 
 	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
 	//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것

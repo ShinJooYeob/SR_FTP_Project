@@ -178,33 +178,33 @@ void CParticleObject::ResetParticle(PARTICLEATT * attribute)
 void CParticleObject::Update_ColorChange(PARTICLEATT * tParticleAtt, _float fTimeDelta)
 {
 	CGameInstance* pInstance = GetSingle(CGameInstance);
-
+	
 	if (tParticleAtt->_age < tParticleAtt->_lifeTime * 0.25f)
 	{
-		tParticleAtt->_color.x = pInstance->Easing(TYPE_Linear, 255.f, m_ParticleDesc.TargetColor.x, tParticleAtt->_age, tParticleAtt->_lifeTime * 0.25f);
-		tParticleAtt->_color.y = pInstance->Easing(TYPE_Linear, 255.f, m_ParticleDesc.TargetColor.y, tParticleAtt->_age, tParticleAtt->_lifeTime * 0.25f);
-		tParticleAtt->_color.z = pInstance->Easing(TYPE_Linear, 255.f, m_ParticleDesc.TargetColor.z, tParticleAtt->_age, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.x = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor2.x, m_ParticleDesc.TargetColor.x, tParticleAtt->_age, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.y = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor2.y, m_ParticleDesc.TargetColor.y, tParticleAtt->_age, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.z = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor2.z, m_ParticleDesc.TargetColor.z, tParticleAtt->_age, tParticleAtt->_lifeTime * 0.25f);
 
 	}
 	else if (tParticleAtt->_age < tParticleAtt->_lifeTime * 0.5f)
 	{
-		tParticleAtt->_color.x = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.x, 255.f, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.25f, tParticleAtt->_lifeTime * 0.25f);
-		tParticleAtt->_color.y = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.y, 255.f, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.25f, tParticleAtt->_lifeTime * 0.25f);
-		tParticleAtt->_color.z = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.z, 255.f, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.25f, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.x = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.x, m_ParticleDesc.TargetColor2.x, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.25f, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.y = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.y, m_ParticleDesc.TargetColor2.y, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.25f, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.z = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.z, m_ParticleDesc.TargetColor2.z, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.25f, tParticleAtt->_lifeTime * 0.25f);
 	}
 	else if (tParticleAtt->_age < tParticleAtt->_lifeTime * 0.75f)
 	{
-		tParticleAtt->_color.x = pInstance->Easing(TYPE_Linear, 255.f, m_ParticleDesc.TargetColor.x, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.5f, tParticleAtt->_lifeTime * 0.25f);
-		tParticleAtt->_color.y = pInstance->Easing(TYPE_Linear, 255.f, m_ParticleDesc.TargetColor.y, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.5f, tParticleAtt->_lifeTime * 0.25f);
-		tParticleAtt->_color.z = pInstance->Easing(TYPE_Linear, 255.f, m_ParticleDesc.TargetColor.z, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.5f, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.x = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor2.x, m_ParticleDesc.TargetColor.x, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.5f, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.y = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor2.y, m_ParticleDesc.TargetColor.y, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.5f, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.z = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor2.z, m_ParticleDesc.TargetColor.z, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.5f, tParticleAtt->_lifeTime * 0.25f);
 
 	}
 	else if (tParticleAtt->_age < tParticleAtt->_lifeTime)
 	{
 
-		tParticleAtt->_color.x = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.x, 255.f, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.75f, tParticleAtt->_lifeTime * 0.25f);
-		tParticleAtt->_color.y = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.y, 255.f, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.75f, tParticleAtt->_lifeTime * 0.25f);
-		tParticleAtt->_color.z = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.z, 255.f, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.75f, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.x = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.x, m_ParticleDesc.TargetColor2.x, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.75f, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.y = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.y, m_ParticleDesc.TargetColor2.y, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.75f, tParticleAtt->_lifeTime * 0.25f);
+		tParticleAtt->_color.z = pInstance->Easing(TYPE_Linear, m_ParticleDesc.TargetColor.z, m_ParticleDesc.TargetColor2.z, tParticleAtt->_age - tParticleAtt->_lifeTime * 0.75f, tParticleAtt->_lifeTime * 0.25f);
 	}
 }
 

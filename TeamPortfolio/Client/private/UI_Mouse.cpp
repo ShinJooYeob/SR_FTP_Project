@@ -109,6 +109,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
 		tDesc.ParticleColorChage = true;
 		tDesc.TargetColor = _float3(120, 30, 80);
+		tDesc.TargetColor2 = _float3(255.f, 255.f, 255.f);
 
 
 		//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것

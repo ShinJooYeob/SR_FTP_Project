@@ -53,6 +53,7 @@ typedef struct tagParticleDesc
 
 	_bool	ParticleColorChage = false;
 	_float3 TargetColor = _float3(255.f, 255.f, 255.f);
+	_float3 TargetColor2 = _float3(255.f, 255.f, 255.f);
 
 
 	_bool  m_bIsUI = false;
