@@ -176,7 +176,7 @@ HRESULT CUI_Start::Second_SetUp_RenderState()
 		{
 			if (m_fCountFrame < 5)
 			{
-				GetSingle(CGameInstance)->PlaySound(L"JW_stage_start.ogg", CHANNEL_UI, 2.f);
+				GetSingle(CGameInstance)->PlaySound(L"JW_stage_start.wav", CHANNEL_UI, 2.f);
 				m_fOldframe = m_fCountFrame;
 			}
 		}

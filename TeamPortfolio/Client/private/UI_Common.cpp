@@ -122,24 +122,24 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 			tDesc.eParticleID = Particle_Ball;
 
 			//총 파티클이 몇초동안 흩날릴 것인지 설정
-			tDesc.TotalParticleTime = 10.f;
+			tDesc.TotalParticleTime = 0.5f;
 
 			//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
-			tDesc.EachParticleLifeTime = 10.f;
+			tDesc.EachParticleLifeTime = 1.5f;
 
 			//파티클의 사이즈를 설정
-			tDesc.ParticleSize = _float3(20.f, 20.f, 20.f);
+			tDesc.ParticleSize = _float3(40.f,40.f, 40.f);
 			//파티클의 파워(이동속도)를 결정
-			tDesc.Particle_Power = 30;
+			tDesc.Particle_Power = 60;
 			//파티클의 파워(이동속도)의 랜덤 범위를 결정
-			tDesc.PowerRandomRange = _float2(0.8f, 1.f);
+			tDesc.PowerRandomRange = _float2(1.f, 1.f);
 			//파티클이 한번에 최대 몇개까지 보일 것인지 설정
-			tDesc.MaxParticleCount = 30;
+			tDesc.MaxParticleCount = 50;
 
 			//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
-			tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_UI_Result_Texture");
+			tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
 			//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
-			tDesc.szTextureLayerTag = TEXT("Object_Star");
+			tDesc.szTextureLayerTag = TEXT("Star");
 			//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
 			tDesc.m_bIsTextureAutoFrame = false;
 
@@ -150,12 +150,12 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 			//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
 			//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
 			//tDesc.FollowingTarget = nullptr;
-			tDesc.FixedTarget = _float3(-300,300,0);
+			tDesc.FixedTarget = _float3(m_fPosX, m_vUIDesc.y - 120.f,0);
 
 
 			//파티클의 최대 이탈 범위(range)를 설정해 줌 
 			//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
-			tDesc.MaxBoundary = _float3(50, 50, 1.f);
+			tDesc.MaxBoundary = _float3(50, 50, 0.f);
 
 
 			//텍스처의 색상을 변경할 수 있는 기능 온오프
