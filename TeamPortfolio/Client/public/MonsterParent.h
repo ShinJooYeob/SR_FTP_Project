@@ -31,9 +31,11 @@ public:
 	virtual _int LateRender()override;
 	
 public: // For. ObjectFunc
+	HRESULT SetPos(_float3 pos);
 	_float3 GetPos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS); }
 	_float3 GetScale() { return m_ComTransform->Get_MatrixScale(); }
 	HRESULT MoveDir(_float3 Dir, _float Timer){	m_ComTransform->MovetoDir(Dir, Timer);}
+	_float3 GetScreenToWorld(_float2 screenPos, _float z=0);
 
 protected:
 	// 컴포넌트 초기화
@@ -46,7 +48,6 @@ protected:
 	virtual HRESULT CreateObject(_int Damage)PURE;
 	virtual HRESULT Hit(_int Damage)PURE;
 	virtual HRESULT Die()PURE;
-
 
 protected:
 	// Components

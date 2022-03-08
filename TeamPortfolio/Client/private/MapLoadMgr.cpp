@@ -324,8 +324,7 @@ bool CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<SPE
 	case CUBEID_ARTICLEOBJECT:
 			GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
 				TAG_LAY(Layer_ArticleObject), TAG_OP(Prototype_TerrainCube),
-				_float3(0, 0, 0));
-		
+				_float3(0, 0, 0));		
 		break;
 	case CUBEID_END:
 		return false;

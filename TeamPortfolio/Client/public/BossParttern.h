@@ -11,12 +11,27 @@ class IAction
 {
 protected:
 	bool m_isActionEnd;
+	bool m_isActionInit;
 
 public:
-	IAction() { m_isActionEnd = false; }
+	explicit IAction()
+	{
+		m_isActionEnd = false; m_isActionInit = false;
+	}
+
+	virtual bool InitAction()
+	{
+		if (m_isActionInit == false)
+		{
+			m_isActionInit = true;
+			return true;
+		}
+
+		return false;		
+	}
 
 	// 움직임과 공격에 대한 패턴 가상 정의
-	virtual void Action()PURE;
+	virtual void Action(float timeDelta)PURE;
 	bool IsPatternEnd() { return m_isActionEnd; }
 };
 
@@ -31,9 +46,11 @@ public:
 	{
 		_float3 mStartPos;
 		_float3 mEndPos;
-		CTransform* mComTrans;
-		float mMoveTime;
+		CMonsterParent* mMonsterObject;
+		float mCurrentTimer;
 		float mTimerMax;
+		EasingTypeID mEasingType;
+
 	};
 
 	Action_Move_Desc mDesc;
@@ -41,8 +58,11 @@ public:
 	// 생성자에서 패턴 정보 받기
 	explicit CBoss_Action_Move(Action_Move_Desc desc);
 	
+	virtual bool InitAction()override;
 	// Pattern을(를) 통해 상속됨
-	virtual void Action() override;
+	virtual void Action(float timeDelta) override;
+
+	static _float3 EaseingFloat3(EasingTypeID id, _float3 StartPos, _float3 EndPos, float curTime, float maxTime);
 };
 
 
@@ -62,7 +82,7 @@ class CBoss_Pattern_Attack : public IAction
 
 public:
 	// Pattern을(를) 통해 상속됨
-	virtual void Action() override;
+	virtual void Action(float timeDelta) override;
 };
 
 
@@ -72,7 +92,7 @@ class CBoss_Pattern_Groggy : public IAction
 {
 public:
 	// Pattern을(를) 통해 상속됨
-	virtual void Action() override;
+	virtual void Action(float timeDelta) override;
 };
 
 

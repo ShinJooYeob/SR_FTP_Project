@@ -114,6 +114,43 @@ _int CMonsterParent::LateRender()
 	return S_OK();
 }
 
+HRESULT CMonsterParent::SetPos(_float3 pos)
+{
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, pos);
+
+	return S_OK;
+}
+
+_float3 CMonsterParent::GetScreenToWorld(_float2 screenPos, _float z)
+{
+	// 임의의 스크린 좌표를 월드 좌표로 변환
+
+	D3DVIEWPORT9	ViewPortDesc;
+	m_pGraphicDevice->GetViewport(&ViewPortDesc);
+
+	_float3 vScreenToWorld;
+	vScreenToWorld.x = screenPos.x / (ViewPortDesc.Width*0.5f) - 1.f;
+	vScreenToWorld.y = screenPos.y / -(ViewPortDesc.Height*0.5f) + 1.f;
+	vScreenToWorld.z = 0;
+
+
+	_Matrix ProjMatrixInverse;
+	m_pGraphicDevice->GetTransform(D3DTS_PROJECTION, &ProjMatrixInverse);
+	D3DXMatrixInverse(&ProjMatrixInverse, nullptr, &ProjMatrixInverse);
+	D3DXVec3TransformCoord(&vScreenToWorld, &vScreenToWorld, &ProjMatrixInverse);
+
+	_Matrix ViewMatrixInverse;
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &ViewMatrixInverse);
+	D3DXMatrixInverse(&ViewMatrixInverse, nullptr, &ViewMatrixInverse);
+
+	D3DXVec3TransformCoord(&vScreenToWorld, &vScreenToWorld, &ViewMatrixInverse);
+	
+	vScreenToWorld.z = z;
+	return vScreenToWorld;
+}
+
+
+
 HRESULT CMonsterParent::SetUp_Components()
 {
 

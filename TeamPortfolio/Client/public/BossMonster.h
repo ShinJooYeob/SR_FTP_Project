@@ -56,7 +56,7 @@ protected:
 	virtual HRESULT Die();
 
 private:
-	void UpdateBossPattern();
+	void Update_BossPattern(_float deltatime);
 
 	// 행동 정의
 	HRESULT Set_TestPattern();
@@ -69,8 +69,8 @@ protected:
 	class CCom_Gun*			mComGun;
 
 	// 패턴 / 총알 잘 나오는지 보고
-	class IPattern* mCurrentPattern;
-	queue<class IPattern*> mQueue_Partern;
+	class IAction* mCurrentPattern;
+	queue<class IAction*> mQueue_Partern;
 	float mPatternTime;
 
 //	void FSMUpdate();

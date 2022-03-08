@@ -30,16 +30,12 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 	m_ComTransform->Scaled(_float3(5, 5, 5));
 	m_ComTexture->Change_TextureLayer(TEXT("Idle"));
 
-//	mCurrentState = CBossMonster::BOSS_FSM_INIT;
-
 	// 패턴 초기화
 	if (!mQueue_Partern.empty())
 	{
 		mQueue_Partern.pop();
 	}
-
-	Set_TestPattern();
-
+	mCurrentPattern = nullptr;
 
 	return S_OK;
 }
@@ -55,19 +51,18 @@ _int CBossMonster::Update(_float fDeltaTime)
 		if (mPlayerTarget == nullptr)
 			return 0;
 
+		// 위치 초기화
+		CTransform* trans = (CTransform*)mPlayerTarget->Get_Component(TAG_COM(Com_Transform));
+		_float3 playerPos = trans->Get_MatrixState(CTransform::STATE_POS);
+		playerPos.y += 1;
+
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, playerPos);
+
 	}
 
-	// 더미 움직임
-	CTransform* trans = (CTransform*)mPlayerTarget->Get_Component(TAG_COM(Com_Transform));
-	_float3 playerPos = trans->Get_MatrixState(CTransform::STATE_POS);
-	playerPos.y += 1;
-
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, playerPos);
-
-
 	// AI 업데이트
-	UpdateBossPattern();
-	// 큐에서 하나씩 빼서 패턴을 실행한다.
+	// 큐에서 패턴을 하나씩 실행한다.
+	Update_BossPattern(fDeltaTime);
 
 
 	return _int();
@@ -89,11 +84,6 @@ _int CBossMonster::Render()
 
 	FAILED_CHECK(__super::Render());
 
-	// 패턴에 따른 랜더링
-	// if (m_StateMachine.GetState())
-	// {
-	// 
-	// }
 
 	return S_OK;
 }
@@ -148,20 +138,27 @@ HRESULT CBossMonster::Die()
 	return S_OK;
 }
 
-void CBossMonster::UpdateBossPattern()
+void CBossMonster::Update_BossPattern(_float deltatime)
 {
 	if (mQueue_Partern.empty())
 		Set_TestPattern();
 
-	// 1. 패턴을 하나씩 꺼낸다.
+	// 패턴이 끝나면 다음 패턴을 업데이트 시켜준다.
+
 	if (mCurrentPattern == nullptr)
 	{
-		mCurrentPattern = mQueue_Partern.back();
+		mCurrentPattern = mQueue_Partern.front();
 		mQueue_Partern.pop();
+		return;
 	}
 
+	if (mCurrentPattern->IsPatternEnd())
+	{
+		mCurrentPattern = mQueue_Partern.front();
+		mQueue_Partern.pop();
+	}
 	// 2. 패턴 실행
-//	mCurrentPattern->Pattern();
+	mCurrentPattern->Action(deltatime);
 
 
 }
@@ -169,12 +166,26 @@ void CBossMonster::UpdateBossPattern()
 HRESULT CBossMonster::Set_TestPattern()
 {
 	CBoss_Action_Move::Action_Move_Desc desc = {};
-	desc.mComTrans = m_ComTransform;
-	desc.mEndPos = _float3(5,3,2);
 
+	desc.mMonsterObject = this;
+	desc.mEndPos = GetScreenToWorld(_float2(200, 720 * 0.5f), 0);
+	desc.mTimerMax = 1.0f;
+	desc.mEasingType = TYPE_Linear;
+	mQueue_Partern.emplace(new CBoss_Action_Move(desc));
+
+
+	CBoss_Action_Move::Action_Move_Desc desc2 = {};
+
+	desc2.mMonsterObject = this;
+	desc2.mEndPos = GetScreenToWorld(_float2(1080, 720*0.5f), 0);
+	desc2.mTimerMax = 1.0f;
+	desc2.mEasingType = TYPE_Linear;
+	mQueue_Partern.emplace(new CBoss_Action_Move(desc2));
 
 	
 //	mQueue_Partern.emplace(new CBoss_Action_Move());
+
+
 
 
 
