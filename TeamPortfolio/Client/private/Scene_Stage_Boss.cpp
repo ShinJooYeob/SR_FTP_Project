@@ -47,7 +47,7 @@ HRESULT CScene_Stage_Boss::Initialize()
 
 
 	GetSingle(CGameInstance)->PlayBGM(L"JH_Stage3_BGM.mp3");
-	GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.5f);
+	GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.1f);
 
 	return S_OK;
 }

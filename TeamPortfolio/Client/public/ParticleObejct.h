@@ -11,8 +11,6 @@ END
 
 BEGIN(Client)
 
-//#TODO: ParticleObject
-
 //struct Particle
 //{
 //	D3DXVECTOR3 _position;

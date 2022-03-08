@@ -684,6 +684,12 @@ HRESULT CLoader::Load_Scene_Stage_Boss(_bool * _IsClientQuit, CRITICAL_SECTION *
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	// 몬스터 텍스처
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("Monster.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(SCENE_STATIC, TAG_CP(Prototype_Texture_Monster), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 
 #pragma endregion
 

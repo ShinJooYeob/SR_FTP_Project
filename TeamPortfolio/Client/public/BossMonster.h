@@ -17,17 +17,17 @@ BEGIN(Client)
 class CBossMonster final : public CMonsterParent
 {
 public:
-	enum MonsterFSM
-	{
-		BOSS_FSM_INIT,
-		BOSS_FSM_IDLE,
-		BOSS_FSM_PATERN1,
-		BOSS_FSM_PATERN2,
-		BOSS_FSM_PATERN3,
-		BOSS_FSM_HIT,
-		BOSS_FSM_DEAD,
-		
-	};
+	//enum MonsterFSM
+	//{
+	//	BOSS_FSM_INIT,
+	//	BOSS_FSM_IDLE,
+	//	BOSS_FSM_PATERN1,
+	//	BOSS_FSM_PATERN2,
+	//	BOSS_FSM_PATERN3,
+	//	BOSS_FSM_HIT,
+	//	BOSS_FSM_DEAD,
+	//	
+	//};
 
 
 protected:
@@ -44,19 +44,36 @@ public:
 	virtual _int LateRender()override;
 	
 public:
-	MonsterFSM GetCurrentState() { return mCurrentState; }
+//	MonsterFSM GetCurrentState() { return mCurrentState; }
 
 protected:
 	virtual HRESULT SetUp_Components();
 	virtual HRESULT SetUp_RenderState()override;
 	virtual HRESULT Release_RenderState()override;
 	
+	virtual HRESULT CreateObject(_int Damage);
+	virtual HRESULT Hit(_int Damage);
+	virtual HRESULT Die();
+
+private:
+	void Update_BossPattern(_float deltatime);
+
+	// #TODO 심화 몬스터 패턴 정의
+	HRESULT Set_TestMovePattern1();
+	HRESULT Set_TestAttackPattern1();
+
 protected:
 	CGameObject*	mPlayerTarget;
-	MonsterFSM		mCurrentState;
 
+	// 총알 담당 컴포넌트
+	// 총 컴포넌트를 참조해서 총알 패턴 구현
+	class CCom_Gun*			mComGun;
 
-//	void FSMUpdate();
+	// 패턴 / 총알 잘 나오는지 보고
+	class IAction* mCurrentPattern;
+	queue<class IAction*> mQueue_Partern;
+
+	float mPatternTime;
 
 public:
 	static CBossMonster* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

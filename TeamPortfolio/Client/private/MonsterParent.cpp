@@ -9,7 +9,7 @@ CMonsterParent::CMonsterParent(LPDIRECT3DDEVICE9 pGraphicDevice)
 	m_ComVIBuffer = nullptr;
 	m_ComTexture = nullptr;
 	m_ComCollision = nullptr;
-	m_ComShader = nullptr;
+//	m_ComShader = nullptr;
 }
 
 CMonsterParent::CMonsterParent(const CMonsterParent& rhs)
@@ -21,14 +21,14 @@ CMonsterParent::CMonsterParent(const CMonsterParent& rhs)
 	m_ComVIBuffer = rhs.m_ComVIBuffer;
 	m_ComTexture = rhs.m_ComTexture;
 	m_ComCollision = rhs.m_ComCollision;
-	m_ComShader = rhs.m_ComShader;
+//	m_ComShader = rhs.m_ComShader;
 
 	Safe_AddRef(m_ComTransform);
 	Safe_AddRef(m_ComRenderer);
 	Safe_AddRef(m_ComVIBuffer);
 	Safe_AddRef(m_ComTexture);
 	Safe_AddRef(m_ComCollision);
-	Safe_AddRef(m_ComShader);
+//	Safe_AddRef(m_ComShader);
 }
 
 
@@ -60,8 +60,7 @@ _int CMonsterParent::LateUpdate(_float fDeltaTime)
 {
 	FAILED_CHECK(__super::LateUpdate(fDeltaTime));
 
-	m_DeltaTime = fDeltaTime;
-
+	
 	return _int();
 }
 
@@ -70,7 +69,6 @@ _int CMonsterParent::Render()
 	FAILED_CHECK(__super::Render());
 
 	if (nullptr == m_ComVIBuffer ||
-		nullptr == m_ComShader	 ||
 		nullptr == m_ComTexture)
 		return E_FAIL;
 
@@ -93,7 +91,7 @@ _int CMonsterParent::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(m_DeltaTime)))
+	if (FAILED(m_ComTexture->Bind_Texture()))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -116,6 +114,49 @@ _int CMonsterParent::LateRender()
 	return S_OK();
 }
 
+HRESULT CMonsterParent::SetPos(_float3 pos)
+{
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, pos);
+
+	return S_OK;
+}
+
+_float3 CMonsterParent::GetScreenToWorld(_float2 screenPos)
+{
+	// 임의의 스크린 좌표를 월드 좌표로 변환
+
+	D3DVIEWPORT9	ViewPortDesc;
+	m_pGraphicDevice->GetViewport(&ViewPortDesc);
+
+	_float4 vScreenToWorld;
+	vScreenToWorld.x = screenPos.x / (ViewPortDesc.Width*0.5f) - 1.f;
+	vScreenToWorld.y = screenPos.y / -(ViewPortDesc.Height*0.5f) + 1.f;
+	vScreenToWorld.z = 0.0f;
+	vScreenToWorld.w = 1.f;
+
+
+	_Matrix ProjMatrixInverse;
+	m_pGraphicDevice->GetTransform(D3DTS_PROJECTION, &ProjMatrixInverse);
+	D3DXMatrixInverse(&ProjMatrixInverse, nullptr, &ProjMatrixInverse);
+	D3DXVec4Transform(&vScreenToWorld, &vScreenToWorld, &ProjMatrixInverse);
+
+	_Matrix ViewMatrixInverse;
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &ViewMatrixInverse);
+	D3DXMatrixInverse(&ViewMatrixInverse, nullptr, &ViewMatrixInverse);
+	D3DXVec4Transform(&vScreenToWorld, &vScreenToWorld, &ViewMatrixInverse);
+	
+	_float3 newPos = _float3(vScreenToWorld.x, vScreenToWorld.y, vScreenToWorld.z);
+
+	if (abs(newPos.x) > 100)
+		newPos.x = 0;
+	if (abs(newPos.z) > 100)
+		newPos.z = 0;
+
+	return newPos;
+}
+
+
+
 HRESULT CMonsterParent::SetUp_Components()
 {
 
@@ -134,13 +175,16 @@ HRESULT CMonsterParent::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Test), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
+
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_ComCollision)))
 		return E_FAIL;
 
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_UI), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_Monster), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
-	// 정의 안한것은 자식클래스에서
+	//if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Test), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
+	//	return E_FAIL;
+	
 
 	return S_OK;
 }
@@ -153,7 +197,7 @@ void CMonsterParent::Free()
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComCollision);	
-	Safe_Release(m_ComShader);
+//	Safe_Release(m_ComShader);
 	__super::Free();
 	
 }
