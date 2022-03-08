@@ -37,9 +37,10 @@ public:
 
 private:
 	HRESULT SetUp_Components();
-
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
+
+	void	Set_Particle();
 
 private:
 	STARDESC				m_StarDesc;
@@ -49,6 +50,8 @@ private:
 	CVIBuffer_Rect*			m_ComRectVIBuffer = nullptr;
 	CVIBuffer_Cube*			m_ComCubeVIBuffer = nullptr;
 	CCollision*				m_pCollisionCom = nullptr;
+
+	_float3					TempPos;
 
 
 public:

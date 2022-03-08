@@ -111,8 +111,8 @@ public:
 	_float					getBestClear(_uint _Stage) { return StageBestClear[_Stage]; }
 
 	_float					StageBestClear[SCENE_END];
-
 	_bool					m_bFixSoundSwitch = false;
+	////////////////
 
 private:
 	HRESULT			SetUp_Components();

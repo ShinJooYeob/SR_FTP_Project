@@ -184,7 +184,9 @@
     <ClInclude Include="..\public\Npc_izaac.h" />
     <ClInclude Include="..\public\Npc_izaacTuto.h" />
     <ClInclude Include="..\public\Npc_oldy.h" />
+    <ClInclude Include="..\public\Object_QrcodeCube.h" />
     <ClInclude Include="..\public\ParsedObject.h" />
+    <ClInclude Include="..\public\ParsedObject_Alien.h" />
     <ClInclude Include="..\public\ParsedObject_Bell.h" />
     <ClInclude Include="..\public\ParsedObject_BigGreenTree.h" />
     <ClInclude Include="..\public\ParsedObject_BigOwl.h" />
@@ -192,10 +194,12 @@
     <ClInclude Include="..\public\ParsedObject_BigWindmill.h" />
     <ClInclude Include="..\public\ParsedObject_DeathSkull.h" />
     <ClInclude Include="..\public\ParsedObject_LightHouse.h" />
+    <ClInclude Include="..\public\ParsedObject_MapleTree.h" />
     <ClInclude Include="..\public\ParsedObject_MiniTree.h" />
     <ClInclude Include="..\public\ParsedObject_TombStone.h" />
     <ClInclude Include="..\public\ParsedObject_TreasureBox.h" />
     <ClInclude Include="..\public\ParsedObject_WindmillBlue.h" />
+    <ClInclude Include="..\public\ParsedObject_WindmillCore.h" />
     <ClInclude Include="..\public\ParsedObject_WindmillStick.h" />
     <ClInclude Include="..\public\ParsedObject_ZuHeadWhite.h" />
     <ClInclude Include="..\public\ParticleMgr.h" />
@@ -275,7 +279,9 @@
     <ClCompile Include="..\private\Npc_izaac.cpp" />
     <ClCompile Include="..\private\Npc_izaacTuto.cpp" />
     <ClCompile Include="..\private\Npc_oldy.cpp" />
+    <ClCompile Include="..\private\Object_QrcodeCube.cpp" />
     <ClCompile Include="..\private\ParsedObject.cpp" />
+    <ClCompile Include="..\private\ParsedObject_Alien.cpp" />
     <ClCompile Include="..\private\ParsedObject_Bell.cpp" />
     <ClCompile Include="..\private\ParsedObject_BigGreenTree.cpp" />
     <ClCompile Include="..\private\ParsedObject_BigOwl.cpp" />
@@ -283,10 +289,12 @@
     <ClCompile Include="..\private\ParsedObject_BigWindmill.cpp" />
     <ClCompile Include="..\private\ParsedObject_DeathSkull.cpp" />
     <ClCompile Include="..\private\ParsedObject_LightHouse.cpp" />
+    <ClCompile Include="..\private\ParsedObject_MapleTree.cpp" />
     <ClCompile Include="..\private\ParsedObject_MiniTree.cpp" />
     <ClCompile Include="..\private\ParsedObject_TombStone.cpp" />
     <ClCompile Include="..\private\ParsedObject_TreasureBox.cpp" />
     <ClCompile Include="..\private\ParsedObject_WindmillBlue.cpp" />
+    <ClCompile Include="..\private\ParsedObject_WindmillCore.cpp" />
     <ClCompile Include="..\private\ParsedObject_WindmillStick.cpp" />
     <ClCompile Include="..\private\ParsedObject_ZuHeadWhite.cpp" />
     <ClCompile Include="..\private\ParticleMgr.cpp" />
