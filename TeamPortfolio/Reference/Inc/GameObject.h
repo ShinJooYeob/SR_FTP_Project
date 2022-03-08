@@ -40,7 +40,7 @@ public:
 	class CComponent* Find_Components(const _tchar* tagComponent);
 	virtual HRESULT ReInitialize(void* pArg = nullptr) { return S_OK; };
 
-//	void Set_LoadData(OUTPUT_OBJECTINFO* pInfo);
+	virtual HRESULT ViewPortHit(CGameObject* hitobj) { return S_OK; }
 protected:
 	map<const _tchar*, class CComponent*>	m_mapComponets;
 	typedef map<const _tchar*, class CComponent*>	COMPONENTS;

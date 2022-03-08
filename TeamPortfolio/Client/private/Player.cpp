@@ -90,7 +90,7 @@ _int CPlayer::Update(_float fDeltaTime)
 	if (m_bIsDead) {
 		m_fDeadNPauseTime += fDeltaTime;
 
-
+		// #Tag 플레이어 피격
 		if (m_fDeadNPauseTime > 3.f) {
 			m_bIsDead = false;
 			m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(0, 1.f, 0));

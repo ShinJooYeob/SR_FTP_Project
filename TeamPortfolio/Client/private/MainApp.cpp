@@ -87,6 +87,8 @@ _int CMainApp::Update(_float fDeltaTime)
 
 	}
 
+	// #TODO ViewCollision °Ë»ç
+
 	return 0;
 }
 

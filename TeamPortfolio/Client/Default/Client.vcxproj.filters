@@ -319,6 +319,9 @@
     <Filter Include="01.GameObject\MonsterObject\Boss\1.Boss">
       <UniqueIdentifier>{a5eac6d6-e36f-4bfb-96b3-a3d50c8446ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\MonsterObject\Boss\4.CollisionXZCom">
+      <UniqueIdentifier>{446d2f2e-faab-497f-83c6-0703d9ccfc95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -618,6 +621,9 @@
     <ClInclude Include="..\public\Com_Gun.h">
       <Filter>01.GameObject\MonsterObject\Boss\3.GunCom</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Com_CollisionViewPort.h">
+      <Filter>01.GameObject\MonsterObject\Boss\4.CollisionXZCom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -904,6 +910,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Com_Gun.cpp">
       <Filter>01.GameObject\MonsterObject\Boss\3.GunCom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Com_CollisionViewPort.cpp">
+      <Filter>01.GameObject\MonsterObject\Boss\4.CollisionXZCom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
