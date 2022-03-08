@@ -136,30 +136,30 @@ _int CScene_StageSelect::Update(_float fDeltaTime)
 		}
 		case SCENEID::SCENE_STAGE1:
 		{
+			m_StageReturnBlock = _float3(12, 5, 6);
 			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
-			m_StageReturnBlock = _float3(12, 5, 6);
 			break;
 		}
 		case SCENEID::SCENE_STAGE2:
 		{
+			m_StageReturnBlock = _float3(6, 8, 14);
 			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
-			m_StageReturnBlock = _float3(6, 8, 14);
 			break;
 		}
 		case SCENEID::SCENE_STAGE3:
 		{
+			m_StageReturnBlock = _float3(13, 15, 13);
 			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE3), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
-			m_StageReturnBlock = _float3(13, 15, 13);
 			break;
 		}
 		case SCENEID::SCENE_TUTORIAL:
 		{
+			m_StageReturnBlock = _float3(6, 1, 0);
 			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_TUTORIAL), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
-			m_StageReturnBlock = _float3(6, 1, 0);
 			break;
 		}
 		}
@@ -340,7 +340,6 @@ HRESULT CScene_StageSelect::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 
 	if (m_StageReturnBlock == _float3(6, 8, 14))
 	{
-
 		if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc, CCamera_Main::Look_Back_Axis)))
 			return E_FAIL;
 	}

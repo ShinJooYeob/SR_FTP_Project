@@ -141,11 +141,15 @@ _int CPlayer::Update(_float fDeltaTime)
 
 
 
+			if (lstrcmp(m_ComTexture->Get_NowTextureTag(), L"exit"))
+			{
+
 			if (FAILED(Find_FootHold_Object(fDeltaTime)))
 				return E_FAIL;
 
 			if (FAILED(Set_PosOnFootHoldObject(fDeltaTime)))
 				return E_FAIL;
+			}
 		}
 		_Matrix matVeiwSpace;
 		m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiwSpace);
@@ -345,6 +349,7 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 
 	m_ComTransform->Scaled(_float3(1.5f, 1.5f, 1.5f));
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vStartPos);
+	m_ComTransform->Set_MoveSpeed(2.5f);
 
 	if (vStartPos != _float3(0, 1, 0))
 	{
@@ -357,7 +362,6 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 
 	}
 
-	m_ComTransform->Set_MoveSpeed(2.5f);
 
 	return S_OK;
 }
