@@ -34,6 +34,8 @@ public:
 
 	void	Set_AppearDesc(void* pArg);
 
+	void	Set_Particle();
+
 private:
 	HRESULT SetUp_Components();
 

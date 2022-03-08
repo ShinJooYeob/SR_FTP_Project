@@ -40,6 +40,8 @@ HRESULT CScene_StageSelect::Initialize()
 
 	FAILED_CHECK(Ready_Layer_StageEntryCollsionObject(L"Layer_Collision_StageEntry"));
 
+	if (FAILED(Ready_Layer_Object_QrcodeCube(TEXT("Layer_Object_QrcodeCube"))))
+		return E_FAIL;
 
 	//FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
 
@@ -631,6 +633,14 @@ HRESULT CScene_StageSelect::Ready_Layer_Object_AppearCube(const _tchar * pLayerT
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Object_AppearCube"), &_float3(10.f, -1.f, -1.f)))
 		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CScene_StageSelect::Ready_Layer_Object_QrcodeCube(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, TEXT("Layer_Object_QrcodeCube"), TEXT("Prototype_GameObject_Object_QrcodeCube")))
+		return E_FAIL;
+
 	return S_OK;
 }
 

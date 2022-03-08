@@ -307,6 +307,9 @@
     <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\MapleTree">
       <UniqueIdentifier>{31c769e7-b99f-47b9-941d-82d9d423f60b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\SubObject\Object_QrcodeCube">
+      <UniqueIdentifier>{9602936d-866d-43b7-88aa-2ca2cd1e2b1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -594,6 +597,9 @@
     <ClInclude Include="..\public\ParsedObject_MapleTree.h">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\MapleTree</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Object_QrcodeCube.h">
+      <Filter>01.GameObject\SubObject\Object_QrcodeCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -868,6 +874,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParsedObject_MapleTree.cpp">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\MapleTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Object_QrcodeCube.cpp">
+      <Filter>01.GameObject\SubObject\Object_QrcodeCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

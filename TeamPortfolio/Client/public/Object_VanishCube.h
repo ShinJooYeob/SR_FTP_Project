@@ -35,6 +35,8 @@ public:
 
 	void	Set_VenishDesc(void* pArg);
 
+	void	Set_Particle();
+
 private:
 	HRESULT SetUp_Components();
 

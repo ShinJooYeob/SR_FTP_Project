@@ -44,6 +44,7 @@
 #include "Object_Star.h"
 #include "Collision_Object.h"
 #include "Collision_Object_StageEntry.h"
+#include "Object_QrcodeCube.h"
 
 #include "ParticleObejct.h"
 
@@ -176,9 +177,13 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (FAILED(pGameInstance->Add_Component_Prototype(SCENE_STATIC, TEXT("Prototype_Component_UI_Result_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("Particle.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(SCENE_STATIC, L"Prototype_Component_Texture_Particle", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
 	////버텍스 파서들 모음
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Penguin", pGameInstance->Create_ParsedObject(L"PenguinVertex.txt", L"PenguinIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigGreenTree", pGameInstance->Create_ParsedObject(L"BigGreenTreeVertex.txt", L"BigGreenTreeIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreasureBox", pGameInstance->Create_ParsedObject(L"TreasureVertex.txt", L"TreasureIndex.txt")));
@@ -200,8 +205,8 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigWindmill", pGameInstance->Create_ParsedObject(L"BigWindmillVertex.txt", L"BigWindmillIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillCore", pGameInstance->Create_ParsedObject(L"WindmillCoreVertex.txt", L"WindmillCoreIndex.txt")));
 	
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Alien", pGameInstance->Create_ParsedObject(L"AlienVertex.txt", L"AlienIndex.txt")));
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MapleTree", pGameInstance->Create_ParsedObject(L"MapleTreeVertex.txt", L"MapleTreeIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Alien", pGameInstance->Create_ParsedObject(L"AlienVertex.txt", L"AlienIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MapleTree", pGameInstance->Create_ParsedObject(L"MapleTreeVertex.txt", L"MapleTreeIndex.txt")));
 	
 	////
 
@@ -376,6 +381,8 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Npc_geezer"), CNpc_geezer::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Npc_izaac"), CNpc_izaac::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_QrcodeCube"), CObject_QrcodeCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 
@@ -776,9 +783,16 @@ HRESULT CLoader::Load_Scene_TUTORIAL(_bool * _IsClientQuit, CRITICAL_SECTION * _
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, L"Prototype_Component_Texture_Parsed", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+
 	////펭귄
 	//TextureDesc.szTextFilePath = TEXT("Parsed.txt");
 	//if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, L"Prototype_Component_Texture_Parsed", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+	//	return E_FAIL;
+
+	//파티클
+	//TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	//TextureDesc.szTextFilePath = TEXT("Particle.txt");
+	//if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, L"Prototype_Component_Texture_Particle", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 	//	return E_FAIL;
 
 	//////////////
