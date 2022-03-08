@@ -18,16 +18,20 @@ private:
 	virtual	~CCom_Gun() = default;
 
 public:
-	// 총알 패턴 생성 기능
+   // #TODO 총알 패턴
+	HRESULT CreateBullet_Target(_uint sceneid, _uint count=1);
+	HRESULT Update_Bullet_MoveTarget(_uint sceneid,_float3 targetPos, _float DeltaTime);
+	HRESULT DestoryBullet_All(_uint sceneid);
 
 
 public:
 	HRESULT Initialize_Prototype(void * pArg);
 	HRESULT Initialize_Clone(void * pArg);
 
+	
 
 private:
-
+	
 	
 
 

@@ -35,7 +35,7 @@ public: // For. ObjectFunc
 	_float3 GetPos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS); }
 	_float3 GetScale() { return m_ComTransform->Get_MatrixScale(); }
 	HRESULT MoveDir(_float3 Dir, _float Timer){	m_ComTransform->MovetoDir(Dir, Timer);}
-	_float3 GetScreenToWorld(_float2 screenPos, _float z=0);
+	_float3 GetScreenToWorld(_float2 screenPos);
 
 protected:
 	// 컴포넌트 초기화

@@ -58,7 +58,7 @@ protected:
 private:
 	void Update_BossPattern(_float deltatime);
 
-	// 행동 정의
+	// #TODO 심화 몬스터 패턴 정의
 	HRESULT Set_TestPattern();
 
 protected:
@@ -71,10 +71,8 @@ protected:
 	// 패턴 / 총알 잘 나오는지 보고
 	class IAction* mCurrentPattern;
 	queue<class IAction*> mQueue_Partern;
+
 	float mPatternTime;
-
-//	void FSMUpdate();
-
 
 public:
 	static CBossMonster* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

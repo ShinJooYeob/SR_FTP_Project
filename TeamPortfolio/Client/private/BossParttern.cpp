@@ -11,6 +11,10 @@ _float3 CBoss_Action_Move::EaseingFloat3(EasingTypeID id, _float3 StartPos, _flo
 
 }
 
+void CBoss_Action_Move::Free()
+{
+}
+
 CBoss_Action_Move::CBoss_Action_Move(Action_Move_Desc desc)
 	:IAction()
 {
@@ -29,6 +33,9 @@ bool CBoss_Action_Move::InitAction()
 		return false;
 
 	mDesc.mStartPos = mDesc.mMonsterObject->GetPos(); 
+	
+	mDesc.mEndPos = mDesc.mMonsterObject->GetScreenToWorld(mDesc.mEndScreenPos);
+
 	mDesc.mCurrentTimer = 0;
 
 	return false;
@@ -55,3 +62,6 @@ void CBoss_Action_Move::Action(float timeDelta)
 	
 }
 
+void IAction::Free()
+{
+}

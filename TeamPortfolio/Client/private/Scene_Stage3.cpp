@@ -264,7 +264,6 @@ HRESULT CScene_Stage3::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 {
-	// #TODO ÆÄÆ¼Å¬ Test obj Create
 
 
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\public\BossMonster.h"
 #include "..\public\BossParttern.h"
+#include "Com_Gun.h"
 
 CBossMonster::CBossMonster(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CMonsterParent(pGraphicDevice)
@@ -18,7 +19,9 @@ HRESULT CBossMonster::Initialize_Prototype(void * pArg)
 {
 	FAILED_CHECK(__super::Initialize_Prototype(pArg));
 	mPlayerTarget = nullptr;
-
+	mComGun = nullptr;
+	mCurrentPattern = nullptr;
+	mPatternTime = 0;
 	return S_OK;
 }
 
@@ -27,15 +30,11 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 	FAILED_CHECK(__super::Initialize_Clone(pArg));
 
 	mPlayerTarget = nullptr;
+	mCurrentPattern = nullptr;
+
 	m_ComTransform->Scaled(_float3(5, 5, 5));
 	m_ComTexture->Change_TextureLayer(TEXT("Idle"));
-
-	// 패턴 초기화
-	if (!mQueue_Partern.empty())
-	{
-		mQueue_Partern.pop();
-	}
-	mCurrentPattern = nullptr;
+	mPatternTime = 0;
 
 	return S_OK;
 }
@@ -59,11 +58,13 @@ _int CBossMonster::Update(_float fDeltaTime)
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, playerPos);
 
 	}
+	mPatternTime += fDeltaTime;
+	if (mPatternTime < 5)
+		return 0;
 
 	// AI 업데이트
 	// 큐에서 패턴을 하나씩 실행한다.
 	Update_BossPattern(fDeltaTime);
-
 
 	return _int();
 }
@@ -101,7 +102,8 @@ HRESULT CBossMonster::SetUp_Components()
 	FAILED_CHECK(__super::SetUp_Components());
 
 	// 총 컴포넌트 초기화
-	// mComGun;
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Gun), TAG_COM(Com_Gun), (CComponent**)&mComGun)))
+		return E_FAIL;	
 
 	return S_OK;
 }
@@ -154,9 +156,11 @@ void CBossMonster::Update_BossPattern(_float deltatime)
 
 	if (mCurrentPattern->IsPatternEnd())
 	{
+		Safe_Release(mCurrentPattern);
 		mCurrentPattern = mQueue_Partern.front();
 		mQueue_Partern.pop();
 	}
+
 	// 2. 패턴 실행
 	mCurrentPattern->Action(deltatime);
 
@@ -168,26 +172,17 @@ HRESULT CBossMonster::Set_TestPattern()
 	CBoss_Action_Move::Action_Move_Desc desc = {};
 
 	desc.mMonsterObject = this;
-	desc.mEndPos = GetScreenToWorld(_float2(200, 720 * 0.5f), 0);
-	desc.mTimerMax = 1.0f;
+	desc.mEndScreenPos = _float2(200, 720 * 0.5f);
+	desc.mTimerMax = 0.5f;
 	desc.mEasingType = TYPE_Linear;
-	mQueue_Partern.emplace(new CBoss_Action_Move(desc));
+	mQueue_Partern.push(new CBoss_Action_Move(desc));
 
 
-	CBoss_Action_Move::Action_Move_Desc desc2 = {};
-
-	desc2.mMonsterObject = this;
-	desc2.mEndPos = GetScreenToWorld(_float2(1080, 720*0.5f), 0);
-	desc2.mTimerMax = 1.0f;
-	desc2.mEasingType = TYPE_Linear;
-	mQueue_Partern.emplace(new CBoss_Action_Move(desc2));
-
-	
-//	mQueue_Partern.emplace(new CBoss_Action_Move());
-
-
-
-
+	desc.mMonsterObject = this;
+	desc.mEndScreenPos = _float2(1080, 720*0.5f);
+	desc.mTimerMax = 0.5f;
+	desc.mEasingType = TYPE_Linear;
+	mQueue_Partern.push(new CBoss_Action_Move(desc));
 
 	return S_OK;
 }
@@ -223,7 +218,18 @@ CBossMonster * CBossMonster::Clone(void * pArg)
 
 void CBossMonster::Free()
 {
+	Safe_Release(mCurrentPattern);
+
+	while (!mQueue_Partern.empty())
+	{
+		Safe_Release(mQueue_Partern.front());
+		mQueue_Partern.pop();		
+	}
+
+
 	Safe_Release(mPlayerTarget);
+	Safe_Release(mComGun);
+
 	__super::Free();
 	
 }

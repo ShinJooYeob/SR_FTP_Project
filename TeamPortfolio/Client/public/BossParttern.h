@@ -1,13 +1,16 @@
 
 // 보스 행동 패턴 가상 함수
 #include "MonsterParent.h"
+#include "Base.h"
 
 // 패턴은 단적인 행동들의 집합으로 구현.
 
 BEGIN(Client)
 
+// #TODO 몬스터 패턴
+
 // 행동 인터페이스
-class IAction
+class IAction : public CBase
 {
 protected:
 	bool m_isActionEnd;
@@ -33,6 +36,9 @@ public:
 	// 움직임과 공격에 대한 패턴 가상 정의
 	virtual void Action(float timeDelta)PURE;
 	bool IsPatternEnd() { return m_isActionEnd; }
+
+
+	virtual void Free() PURE;
 };
 
 // 움직임 패턴
@@ -45,6 +51,7 @@ public:
 	typedef struct Action_Move_Desc
 	{
 		_float3 mStartPos;
+		_float2 mEndScreenPos;
 		_float3 mEndPos;
 		CMonsterParent* mMonsterObject;
 		float mCurrentTimer;
@@ -52,8 +59,8 @@ public:
 		EasingTypeID mEasingType;
 
 	};
-
 	Action_Move_Desc mDesc;
+
 public:
 	// 생성자에서 패턴 정보 받기
 	explicit CBoss_Action_Move(Action_Move_Desc desc);
@@ -63,6 +70,10 @@ public:
 	virtual void Action(float timeDelta) override;
 
 	static _float3 EaseingFloat3(EasingTypeID id, _float3 StartPos, _float3 EndPos, float curTime, float maxTime);
+
+
+	virtual void Free()override;
+
 };
 
 

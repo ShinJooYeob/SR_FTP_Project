@@ -22,6 +22,8 @@ enum OBJECTPROTOTYPEID
 {
 	Prototype_Camera_Main, 
 	Prototype_Player,
+	Prototype_Boss,
+	Prototype_Bullet,
 	Prototype_BackGround,
 	Prototype_TerrainGround,
 	Prototype_TerrainCube,
@@ -51,6 +53,12 @@ static const _tchar* Tag_Object_Prototype(OBJECTPROTOTYPEID eTag)
 		break;
 	case Prototype_Player:
 		return TEXT("Prototype_GameObject_Player");
+		break;
+	case Prototype_Boss:
+		return TEXT("Prototype_Boss");
+		break;
+	case Prototype_Bullet:
+		return TEXT("Prototype_Bullet");
 		break;
 	case Prototype_BackGround:
 		return TEXT("Prototype_GameObject_BackGround");
@@ -117,6 +125,7 @@ enum LAYERID
 	Layer_Camera_Main, 
 	Layer_Player,
 	Layer_Monster,
+	Layer_Bullet,
 	Layer_Terrain,
 	Layer_Terrain_Cube,
 	Layer_BackGround,
@@ -140,7 +149,9 @@ static const _tchar* Tag_Layer(LAYERID eTag)
 	case Layer_Monster:
 		return TEXT("Layer_Monster");
 		break;
-
+	case Layer_Bullet:
+		return TEXT("Layer_Bullet");
+		break;
 	case Layer_Terrain:
 		return TEXT("Layer_Terrain");
 		break;
@@ -184,6 +195,7 @@ enum COMPONENTPROTOTYPEID
 	Prototype_Inventory,
 	Prototype_Collision,
 	Prototype_Shader_Test,
+	Prototype_Gun,
 	//////////////////////////////////////////////////////////////////////////
 	Prototype_VIBuffer_Rect,
 	Prototype_VIBuffer_Terrain128x128,
@@ -216,6 +228,9 @@ static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 		break;
 	case Prototype_Shader_Test:
 		return TEXT("Prototype_Component_Shader_Test");
+		break;
+	case Prototype_Gun:
+		return TEXT("Prototype_Component_Gun");
 		break;
 	case Prototype_VIBuffer_Rect:
 		return TEXT("Prototype_Component_VIBuffer_Rect");
@@ -269,7 +284,8 @@ enum COMPONENTID
 	Com_Texture,
 	Com_Collision,
 	Com_Inventory,
-	Com_Shader
+	Com_Shader,
+	Com_Gun
 
 };
 static const _tchar* Tag_Component(COMPONENTID eTag)
@@ -297,7 +313,8 @@ static const _tchar* Tag_Component(COMPONENTID eTag)
 	case Com_Shader:
 		return TEXT("Com_Shader");
 		break;
-
+	case Com_Gun:
+		return TEXT("Com_Gun");
 		//////////////////////////////////////////////////////////////////////////
 	default:
 		MSGBOX("Wrong Type Component");

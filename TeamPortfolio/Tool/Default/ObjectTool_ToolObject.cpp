@@ -179,7 +179,6 @@ HRESULT CObjectTool_ToolObject::Set_StateKey_TextureNum_Bind(const _tchar * stat
 
 HRESULT CObjectTool_ToolObject::Set_ViBuffer_Change()
 {
-	// #STOP 아마 안쓸듯
 	return S_OK;
 
 	m_isRect = !m_isRect;
