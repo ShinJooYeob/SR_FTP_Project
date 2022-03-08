@@ -191,9 +191,9 @@ HRESULT CUI_Image::SetUp_RenderState()
 		//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 
 
-		m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		/*m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 20);
-		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);*/
 	}
 
 	return S_OK;
@@ -379,38 +379,48 @@ void CUI_Image::Set_ImageName(TCHAR * pImageName)
 		m_ComTexture->Change_TextureLayer(L"manual_Potion");
 		m_bRender = false;
 	}
-	////////////////////common///////////////
+	///////////////////Quest//////////////////
 	else if (!lstrcmp(L"Quest_2", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"Quest_2");
 	}
+
 	else if (!lstrcmp(L"Quest_3", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"Bar2");
 	}
+	////////////////////common///////////////
+	
+
 	else if (!lstrcmp(L"Common_1", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"Common_1");
+		m_fDepth = 0.8f;
 	}
 	else if (!lstrcmp(L"Common_2", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"SPEEDUP");
+		m_fDepth = 0.9;
 	}
 	else if (!lstrcmp(L"Common_3", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"DUBBLEJUMP");
+		m_fDepth = 0.9;
 	}
 	else if (!lstrcmp(L"Common_4", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"CAMERA");
+		m_fDepth = 0.9;
 	}
 	else if (!lstrcmp(L"Common_5", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"POTION");
+		m_fDepth = 0.9;
 	}
 	else if (!lstrcmp(L"Common_6", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"CoolDown");
+		m_fDepth = 0.7;
 	}
 }
 

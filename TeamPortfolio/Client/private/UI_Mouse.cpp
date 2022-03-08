@@ -168,7 +168,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 
 
 		//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
-		//GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+		GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
 
 	}
 

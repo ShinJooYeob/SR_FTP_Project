@@ -40,6 +40,7 @@ HRESULT CUI_Common::Initialize_Clone(void * pArg)
 		return E_FAIL;
 	/*m_ComTransform->Rotation_CW(_float3(0.f, 0.f, 1.f), D3DXToRadian(270));*/
 	m_vUIDesc = _float4(m_fPosX, 360.f, 100.f, 400.f);
+	m_fDepth = 0.95f;
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
 
@@ -92,7 +93,7 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 	{
 		m_fCooltime.x += fDeltaTime;
 		_float4 ImageUIDesc = ((CUI_Image*)Find_Image(L"Common_Image_13"))->Get_UIDesc();
-		((CUI_Image*)Find_Image(L"Common_Image_13"))->Set_ImageAlpha(170);
+		((CUI_Image*)Find_Image(L"Common_Image_13"))->Set_ImageAlpha(200);
 
 		_float4 temp = {};
 		temp.x = (ImageUIDesc.x - ImageUIDesc.z * 0.5f);//left
@@ -117,71 +118,74 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 			((CPlayer*)pPlayer)->Set_CoolDownStart_False(SKILL_SPEEDUP);
 			m_fCooltime.x = 0;
 
-			PARTICLEDESC tDesc;
-			//파티클이 흩날리는 종류 설정
-			tDesc.eParticleID = Particle_Ball;
+			if (m_bIsHide == false)
+			{
+				PARTICLEDESC tDesc;
+				//파티클이 흩날리는 종류 설정
+				tDesc.eParticleID = Particle_Ball;
 
-			//총 파티클이 몇초동안 흩날릴 것인지 설정
-			tDesc.TotalParticleTime = 0.5f;
+				//총 파티클이 몇초동안 흩날릴 것인지 설정
+				tDesc.TotalParticleTime = 0.5f;
 
-			//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
-			tDesc.EachParticleLifeTime = 1.5f;
+				//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
+				tDesc.EachParticleLifeTime = 1.5f;
 
-			//파티클의 사이즈를 설정
-			tDesc.ParticleSize = _float3(40.f,40.f, 40.f);
-			//파티클의 파워(이동속도)를 결정
-			tDesc.Particle_Power = 60;
-			//파티클의 파워(이동속도)의 랜덤 범위를 결정
-			tDesc.PowerRandomRange = _float2(1.f, 1.f);
-			//파티클이 한번에 최대 몇개까지 보일 것인지 설정
-			tDesc.MaxParticleCount = 50;
+				//파티클의 사이즈를 설정
+				tDesc.ParticleSize = _float3(40.f, 40.f, 40.f);
+				//파티클의 파워(이동속도)를 결정
+				tDesc.Particle_Power = 75;
+				//파티클의 파워(이동속도)의 랜덤 범위를 결정
+				tDesc.PowerRandomRange = _float2(1.f, 1.f);
+				//파티클이 한번에 최대 몇개까지 보일 것인지 설정
+				tDesc.MaxParticleCount = 50;
 
-			//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
-			tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
-			//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
-			tDesc.szTextureLayerTag = TEXT("Star");
-			//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
-			tDesc.m_bIsTextureAutoFrame = false;
-
-
-			//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
-			//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
-			//단 둘중 하나만 사용 가능
-			//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
-			//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
-			//tDesc.FollowingTarget = nullptr;
-			tDesc.FixedTarget = _float3(m_fPosX, m_vUIDesc.y - 120.f,0);
+				//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
+				tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+				//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
+				tDesc.szTextureLayerTag = TEXT("Star");
+				//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+				tDesc.m_bIsTextureAutoFrame = false;
 
 
-			//파티클의 최대 이탈 범위(range)를 설정해 줌 
-			//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
-			tDesc.MaxBoundary = _float3(50, 50, 0.f);
+				//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
+				//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
+				//단 둘중 하나만 사용 가능
+				//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
+				//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
+				//tDesc.FollowingTarget = nullptr;
+				tDesc.FixedTarget = _float3(m_fPosX, m_vUIDesc.y - 120.f, 0);
 
 
-			//텍스처의 색상을 변경할 수 있는 기능 온오프
-			//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
-			//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
-			tDesc.ParticleColorChage = true;
-			tDesc.TargetColor = _float3(120, 30, 80);
-			tDesc.TargetColor2 = _float3(255.f, 255.f, 255.f);
+				//파티클의 최대 이탈 범위(range)를 설정해 줌 
+				//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
+				tDesc.MaxBoundary = _float3(50, 50, 0.f);
 
 
-			//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
-			//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
-			//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
-			tDesc.m_bIsUI = true;
-			//UI Depth 설정 (UI 가려지는거 순서 결정할때 쓰는 변수)
-			tDesc.m_bUIDepth = -90.f;
-
-			//방향을 설정하고 싶을 때 사용하는 옵션
-			//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
-			//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
-
-			//tDesc.vUp = _float3(1, 1, 0);
+				//텍스처의 색상을 변경할 수 있는 기능 온오프
+				//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
+				//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
+				tDesc.ParticleColorChage = true;
+				tDesc.TargetColor = _float3(186, 227, 245);
+				tDesc.TargetColor2 = _float3(16.f, 87.f, 118.f);
 
 
-			//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
-			GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+				//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
+				//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
+				//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
+				tDesc.m_bIsUI = true;
+				//UI Depth 설정 (UI 가려지는거 순서 결정할때 쓰는 변수)
+				tDesc.m_bUIDepth = -90.f;
+
+				//방향을 설정하고 싶을 때 사용하는 옵션
+				//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
+				//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
+
+				//tDesc.vUp = _float3(1, 1, 0);
+
+
+				//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
+				GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+			}
 		}
 	}
 	_bool CooldownStart2 = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_DUBBLEJUMP);
@@ -189,14 +193,14 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 	{
 		m_fCooltime.y += fDeltaTime;
 		_float4 ImageUIDesc = ((CUI_Image*)Find_Image(L"Common_Image_14"))->Get_UIDesc();
-		((CUI_Image*)Find_Image(L"Common_Image_14"))->Set_ImageAlpha(170);
+		((CUI_Image*)Find_Image(L"Common_Image_14"))->Set_ImageAlpha(200);
 
 		_float4 temp = {};
 		temp.x = (ImageUIDesc.x - ImageUIDesc.z * 0.5f);//left
 		temp.y = (ImageUIDesc.y - ImageUIDesc.w * 0.5f);//top
 		temp.z = (ImageUIDesc.x + ImageUIDesc.z * 0.5f);//right
 		temp.w = (ImageUIDesc.y + ImageUIDesc.w * 0.5f);//bottom
-		temp.y = temp.y + fDeltaTime*50.f / 6.f; // 버튼크기/쿨타임
+		temp.y = temp.y + fDeltaTime*50.f / 4.5f; // 버튼크기/쿨타임
 
 		m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
@@ -204,7 +208,7 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 
 
 
-		if (m_fCooltime.y > 6.f)//쿨타임 적으면됨6초
+		if (m_fCooltime.y > 4.5f)//쿨타임 적으면됨
 		{
 			m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
 			m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
@@ -213,7 +217,29 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 			((CUI_Image*)Find_Image(L"Common_Image_14"))->Set_ImageAlpha(0);
 			((CPlayer*)pPlayer)->Set_CoolDownStart_False(SKILL_DUBBLEJUMP);
 			m_fCooltime.y = 0;
-			////////////////////////////////파티클///////////////////////////////////
+
+			if(m_bIsHide == false)
+			{
+				PARTICLEDESC tDesc;
+				tDesc.eParticleID = Particle_Ball;
+				tDesc.TotalParticleTime = 0.5f;
+				tDesc.EachParticleLifeTime = 1.5f;
+				tDesc.ParticleSize = _float3(40.f, 40.f, 40.f);
+				tDesc.Particle_Power = 75;
+				tDesc.PowerRandomRange = _float2(1.f, 1.f);
+				tDesc.MaxParticleCount = 50;
+				tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+				tDesc.szTextureLayerTag = TEXT("Star");
+				tDesc.m_bIsTextureAutoFrame = false;
+				tDesc.FixedTarget = _float3(m_fPosX, m_vUIDesc.y - 40.f, 0);
+				tDesc.MaxBoundary = _float3(50, 50, 0.f);
+				tDesc.ParticleColorChage = true;
+				tDesc.TargetColor = _float3(186, 227, 245);
+				tDesc.TargetColor2 = _float3(16.f, 87.f, 118.f);
+				tDesc.m_bIsUI = true;
+				tDesc.m_bUIDepth = -90.f;
+				GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+			}
 		}
 	}
 	_bool CooldownStart3 = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_CAMERA);
@@ -221,7 +247,7 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 	{
 		m_fCooltime.z += fDeltaTime;
 		_float4 ImageUIDesc = ((CUI_Image*)Find_Image(L"Common_Image_15"))->Get_UIDesc();
-		((CUI_Image*)Find_Image(L"Common_Image_15"))->Set_ImageAlpha(170);
+		((CUI_Image*)Find_Image(L"Common_Image_15"))->Set_ImageAlpha(200);
 
 		_float4 temp = {};
 		temp.x = (ImageUIDesc.x - ImageUIDesc.z * 0.5f);//left
@@ -253,7 +279,7 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 	{
 		m_fCooltime.w += fDeltaTime;
 		_float4 ImageUIDesc = ((CUI_Image*)Find_Image(L"Common_Image_16"))->Get_UIDesc();
-		((CUI_Image*)Find_Image(L"Common_Image_16"))->Set_ImageAlpha(170);
+		((CUI_Image*)Find_Image(L"Common_Image_16"))->Set_ImageAlpha(200);
 
 		_float4 temp = {};
 		temp.x = (ImageUIDesc.x - ImageUIDesc.z * 0.5f);//left
@@ -311,9 +337,10 @@ HRESULT CUI_Common::Show_UI(_float fDeltaTime)
 		m_vUIDesc = _float4(m_fPosX, 360, 100, 400);
 		if(FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 		return E_FAIL;
-				
+		m_bIsHide = false;
 			for (auto pair : m_UIList)
 				((CUI_Image*)(pair.second))->Set_ImageUIDescX(m_fPosX);
+	
 	}
 
 	return S_OK;
@@ -356,6 +383,7 @@ HRESULT CUI_Common::Hide_UI(_float fDeltaTime)
 {
 	if (m_fPosX>-40)
 	{
+		m_bIsHide = true;
 		m_fPosX -= fDeltaTime * 320;
 		m_vUIDesc = _float4(m_fPosX, 360, 100, 400);
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))

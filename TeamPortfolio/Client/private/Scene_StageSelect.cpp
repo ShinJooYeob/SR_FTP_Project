@@ -744,13 +744,13 @@ void CScene_StageSelect::Make_Particle()
 	/*tDesc.ParticleStartRandomPosMin=_float3()*/
 	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
 
-	tDesc.eParticleID = Particle_Straight;
+	tDesc.eParticleID = Particle_Cone;
 	tDesc.TotalParticleTime = 3600.f;
 	tDesc.EachParticleLifeTime = 4.0f;
 	tDesc.ParticleSize = _float3(0.35f, 0.35f, 0.35f);
 	tDesc.Particle_Power = 3.f;
-	tDesc.PowerRandomRange = _float2(0.8f, 1.f);
-	tDesc.MaxParticleCount = 120;
+	tDesc.PowerRandomRange = _float2(0.5f, 1.2f);
+	tDesc.MaxParticleCount = 60;
 	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
 	tDesc.szTextureLayerTag = TEXT("greenleaf");
 	tDesc.m_bIsTextureAutoFrame = false;
@@ -759,11 +759,11 @@ void CScene_StageSelect::Make_Particle()
 	/*tDesc.FixedTarget = _float3(-3, 7, 10);*/
 	tDesc.MaxBoundary = _float3(100, 100, 100);
 	tDesc.ParticleColorChage = true;
-	tDesc.TargetColor = _float3(85, 153, 94);
+	tDesc.TargetColor = _float3(168, 34, 23);
 	tDesc.TargetColor2 = _float3(0.f, 182.f, 25.f);
 	tDesc.m_bIsUI = false;
-	tDesc.ParticleStartRandomPosMin = _float3(-10.f, 0.f, -10.f);
-	tDesc.ParticleStartRandomPosMax = _float3(10.f, 10.f, 10.f);
+	tDesc.ParticleStartRandomPosMin = _float3(-10.f, 10.f, -10.f);
+	tDesc.ParticleStartRandomPosMax = _float3(10.f, 20.f, 10.f);
 	tDesc.vUp = _float3(0, -1, 0);
 	tDesc.MustDraw = true;
 	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
