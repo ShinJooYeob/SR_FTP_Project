@@ -11,6 +11,14 @@ BEGIN(Client)
 // 총알패턴을 만드는 총 컴포넌트
 class CCom_Gun final: public CComponent
 {
+public:
+	enum E_BulletType
+	{
+		BULLETTYPE_Dir,
+		BULLETTYPE_Circle,
+		BULLETTYPE_END,
+
+	};
 
 private:
 	explicit CCom_Gun(LPDIRECT3DDEVICE9	pGraphicDevice);

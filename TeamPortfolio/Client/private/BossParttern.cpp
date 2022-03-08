@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "..\public\BossParttern.h"
+#include "..\public\BossMonster.h"
+
 
 _float3 CBoss_Action_Move::EaseingFloat3(EasingTypeID id, _float3 StartPos, _float3 EndPos, float curTime, float maxTime)
 {
@@ -9,10 +11,6 @@ _float3 CBoss_Action_Move::EaseingFloat3(EasingTypeID id, _float3 StartPos, _flo
 	newPos.z = GetSingle(CGameInstance)->Easing(id, StartPos.z, EndPos.z, curTime, maxTime);
 	return newPos;
 
-}
-
-void CBoss_Action_Move::Free()
-{
 }
 
 CBoss_Action_Move::CBoss_Action_Move(Action_Move_Desc desc)
@@ -32,11 +30,9 @@ bool CBoss_Action_Move::InitAction()
 	if (mDesc.mMonsterObject == nullptr)
 		return false;
 
-	mDesc.mStartPos = mDesc.mMonsterObject->GetPos(); 
-	
-	mDesc.mEndPos = mDesc.mMonsterObject->GetScreenToWorld(mDesc.mEndScreenPos);
-
-	mDesc.mCurrentTimer = 0;
+	mStartPos = mDesc.mMonsterObject->GetPos(); 	
+	mEndPos = mDesc.mMonsterObject->GetScreenToWorld(mDesc.mEndScreenPos);
+	mCurrentTimer = 0;
 
 	return false;
 	
@@ -50,18 +46,54 @@ void CBoss_Action_Move::Action(float timeDelta)
 		return;
 
 	// 해당 방향으로 움직이는 패턴
-	if (mDesc.mCurrentTimer > mDesc.mTimerMax)
+	if (mCurrentTimer > mDesc.mTimerMax)
 	{
 		m_isActionEnd = true;
 		return;
 
 	}
-	mDesc.mCurrentTimer += timeDelta;
-	_float3 newPos = EaseingFloat3(mDesc.mEasingType, mDesc.mStartPos, mDesc.mEndPos, mDesc.mCurrentTimer, mDesc.mTimerMax);
+	mCurrentTimer += timeDelta;
+	_float3 newPos = EaseingFloat3(mDesc.mEasingType, mStartPos, mEndPos, mCurrentTimer, mDesc.mTimerMax);
 	mDesc.mMonsterObject->SetPos(newPos);
 	
 }
 
-void IAction::Free()
+CBoss_Pattern_Attack::CBoss_Pattern_Attack(Action_Attack_Desc desc)
 {
+	m_isActionEnd = false;
+	memcpy(&mDesc, &desc, sizeof(Action_Attack_Desc));
+
+}
+
+bool CBoss_Pattern_Attack::InitAction()
+{
+	if (__super::InitAction() == false)
+		return false;
+
+	if (mDesc.mCom_Gun == nullptr)
+		return false;
+
+	mCurrentTimer = 0;
+	mCurrentAttackCount = 0;
+
+}
+
+void CBoss_Pattern_Attack::Action(float timeDelta)
+{
+	InitAction();
+
+	if (m_isActionEnd)
+		return;
+
+	// 공격 횟수만큼 ID로 총알을 쏜다.
+
+	mCurrentTimer += timeDelta;
+
+	if (mCurrentTimer >= mDesc.mTimerMax)
+	{
+		mCurrentTimer = 0;
+		mCurrentAttackCount++;
+	}
+
+
 }

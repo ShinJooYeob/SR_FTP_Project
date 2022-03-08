@@ -59,7 +59,8 @@ private:
 	void Update_BossPattern(_float deltatime);
 
 	// #TODO 심화 몬스터 패턴 정의
-	HRESULT Set_TestPattern();
+	HRESULT Set_TestMovePattern1();
+	HRESULT Set_TestAttackPattern1();
 
 protected:
 	CGameObject*	mPlayerTarget;

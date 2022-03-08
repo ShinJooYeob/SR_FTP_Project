@@ -143,7 +143,7 @@ HRESULT CBossMonster::Die()
 void CBossMonster::Update_BossPattern(_float deltatime)
 {
 	if (mQueue_Partern.empty())
-		Set_TestPattern();
+		Set_TestMovePattern1();
 
 	// 패턴이 끝나면 다음 패턴을 업데이트 시켜준다.
 
@@ -167,7 +167,7 @@ void CBossMonster::Update_BossPattern(_float deltatime)
 
 }
 
-HRESULT CBossMonster::Set_TestPattern()
+HRESULT CBossMonster::Set_TestMovePattern1()
 {
 	CBoss_Action_Move::Action_Move_Desc desc = {};
 
@@ -183,6 +183,19 @@ HRESULT CBossMonster::Set_TestPattern()
 	desc.mTimerMax = 0.5f;
 	desc.mEasingType = TYPE_Linear;
 	mQueue_Partern.push(new CBoss_Action_Move(desc));
+
+	return S_OK;
+}
+
+HRESULT CBossMonster::Set_TestAttackPattern1()
+{
+	CBoss_Pattern_Attack::Action_Attack_Desc desc = {};
+	desc.mAttackCount = 20;
+	desc.mCom_Gun = mComGun;
+	desc.meBuelletType = CCom_Gun::E_BulletType::BULLETTYPE_Dir;
+
+	mQueue_Partern.push(new CBoss_Pattern_Attack(desc));
+
 
 	return S_OK;
 }
