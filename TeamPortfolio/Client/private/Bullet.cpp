@@ -30,6 +30,10 @@ HRESULT CBullet::Initialize_Clone(void * pArg)
 	
 	m_ComTexture->Change_TextureLayer(TEXT("Bullet"));
 
+	if (pArg != nullptr)
+		memcpy(&mDesc, pArg, sizeof(BULLETDESC));
+
+	__super::SetPos(mDesc.StartPos);
 	return S_OK;
 }
 
@@ -37,6 +41,16 @@ _int CBullet::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
+	
+	switch (mDesc.BulletType)
+	{
+	case BULLETTYPE_Dir:
+		m_ComTransform->MovetoDir(mDesc.MoveDir, fDeltaTime);
+		break;
+
+	default:
+		break;
+	}
 
 	return _int();
 }
@@ -46,6 +60,7 @@ _int CBullet::LateUpdate(_float fDeltaTime)
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
 
+	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
 	return _int();
 }
 
@@ -54,7 +69,7 @@ _int CBullet::Render()
 
 	if (FAILED(__super::Render()))
 		return E_FAIL;
-	
+
 	return S_OK;
 }
 
@@ -70,11 +85,19 @@ _int CBullet::LateRender()
 
 HRESULT CBullet::SetUp_RenderState()
 {
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+
 	return S_OK;
 }
 
 HRESULT CBullet::Release_RenderState()
 {
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
 	return S_OK;
 
 }

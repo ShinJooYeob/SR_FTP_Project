@@ -70,8 +70,8 @@ bool CBoss_Pattern_Attack::InitAction()
 	if (__super::InitAction() == false)
 		return false;
 
-	if (mDesc.mCom_Gun == nullptr)
-		return false;
+		if (mDesc.mMonsterObject == nullptr)
+			return false;
 
 	mCurrentTimer = 0;
 	mCurrentAttackCount = 0;
@@ -86,13 +86,21 @@ void CBoss_Pattern_Attack::Action(float timeDelta)
 		return;
 
 	// °ø°Ý È½¼ö¸¸Å­ ID·Î ÃÑ¾ËÀ» ½ð´Ù.
+	if (mCurrentAttackCount >= mDesc.mAttackCount)
+	{
+		m_isActionEnd = true;
+		return;
+	}
+
 
 	mCurrentTimer += timeDelta;
-
 	if (mCurrentTimer >= mDesc.mTimerMax)
 	{
 		mCurrentTimer = 0;
 		mCurrentAttackCount++;
+
+		// ÃÑ¾Ë »ý¼º + ¾÷µ¥ÀÌÆ®
+		((CBossMonster*)mDesc.mMonsterObject)->CreateObjectBullet_Target();
 	}
 
 

@@ -431,3 +431,11 @@ enum MOUSETYPEID
 	MOUSE_GRAB,
 	MOUSE_END
 };
+
+enum E_BulletType
+{
+	BULLETTYPE_Dir,
+	BULLETTYPE_Circle,
+	BULLETTYPE_END,
+
+};

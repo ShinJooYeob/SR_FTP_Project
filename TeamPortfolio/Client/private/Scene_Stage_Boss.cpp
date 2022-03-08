@@ -202,7 +202,7 @@ HRESULT CScene_Stage_Boss::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage_Boss::Ready_Layer_Monster(const _tchar * pLayerTag)
 {
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("ProtoType_GameObject_Object_BossObject")))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TAG_OP(Prototype_Boss)))
 		return E_FAIL;
 
 	return S_OK;

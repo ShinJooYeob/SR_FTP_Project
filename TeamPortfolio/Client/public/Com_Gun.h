@@ -11,14 +11,7 @@ BEGIN(Client)
 // 총알패턴을 만드는 총 컴포넌트
 class CCom_Gun final: public CComponent
 {
-public:
-	enum E_BulletType
-	{
-		BULLETTYPE_Dir,
-		BULLETTYPE_Circle,
-		BULLETTYPE_END,
 
-	};
 
 private:
 	explicit CCom_Gun(LPDIRECT3DDEVICE9	pGraphicDevice);
@@ -27,8 +20,8 @@ private:
 
 public:
    // #TODO 총알 패턴
-	HRESULT CreateBullet_Target(_uint sceneid, _uint count=1);
-	HRESULT Update_Bullet_MoveTarget(_uint sceneid,_float3 targetPos, _float DeltaTime);
+	// 생성시 타겟방향을 설정
+	HRESULT CreateBullet_Target(_uint sceneid, _float3 startPos, _float3 moveidr,_uint count=1);
 	HRESULT DestoryBullet_All(_uint sceneid);
 
 
@@ -36,10 +29,6 @@ public:
 	HRESULT Initialize_Prototype(void * pArg);
 	HRESULT Initialize_Clone(void * pArg);
 
-	
-
-private:
-	
 	
 
 

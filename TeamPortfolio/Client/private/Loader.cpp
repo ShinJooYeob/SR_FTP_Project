@@ -55,6 +55,7 @@
 #include "ParsedObject_Penguin.h"
 
 #include "BossMonster.h"
+#include "Bullet.h"
 
 #include "ParsedObject_BigGreenTree.h"
 #include "ParsedObject_TreasureBox.h"
@@ -699,11 +700,14 @@ HRESULT CLoader::Load_Scene_Stage_Boss(_bool * _IsClientQuit, CRITICAL_SECTION *
 
 
 #pragma  region PROTOTYPE_GAMEOBJECT
-
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_BossObject"),
+	// 몬스터
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Boss),
 		CBossMonster::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Bullet),
+		CBullet::Create(m_pGraphicDevice,nullptr))))
+		return E_FAIL;
 #pragma endregion
 
 

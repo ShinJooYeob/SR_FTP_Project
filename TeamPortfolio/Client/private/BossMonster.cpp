@@ -22,6 +22,8 @@ HRESULT CBossMonster::Initialize_Prototype(void * pArg)
 	mComGun = nullptr;
 	mCurrentPattern = nullptr;
 	mPatternTime = 0;
+	mNextPattern = 0;
+
 	return S_OK;
 }
 
@@ -34,8 +36,9 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(5, 5, 5));
 	m_ComTexture->Change_TextureLayer(TEXT("Idle"));
-	mPatternTime = 0;
 
+	mPatternTime = 0;
+	mNextPattern = 0;
 	return S_OK;
 }
 
@@ -143,7 +146,9 @@ HRESULT CBossMonster::Die()
 void CBossMonster::Update_BossPattern(_float deltatime)
 {
 	if (mQueue_Partern.empty())
-		Set_TestMovePattern1();
+	{
+		Choose_NextPattern();		
+	}
 
 	// 패턴이 끝나면 다음 패턴을 업데이트 시켜준다.
 
@@ -172,14 +177,14 @@ HRESULT CBossMonster::Set_TestMovePattern1()
 	CBoss_Action_Move::Action_Move_Desc desc = {};
 
 	desc.mMonsterObject = this;
-	desc.mEndScreenPos = _float2(200, 720 * 0.5f);
+	desc.mEndScreenPos = _float2(200, 720 * 0.2f);
 	desc.mTimerMax = 0.5f;
 	desc.mEasingType = TYPE_Linear;
 	mQueue_Partern.push(new CBoss_Action_Move(desc));
 
 
 	desc.mMonsterObject = this;
-	desc.mEndScreenPos = _float2(1080, 720*0.5f);
+	desc.mEndScreenPos = _float2(1080, 720*0.2f);
 	desc.mTimerMax = 0.5f;
 	desc.mEasingType = TYPE_Linear;
 	mQueue_Partern.push(new CBoss_Action_Move(desc));
@@ -190,12 +195,52 @@ HRESULT CBossMonster::Set_TestMovePattern1()
 HRESULT CBossMonster::Set_TestAttackPattern1()
 {
 	CBoss_Pattern_Attack::Action_Attack_Desc desc = {};
-	desc.mAttackCount = 20;
-	desc.mCom_Gun = mComGun;
-	desc.meBuelletType = CCom_Gun::E_BulletType::BULLETTYPE_Dir;
+	desc.mAttackCount = 5;
+	desc.mMonsterObject = this;
+	desc.meBuelletType = E_BulletType::BULLETTYPE_Dir;
+	desc.mTimerMax = 0.3f;
+
 
 	mQueue_Partern.push(new CBoss_Pattern_Attack(desc));
 
+	// CBoss_Pattern_Attack::Action_Attack_Desc desc = {};
+	// desc.mAttackCount = 5;
+	// desc.mCom_Gun = mComGun;
+	// desc.meBuelletType = CCom_Gun::E_BulletType::BULLETTYPE_Dir;
+	// 
+	// mQueue_Partern.push(new CBoss_Pattern_Attack(desc));
+
+
+	return S_OK;
+}
+
+HRESULT CBossMonster::Choose_NextPattern()
+{
+	if (mNextPattern %2 ==  0)
+	{
+		Set_TestMovePattern1();
+	}
+	else
+	{
+		Set_TestAttackPattern1();
+
+	}
+
+	mNextPattern++;
+	return S_OK;
+}
+
+HRESULT CBossMonster::CreateObjectBullet_Target()
+{
+	CTransform* trans = (CTransform*)mPlayerTarget->Get_Component(TAG_COM(Com_Transform));
+	_float3 playerPos = trans->Get_MatrixState(CTransform::STATE_POS);
+	_float3 Position = GetPos();
+	_float3 TargetDir = {0,0,0};
+
+	TargetDir = playerPos - Position;
+	TargetDir = TargetDir.Get_Nomalize();
+
+	mComGun->CreateBullet_Target(m_eNowSceneNum, Position,TargetDir);
 
 	return S_OK;
 }
@@ -208,10 +253,7 @@ CBossMonster * CBossMonster::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pA
 	{
 		MSGBOX("Fail to Create CBossMonster");
 		Safe_Release(pInstance);
-
 	}
-
-
 	return pInstance;
 }
 

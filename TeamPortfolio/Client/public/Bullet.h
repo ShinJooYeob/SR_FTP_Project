@@ -1,6 +1,5 @@
 #pragma once
 #include "MonsterParent.h"
-
 BEGIN(Engine)
 class CTransform;
 class CTexture;
@@ -12,9 +11,19 @@ END
 
 BEGIN(Client)
 
+
 // 총알 
 class CBullet final: public CMonsterParent
 {
+public:
+	typedef struct tag_BulletDesc
+	{
+		E_BulletType BulletType;
+		_float3 StartPos;
+		_float3 MoveDir;
+
+	}BULLETDESC;
+
 protected:
 	explicit CBullet(LPDIRECT3DDEVICE9	pGraphicDevice);
 	explicit CBullet(const CBullet& rhs);
@@ -28,7 +37,10 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
+
 public:
+	void SetMoveDir(_float3 dir) { mDesc.MoveDir = dir; }
+	void SetBulletType(E_BulletType type) { mDesc.BulletType = type; }
 
 protected:
 	virtual HRESULT SetUp_RenderState() override;
@@ -38,6 +50,10 @@ protected:
 	virtual HRESULT Hit(_int Damage);
 	virtual HRESULT Die();
 
+
+private:
+	// 총알이 업데이트 되는 타입
+	BULLETDESC mDesc;
 
 public:
 

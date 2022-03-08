@@ -16,20 +16,6 @@ BEGIN(Client)
 // 보스 몬스터 
 class CBossMonster final : public CMonsterParent
 {
-public:
-	//enum MonsterFSM
-	//{
-	//	BOSS_FSM_INIT,
-	//	BOSS_FSM_IDLE,
-	//	BOSS_FSM_PATERN1,
-	//	BOSS_FSM_PATERN2,
-	//	BOSS_FSM_PATERN3,
-	//	BOSS_FSM_HIT,
-	//	BOSS_FSM_DEAD,
-	//	
-	//};
-
-
 protected:
 	explicit CBossMonster(LPDIRECT3DDEVICE9	pGraphicDevice);
 	explicit CBossMonster(const CBossMonster& rhs);
@@ -44,7 +30,7 @@ public:
 	virtual _int LateRender()override;
 	
 public:
-//	MonsterFSM GetCurrentState() { return mCurrentState; }
+	HRESULT CreateObjectBullet_Target();
 
 protected:
 	virtual HRESULT SetUp_Components();
@@ -61,9 +47,11 @@ private:
 	// #TODO 심화 몬스터 패턴 정의
 	HRESULT Set_TestMovePattern1();
 	HRESULT Set_TestAttackPattern1();
+	HRESULT Choose_NextPattern();
 
 protected:
 	CGameObject*	mPlayerTarget;
+	int				mNextPattern;
 
 	// 총알 담당 컴포넌트
 	// 총 컴포넌트를 참조해서 총알 패턴 구현
