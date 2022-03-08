@@ -328,7 +328,11 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_UI), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
-	
+	//Particle
+	TextureDesc.szTextFilePath = TEXT("Particle.txt");
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Particle"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 	//NPC Texture
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	TextureDesc.szTextFilePath = TEXT("NPC.txt");

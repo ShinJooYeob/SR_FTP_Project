@@ -41,19 +41,52 @@ HRESULT CUI_Mouse::Initialize_Clone(void * pArg)
 		m_rcRect.left = LONG(vUIDesc.x - vUIDesc.z*0.5f);
 	}
 	m_fDepth = -9999.f;
-
+	m_eMouseType = MOUSETYPEID::MOUSE_DEFAULT;
+	m_ComTexture->Change_TextureLayer(L"cursor_pointer");
 	return S_OK;
 }
 
 _int CUI_Mouse::Update(_float fDeltaTime)
 {
+	
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
+	if(m_bTimeStart)
+		m_fTime += fDeltaTime;
+	if (m_eMouseType == MOUSETYPEID::MOUSE_DEFAULT)
+	{
+		m_ComTexture->Change_TextureLayer(L"cursor_pointer");
+		m_fFrame = 0;
+	}
+	
+	
+	if (m_eMouseType == MOUSETYPEID::MOUSE_CLICK)
+	{
+		m_ComTexture->Change_TextureLayer(L"cursor_clicker");
+		
+		m_fFrame = 0;
+		m_bTimeStart = true;
 
+
+		if (m_fTime > 0.5f)
+		{
+			m_eMouseType = MOUSETYPEID::MOUSE_DEFAULT;
+			m_fTime = 0;
+		}
+	}
 	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Press)
 	{
 		GetSingle(CGameInstance)->PlaySound(L"beep.mp3", CHANNEL_UI);
+		m_eMouseType = MOUSETYPEID::MOUSE_CLICK;
+		m_ComTexture->Change_TextureLayer(L"cursor_clicker");
+
+		m_fFrame = 1;
 	}
+	/*else
+	{
+		m_ComTexture->Change_TextureLayer(L"cursor_pointer");
+		m_fFrame = 0;
+	}*/
 
 	POINT ptMouse;
 	GetCursorPos(&ptMouse);
@@ -117,7 +150,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
 		tDesc.m_bIsUI = true;
 		//UI Depth 설정 (UI 가려지는거 순서 결정할때 쓰는 변수)
-		tDesc.m_bUIDepth = 0;
+		tDesc.m_bUIDepth = -9998.f;
 
 		//방향을 설정하고 싶을 때 사용하는 옵션
 		//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
@@ -199,7 +232,7 @@ _int CUI_Mouse::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture((_uint)m_fFrame)))
+	if (FAILED(m_ComTexture->Bind_Texture(m_fFrame)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -224,19 +257,6 @@ _int CUI_Mouse::LateRender()
 	return _int();
 }
 
-void CUI_Mouse::Set_ImageName(TCHAR * pImageName)
-{
-	{ m_pImageName = pImageName; };
-	if (!lstrcmp(L"Button1", m_pImageName))
-	{
-		m_ComTexture->Change_TextureLayer(L"Button1");
-	}
-	else if (!lstrcmp(L"Button2", m_pImageName))
-	{
-		m_ComTexture->Change_TextureLayer(L"Button2");
-	}
-	
-}
 
 HRESULT CUI_Mouse::SetUp_Components()
 {

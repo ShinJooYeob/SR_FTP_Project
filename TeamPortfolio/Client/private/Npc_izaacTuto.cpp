@@ -105,7 +105,7 @@ _int CNpc_izaacTuto::Render()
 			wstring temp;
 			if (m_tNpcDesc.eCubeInfo == E_CUBEID::CUBEID_FIXED)
 			{
-				temp = L"Hi this is a fixCube \nPress L-Shift Key";
+				temp = L"This is a fixCube \nPress L-Shift Key";
 				GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.4f, 0.6f), _float3(155, 70, 255), m_fText);
 			}
 			else if (m_tNpcDesc.eCubeInfo == E_CUBEID::CUBEID_APPEAR)
