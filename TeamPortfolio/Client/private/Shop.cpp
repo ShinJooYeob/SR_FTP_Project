@@ -49,7 +49,7 @@ HRESULT CShop::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Skills()))
 		return E_FAIL;
 
-	m_Player_Inventory->Set_Gold(10000);
+	//m_Player_Inventory->Set_Gold(10000);
 	if (FAILED(m_ComTexture->Change_TextureLayer(TEXT("Shop1"))))
 		return E_FAIL;
 
@@ -443,7 +443,6 @@ HRESULT CShop::SetUp_Skills()
 
 	m_Skill[SKILL_POTION].Price = 500;
 
-	m_Player_Inventory->Set_Skill_MaxLevel(SKILL_SPEEDUP, 5);
 	return S_OK;
 }
 

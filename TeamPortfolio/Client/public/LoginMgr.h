@@ -19,11 +19,20 @@ private:
 
 public:
 	HRESULT Initialize_LoginMgr();
-	HRESULT LogIn_to_AWS_DB(wstring szID, wstring szPassward, _bool* IsbOutLoginSuccess, wstring* pOutPlayerData);
+
+public:
+	HRESULT Create_PlayerData(wstring ID, wstring Passward, _uint* IsbOutLoginSuccess);
+	HRESULT Load_PlayerData(wstring ID, wstring Passward, _uint* IsbOutLoginSuccess);
+	HRESULT Save_PlayerData(CPlayer* pPlayer, _uint* IsbOutLoginSuccess);
 
 
-	HRESULT Save_PlayerData(CPlayer* pPlayer, _bool* IsbOutLoginSuccess);
-	HRESULT Load_PlayerData(wstring szID, wstring szPassward, _bool* IsbOutLoginSuccess);
+	HRESULT Get_LoginDesc(LOGINDESC* tLoginDesc);
+
+private:
+	wstring LoginDescToSting(LOGINDESC tLoginDesc);
+
+private:
+	LOGINDESC m_LoginDesc;
 
 
 public:

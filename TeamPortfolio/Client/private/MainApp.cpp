@@ -335,14 +335,6 @@ void CMainApp::Free()
 		MSGBOX("Failed to Release CParticleMgr");
 
 
-	if (0 != GetSingle(CQuest)->DestroyInstance())
-		MSGBOX("Failed to Release  CQuest");
-
-
-	if (0 != GetSingle(CLoginMgr)->DestroyInstance())
-		MSGBOX("Failed to Release  CLoginMgr");
-
-
 	Safe_Release(m_pCollision);
 	Safe_Release(m_pComRenderer);
 	Safe_Release(m_pGraphicDevice);

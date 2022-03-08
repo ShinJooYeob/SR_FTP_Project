@@ -34,6 +34,7 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
+	FAILED_CHECK(SetUp_LoginDesc());
 
 	if (pArg == nullptr)
 	{
@@ -416,8 +417,8 @@ HRESULT CPlayer::Get_PlayerLoginDesc(LOGINDESC * pOutLoginData)
 		return E_FAIL;
 
 
-	pOutLoginData->szID = m_szID;
-	pOutLoginData->szPassword = m_szPassword;
+	pOutLoginData->szID = m_LoginDesc.szID;
+	pOutLoginData->szPassword = m_LoginDesc.szPassword;
 
 	for (_uint i = 0 ; i< SCENE_END; i++)
 	{
@@ -481,6 +482,40 @@ HRESULT CPlayer::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_pCollisionCom)))
 		return E_FAIL;
 
+
+
+	return S_OK;
+}
+
+HRESULT CPlayer::SetUp_LoginDesc()
+{
+	FAILED_CHECK(GetSingle(CLoginMgr)->Get_LoginDesc(&m_LoginDesc));
+
+	m_ComInventory->Set_Skill_MaxLevel(SKILL_SPEEDUP, 5);
+
+	for (_uint i = 0; i < SCENE_END; i++)
+	{
+		StageBestClear[i] = m_LoginDesc.iArrStageBestClear[i];
+	};
+
+
+	for (_uint i = 0; i < QUEST_END; i++)
+	{
+
+		GetSingle(CQuest)->Set_QuestIndexIncrease(i, m_LoginDesc.iArrQuestProgress[i]);
+	}
+
+	for (_uint i = 0; i < SKILL_END; i++)
+	{
+
+		for (_uint j = 0; j < m_LoginDesc.iArrSkillLevel[i]; j++)
+		{
+			m_ComInventory->Set_Skill_LevelUP(i);
+		}
+	}
+
+
+	m_ComInventory->Set_Gold(m_LoginDesc.iGold);
 
 
 	return S_OK;
@@ -1262,6 +1297,15 @@ void CPlayer::Free()
 {
 	__super::Free();
 
+	if (m_bIsClone)
+	{
+		_uint IsSuccess = 0;
+		GetSingle(CLoginMgr)->Save_PlayerData(this, &IsSuccess);
+
+		if (!IsSuccess)
+			MSGBOX("Fail To Save");
+
+	}
 
 
 	Safe_Release(m_pCarryObject);

@@ -65,8 +65,7 @@ private:
 	CCollision*		m_pCollisionCom = nullptr;
 
 private:
-	wstring					m_szID;
-	wstring					m_szPassword;
+	LOGINDESC				m_LoginDesc;
 
 
 	COOL					m_tCoolDown[SKILL_END];
@@ -117,6 +116,7 @@ public:
 
 private:
 	HRESULT			SetUp_Components();
+	HRESULT			SetUp_LoginDesc();
 
 	HRESULT			Input_Keyboard(_float fDeltaTime);
 	HRESULT			Animation_Change(_float fDeltaTime);

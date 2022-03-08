@@ -539,7 +539,28 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 			else if (m_iPageIndex == 1)
 			{
 
-				if (false || m_bIsNewResgist) //로그인 성공 or 신규 가입시 씬 전환
+				_uint bIsSuccess = false;
+
+
+				if (m_bIsNewResgist)
+				{
+					FAILED_CHECK(GetSingle(CLoginMgr)->Load_PlayerData(m_szID, m_szPassword, &bIsSuccess));
+
+					if (bIsSuccess)
+					{
+						m_bIsNewResgist = false;
+						bIsSuccess = false;
+					}
+					else {
+
+						FAILED_CHECK(GetSingle(CLoginMgr)->Create_PlayerData(m_szID, m_szPassword, &bIsSuccess));
+					}
+				}
+				else {
+					FAILED_CHECK(GetSingle(CLoginMgr)->Load_PlayerData(m_szID, m_szPassword, &bIsSuccess));
+				}
+
+				if (bIsSuccess == 1 || m_bIsNewResgist) //로그인 성공 or 신규 가입시 씬 전환
 				{
 					GetSingle(CGameInstance)->PlaySound(L"JW_startgame.wav", CHANNEL_UI);
 					CCamera_Main* pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));

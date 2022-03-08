@@ -109,6 +109,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	CGameInstance::Release_Engine();
 
 
+	if (0 != GetSingle(CQuest)->DestroyInstance())
+		MSGBOX("Failed to Release  CQuest");
+
+
+	if (0 != GetSingle(CLoginMgr)->DestroyInstance())
+		MSGBOX("Failed to Release  CLoginMgr");
+
+
     return (int) msg.wParam;
 }
 

@@ -66,13 +66,13 @@ typedef struct tagParticleDesc
 
 typedef struct tagLoginDesc
 {
-	wstring szID;
-	wstring szPassword;
+	wstring szID = L"";
+	wstring szPassword =L"";
 
-	_int iArrStageBestClear[SCENE_END];
-	_int iArrQuestProgress[QUEST_END];
-	_int iArrSkillLevel[SKILL_END];
-	_int iGold;
+	_int iArrStageBestClear[SCENE_END] = {};
+	_int iArrQuestProgress[QUEST_END] = {};
+	_int iArrSkillLevel[SKILL_END] = {};
+	_int iGold = 0;
 
 }LOGINDESC;
 
