@@ -30,12 +30,22 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 	
+public: // For. ObjectFunc
+	_float3 GetPos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS); }
+	_float3 GetScale() { return m_ComTransform->Get_MatrixScale(); }
+	
 protected:
 	// 컴포넌트 초기화
 	// 몬스터들은 동일한 컴포넌트 사용.
 	virtual	HRESULT SetUp_Components();
 	virtual HRESULT SetUp_RenderState()PURE;
 	virtual HRESULT Release_RenderState()PURE;
+
+	// 생성 피격 죽음 연출 개별 설정
+	virtual HRESULT CreateObject(_int Damage)PURE;
+	virtual HRESULT Hit(_int Damage)PURE;
+	virtual HRESULT Die()PURE;
+
 
 protected:
 	// Components

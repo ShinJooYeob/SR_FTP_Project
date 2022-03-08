@@ -136,11 +136,12 @@ HRESULT CMonsterParent::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_ComCollision)))
 		return E_FAIL;
 
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_Monster), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
+		return E_FAIL;
 
 	//if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Test), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
 	//	return E_FAIL;
-
-	// 텍스처는 자식 클래스에서 정의
+	
 
 	return S_OK;
 }

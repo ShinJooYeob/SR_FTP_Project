@@ -194,7 +194,8 @@ enum COMPONENTPROTOTYPEID
 	Prototype_Texture_Default,
 	Prototype_Texture_Player, 
 	Prototype_Texture_Terrain,
-	Prototype_Texture_UI
+	Prototype_Texture_UI,
+	Prototype_Texture_Monster
 
 };
 static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
@@ -245,7 +246,9 @@ static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 	case Prototype_Texture_UI:
 		return TEXT("Prototype_Component_Texture_UI");
 		break;
-	
+	case Prototype_Texture_Monster:
+		return TEXT("Prototype_Component_Texture_Monster");
+
 		//////////////////////////////////////////////////////////////////////////
 	default:
 		MSGBOX("Wrong Type Layer");

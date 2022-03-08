@@ -77,6 +77,21 @@ HRESULT CBullet::Release_RenderState()
 
 }
 
+HRESULT CBullet::CreateObject(_int Damage)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CBullet::Hit(_int Damage)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CBullet::Die()
+{
+	return E_NOTIMPL;
+}
+
 CBullet * CBullet::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)
 {
 	CBullet* pInstance = new CBullet(pGraphic_Device);

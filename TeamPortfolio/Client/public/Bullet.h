@@ -32,6 +32,11 @@ protected:
 	virtual HRESULT SetUp_RenderState() override;
 	virtual HRESULT Release_RenderState() override;
 
+	virtual HRESULT CreateObject(_int Damage);
+	virtual HRESULT Hit(_int Damage);
+	virtual HRESULT Die();
+
+
 public:
 
 	static CBullet* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg);

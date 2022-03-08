@@ -127,6 +127,8 @@ enum COMPONENTPROTOTYPEID
 	Prototype_Texture_Player,
 	Prototype_Texture_Terrain,
 	Prototype_Texture_Shop,
+	Prototype_Texture_Monster,
+
 
 };
 static const TCHAR* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
@@ -174,6 +176,9 @@ static const TCHAR* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 		break;
 	case Prototype_Texture_Shop:
 		return TEXT("Prototype_Component_Texture_Shop");
+		break;
+	case Prototype_Texture_Monster:
+		return TEXT("Prototype_Component_Texture_Monster");
 		break;
 		//////////////////////////////////////////////////////////////////////////
 	default:

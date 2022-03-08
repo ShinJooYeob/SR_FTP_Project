@@ -28,6 +28,8 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 
 	mPlayerTarget = nullptr;
 	m_ComTransform->Scaled(_float3(5, 5, 5));
+	m_ComTexture->Change_TextureLayer(TEXT("Idle"));
+
 //	mCurrentState = CBossMonster::BOSS_FSM_INIT;
 
 	// 패턴 초기화
@@ -129,6 +131,21 @@ HRESULT CBossMonster::Release_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
 	return S_OK;
+}
+
+HRESULT CBossMonster::CreateObject(_int Damage)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CBossMonster::Hit(_int Damage)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CBossMonster::Die()
+{
+	return E_NOTIMPL;
 }
 
 void CBossMonster::UpdateBossPattern()
