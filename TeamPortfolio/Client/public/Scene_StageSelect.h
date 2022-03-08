@@ -29,7 +29,7 @@ private:
 	HRESULT Ready_Layer_UI_Common(const _tchar * pLayerTag);
 	HRESULT Ready_Layer_UI_Result(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Object_Star(const _tchar* pLayerTag);//º° È¹µæ
-
+	void	Make_Particle();
 	HRESULT Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata);
 
 	HRESULT Ready_Layer_StageEntryCollsionObject(const _tchar* pLayerTag);
