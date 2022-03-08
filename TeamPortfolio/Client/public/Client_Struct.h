@@ -23,6 +23,7 @@ enum ParticleID
 	Particle_Cone,
 	Particle_Fountain,
 	Particle_Spread,
+	Particle_Fixed,
 
 	Particle_End
 };
@@ -36,6 +37,7 @@ typedef struct tagParticleDesc
 	const _tchar* szTextureProtoTypeTag = nullptr;
 	const _tchar* szTextureLayerTag = nullptr;
 	_bool  m_bIsTextureAutoFrame = false;
+	_float	fAutoFrameMul = 1.f;
 
 	_float3 ParticleSize;
 
@@ -60,6 +62,11 @@ typedef struct tagParticleDesc
 	_float  m_bUIDepth = 0;
 	//_bool	ParticleAlphaChage = false;
 	//_float TargetAlpha = 255.f;
+
+	_float3 ParticleStartRandomPosMin = _float3(-5.0f, -5.0f, -5.0f);
+	_float3 ParticleStartRandomPosMax= _float3(5.f, 5.f, 5.f);
+
+	_bool	MustDraw = false;
 
 }PARTICLEDESC;
 

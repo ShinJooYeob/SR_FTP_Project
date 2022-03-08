@@ -309,7 +309,7 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 	//텍스처의 색상을 변경할 수 있는 기능 온오프
 	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
 	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
-	tDesc.ParticleColorChage = false;
+	tDesc.ParticleColorChage = true;
 	tDesc.TargetColor = _float3(237, 28, 36);
 	tDesc.TargetColor2 = _float3(53, 255.f, 11);
 
@@ -322,8 +322,10 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 	//방향을 설정하고 싶을 때 사용하는 옵션
 	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
 	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
-	tDesc.vUp = _float3(1, 1, 0);
+	tDesc.vUp = _float3(0, -1, 0);
 
+
+	tDesc.MustDraw = false;
 
 	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
 	GetSingle(CParticleMgr)->Create_ParticleObject(SCENE_STAGE3, tDesc);

@@ -47,6 +47,12 @@ HRESULT CParticleMgr::Create_ParticleObject(_uint eSceneID, PARTICLEDESC tPartic
 
 		break;
 
+	case Client::Particle_Fixed:
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(eSceneID, TEXT("Layer_Particle"), TEXT("ProtoType_GameObject_Object_particle_Fixed"), &tParticleDesc));
+
+		break;
+		
+
 	default:
 		return E_FAIL;
 		break;

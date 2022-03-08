@@ -65,7 +65,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 	{
 		PARTICLEDESC tDesc;
 		//파티클이 흩날리는 종류 설정
-		tDesc.eParticleID = Particle_Ball;
+		tDesc.eParticleID = Particle_Fixed;
 
 		//총 파티클이 몇초동안 흩날릴 것인지 설정
 		tDesc.TotalParticleTime = 0.5f;
@@ -95,8 +95,8 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		//단 둘중 하나만 사용 가능
 		//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
 		//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
-		tDesc.FollowingTarget = m_ComTransform;
-		//tDesc.FixedTarget = _float3(0,3,0);
+		//tDesc.FollowingTarget = m_ComTransform;
+		tDesc.FixedTarget = _float3(1000,600,0);
 
 
 		//파티클의 최대 이탈 범위(range)를 설정해 줌 

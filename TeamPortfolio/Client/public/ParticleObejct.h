@@ -343,4 +343,37 @@ public:
 	virtual CGameObject * Clone(void * pArg) override;
 
 };
+
+
+///////////부채 형태 파티클///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+class CParticleeObj_Fixed final : public CParticleObject
+{
+private:
+	explicit CParticleeObj_Fixed(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CParticleeObj_Fixed(const CParticleeObj_Fixed& rhs);
+	virtual ~CParticleeObj_Fixed() = default;
+
+private:
+
+	virtual void Reset_Velocity(_float3& fAttVlocity)override;
+	virtual void Update_Position_by_Velocity(PARTICLEATT* tParticleAtt, _float fTimeDelta)override;
+	virtual void ResetParticle(PARTICLEATT * attribute)override;
+
+	virtual HRESULT Initialize_Child_Clone() override;
+	//	virtual void ResetParticle(PARTICLEATT* attribute);
+
+	virtual _int Update(_float fTimeDelta)override;
+	virtual _int LateUpdate(_float fTimeDelta)override;
+	// 랜더는 부모 것 사용
+
+
+public:
+
+	static CParticleeObj_Fixed* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	virtual CGameObject * Clone(void * pArg) override;
+
+};
 END
