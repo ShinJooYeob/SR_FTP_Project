@@ -58,15 +58,15 @@ protected:
 private:
 	void UpdateBossPattern();
 
-	// 랜덤으로 행동 정의
-	HRESULT Set_RandomPattern();
+	// 행동 정의
+	HRESULT Set_TestPattern();
 
 protected:
 	CGameObject*	mPlayerTarget;
 
 	// 총알 담당 컴포넌트
 	// 총 컴포넌트를 참조해서 총알 패턴 구현
-	class CGun*			mComGun;
+	class CCom_Gun*			mComGun;
 
 	// 패턴 / 총알 잘 나오는지 보고
 	class IPattern* mCurrentPattern;

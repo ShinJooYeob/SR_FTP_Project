@@ -27,6 +27,8 @@ HRESULT CBullet::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
+	
+	m_ComTexture->Change_TextureLayer(TEXT("Bullet"));
 
 	return S_OK;
 }
@@ -79,17 +81,17 @@ HRESULT CBullet::Release_RenderState()
 
 HRESULT CBullet::CreateObject(_int Damage)
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT CBullet::Hit(_int Damage)
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT CBullet::Die()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 CBullet * CBullet::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)

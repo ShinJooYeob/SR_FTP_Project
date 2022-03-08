@@ -28,6 +28,8 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
+public:
+
 protected:
 	virtual HRESULT SetUp_RenderState() override;
 	virtual HRESULT Release_RenderState() override;

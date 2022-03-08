@@ -38,7 +38,7 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 		mQueue_Partern.pop();
 	}
 
-	Set_RandomPattern();
+	Set_TestPattern();
 
 
 	return S_OK;
@@ -135,23 +135,23 @@ HRESULT CBossMonster::Release_RenderState()
 
 HRESULT CBossMonster::CreateObject(_int Damage)
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT CBossMonster::Hit(_int Damage)
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT CBossMonster::Die()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 void CBossMonster::UpdateBossPattern()
 {
 	if (mQueue_Partern.empty())
-		Set_RandomPattern();
+		Set_TestPattern();
 
 	// 1. 패턴을 하나씩 꺼낸다.
 	if (mCurrentPattern == nullptr)
@@ -161,17 +161,23 @@ void CBossMonster::UpdateBossPattern()
 	}
 
 	// 2. 패턴 실행
+//	mCurrentPattern->Pattern();
 
-//	mCurrentPattern->
 
 }
 
-HRESULT CBossMonster::Set_RandomPattern()
+HRESULT CBossMonster::Set_TestPattern()
 {
-	mQueue_Partern.emplace(new CBoss_Pattern_Move1());
-	mQueue_Partern.emplace(new CBoss_Pattern_Move2());
+	CBoss_Action_Move::Action_Move_Desc desc = {};
+	desc.mComTrans = m_ComTransform;
+	desc.mEndPos = _float3(5,3,2);
 
-//	mQueue_Partern.emplace(CBoss_Pattern_Attack1());
+
+	
+//	mQueue_Partern.emplace(new CBoss_Action_Move());
+
+
+
 	return S_OK;
 }
 
