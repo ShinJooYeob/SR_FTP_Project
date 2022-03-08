@@ -269,7 +269,7 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 
 	PARTICLEDESC tDesc;
 	//파티클이 흩날리는 종류 설정
-	tDesc.eParticleID = Particle_Straight;
+	tDesc.eParticleID = Particle_Fixed;
 
 	//총 파티클이 몇초동안 흩날릴 것인지 설정
 	tDesc.TotalParticleTime = 20.f;
