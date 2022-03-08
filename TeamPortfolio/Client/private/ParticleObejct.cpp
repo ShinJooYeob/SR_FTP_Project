@@ -44,8 +44,11 @@ HRESULT CParticleObject::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
+	if (m_ParticleDesc.IsParticleFameEndtoDie)
+		m_ComTexture->Change_TextureLayer_Wait(m_ParticleDesc.szTextureLayerTag);
+	else
+		m_ComTexture->Change_TextureLayer(m_ParticleDesc.szTextureLayerTag);
 
-	m_ComTexture->Change_TextureLayer(m_ParticleDesc.szTextureLayerTag);
 
 
 	if (m_ParticleDesc.FollowingTarget != nullptr)
@@ -73,6 +76,7 @@ _int CParticleObject::Update(_float fTimeDelta)
 
 	if (m_ParticleDesc.FollowingTarget != nullptr)
 		m_ComParentTransform->Set_MatrixState(CTransform::STATE_POS, m_ParticleDesc.FollowingTarget->Get_MatrixState(CTransform::STATE_POS));
+
 
 
 
@@ -132,6 +136,8 @@ _int CParticleObject::Update(_float fTimeDelta)
 
 	}
 
+	if (m_ParticleDesc.IsParticleFameEndtoDie && m_ComTexture->Get_NowTextureTag() == nullptr)
+		DIED();
 
 	return 0;
 }
@@ -338,11 +344,22 @@ HRESULT CParticleObject::SetUp_ParticleDesc(void * pArg)
 	m_boundingBox.minPos = m_ParticleDesc.MaxBoundary.Get_Inverse();
 	m_boundingBox.maxPos = m_ParticleDesc.MaxBoundary;
 
-	if (m_ParticleDesc.vUp.Get_Nomalize() != _float3(0, 1, 0))
+	m_vUp = m_ParticleDesc.vUp.Get_Nomalize();
+
+	if (m_vUp != _float3(0, 1, 0))
 	{
-		m_vUp = m_ParticleDesc.vUp.Get_Nomalize();
-		m_vRight = (m_vUp.Get_Cross(_float3(0, 1, 0))).Get_Nomalize();
-		m_vLook = (m_vRight.Get_Cross(m_vUp)).Get_Nomalize();
+
+		if (m_vUp == _float3(0, -1, 0))
+		{
+			m_vRight = (m_vUp.Get_Cross(_float3(0.00000001f, 1, 0))).Get_Nomalize();
+			m_vLook = (m_vRight.Get_Cross(m_vUp)).Get_Nomalize();
+
+		}
+		else 
+		{
+			m_vRight = (m_vUp.Get_Cross(_float3(0, 1, 0))).Get_Nomalize();
+			m_vLook = (m_vRight.Get_Cross(m_vUp)).Get_Nomalize();
+		}
 	}
 
 	if (m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x < 0.1f )
@@ -788,7 +805,6 @@ CParticleeObj_Cone::CParticleeObj_Cone(const CParticleeObj_Cone & rhs)
 
 void CParticleeObj_Cone::Reset_Velocity(_float3 & fAttVlocity)
 {
-	_float3 RandomVelocity = _float3(0, 0, 0);
 
 	_float3 vAddedRightLook = _float3(0, 0, 0);
 	vAddedRightLook += m_vRight;
@@ -796,6 +812,7 @@ void CParticleeObj_Cone::Reset_Velocity(_float3 & fAttVlocity)
 	vAddedRightLook += m_vLook;
 
 	
+	_float3 RandomVelocity = _float3(0, 0, 0);
 
 	GetRandomVector(&RandomVelocity, &(vAddedRightLook.Get_Inverse()), &(vAddedRightLook));
 

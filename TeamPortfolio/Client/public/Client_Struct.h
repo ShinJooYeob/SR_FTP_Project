@@ -67,6 +67,7 @@ typedef struct tagParticleDesc
 	_float3 ParticleStartRandomPosMax= _float3(5.f, 5.f, 5.f);
 
 	_bool	MustDraw = false;
+	_bool	IsParticleFameEndtoDie = false;
 
 }PARTICLEDESC;
 

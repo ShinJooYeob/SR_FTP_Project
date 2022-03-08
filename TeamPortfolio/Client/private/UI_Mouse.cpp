@@ -53,32 +53,40 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		return E_FAIL;
 	if(m_bTimeStart)
 		m_fTime += fDeltaTime;
-	if (m_eMouseType == MOUSETYPEID::MOUSE_DEFAULT)
-	{
+	//if (m_eMouseType == MOUSETYPEID::MOUSE_DEFAULT)
+	//{
+	//	m_ComTexture->Change_TextureLayer(L"cursor_pointer");
+	//	m_fFrame = 0;
+	//}
+	//
+	
+
+	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Down) {
+		m_ComTexture->Change_TextureLayer_Wait(L"cursor_clicker",12.f);
+	}
+	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Up) {
 		m_ComTexture->Change_TextureLayer(L"cursor_pointer");
-		m_fFrame = 0;
 	}
-	
-	
-	if (m_eMouseType == MOUSETYPEID::MOUSE_CLICK)
-	{
-		m_ComTexture->Change_TextureLayer(L"cursor_clicker");
-		
-		m_fFrame = 0;
-		m_bTimeStart = true;
+
+	//if (m_eMouseType == MOUSETYPEID::MOUSE_CLICK)
+	//{
+	//	m_ComTexture->Change_TextureLayer_ReturnTo(L"cursor_clicker", L"cursor_pointer");
+	//	
+	//	m_fFrame = 0;
+	//	m_bTimeStart = true;
 
 
-		if (m_fTime > 0.5f)
-		{
-			m_eMouseType = MOUSETYPEID::MOUSE_DEFAULT;
-			m_fTime = 0;
-		}
-	}
+	//	//if (m_fTime > 0.5f)
+	//	//{
+	//	//	m_eMouseType = MOUSETYPEID::MOUSE_DEFAULT;
+	//	//	m_fTime = 0;
+	//	//}
+	//}
 	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Press)
 	{
 		GetSingle(CGameInstance)->PlaySound(L"beep.mp3", CHANNEL_UI);
 		m_eMouseType = MOUSETYPEID::MOUSE_CLICK;
-		m_ComTexture->Change_TextureLayer(L"cursor_clicker");
+		//m_ComTexture->Change_TextureLayer(L"cursor_clicker");
 
 		m_fFrame = 1;
 	}
@@ -101,7 +109,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		tDesc.eParticleID = Particle_Fixed;
 
 		//총 파티클이 몇초동안 흩날릴 것인지 설정
-		tDesc.TotalParticleTime = 0.5f;
+		tDesc.TotalParticleTime = 0.1f;
 
 		//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
 		tDesc.EachParticleLifeTime = 0.5f;
@@ -129,7 +137,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
 		//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
 		//tDesc.FollowingTarget = m_ComTransform;
-		tDesc.FixedTarget = _float3(1000,600,0);
+		tDesc.FixedTarget = _float3(g_iWinCX - 10, g_iWinCY - 10,0);
 
 
 		//파티클의 최대 이탈 범위(range)를 설정해 줌 
@@ -160,7 +168,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 
 
 		//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
-		GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+		//GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
 
 	}
 
@@ -232,7 +240,7 @@ _int CUI_Mouse::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture(m_fFrame)))
+	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(g_fDeltaTime)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
