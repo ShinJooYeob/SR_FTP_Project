@@ -287,6 +287,7 @@ HRESULT CTexture::Bind_Texture_AutoFrame(_float fTimeDelta, _float* pOutFrameCou
 	if (m_pBindedTextureLayer == nullptr)
 		return E_FAIL;
 
+
 	m_fFrameTime += m_fFramePerSec * fTimeDelta;
 
 	if (m_fFrameTime >= (_float)(m_iNumMaxTexture + 1))

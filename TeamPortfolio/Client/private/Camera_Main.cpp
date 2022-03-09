@@ -722,6 +722,73 @@ HRESULT CCamera_Main::SetUp_Components()
 	};
 
 
+
+
+
+
+
+
+
+
+
+
+
+	//m_ParticleDesc.eParticleID = Particle_Fixed;
+	//m_ParticleDesc.TotalParticleTime = 0.f;
+	//m_ParticleDesc.EachParticleLifeTime = 1000;
+	//m_ParticleDesc.ParticleSize = _float3(3.f, 3.f, 3.f);
+	//m_ParticleDesc.Particle_Power = 1;
+	//m_ParticleDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+	//m_ParticleDesc.MaxParticleCount = 1;
+	//m_ParticleDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	//m_ParticleDesc.szTextureLayerTag = TEXT("Turning_Effect");
+	//m_ParticleDesc.m_bIsTextureAutoFrame = true;
+	//m_ParticleDesc.fAutoFrameMul = 3.f;
+	//m_ParticleDesc.MaxBoundary = _float3(10, 10, 10);
+	//m_ParticleDesc.ParticleColorChage = false;
+	//m_ParticleDesc.TargetColor = _float3(237, 28, 36);
+	//m_ParticleDesc.TargetColor2 = _float3(53, 255.f, 11);
+	//m_ParticleDesc.m_bIsUI = false;
+	//m_ParticleDesc.ParticleStartRandomPosMin = _float3(0.0f, 0.7f, 0.0f);
+	//m_ParticleDesc.ParticleStartRandomPosMax = _float3(0.f, 0.7f, 0.0f);
+	//m_ParticleDesc.MustDraw = true;
+	//m_ParticleDesc.IsParticleFameEndtoDie = true;
+
+	m_ParticleDesc.eParticleID = Particle_Fixed;
+	m_ParticleDesc.TotalParticleTime = 0.f;
+	m_ParticleDesc.EachParticleLifeTime = 1000;
+
+	m_ParticleDesc.FixedTarget = _float3(g_iWinCX*0.5f, g_iWinCY*0.4f+10.f, 0.05);
+	m_ParticleDesc.ParticleSize = _float3(g_iWinCX*1.3f, g_iWinCY*1.3f, 1.f);
+
+	m_ParticleDesc.Particle_Power = 1;
+	m_ParticleDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+	m_ParticleDesc.MaxParticleCount = 1;
+	m_ParticleDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	m_ParticleDesc.szTextureLayerTag = TEXT("Turning_Effect_A");
+
+	m_ParticleDesc.m_bIsTextureAutoFrame = true;
+	m_ParticleDesc.fAutoFrameMul = 3.f;
+
+
+	m_ParticleDesc.MaxBoundary = _float3(10, 10, 10);
+
+	m_ParticleDesc.ParticleColorChage = false;
+	m_ParticleDesc.TargetColor = _float3(237, 28, 36);
+	m_ParticleDesc.TargetColor2 = _float3(53, 255.f, 11);
+
+	m_ParticleDesc.m_bIsUI = true;
+	m_ParticleDesc.m_bUIDepth = 10000;
+
+	m_ParticleDesc.ParticleStartRandomPosMin = _float3(0.0f, 0.f, 0.0f);
+	m_ParticleDesc.ParticleStartRandomPosMax = _float3(0.f, 0.f, 0.0f);
+	m_ParticleDesc.MustDraw = true;
+	m_ParticleDesc.IsParticleFameEndtoDie = true;
+
+
+
+
+
 	return S_OK;
 }
 
@@ -797,6 +864,14 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 			m_fPassedTime = 0;
 			m_IsTurning = true;
 
+
+
+			//if (m_ParticleDesc.FollowingTarget == nullptr)
+			//	m_ParticleDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform)));
+
+			m_ParticleDesc.szTextureLayerTag = TEXT("Turning_Effect_A");
+			GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, m_ParticleDesc);
+
 			GetSingle(CGameInstance)->PlaySound(TEXT("JY_rotateleft.wav"), CHANNEL_UI);
 
 		}
@@ -813,6 +888,13 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 
 			m_fPassedTime = 0;
 			m_IsTurning = true;
+
+			//if (m_ParticleDesc.FollowingTarget == nullptr)
+			//	m_ParticleDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform)));
+
+			m_ParticleDesc.szTextureLayerTag = TEXT("Turning_Effect_B");
+			GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, m_ParticleDesc);
+
 			GetSingle(CGameInstance)->PlaySound(TEXT("JY_rotateright.wav"), CHANNEL_UI);
 
 		}

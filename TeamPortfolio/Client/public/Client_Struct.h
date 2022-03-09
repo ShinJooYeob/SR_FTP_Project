@@ -69,6 +69,11 @@ typedef struct tagParticleDesc
 	_bool	MustDraw = false;
 	_bool	IsParticleFameEndtoDie = false;
 
+
+	_bool	AlphaBlendON = false;
+
+	_bool	bSubPraticle = false;
+
 }PARTICLEDESC;
 
 

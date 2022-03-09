@@ -662,20 +662,24 @@ void CScene_StageSelect::Make_Particle()
 	PARTICLEDESC tDesc;
 	tDesc.eParticleID = Particle_Ball;
 	tDesc.TotalParticleTime = 3600.f;
-	tDesc.EachParticleLifeTime = 5.0f;
+	tDesc.EachParticleLifeTime = 1.0f;
 	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
-	tDesc.Particle_Power = 1.5;
-	tDesc.PowerRandomRange = _float2(0.8f, 1.f);
-	tDesc.MaxParticleCount = 40;
+	tDesc.Particle_Power = 3;
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+	tDesc.MaxParticleCount = 100;
 	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
 	tDesc.szTextureLayerTag = TEXT("greenleaf");
 	tDesc.m_bIsTextureAutoFrame = false;
 	//tDesc.FollowingTarget = m_ComTransform;
 	tDesc.FixedTarget = _float3(10,10,1);
-	tDesc.MaxBoundary = _float3(100, 100, 100);
+	tDesc.MaxBoundary = _float3(10, 5, 10);
 	tDesc.ParticleColorChage = true;
-	tDesc.TargetColor = _float3(85, 153, 94);
-	tDesc.TargetColor2 = _float3(0.f, 182.f, 25.f);
+	tDesc.TargetColor = _float3(237, 186, 186);
+	tDesc.TargetColor2 = _float3(200.f, 192.f, 231.f);
+	tDesc.ParticleStartRandomPosMin = _float3 (0,0,0);
+	tDesc.ParticleStartRandomPosMax = _float3(0, 0, 0);
+
+
 	tDesc.m_bIsUI = false;
 	/*tDesc.vUp = _float3(-1, -1, 0);*/
 	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
@@ -744,13 +748,13 @@ void CScene_StageSelect::Make_Particle()
 	/*tDesc.ParticleStartRandomPosMin=_float3()*/
 	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
 
-	tDesc.eParticleID = Particle_Straight;
+	tDesc.eParticleID = Particle_Cone;
 	tDesc.TotalParticleTime = 3600.f;
 	tDesc.EachParticleLifeTime = 4.0f;
 	tDesc.ParticleSize = _float3(0.35f, 0.35f, 0.35f);
 	tDesc.Particle_Power = 3.f;
 	tDesc.PowerRandomRange = _float2(0.8f, 1.f);
-	tDesc.MaxParticleCount = 120;
+	tDesc.MaxParticleCount = 50;
 	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
 	tDesc.szTextureLayerTag = TEXT("greenleaf");
 	tDesc.m_bIsTextureAutoFrame = false;
@@ -759,7 +763,7 @@ void CScene_StageSelect::Make_Particle()
 	/*tDesc.FixedTarget = _float3(-3, 7, 10);*/
 	tDesc.MaxBoundary = _float3(100, 100, 100);
 	tDesc.ParticleColorChage = true;
-	tDesc.TargetColor = _float3(85, 153, 94);
+	tDesc.TargetColor = _float3(240, 153, 94);
 	tDesc.TargetColor2 = _float3(0.f, 182.f, 25.f);
 	tDesc.m_bIsUI = false;
 	tDesc.ParticleStartRandomPosMin = _float3(-10.f, 0.f, -10.f);

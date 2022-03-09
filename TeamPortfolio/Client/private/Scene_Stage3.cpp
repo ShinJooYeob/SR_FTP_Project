@@ -269,7 +269,7 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 
 	PARTICLEDESC tDesc;
 	//파티클이 흩날리는 종류 설정
-	tDesc.eParticleID = Particle_Cone;
+	tDesc.eParticleID = Particle_Spread;
 
 	//총 파티클이 몇초동안 흩날릴 것인지 설정
 	tDesc.TotalParticleTime = 20.f;
@@ -321,7 +321,7 @@ HRESULT CScene_Stage3::Ready_Layer_Object_particle(const _tchar * pLayerTag)
 	//방향을 설정하고 싶을 때 사용하는 옵션
 	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
 	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
-	tDesc.vUp = _float3(0, -1, 0);
+	tDesc.vUp = _float3(0, 0, -1);
 
 
 	tDesc.ParticleStartRandomPosMin= _float3(-10.0f, 0.0f, -10.1f);

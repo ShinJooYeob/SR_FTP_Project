@@ -67,6 +67,7 @@ private:
 private:
 	LOGINDESC				m_LoginDesc;
 
+	PARTICLEDESC			m_ArrParticleDesc[10];
 
 	COOL					m_tCoolDown[SKILL_END];
 	_float					m_fFrame = 0.f;
@@ -117,6 +118,7 @@ public:
 private:
 	HRESULT			SetUp_Components();
 	HRESULT			SetUp_LoginDesc();
+	HRESULT			SetUp_ParticleDesc();
 
 	HRESULT			Input_Keyboard(_float fDeltaTime);
 	HRESULT			Animation_Change(_float fDeltaTime);

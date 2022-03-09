@@ -44,6 +44,7 @@ typedef struct tag_ParticleAttribute
 	bool        _isAlive;
 
 	_float3		_NowparantPos ;
+	class CParticleObject* SubParticle = nullptr;
 }PARTICLEATT;
 
 
@@ -132,11 +133,15 @@ public:
 	// 범위에 벗어나면 재자리
 	virtual void ResetParticle(PARTICLEATT* attribute);
 
+	HRESULT Set_SubParticleDesc(PARTICLEDESC* pSubParticleDesc);
+
 	virtual _float Get_CamDistance() const { return m_ParticleDesc.m_bUIDepth; }
 
 	virtual void Reset_Velocity(_float3& fAttVlocity)PURE;
 	virtual void Update_Position_by_Velocity(PARTICLEATT* tParticleAtt, _float fTimeDelta)PURE;
 	virtual void Update_ColorChange(PARTICLEATT* tParticleAtt, _float fTimeDelta);
+
+	HRESULT Reset_FixedPostion(_float3 vPos);
 
 	virtual _int Render()override;
 	virtual _int LateRender()override;
@@ -165,11 +170,22 @@ protected:
 
 
 	PARTICLEDESC			m_ParticleDesc;
+
+	PARTICLEDESC			m_SubParticleDesc;
+
 	_float3					m_vUp = _float3(0,1,0);
 	_float3					m_vRight = _float3(1, 0, 0);
 	_float3					m_vLook = _float3(0, 0, 1);
+
+
+	//_float3					m_vSubUp = _float3(0, 1, 0);
+	//_float3					m_vSubRight = _float3(1, 0, 0);
+	//_float3					m_vSubLook = _float3(0, 0, 1);
+
 	//float                   m_RateTime;   
 	//float                   m_Scale;       
+
+
 	list<PARTICLEATT>		m_list_Particles;
 	//int                     m_MaxParticles; 
 	BoundingBox				m_boundingBox;

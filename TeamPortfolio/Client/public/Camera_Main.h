@@ -68,6 +68,8 @@ public:
 	void CamViectoryEft(_bool * _IsClientQuit, CRITICAL_SECTION * _CriSec);
 
 private:
+	PARTICLEDESC				m_ParticleDesc;
+
 	_int						m_eLoookState = Look_Front_Axis;
 	_float						m_fPassedTime = 0;
 	_float						m_fStartAngle = 0;

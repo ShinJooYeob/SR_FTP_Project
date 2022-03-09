@@ -66,6 +66,9 @@ HRESULT CScene_Stage2::Initialize()
 	GetSingle(CGameInstance)->PlayBGM(L"JY_lydiandominant.wav");
 	//GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.1f);
 
+
+	FAILED_CHECK(Ready_Layer_Particle(L"Layer_Particle"));
+
 	return S_OK;
 }
 
@@ -329,6 +332,194 @@ HRESULT CScene_Stage2::Ready_Layer_PauseUI(const _tchar * pLayerTag)
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("Prototype_GameObject_PauseUI")))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_Stage2::Ready_Layer_Particle(const _tchar * pLayerTag)
+{
+	PARTICLEDESC tParticleDesc = {};
+
+
+	tParticleDesc.eParticleID = Particle_Ball;
+	tParticleDesc.TotalParticleTime = 3000.f;
+	tParticleDesc.EachParticleLifeTime = 3.0;
+	
+	tParticleDesc.ParticleSize = _float3(0.5f, 0.5f, 0.5f);
+	
+	tParticleDesc.Particle_Power = 1;
+	tParticleDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+	
+	tParticleDesc.MaxParticleCount = 40;
+
+	tParticleDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	tParticleDesc.szTextureLayerTag = TEXT("Meteo_dust_B");
+
+	tParticleDesc.m_bIsTextureAutoFrame = true;
+	tParticleDesc.fAutoFrameMul = 8.f;
+	tParticleDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC,TAG_LAY(Layer_Player), TAG_COM(Com_Transform)));
+	tParticleDesc.FixedTarget = _float3();
+
+	tParticleDesc.MaxBoundary = _float3(100, 100, 100);
+	tParticleDesc.ParticleColorChage = false;
+	//tParticleDesc.TargetColor = _float3(237, 28, 36);
+	//tParticleDesc.TargetColor2 = _float3(53, 255.f, 11);
+	tParticleDesc.m_bIsUI = false;
+	tParticleDesc.ParticleStartRandomPosMin = _float3(-24.f, -20.f, -24.0f);
+	tParticleDesc.ParticleStartRandomPosMax = _float3(24.f, 20.0f, 24.0f);
+
+	tParticleDesc.MustDraw = false;
+	tParticleDesc.IsParticleFameEndtoDie = false;
+	tParticleDesc.AlphaBlendON = true;
+
+	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENE_STAGE2, tParticleDesc);
+
+
+
+	PARTICLEDESC tSubParticleDesc = {};
+
+	tParticleDesc.eParticleID = Particle_Cone;
+	tParticleDesc.TotalParticleTime = 3000.f;
+	tParticleDesc.EachParticleLifeTime = 6.0;
+
+	tParticleDesc.ParticleSize = _float3(1.f, 1.2f, 1.f);
+
+	tParticleDesc.Particle_Power = 8;
+	tParticleDesc.PowerRandomRange = _float2(1.f, 1.5f);
+
+	tParticleDesc.MaxParticleCount = 6;
+
+	tParticleDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	tParticleDesc.szTextureLayerTag = TEXT("Meteo_B");
+
+	tParticleDesc.m_bIsTextureAutoFrame = true;
+	tParticleDesc.fAutoFrameMul = 3.f;
+	tParticleDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform)));
+	tParticleDesc.FixedTarget = _float3();
+
+	tParticleDesc.MaxBoundary = _float3(100, 20, 100);
+	tParticleDesc.ParticleColorChage = false;
+	//tParticleDesc.TargetColor = _float3(237, 28, 36);
+	//tParticleDesc.TargetColor2 = _float3(53, 255.f, 11);
+	tParticleDesc.m_bIsUI = false;
+	tParticleDesc.ParticleStartRandomPosMin = _float3(-24.f, 20.f, -24.0f);
+	tParticleDesc.ParticleStartRandomPosMax = _float3(24.f, 20.0f, 24.0f);
+
+	tParticleDesc.vUp = _float3(0, -1, 0);
+
+	tParticleDesc.MustDraw = false;
+	tParticleDesc.IsParticleFameEndtoDie = false;
+	tParticleDesc.AlphaBlendON = false;
+	tParticleDesc.bSubPraticle= true;
+
+
+	tSubParticleDesc.TotalParticleTime = 3000.f;
+	tSubParticleDesc.EachParticleLifeTime = 0.35f;
+
+	tSubParticleDesc.ParticleSize = _float3(1.5f, 1.5f, 1.5f);
+
+	tSubParticleDesc.Particle_Power = 8;
+	tSubParticleDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+
+	tSubParticleDesc.MaxParticleCount = 10;
+
+	tSubParticleDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	tSubParticleDesc.szTextureLayerTag = TEXT("Meteo_dust_B");
+
+	tSubParticleDesc.m_bIsTextureAutoFrame = true;
+	tSubParticleDesc.fAutoFrameMul = 10.f;
+	tSubParticleDesc.FollowingTarget = nullptr;
+	tSubParticleDesc.FixedTarget = _float3();
+
+	tSubParticleDesc.MaxBoundary = _float3(100, 20, 100);
+	tSubParticleDesc.ParticleColorChage = false;
+
+	tSubParticleDesc.m_bIsUI = false;
+	tSubParticleDesc.ParticleStartRandomPosMin = _float3(0.f, 0.0f, 0.0f);
+	tSubParticleDesc.ParticleStartRandomPosMax = _float3(0.f, 0.0f, 0.0f);
+
+	tSubParticleDesc.vUp = _float3(0, 1, 0);
+
+	tSubParticleDesc.MustDraw = false;
+	tSubParticleDesc.IsParticleFameEndtoDie = false;
+	tSubParticleDesc.AlphaBlendON = true;
+
+	GetSingle(CParticleMgr)->Create_ParticleObject_AddSub(SCENE_STAGE2, tParticleDesc, tSubParticleDesc);
+
+
+
+
+	tParticleDesc.eParticleID = Particle_Cone;
+	tParticleDesc.TotalParticleTime = 3000.f;
+	tParticleDesc.EachParticleLifeTime = 6.0;
+
+	tParticleDesc.ParticleSize = _float3(1.f, 1.2f, 1.f);
+
+	tParticleDesc.Particle_Power = 8;
+	tParticleDesc.PowerRandomRange = _float2(1.f, 1.5f);
+
+	tParticleDesc.MaxParticleCount = 6;
+
+	tParticleDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	tParticleDesc.szTextureLayerTag = TEXT("Meteo_A");
+
+	tParticleDesc.m_bIsTextureAutoFrame = true;
+	tParticleDesc.fAutoFrameMul = 1.5f;
+	tParticleDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_Commponent_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player), TAG_COM(Com_Transform)));
+	tParticleDesc.FixedTarget = _float3();
+
+	tParticleDesc.MaxBoundary = _float3(100, 20, 100);
+	tParticleDesc.ParticleColorChage = false;
+	//tParticleDesc.TargetColor = _float3(237, 28, 36);
+	//tParticleDesc.TargetColor2 = _float3(53, 255.f, 11);
+	tParticleDesc.m_bIsUI = false;
+	tParticleDesc.ParticleStartRandomPosMin = _float3(-24.f, 20.f, -24.0f);
+	tParticleDesc.ParticleStartRandomPosMax = _float3(24.f, 20.0f, 24.0f);
+
+	tParticleDesc.vUp = _float3(0, -1, 0);
+
+	tParticleDesc.MustDraw = false;
+	tParticleDesc.IsParticleFameEndtoDie = false;
+	tParticleDesc.AlphaBlendON = false;
+	tParticleDesc.bSubPraticle = true;
+
+
+
+	tSubParticleDesc.eParticleID = Particle_Ball;
+	tSubParticleDesc.TotalParticleTime = 3000.f;
+	tSubParticleDesc.EachParticleLifeTime = 0.35f;
+
+	tSubParticleDesc.ParticleSize = _float3(1.5f, 1.5f, 1.5f);
+
+	tSubParticleDesc.Particle_Power = 1;
+	tSubParticleDesc.PowerRandomRange = _float2(0.1f, 1.5f);
+
+	tSubParticleDesc.MaxParticleCount = 10;
+
+	tSubParticleDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	tSubParticleDesc.szTextureLayerTag = TEXT("Meteo_dust_A");
+
+	tSubParticleDesc.m_bIsTextureAutoFrame = true;
+	tSubParticleDesc.fAutoFrameMul = 10.f;
+	tSubParticleDesc.FollowingTarget = nullptr;
+	tSubParticleDesc.FixedTarget = _float3();
+
+	tSubParticleDesc.MaxBoundary = _float3(100, 20, 100);
+	tSubParticleDesc.ParticleColorChage = false;
+
+	tSubParticleDesc.m_bIsUI = false;
+	tSubParticleDesc.ParticleStartRandomPosMin = _float3(-0.2f, 0.0f, -0.2f);
+	tSubParticleDesc.ParticleStartRandomPosMax = _float3(0.2f, 0.0f, 0.2f);
+
+	tSubParticleDesc.vUp = _float3(0, 1, 0);
+
+	tSubParticleDesc.MustDraw = false;
+	tSubParticleDesc.IsParticleFameEndtoDie = false;
+	tSubParticleDesc.AlphaBlendON = true;
+
+	GetSingle(CParticleMgr)->Create_ParticleObject_AddSub(SCENE_STAGE2, tParticleDesc,tSubParticleDesc);
+
 
 	return S_OK;
 }

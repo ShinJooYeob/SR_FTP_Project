@@ -36,6 +36,8 @@ HRESULT CPlayer::Initialize_Clone(void * pArg)
 
 	FAILED_CHECK(SetUp_LoginDesc());
 
+	FAILED_CHECK(SetUp_ParticleDesc());
+
 	if (pArg == nullptr)
 	{
 		m_fNowJumpPower = 0.000001f;
@@ -525,6 +527,131 @@ HRESULT CPlayer::SetUp_LoginDesc()
 	return S_OK;
 }
 
+HRESULT CPlayer::SetUp_ParticleDesc()
+{
+	
+	m_ArrParticleDesc[0].eParticleID = Particle_Fixed;
+	m_ArrParticleDesc[0].TotalParticleTime = 0.f;
+	m_ArrParticleDesc[0].EachParticleLifeTime = 1000.f;
+	m_ArrParticleDesc[0].ParticleSize = _float3(1.0f, 0.5f, 1.0f);
+	m_ArrParticleDesc[0].Particle_Power = 1;
+	m_ArrParticleDesc[0].PowerRandomRange = _float2(0.9f, 1.1f);
+	m_ArrParticleDesc[0].MaxParticleCount = 1;
+	m_ArrParticleDesc[0].szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	m_ArrParticleDesc[0].szTextureLayerTag = TEXT("Jump_Effect");
+	m_ArrParticleDesc[0].m_bIsTextureAutoFrame = true;
+	m_ArrParticleDesc[0].fAutoFrameMul = 2.f;
+	m_ArrParticleDesc[0].FollowingTarget = m_ComTransform;
+	m_ArrParticleDesc[0].MaxBoundary = _float3(10, 10, 10);
+	m_ArrParticleDesc[0].ParticleColorChage = false;
+	m_ArrParticleDesc[0].TargetColor = _float3(237, 28, 36);
+	m_ArrParticleDesc[0].TargetColor2 = _float3(53, 255.f, 11);
+	m_ArrParticleDesc[0].m_bIsUI = false;
+	m_ArrParticleDesc[0].vUp = _float3(0, 1, 0);
+	m_ArrParticleDesc[0].ParticleStartRandomPosMin = _float3(0.0f, -0.5f, 0.0f);
+	m_ArrParticleDesc[0].ParticleStartRandomPosMax = _float3(0.f, -0.5f, 0.0f);
+	m_ArrParticleDesc[0].MustDraw = true;
+	m_ArrParticleDesc[0].IsParticleFameEndtoDie = true;
+
+	m_ArrParticleDesc[1].eParticleID = Particle_Fixed;
+	m_ArrParticleDesc[1].TotalParticleTime = 0.f;
+	m_ArrParticleDesc[1].EachParticleLifeTime = 1000.f;
+	m_ArrParticleDesc[1].ParticleSize = _float3(1.5f, 0.7f, 1.5f);
+	m_ArrParticleDesc[1].Particle_Power = 1;
+	m_ArrParticleDesc[1].PowerRandomRange = _float2(0.9f, 1.1f);
+	m_ArrParticleDesc[1].MaxParticleCount = 1;
+	m_ArrParticleDesc[1].szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	m_ArrParticleDesc[1].szTextureLayerTag = TEXT("DuobleJump_Effect_1");
+	m_ArrParticleDesc[1].m_bIsTextureAutoFrame = true;
+	m_ArrParticleDesc[1].fAutoFrameMul = 2.f;
+	m_ArrParticleDesc[1].FollowingTarget = m_ComTransform;
+	m_ArrParticleDesc[1].MaxBoundary = _float3(10, 10, 10);
+	m_ArrParticleDesc[1].ParticleColorChage = false;
+	m_ArrParticleDesc[1].TargetColor = _float3(237, 28, 36);
+	m_ArrParticleDesc[1].TargetColor2 = _float3(53, 255.f, 11);
+	m_ArrParticleDesc[1].m_bIsUI = false;
+	m_ArrParticleDesc[1].vUp = _float3(0, 1, 0);
+	m_ArrParticleDesc[1].ParticleStartRandomPosMin = _float3(0.0f, -0.5f, 0.0f);
+	m_ArrParticleDesc[1].ParticleStartRandomPosMax = _float3(0.f, -0.5f, 0.0f);
+	m_ArrParticleDesc[1].MustDraw = true;
+	m_ArrParticleDesc[1].IsParticleFameEndtoDie = true;
+
+	m_ArrParticleDesc[2].eParticleID = Particle_Fixed;
+	m_ArrParticleDesc[2].TotalParticleTime = 0.f;
+	m_ArrParticleDesc[2].EachParticleLifeTime = 1000.f;
+	m_ArrParticleDesc[2].ParticleSize = _float3(1.0f, 0.7f, 1.0f);
+	m_ArrParticleDesc[2].Particle_Power = 1;
+	m_ArrParticleDesc[2].PowerRandomRange = _float2(0.9f, 1.1f);
+	m_ArrParticleDesc[2].MaxParticleCount = 1;
+	m_ArrParticleDesc[2].szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	m_ArrParticleDesc[2].szTextureLayerTag = TEXT("Landing_Effect");
+	m_ArrParticleDesc[2].m_bIsTextureAutoFrame = true;
+	m_ArrParticleDesc[2].fAutoFrameMul = 4.f;
+	m_ArrParticleDesc[2].FollowingTarget = m_ComTransform;
+	//m_ArrParticleDesc[2].FixedTarget = _float3(10, 10, 10);
+	m_ArrParticleDesc[2].MaxBoundary = _float3(10, 10, 10);
+	m_ArrParticleDesc[2].ParticleColorChage = false;
+	m_ArrParticleDesc[2].TargetColor = _float3(237, 28, 36);
+	m_ArrParticleDesc[2].TargetColor2 = _float3(53, 255.f, 11);
+	m_ArrParticleDesc[2].m_bIsUI = false;
+	m_ArrParticleDesc[2].vUp = _float3(0, 1, 0);
+	m_ArrParticleDesc[2].ParticleStartRandomPosMin = _float3(0.0f, -0.5f, 0.0f);
+	m_ArrParticleDesc[2].ParticleStartRandomPosMax = _float3(0.f, -0.5f, 0.0f);
+	m_ArrParticleDesc[2].MustDraw = true;
+	m_ArrParticleDesc[2].IsParticleFameEndtoDie = true;
+
+	m_ArrParticleDesc[3].eParticleID = Particle_Fixed;
+	m_ArrParticleDesc[3].TotalParticleTime = 0.f;
+	m_ArrParticleDesc[3].EachParticleLifeTime = 0.8f;
+	m_ArrParticleDesc[3].ParticleSize = _float3(1.0f, 1.5f, 1.0f);
+	m_ArrParticleDesc[3].Particle_Power = 1;
+	m_ArrParticleDesc[3].PowerRandomRange = _float2(0.9f, 1.1f);
+	m_ArrParticleDesc[3].MaxParticleCount = 1;
+	m_ArrParticleDesc[3].szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	m_ArrParticleDesc[3].szTextureLayerTag = TEXT("Running_Effect");
+	m_ArrParticleDesc[3].m_bIsTextureAutoFrame = true;
+	m_ArrParticleDesc[3].fAutoFrameMul = 1.f;
+	m_ArrParticleDesc[3].FollowingTarget = m_ComTransform;
+	m_ArrParticleDesc[3].MaxBoundary = _float3(10, 10, 10);
+	m_ArrParticleDesc[3].ParticleColorChage = true;
+	m_ArrParticleDesc[3].TargetColor = _float3(47, 88, 255);
+	m_ArrParticleDesc[3].TargetColor2 = _float3(255, 47, 47);
+	m_ArrParticleDesc[3].m_bIsUI = false;
+	m_ArrParticleDesc[3].vUp = _float3(0, 1, 0);
+	m_ArrParticleDesc[3].ParticleStartRandomPosMin = _float3(0.0f, -0.2f, 0.0f);
+	m_ArrParticleDesc[3].ParticleStartRandomPosMax = _float3(0.f, -0.2f, 0.0f);
+	m_ArrParticleDesc[3].MustDraw = true;
+	m_ArrParticleDesc[3].IsParticleFameEndtoDie = true;
+
+
+	m_ArrParticleDesc[4].eParticleID = Particle_Straight;
+	m_ArrParticleDesc[4].TotalParticleTime = 0.5f;
+	m_ArrParticleDesc[4].EachParticleLifeTime = 0.5;
+	m_ArrParticleDesc[4].ParticleSize = _float3(0.3f, 0.3f, 0.3f);
+	m_ArrParticleDesc[4].Particle_Power = 1;
+	m_ArrParticleDesc[4].PowerRandomRange = _float2(0.5f, 1.5f);
+	m_ArrParticleDesc[4].MaxParticleCount = 2;
+	m_ArrParticleDesc[4].szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
+	m_ArrParticleDesc[4].szTextureLayerTag = TEXT("Running_Particle");
+	m_ArrParticleDesc[4].m_bIsTextureAutoFrame = true;
+	m_ArrParticleDesc[4].fAutoFrameMul = 3.f;
+	m_ArrParticleDesc[4].FollowingTarget = m_ComTransform;
+	m_ArrParticleDesc[4].MaxBoundary = _float3(10, 10, 10);
+	m_ArrParticleDesc[4].ParticleColorChage = false;
+	m_ArrParticleDesc[4].TargetColor = _float3(237, 28, 36);
+	m_ArrParticleDesc[4].TargetColor2 = _float3(53, 255.f, 11);
+	m_ArrParticleDesc[4].m_bIsUI = false;
+	m_ArrParticleDesc[4].ParticleStartRandomPosMin = _float3(0.0f, -0.5f, 0.0f);
+	m_ArrParticleDesc[4].ParticleStartRandomPosMax = _float3(0.f, 0.0f, 0.0f);
+	m_ArrParticleDesc[4].MustDraw = true;
+	m_ArrParticleDesc[4].IsParticleFameEndtoDie = false;
+
+
+	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
+	//GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+	return S_OK;
+}
+
 HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 {
 	m_fFrame = fDeltaTime;
@@ -659,6 +786,12 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 		else
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("jump_up"), 8.f);
 
+
+		if (m_bIsJumped == 0)
+			GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, m_ArrParticleDesc[0]);
+		else if (m_bIsJumped == 1)
+			GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, m_ArrParticleDesc[1]);
+
 		m_fNowJumpPower = m_fJumpPower;
 		m_bIsJumped++;
 		m_bIsCliming = false;
@@ -754,6 +887,7 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 							GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_1, 1);
 							m_bIsRunning = true;
 							m_ComTransform->Set_MoveSpeed(2.5f + m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP) * 0.25f);
+							GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, m_ArrParticleDesc[3]);
 
 						}
 					}
@@ -761,6 +895,10 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 					{
 						m_bIsRunning = false;
 						m_ComTransform->Set_MoveSpeed(2.5f);
+					}
+					else if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Up|| pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Up)
+					{
+						m_bIsRunning = false;
 					}
 
 					if (m_bIsRunning)
@@ -792,6 +930,14 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 		}
 
 
+	}
+
+
+
+	if (m_bIsRunning)
+	{
+		m_ArrParticleDesc[4].vUp = m_ComTransform->Get_MatrixState(CTransform::STATE_RIGHT).Get_Inverse();
+		GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, m_ArrParticleDesc[4]);
 	}
 
 	return S_OK;
@@ -993,12 +1139,19 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 				if(!m_bIsStageEnd)
 				{
 					if (m_pCarryObject)
+					{
 						m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carryjumpdown"), TEXT("carryIdle"), 8.f);
+
+					}
 					else
+					{
 						m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
+
+					}
 				}
 
 				vResultPos.y = m_vDownstairsNear.y + 0.95f;
+				GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, m_ArrParticleDesc[2]);
 				m_fNowJumpPower = 0;
 				m_bIsJumped = 0;
 
@@ -1055,6 +1208,7 @@ HRESULT CPlayer::Set_PosOnFootHoldObject(_float fDeltaTime)
 
 				vResultPos.z = m_vDownstairsNear.z;
 				m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("jump_down"), TEXT("Idle"), 8.f);
+				//GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, m_ArrParticleDesc[2]);
 				vResultPos.y = m_vDownstairsNear.y + 0.95f;
 				m_fNowJumpPower = 0;
 				m_bIsJumped = 0;
@@ -1246,7 +1400,6 @@ HRESULT CPlayer::Release_RenderState()
 	// _float3 Temp = m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0);
 	//GetSingle(CGameInstance)->Render_World_Font(L"0ere'sy\nForgive me, girl", Temp,_float2(0.3f,0.45f),_float3(38,240,120));
 
-	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);

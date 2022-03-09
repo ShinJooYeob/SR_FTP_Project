@@ -146,7 +146,7 @@ HRESULT CRenderer::Render_Alpha()
 
 HRESULT CRenderer::Render_AfterObj()
 {
-
+	m_RenderObjectList[RENDER_AFTEROBJ].reverse();
 	for (auto& RenderObject : m_RenderObjectList[RENDER_AFTEROBJ])
 	{
 		if (RenderObject != nullptr)
