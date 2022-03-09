@@ -51,37 +51,8 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 	
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-	if(m_bTimeStart)
-		m_fTime += fDeltaTime;
-	//if (m_eMouseType == MOUSETYPEID::MOUSE_DEFAULT)
-	//{
-	//	m_ComTexture->Change_TextureLayer(L"cursor_pointer");
-	//	m_fFrame = 0;
-	//}
-	//
 	
 
-	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Down) {
-		m_ComTexture->Change_TextureLayer_Wait(L"cursor_clicker",12.f);
-	}
-	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Up) {
-		m_ComTexture->Change_TextureLayer(L"cursor_pointer");
-	}
-
-	//if (m_eMouseType == MOUSETYPEID::MOUSE_CLICK)
-	//{
-	//	m_ComTexture->Change_TextureLayer_ReturnTo(L"cursor_clicker", L"cursor_pointer");
-	//	
-	//	m_fFrame = 0;
-	//	m_bTimeStart = true;
-
-
-	//	//if (m_fTime > 0.5f)
-	//	//{
-	//	//	m_eMouseType = MOUSETYPEID::MOUSE_DEFAULT;
-	//	//	m_fTime = 0;
-	//	//}
-	//}
 	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Press)
 	{
 		GetSingle(CGameInstance)->PlaySound(L"beep.mp3", CHANNEL_UI);
@@ -90,11 +61,6 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 
 		m_fFrame = 1;
 	}
-	/*else
-	{
-		m_ComTexture->Change_TextureLayer(L"cursor_pointer");
-		m_fFrame = 0;
-	}*/
 
 	POINT ptMouse;
 	GetCursorPos(&ptMouse);
@@ -172,7 +138,33 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 
 	}
 
-
+	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Down) {
+		m_ComTexture->Change_TextureLayer_Wait(L"cursor_clicker", 12.f);
+	}
+	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Up) {
+		m_ComTexture->Change_TextureLayer(L"cursor_pointer");
+		PARTICLEDESC tDesc;
+		tDesc.eParticleID = Particle_Fixed;
+		tDesc.TotalParticleTime = 0.5f;
+		tDesc.EachParticleLifeTime = 0.5f;
+		tDesc.ParticleSize = _float3(45.f, 45.f, 45.f);
+		tDesc.Particle_Power = 0.0001f;
+		tDesc.PowerRandomRange = _float2(1.f, 1.f);
+		tDesc.MaxParticleCount = 1;
+		tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+		tDesc.szTextureLayerTag = TEXT("fire");
+		tDesc.m_bIsTextureAutoFrame = true;
+		/*tDesc.FollowingTarget = m_ComTransform;*/
+		tDesc.FixedTarget = _float3((_float)ptMouse.x, (_float)ptMouse.y, 0.5f);
+		tDesc.MaxBoundary = _float3(5, 5, 5);
+		tDesc.ParticleColorChage = false;
+		tDesc.TargetColor = _float3(174, 174, 0);
+		tDesc.TargetColor2 = _float3(255.f, 255.f, 206.f);
+		tDesc.m_bIsUI = true;
+		tDesc.m_bUIDepth = -9998.5f;
+		tDesc.fAutoFrameMul = 1.5f;
+		GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+	}
 
 	return _int();
 

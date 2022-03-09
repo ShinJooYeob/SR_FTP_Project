@@ -43,6 +43,10 @@ HRESULT CScene_StageSelect::Initialize()
 	if (FAILED(Ready_Layer_Object_QrcodeCube(TEXT("Layer_Object_QrcodeCube"))))
 		return E_FAIL;
 
+
+	_float3 TransformPos = _float3(-6.5f, 13.5f, 10.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_BigGreenTree", TEXT("Prototype_GameObject_BigGreenTree"), &TransformPos));
+
 	//FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
 
 
@@ -721,43 +725,23 @@ void CScene_StageSelect::Make_Particle()
 	tDesc.m_bIsUI = false;
 	/*tDesc.vUp = _float3(-1, -1, 0);*/
 	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
-
 	
-	tDesc.eParticleID = Particle_Ball;
-	tDesc.TotalParticleTime = 3600.f;
-	tDesc.EachParticleLifeTime = 5.0f;
-	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
-	tDesc.Particle_Power = 1.5;
-	tDesc.PowerRandomRange = _float2(0.8f, 1.f);
-	tDesc.MaxParticleCount = 40;
-	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
-	tDesc.szTextureLayerTag = TEXT("greenleaf");
-	tDesc.m_bIsTextureAutoFrame = false;
-	//tDesc.FollowingTarget = m_ComTransform;
-	tDesc.FixedTarget = _float3(5, 40, 10);
-	tDesc.MaxBoundary = _float3(100, 100, 100);
-	tDesc.ParticleColorChage = true;
-	tDesc.TargetColor = _float3(85, 153, 94);
-	tDesc.TargetColor2 = _float3(0.f, 182.f, 25.f);
-	tDesc.m_bIsUI = false;
-	/*tDesc.vUp = _float3(-1, -1, 0);*/
-	/*tDesc.ParticleStartRandomPosMin=_float3()*/
-	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
-
+	_float3 temp = ((CTransform*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player))->Get_Component(TAG_COM(Com_Transform))))->Get_MatrixState(CTransform::TransformState::STATE_POS);
+	
 	tDesc.eParticleID = Particle_Cone;
-	tDesc.TotalParticleTime = 3600.f;
+	tDesc.TotalParticleTime = 600.f;
 	tDesc.EachParticleLifeTime = 4.0f;
 	tDesc.ParticleSize = _float3(0.35f, 0.35f, 0.35f);
 	tDesc.Particle_Power = 3.f;
 	tDesc.PowerRandomRange = _float2(0.5f, 1.2f);
-	tDesc.MaxParticleCount = 60;
+	tDesc.MaxParticleCount = 15;
 	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
 	tDesc.szTextureLayerTag = TEXT("greenleaf");
 	tDesc.m_bIsTextureAutoFrame = false;
 	tDesc.fAutoFrameMul = 5.f;
 	tDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player))->Get_Component(TAG_COM(Com_Transform)));
-	/*tDesc.FixedTarget = _float3(-3, 7, 10);*/
-	tDesc.MaxBoundary = _float3(100, 100, 100);
+	tDesc.FixedTarget = _float3(10, 10, 10);
+	tDesc.MaxBoundary = _float3(20, 20, 20);
 	tDesc.ParticleColorChage = true;
 	tDesc.TargetColor = _float3(168, 34, 23);
 	tDesc.TargetColor2 = _float3(0.f, 182.f, 25.f);
@@ -767,6 +751,7 @@ void CScene_StageSelect::Make_Particle()
 	tDesc.vUp = _float3(0, -1, 0);
 	tDesc.MustDraw = true;
 	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
+
 }
 
 

@@ -120,6 +120,7 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 
 			if (m_bIsHide == false)
 			{
+				GetSingle(CGameInstance)->PlaySoundW(TEXT("JW_Cooldown.wav"),CHANNELID::CHANNEL_UI);
 				PARTICLEDESC tDesc;
 				//파티클이 흩날리는 종류 설정
 				tDesc.eParticleID = Particle_Ball;
@@ -220,6 +221,7 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 
 			if(m_bIsHide == false)
 			{
+				GetSingle(CGameInstance)->PlaySoundW(TEXT("JW_Cooldown.wav"), CHANNELID::CHANNEL_UI);
 				PARTICLEDESC tDesc;
 				tDesc.eParticleID = Particle_Ball;
 				tDesc.TotalParticleTime = 0.5f;
