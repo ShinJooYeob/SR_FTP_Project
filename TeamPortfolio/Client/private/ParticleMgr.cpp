@@ -52,7 +52,10 @@ HRESULT CParticleMgr::Create_ParticleObject(_uint eSceneID, PARTICLEDESC tPartic
 		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(eSceneID, TEXT("Layer_Particle"), TEXT("ProtoType_GameObject_Object_particle_Fixed"), &tParticleDesc));
 
 		break;
-		
+	case Client::Particle_Suck:
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(eSceneID, TEXT("Layer_Particle"), TEXT("ProtoType_GameObject_Object_particle_Suck"), &tParticleDesc));
+
+		break;
 
 	default:
 		return E_FAIL;
@@ -110,6 +113,14 @@ HRESULT CParticleMgr::Create_ParticleObject_AddSub(_uint eSceneID, PARTICLEDESC 
 		ParticleObj->Set_SubParticleDesc(&tSubParticleDesc);
 		break;
 
+	case Client::Particle_Suck:
+
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(eSceneID, TEXT("Layer_Particle"), TEXT("ProtoType_GameObject_Object_particle_Suck"), &tParticleDesc));
+
+		ParticleObj = (CParticleObject*)(ParticleList->back());
+		ParticleObj->Set_SubParticleDesc(&tSubParticleDesc);
+
+		break;
 
 	default:
 		return E_FAIL;

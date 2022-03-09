@@ -292,7 +292,9 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_particle_Fixed"), CParticleeObj_Fixed::Create(m_pGraphicDevice))))
 		return E_FAIL;
-	
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_particle_Suck"), CParticleeObj_Suck::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
 
 	if (FAILED(pGameInstance->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI")))
 		return E_FAIL;

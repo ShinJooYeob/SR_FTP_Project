@@ -1158,6 +1158,9 @@ void CParticleeObj_Fixed::Reset_Velocity(_float3 & fAttVlocity)
 
 void CParticleeObj_Fixed::Update_Position_by_Velocity(PARTICLEATT * tParticleAtt, _float fTimeDelta)
 {
+
+
+
 }
 
 void CParticleeObj_Fixed::ResetParticle(PARTICLEATT * attribute)
@@ -1243,6 +1246,146 @@ CGameObject * CParticleeObj_Fixed::Clone(void * pArg)
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
 		MSGBOX("Fail to Create CParticleeObj_Fixed");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
+CParticleeObj_Suck::CParticleeObj_Suck(LPDIRECT3DDEVICE9 pGraphic_Device)
+	:CParticleObject(pGraphic_Device)
+{
+}
+
+CParticleeObj_Suck::CParticleeObj_Suck(const CParticleeObj_Suck & rhs)
+	: CParticleObject(rhs)
+{
+}
+
+void CParticleeObj_Suck::Reset_Velocity(_float3 & fAttVlocity)
+{
+}
+
+void CParticleeObj_Suck::Update_Position_by_Velocity(PARTICLEATT * tParticleAtt, _float fTimeDelta)
+{
+	_float3 TargetPos = {};
+	if (m_ParticleDesc.FollowingTarget == nullptr)
+	{
+		TargetPos = m_ParticleDesc.FixedTarget;
+
+	}
+	else {
+		TargetPos = m_ParticleDesc.FollowingTarget->Get_MatrixState(CTransform::STATE_POS);
+	}
+
+	tParticleAtt->_velocity = (TargetPos - tParticleAtt->_position).Get_Nomalize();
+
+
+	tParticleAtt->_position += tParticleAtt->_velocity * tParticleAtt->_force * fTimeDelta;
+
+	if (TargetPos.Get_Distance(tParticleAtt->_position) < 0.1f)
+		tParticleAtt->_age = tParticleAtt->_lifeTime + 1000.f;
+
+
+}
+
+void CParticleeObj_Suck::ResetParticle(PARTICLEATT * attribute)
+{
+	_float3 RandomPos = _float3(0, 0, 0);
+	GetRandomVector(&RandomPos, &m_ParticleDesc.ParticleStartRandomPosMin, &m_ParticleDesc.ParticleStartRandomPosMax);
+
+	if (m_ParticleDesc.m_bIsUI)
+		RandomPos.z = 0;
+
+	attribute->_position = Get_ParentPos() + RandomPos;
+
+	attribute->_lifeTime = m_ParticleDesc.EachParticleLifeTime * (((_float)(rand() % 1500 + 500))*0.001f);
+	attribute->_age = 0;
+
+
+	attribute->_NowparantPos = m_ComParentTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	attribute->_force = m_ParticleDesc.Particle_Power *
+		((((_float)(rand() % _uint((m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x)*1000.f)) + m_ParticleDesc.PowerRandomRange.x * 1000.f))*0.001f);
+
+}
+
+HRESULT CParticleeObj_Suck::Initialize_Child_Clone()
+{
+	m_list_Particles.clear();
+
+	// 자식 객체 생성
+	PARTICLEATT part;
+
+
+	_float3 RandomPos = _float3(0, 0, 0);
+
+
+	//	part._color = COLOR_BLUE;
+	//	part._colorFade = COLOR_WHITE;
+
+	for (_uint i = 0; i < m_ParticleDesc.MaxParticleCount; i++)
+	{
+		GetRandomVector(&RandomPos, &m_ParticleDesc.ParticleStartRandomPosMin, &m_ParticleDesc.ParticleStartRandomPosMax);
+
+		if (m_ParticleDesc.m_bIsUI)
+			RandomPos.z = 0;
+
+		part._lifeTime = m_ParticleDesc.EachParticleLifeTime * (((_float)(rand() % 1500 + 500))*0.001f);
+		part._age = 0;
+
+		part._position = Get_ParentPos() + RandomPos;
+
+		part._force = m_ParticleDesc.Particle_Power *
+			((((_float)(rand() % _uint((m_ParticleDesc.PowerRandomRange.y - m_ParticleDesc.PowerRandomRange.x)*1000.f)) + m_ParticleDesc.PowerRandomRange.x * 1000.f))*0.001f);
+
+		part._NowparantPos = m_ComParentTransform->Get_MatrixState(CTransform::STATE_POS);
+
+		m_list_Particles.push_front(part);
+	}
+	return S_OK;
+}
+
+_int CParticleeObj_Suck::Update(_float fTimeDelta)
+{
+	if (0 > __super::Update(fTimeDelta))
+		return -1;
+
+	return _int();
+}
+
+_int CParticleeObj_Suck::LateUpdate(_float fTimeDelta)
+{
+
+	if (0 > __super::LateUpdate(fTimeDelta))
+		return -1;
+
+	return _int();
+}
+
+CParticleeObj_Suck * CParticleeObj_Suck::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)
+{
+	CParticleeObj_Suck* pInstance = new CParticleeObj_Suck(pGraphic_Device);
+
+	if (FAILED(pInstance->Initialize_Prototype(pArg)))
+	{
+		MSGBOX("Fail to Create CParticleeObj_Suck");
+		Safe_Release(pInstance);
+
+	}
+	return pInstance;
+}
+
+CGameObject * CParticleeObj_Suck::Clone(void * pArg)
+{
+	CParticleeObj_Suck* pInstance = new CParticleeObj_Suck(*this);
+
+	if (FAILED(pInstance->Initialize_Clone(pArg)))
+	{
+		MSGBOX("Fail to Create CParticleeObj_Suck");
 		Safe_Release(pInstance);
 	}
 

@@ -660,11 +660,11 @@ HRESULT CScene_StageSelect::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 void CScene_StageSelect::Make_Particle()
 {
 	PARTICLEDESC tDesc;
-	tDesc.eParticleID = Particle_Ball;
+	tDesc.eParticleID = Particle_Suck;
 	tDesc.TotalParticleTime = 3600.f;
 	tDesc.EachParticleLifeTime = 1.0f;
 	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
-	tDesc.Particle_Power = 3;
+	tDesc.Particle_Power = 4;
 	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
 	tDesc.MaxParticleCount = 100;
 	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
@@ -676,8 +676,8 @@ void CScene_StageSelect::Make_Particle()
 	tDesc.ParticleColorChage = true;
 	tDesc.TargetColor = _float3(237, 186, 186);
 	tDesc.TargetColor2 = _float3(200.f, 192.f, 231.f);
-	tDesc.ParticleStartRandomPosMin = _float3 (0,0,0);
-	tDesc.ParticleStartRandomPosMax = _float3(0, 0, 0);
+	tDesc.ParticleStartRandomPosMin = _float3 (-10,-10,-10);
+	tDesc.ParticleStartRandomPosMax = _float3(10, 10, 10);
 
 
 	tDesc.m_bIsUI = false;

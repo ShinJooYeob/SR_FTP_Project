@@ -389,4 +389,40 @@ public:
 	virtual CGameObject * Clone(void * pArg) override;
 
 };
+
+
+
+
+///////////Suck 형태 파티클///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+class CParticleeObj_Suck final : public CParticleObject
+{
+private:
+	explicit CParticleeObj_Suck(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CParticleeObj_Suck(const CParticleeObj_Suck& rhs);
+	virtual ~CParticleeObj_Suck() = default;
+
+private:
+
+	virtual void Reset_Velocity(_float3& fAttVlocity)override;
+	virtual void Update_Position_by_Velocity(PARTICLEATT* tParticleAtt, _float fTimeDelta)override;
+	virtual void ResetParticle(PARTICLEATT * attribute)override;
+
+	virtual HRESULT Initialize_Child_Clone() override;
+	//	virtual void ResetParticle(PARTICLEATT* attribute);
+
+	virtual _int Update(_float fTimeDelta)override;
+	virtual _int LateUpdate(_float fTimeDelta)override;
+	// 랜더는 부모 것 사용
+
+
+public:
+
+	static CParticleeObj_Suck* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
+	virtual CGameObject * Clone(void * pArg) override;
+
+};
+
 END

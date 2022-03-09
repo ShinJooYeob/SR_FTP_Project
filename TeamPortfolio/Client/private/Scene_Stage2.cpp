@@ -425,7 +425,7 @@ HRESULT CScene_Stage2::Ready_Layer_Particle(const _tchar * pLayerTag)
 	tSubParticleDesc.MaxParticleCount = 10;
 
 	tSubParticleDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JY_Effect");
-	tSubParticleDesc.szTextureLayerTag = TEXT("Meteo_dust_B");
+	tSubParticleDesc.szTextureLayerTag = TEXT("Meteo_dust_C");
 
 	tSubParticleDesc.m_bIsTextureAutoFrame = true;
 	tSubParticleDesc.fAutoFrameMul = 10.f;

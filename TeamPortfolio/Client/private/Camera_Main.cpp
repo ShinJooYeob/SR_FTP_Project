@@ -784,6 +784,7 @@ HRESULT CCamera_Main::SetUp_Components()
 	m_ParticleDesc.ParticleStartRandomPosMax = _float3(0.f, 0.f, 0.0f);
 	m_ParticleDesc.MustDraw = true;
 	m_ParticleDesc.IsParticleFameEndtoDie = true;
+	m_ParticleDesc.AlphaBlendON = true;
 
 
 

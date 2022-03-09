@@ -24,6 +24,7 @@ enum ParticleID
 	Particle_Fountain,
 	Particle_Spread,
 	Particle_Fixed,
+	Particle_Suck,
 
 	Particle_End
 };
