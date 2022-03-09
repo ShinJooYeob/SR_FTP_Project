@@ -71,6 +71,7 @@ private:	_float			m_fFrame = 0.f;
 			_float			m_fPosX = -40.f;
 			_bool			m_bIsClicked=false;
 			_int			m_iEmpty;
+			_bool			m_bIsHide=true;
 			
 			_float4			m_fCooltime={ 0,0,0,0 };
 public:

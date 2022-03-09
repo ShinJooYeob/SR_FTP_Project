@@ -368,7 +368,10 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_UI_Result_Texture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
-	
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("Parsed.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Parsed"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
 	//////////////////////////////////////////////////////////////////////////
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(m_eSceneID, L"Prototype_Component_VIBuffer_Penguin", pGameInstance->Create_ParsedObject(L"PenguinVertex.txt", L"PenguinIndex.txt")));
@@ -384,7 +387,9 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 	/////////////////////////////////////
 	//if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Penguin"), CParsedObject::Create(m_pGraphicDevice))))
 	//	return E_FAIL;
-
+	
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BigGreenTree"), CParsedObject_BigGreenTree::Create(m_pGraphicDevice))))
+		return E_FAIL;
 	//NPC
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Npc_ivy"), CNpc_ivy::Create(m_pGraphicDevice))))
 		return E_FAIL;
