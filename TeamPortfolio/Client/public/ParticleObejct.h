@@ -89,29 +89,27 @@ struct BoundingBox
 	_float3 RelativeMaxPos;
 };
 
+static float GetRandomFloat(float lowBound, float highBound)
+{
+	if (lowBound >= highBound) // bad input
+		return lowBound;
+	float f = (rand() % 10000) * 0.0001f;
+	return (f * (highBound - lowBound)) + lowBound;
+}
+
+static void GetRandomVector(
+	_float3* out,
+	_float3* min,
+	_float3* max)
+{
+	out->x = GetRandomFloat(min->x, max->x);
+	out->y = GetRandomFloat(min->y, max->y);
+	out->z = GetRandomFloat(min->z, max->z);
+}
+
 // 파티클 오브젝트 하나에 여러개의 오브젝트 정보를 들고 있어야한다.
 class CParticleObject abstract : public CGameObject
 {
-
-public:
-	// 랜던 함수
-	static float GetRandomFloat(float lowBound, float highBound)
-	{
-		if (lowBound >= highBound) // bad input
-			return lowBound;
-		float f = (rand() % 10000) * 0.0001f;
-		return (f * (highBound - lowBound)) + lowBound;
-	}
-
-	static void GetRandomVector(
-		_float3* out,
-		_float3* min,
-		_float3* max)
-	{
-		out->x = GetRandomFloat(min->x, max->x);
-		out->y = GetRandomFloat(min->y, max->y);
-		out->z = GetRandomFloat(min->z, max->z);
-	}
 
 protected:
 	explicit CParticleObject(LPDIRECT3DDEVICE9 pGraphicDevice);

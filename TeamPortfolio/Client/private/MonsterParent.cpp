@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\public\MonsterParent.h"
+#include "Camera_Main.h"
 
 CMonsterParent::CMonsterParent(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CGameObject(pGraphicDevice)
@@ -11,6 +12,7 @@ CMonsterParent::CMonsterParent(LPDIRECT3DDEVICE9 pGraphicDevice)
 	m_Com_Viewport = nullptr;
 	m_Sphere.mCenterPosition = _float2(0, 0);
 	m_Sphere.mRadius = 10.0f;
+	mFrameCount = 0;
 
 }
 
@@ -51,6 +53,7 @@ HRESULT CMonsterParent::Initialize_Clone(void * pArg)
 
 	m_Sphere.mCenterPosition = _float2(0, 0);
 	m_Sphere.mRadius = 30.0f;
+	mFrameCount = 0;
 	return S_OK;
 }
 
@@ -96,7 +99,7 @@ _int CMonsterParent::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(g_fDeltaTime,&mFrameCount)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -124,6 +127,41 @@ HRESULT CMonsterParent::SetPos(_float3 pos)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, pos);
 
 	return S_OK;
+}
+
+_float3 CMonsterParent::Update_CameraPosition(_float z)
+{
+	_Matrix MatView;
+	_float3 CameraPos;
+	
+	auto CameraList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Camera_Main));
+	CCamera* camobj = (CCamera*)CameraList->front();
+	if (camobj == nullptr)return _float3(0,0,0);
+
+	_float3 CamPos = camobj->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_POS);
+	_float3 camLook = camobj->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_LOOK);
+	CamPos += camLook * z;
+
+	return CamPos;
+
+}
+
+_float3 CMonsterParent::Update_CameraPosition(_float3 ObjectPosition, _float z)
+{
+	// objPosition 기준으로 카메라 위치 Z값으로 재설정
+
+	_Matrix MatView;
+	_float3 CameraPos;
+
+	auto CameraList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Camera_Main));
+	CCamera* camobj = (CCamera*)CameraList->front();
+	if (camobj == nullptr)return _float3(0, 0, 0);
+
+	_float3 NewObjectPos = ObjectPosition;
+	_float3 camLook = camobj->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_LOOK);
+	ObjectPosition += camLook * z;
+	
+	return NewObjectPos;
 }
 
 _float3 CMonsterParent::GetScreenToWorld(_float2 screenPos)
@@ -159,8 +197,6 @@ _float3 CMonsterParent::GetScreenToWorld(_float2 screenPos)
 
 	return newPos;
 }
-
-
 
 HRESULT CMonsterParent::SetUp_Components()
 {

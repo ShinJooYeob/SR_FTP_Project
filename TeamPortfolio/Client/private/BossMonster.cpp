@@ -3,6 +3,9 @@
 #include "..\public\BossParttern.h"
 #include "Com_Gun.h"
 #include "Player.h"
+#include "Bullet.h"
+
+#include "ParticleObejct.h"
 
 CBossMonster::CBossMonster(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CMonsterParent(pGraphicDevice)
@@ -22,6 +25,7 @@ HRESULT CBossMonster::Initialize_Prototype(void * pArg)
 	mPlayerTarget = nullptr;
 	mComGun = nullptr;	
 	mCurrentPattern = nullptr;
+	mMainCamera = nullptr;
 
 	mPatternTime = 0;
 	mNextPattern = 0;
@@ -41,8 +45,15 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 
 	m_pGraphicDevice->GetViewport(&mViewPort);
 
+	auto CameraList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Camera_Main));
+	mMainCamera = (CCamera_Main*)CameraList->front();
+	Safe_AddRef(mMainCamera);
+
 	mPatternTime = 0;
 	mNextPattern = 0;
+
+	mMaxHp = 10;
+	mHp = mMaxHp;
 	return S_OK;
 }
 
@@ -66,13 +77,21 @@ _int CBossMonster::Update(_float fDeltaTime)
 
 	}
 	mPatternTime += fDeltaTime;
-	if (mPatternTime < 3)
+	if (mPatternTime < 1)
 		return 0;
+
+	
+
+	_float3 newPos = GetPos();
+
+	newPos = Update_CameraPosition(newPos);
+	SetPos(newPos);
+
 
 	// AI 업데이트
 	// 큐에서 패턴을 하나씩 실행한다.
-	Update_BossPattern(fDeltaTime);
 
+	Update_BossPattern(fDeltaTime);
 	return _int();
 }
 
@@ -81,7 +100,8 @@ _int CBossMonster::LateUpdate(_float fDeltaTime)
 	FAILED_CHECK(__super::LateUpdate(fDeltaTime));
 	if (m_ComRenderer == nullptr)
 		return -1;
-
+	if (mHp <= 0)
+		Die();
 
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
 	m_Sphere.mCenterPosition = m_Com_Viewport->WorldToView(GetPos());
@@ -107,6 +127,17 @@ _int CBossMonster::LateRender()
 
 	return S_OK();
 }
+
+bool CBossMonster::Get_IsTurn() const 
+{
+	return mMainCamera->Get_bIsTuring();
+}
+
+CCamera_Main::CameraLookStateID CBossMonster::Get_CameraLookState()const
+{
+	return mMainCamera->Get_CameraLookState();
+}
+
 
 HRESULT CBossMonster::SetUp_Components()
 {
@@ -143,11 +174,14 @@ HRESULT CBossMonster::CreateObject(_int Damage)
 
 HRESULT CBossMonster::Hit(_int Damage)
 {
+	mHp += Damage;
+
 	return S_OK;
 }
 
 HRESULT CBossMonster::Die()
 {
+	DIED();
 	return S_OK;
 }
 
@@ -181,59 +215,49 @@ void CBossMonster::Update_BossPattern(_float deltatime)
 
 }
 
-HRESULT CBossMonster::Set_TestMovePattern1()
+HRESULT CBossMonster::Set_TestPattern1()
 {
-	CBoss_Action_Move::Action_Move_Desc descMove = {};
-	CBoss_Pattern_Attack::Action_Attack_Desc descAttack = {};
+	float wincx = mViewPort.Width;
+	float wincy = mViewPort.Height;
 
-	descAttack.mMonsterObject = this;
-	descMove.mMonsterObject = this;
+	float LeftPos = wincx * 0.1f;
 
-	descMove.mEndScreenPos = _float2(mViewPort.Width *0.5f, mViewPort.Height * 0.5f);
-	descMove.mTimerMax = 0.3f;
-	descMove.mEasingType = TYPE_Linear;
-	mQueue_Partern.push(new CBoss_Action_Move(descMove));
+	//	Set_MovePattern(_float2(LeftPos, wincy*0.1f), 0.3f, TYPE_QuadIn);
+	//	Set_AttackPattern(1, BULLETTYPE_Dir, 1.0f, _float3(1, 0, 0));
+
+
+	Set_MovePattern(_float2(LeftPos, wincy*0.2f), 0.1f, TYPE_QuadIn);
+
+	Set_AttackPattern(5, BULLETTYPE_CamDir, 0.3f, 6.0f, _float3());
+
+	Set_MovePattern(_float2(LeftPos, wincy*0.5f), 0.3f, TYPE_QuadIn);
+	Set_MovePattern(_float2(LeftPos, wincy*0.1f), 0.3f, TYPE_QuadIn);
+	Set_MovePattern(_float2(LeftPos, wincy*0.6f), 0.3f, TYPE_QuadIn);
+
 	
-	descAttack.mAttackCount = 5;
-	descAttack.meBuelletType = E_BulletType::BULLETTYPE_Dir;
-	descAttack.mTimerMax = 0.3f;
-	mQueue_Partern.push(new CBoss_Pattern_Attack(descAttack));
 
-
-	descMove.mEndScreenPos = _float2(mViewPort.Width *0.3f, mViewPort.Height * 0.5f);
-	descMove.mTimerMax = 0.3f;
-	descMove.mEasingType = TYPE_Linear;
-	mQueue_Partern.push(new CBoss_Action_Move(descMove));
-
-	descMove.mEndScreenPos = _float2(mViewPort.Width *0.7f, mViewPort.Height * 0.5f);
-	descMove.mTimerMax = 0.3f;
-	descMove.mEasingType = TYPE_Linear;
-	mQueue_Partern.push(new CBoss_Action_Move(descMove));
-
-
-	descMove.mEndScreenPos = _float2(mViewPort.Width *0.3f, mViewPort.Height * 0.5f);
-	descMove.mTimerMax = 0.3f;
-	descMove.mEasingType = TYPE_Linear;
-	mQueue_Partern.push(new CBoss_Action_Move(descMove));
-
-	descMove.mEndScreenPos = _float2(mViewPort.Width *0.7f, mViewPort.Height * 0.5f);
-	descMove.mTimerMax = 0.3f;
-	descMove.mEasingType = TYPE_Linear;
-	mQueue_Partern.push(new CBoss_Action_Move(descMove));
 
 	return S_OK;
 }
 
-HRESULT CBossMonster::Set_TestAttackPattern1()
+HRESULT CBossMonster::Set_TestPattern2()
 {
-	//CBoss_Pattern_Attack::Action_Attack_Desc desc = {};
-	//desc.mAttackCount = 5;
-	//desc.mMonsterObject = this;
-	//desc.meBuelletType = E_BulletType::BULLETTYPE_Dir;
-	//desc.mTimerMax = 0.3f;
+	float wincx = mViewPort.Width;
+	float wincy = mViewPort.Height;
 
+	float LeftPos = wincx * 0.1f;
 
-	//mQueue_Partern.push(new CBoss_Pattern_Attack(desc));
+	Set_MovePattern(_float2(LeftPos, wincy*0.5f), 0.5f, TYPE_Linear);
+
+	float randFloat = GetRandomFloat(0.1f, 0.8f);
+
+	for (int i = 0; i < 10; i++)
+	{
+		randFloat = GetRandomFloat(0.1f, 0.8f);
+		Set_MovePattern(_float2(LeftPos, wincy*randFloat), 0.2f, TYPE_Linear);
+		Set_AttackPattern(2, BULLETTYPE_CamDir, 0.5f,4.0f, _float3());
+
+	}
 
 	return S_OK;
 }
@@ -242,42 +266,95 @@ HRESULT CBossMonster::Choose_NextPattern()
 {
 	if (mNextPattern % 2 ==  0)
 	{
-		Set_TestMovePattern1();
+		Set_TestPattern1();
 	}
 	else
 	{
-		Set_TestAttackPattern1();
-
+		Set_TestPattern2();
 	}
 	
 	mNextPattern++;
 	return S_OK;
 }
 
+void CBossMonster::Set_MovePattern(_float2 screenPos,_float time, EasingTypeID id)
+{
+	CBoss_Action_Move::Action_Move_Desc descMove = {};
+
+	descMove.mMonsterObject = this;
+
+	descMove.mEndScreenPos = screenPos;
+	descMove.mTimerMax = time;
+	descMove.mEasingType = id;
+	mQueue_Partern.push(new CBoss_Action_Move(descMove));
+}
+
+void CBossMonster::Set_AttackPattern(_float attackcount, E_BulletType bulletType, _float time,_float speed, _float3 moveidr)
+{
+	CBoss_Pattern_Attack::Action_Attack_Desc descAttack = {};
+
+	descAttack.mMonsterObject = this;
+	descAttack.mCameraMain =  mMainCamera;
+
+	descAttack.mAttackCount = attackcount;
+	descAttack.meBuelletType = bulletType;
+	descAttack.mTimerMax = time;
+	descAttack.mBulletSpeed = speed;
+	descAttack.mDir = moveidr.Get_Nomalize();
+	mQueue_Partern.push(new CBoss_Pattern_Attack(descAttack));
+}
+
 HRESULT CBossMonster::CreateObjectBullet_Target()
 {
 	CTransform* trans = mPlayerTarget->Get_TransformCom();
 	_float3 playerPos = trans->Get_MatrixState(CTransform::STATE_POS);
-	_float3 Position = GetPos();
+	_float3 GunPos = Get_OffsetPos(_float3(0,-1,0));
 
 	_float3 TargetDir = {0,0,0};
 
-	TargetDir = playerPos - Position;
+	TargetDir = playerPos - GunPos;
 	TargetDir = TargetDir.Get_Nomalize();
 	
-	mComGun->CreateBullet_Target(m_eNowSceneNum, Position,TargetDir);
+	mComGun->CreateBullet_Target(m_eNowSceneNum, GunPos,TargetDir);
 
 	return S_OK;
+}
+
+HRESULT CBossMonster::CreateObjectBullet_Target_Dir(_float3 dir,_float speed)
+{
+	_float3 GunPos = Get_OffsetPos(_float3(0, -1, 0));
+
+	mComGun->CreateBullet_Target(m_eNowSceneNum, GunPos, dir, speed);
+
+	return S_OK;
+}
+
+_float3 CBossMonster::Get_OffsetPos(_float3 offset)
+{
+	_float3 newPos = GetPos();
+	newPos += offset;
+	return newPos;
 }
 
 HRESULT CBossMonster::ViewPortHit(CGameObject * hitobj)
 {
 	if (!lstrcmp(hitobj->Get_Layer_Tag(), TAG_LAY(Layer_Bullet)))
 	{
-		// bool a = true;
+		float lifetime = (int)((CBullet*)hitobj)->GetLifeTime();
+		if (lifetime > 2.0f)
+		{
+			if (mMainCamera->Get_bIsTuring())
+				return S_OK;
+			if (
+				mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Left_Axis ||
+				mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Right_Axis
+				)
+				return S_OK;
+
+			((CBullet*)hitobj)->Die();
+			Hit(-1);
+		}
 	}
-
-
 	return S_OK;
 }
 
@@ -320,7 +397,9 @@ void CBossMonster::Free()
 
 	Safe_Release(mPlayerTarget);
 	Safe_Release(mComGun);
-
+	Safe_Release(mMainCamera);
+	
 	__super::Free();
 	
 }
+

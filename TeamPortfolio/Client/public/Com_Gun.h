@@ -21,7 +21,7 @@ private:
 public:
    // #TODO 총알 패턴
 	// 생성시 타겟방향을 설정
-	HRESULT CreateBullet_Target(_uint sceneid, _float3 startPos, _float3 moveidr,_uint count=1);
+	HRESULT CreateBullet_Target(_uint sceneid, _float3 startPos, _float3 moveidr, _float speed=1.f, _uint count=1);
 	HRESULT DestoryBullet_All(_uint sceneid);
 
 

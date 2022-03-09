@@ -21,6 +21,7 @@ public:
 		E_BulletType BulletType;
 		_float3 StartPos;
 		_float3 MoveDir;
+		_float  BulletSpeed;
 
 	}BULLETDESC;
 
@@ -37,14 +38,18 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
+	_float GetLifeTime() { return mBulletLifeTime; }
 
 public:
 	void SetMoveDir(_float3 dir) { mDesc.MoveDir = dir; }
 	void SetBulletType(E_BulletType type) { mDesc.BulletType = type; }
+	void SetBulletSpeed(_float speed);
 
+	virtual HRESULT ViewPortHit(CGameObject* hitobj)override;	
 	virtual HRESULT CreateObject(_int Damage);
 	virtual HRESULT Hit(_int Damage);
 	virtual HRESULT Die();
+
 
 protected:
 	virtual HRESULT SetUp_RenderState() override;
@@ -57,6 +62,7 @@ private:
 	// 총알이 업데이트 되는 타입
 	BULLETDESC mDesc;
 
+	float mBulletLifeTime;
 public:
 
 	static CBullet* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg);

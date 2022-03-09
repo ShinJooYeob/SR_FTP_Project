@@ -89,8 +89,13 @@ public:
 	typedef struct Action_Attack_Desc
 	{
 		_uint mAttackCount; // °ø°Ý È½¼ö
+		_uint mBulletSpeed;
+		_float3 mDir;
 		E_BulletType meBuelletType;
+		
 		class CMonsterParent* mMonsterObject;
+		class CCamera_Main* mCameraMain;
+
 		float mTimerMax;
 	};
 

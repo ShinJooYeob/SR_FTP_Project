@@ -29,9 +29,14 @@ HRESULT CBullet::Initialize_Clone(void * pArg)
 	m_ComTexture->Change_TextureLayer(TEXT("Bullet"));
 
 	if (pArg != nullptr)
+	{
 		memcpy(&mDesc, pArg, sizeof(BULLETDESC));
 
-	__super::SetPos(mDesc.StartPos);
+		mBulletLifeTime = 0;
+		SetBulletSpeed(mDesc.BulletSpeed);
+		SetPos(mDesc.StartPos);
+	}
+		
 	return S_OK;
 }
 
@@ -39,7 +44,8 @@ _int CBullet::Update(_float fDeltaTime)
 {
 	if (FAILED(__super::Update(fDeltaTime)))
 		return E_FAIL;
-	
+	mBulletLifeTime += fDeltaTime;
+
 	switch (mDesc.BulletType)
 	{
 	case BULLETTYPE_Dir:
@@ -107,6 +113,20 @@ HRESULT CBullet::Release_RenderState()
 
 	return S_OK;
 
+}
+
+void CBullet::SetBulletSpeed(_float speed)
+{
+	CTransform::TRANSFORMDESC desc;
+	desc.fMovePerSec = speed;
+	desc.fRotationPerSec = D3DXToRadian(90.0f);
+
+	m_ComTransform->Set_TransformDesc(desc);
+}
+
+HRESULT CBullet::ViewPortHit(CGameObject * hitobj)
+{	
+	return S_OK;
 }
 
 HRESULT CBullet::CreateObject(_int Damage)

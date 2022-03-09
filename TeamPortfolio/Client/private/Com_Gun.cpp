@@ -12,7 +12,7 @@ CCom_Gun::CCom_Gun(const CCom_Gun & rhs)
 {
 }
 
-HRESULT CCom_Gun::CreateBullet_Target(_uint sceneid, _float3 startPos, _float3 moveidr, _uint count)
+HRESULT CCom_Gun::CreateBullet_Target(_uint sceneid, _float3 startPos, _float3 moveidr, _float speed, _uint count)
 {
 
 	for (int i = 0; i < count; i++)
@@ -21,6 +21,7 @@ HRESULT CCom_Gun::CreateBullet_Target(_uint sceneid, _float3 startPos, _float3 m
 		desc.BulletType = BULLETTYPE_Dir;
 		desc.MoveDir = moveidr;
 		desc.StartPos = startPos;
+		desc.BulletSpeed = speed;
 
 		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), &desc));
 	

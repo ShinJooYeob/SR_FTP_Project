@@ -442,8 +442,10 @@ enum MOUSETYPEID
 
 enum E_BulletType
 {
+	BULLETTYPE_PlayerTarget,
 	BULLETTYPE_Dir,
-	BULLETTYPE_Circle,
+	BULLETTYPE_CamDir,
+
 	BULLETTYPE_END,
 
 };
