@@ -38,7 +38,7 @@ private:
 private:
 
 	_Matrix						m_ProjMatrix;
-	class CCamera*				m_MainCamera = nullptr; 
+	class CCamera*				m_MainCamera = nullptr;
 
 
 

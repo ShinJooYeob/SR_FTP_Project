@@ -174,7 +174,15 @@ namespace Engine
 		_float2(float _X, float _Y) { x = _X; y = _Y;};
 
 		/////////////뭘 넣으면 좋을지 모르겟네..
+		_float3 Get_Float3()
+		{
+			return _float3(this->x, this->y, 0);
+		}
 
+		_float Get_Lenth()
+		{
+			return sqrtf(x*x + y * y);
+		}
 	};
 
 	struct tagMyVector4 : public D3DXVECTOR4

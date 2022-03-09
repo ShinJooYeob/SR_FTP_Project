@@ -20,6 +20,7 @@ private:
 	CGameInstance*			m_pGameInstance = nullptr;
 	CRenderer*				m_pComRenderer = nullptr;
 	CCollision*				m_pCollision = nullptr;
+	CCom_CollisionViewPort* m_pCollisionView = nullptr;
 
 private:
 	HRESULT Scene_Change(SCENEID eSceneID);

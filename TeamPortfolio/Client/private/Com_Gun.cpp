@@ -12,30 +12,21 @@ CCom_Gun::CCom_Gun(const CCom_Gun & rhs)
 {
 }
 
-HRESULT CCom_Gun::CreateBullet_Target(_uint sceneid, _uint count)
+HRESULT CCom_Gun::CreateBullet_Target(_uint sceneid, _float3 startPos, _float3 moveidr, _float speed, _uint count)
 {
-	for (int i=0;i<count;i++)
+
+	for (int i = 0; i < count; i++)
 	{
-		GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), nullptr);
+		CBullet::BULLETDESC desc;
+		desc.BulletType = BULLETTYPE_Dir;
+		desc.MoveDir = moveidr;
+		desc.StartPos = startPos;
+		desc.BulletSpeed = speed;
+
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), &desc));
+	
+
 	}
-
-
-	return S_OK;
-}
-
-HRESULT CCom_Gun::Update_Bullet_MoveTarget(_uint sceneid,_float3 targetPos,_float DeltaTime)
-{
-	// 날아가게 설정
-	list<CGameObject*>* bulletList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(sceneid, TAG_LAY(Layer_Bullet));
-	for (auto obj : *bulletList)
-	{
-		CTransform* trans = (CTransform*)obj->Get_Component(TAG_COM(Com_Transform));
-		_float3 curpos = trans->Get_MatrixState(CTransform::STATE_POS);
-		_float3 dir = targetPos - curpos;
-		dir = dir.Get_Nomalize();
-		trans->MovetoTarget(dir, DeltaTime);
-	}
-
 	return S_OK;
 }
 

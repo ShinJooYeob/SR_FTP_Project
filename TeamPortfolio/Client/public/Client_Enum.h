@@ -194,6 +194,7 @@ enum COMPONENTPROTOTYPEID
 	Prototype_Transform,
 	Prototype_Inventory,
 	Prototype_Collision,
+	Prototype_CollisionView,
 	Prototype_Shader_Test,
 	Prototype_Gun,
 	//////////////////////////////////////////////////////////////////////////
@@ -222,6 +223,9 @@ static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 		break;
 	case Prototype_Collision:
 		return TEXT("Prototype_Component_Collision");
+		break;		
+	case Prototype_CollisionView:
+		return TEXT("Prototype_Component_CollisionView");
 		break;
 	case Prototype_Inventory:
 		return TEXT("Prototype_Component_Inventory");
@@ -283,6 +287,7 @@ enum COMPONENTID
 	Com_Transform,
 	Com_Texture,
 	Com_Collision,
+	Com_CollisionView,
 	Com_Inventory,
 	Com_Shader,
 	Com_Gun
@@ -306,6 +311,9 @@ static const _tchar* Tag_Component(COMPONENTID eTag)
 		break;
 	case Com_Collision:
 		return TEXT("Com_Collision");
+		break;
+	case Com_CollisionView:
+		return TEXT("Com_CollisionView");
 		break;
 	case Com_Inventory:
 		return TEXT("Com_Inventory");
@@ -430,4 +438,14 @@ enum MOUSETYPEID
 	MOUSE_CLICK,
 	MOUSE_GRAB,
 	MOUSE_END
+};
+
+enum E_BulletType
+{
+	BULLETTYPE_PlayerTarget,
+	BULLETTYPE_Dir,
+	BULLETTYPE_CamDir,
+
+	BULLETTYPE_END,
+
 };

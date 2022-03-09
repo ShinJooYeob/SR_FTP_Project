@@ -57,6 +57,9 @@ public:
 	HRESULT			Reset_LookAtAxis(void* pArg, CameraLookStateID LookDir = Look_Front_Axis);
 public:
 	_bool	Get_bIsTuring() { return m_IsTurning; };
+	CameraLookStateID	Get_CameraLookState() { return (CameraLookStateID)m_eLoookState; };
+
+	
 
 public:
 	CameraEffectID Get_EffectID() {	return m_eEffectID;}

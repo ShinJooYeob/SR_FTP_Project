@@ -87,6 +87,9 @@ _int CMainApp::Update(_float fDeltaTime)
 
 	}
 
+	// #TODO ViewCollision 검사
+	m_pCollisionView->Update_ViewPortCollision();
+	
 	return 0;
 }
 
@@ -105,6 +108,9 @@ HRESULT CMainApp::Render()
 
 	//콜리전 내부 비워주는중
 	m_pCollision->Collision_Obsever_Release(); 
+
+	// 내부 비움
+	m_pCollisionView->Release_ViewPortCollision();
 
 	return tResult;
 
@@ -228,9 +234,6 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), CTexture::Create(m_pGraphicDevice,&TextureDesc))))
 		return E_FAIL;
 
-
-
-
 	//플레이어 텍스처 생성
 	//Player Texture
 	TextureDesc.szTextFilePath = TEXT("Player.txt");
@@ -274,6 +277,11 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Collision"), m_pCollision = CCollision::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	Safe_AddRef(m_pCollision);
+
+	// 뷰포트용 콜리전 프로토타입 생성
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_CollisionView), m_pCollisionView = CCom_CollisionViewPort::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	Safe_AddRef(m_pCollisionView);
 
 	//버퍼인덱스 큐브 프로토타입 생성
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), CVIBuffer_Cube::Create(m_pGraphicDevice))))
@@ -341,6 +349,7 @@ void CMainApp::Free()
 
 
 	Safe_Release(m_pCollision);
+	Safe_Release(m_pCollisionView);
 	Safe_Release(m_pComRenderer);
 	Safe_Release(m_pGraphicDevice);
 	Safe_Release(m_pGameInstance);

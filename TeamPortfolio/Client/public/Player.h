@@ -37,6 +37,7 @@ public:
 	virtual _int LateRender()override;
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)override;
+	virtual HRESULT ViewPortHit(CGameObject* hitobj)override;
 
 	void Set_PlayerPause(_float TotalPauseTime, const _tchar* TagAnim, _float fFrameTime = 6.0f);
 	virtual HRESULT ReInitialize(void* pArg)override;
@@ -47,6 +48,8 @@ public:
 	_bool Get_CoolDownStart(_int eSKILL) { return m_tCoolDown[eSKILL].m_bCoolDownStart; }
 	void Set_CoolDownStart_False(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = false; }
 	void Set_CoolDownStart_True(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = true; }
+	
+	CTransform* Get_TransformCom() { return m_ComTransform; }
 
 	HRESULT Set_StageEnd(_int IsKindsOfEnd);
 
@@ -63,6 +66,7 @@ private:
 
 	/* 충돌처리 */
 	CCollision*		m_pCollisionCom = nullptr;
+	CCom_CollisionViewPort* m_pCollisionViewCom = nullptr;
 
 private:
 	LOGINDESC				m_LoginDesc;

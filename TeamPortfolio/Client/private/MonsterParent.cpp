@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\public\MonsterParent.h"
+#include "Camera_Main.h"
 
 CMonsterParent::CMonsterParent(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CGameObject(pGraphicDevice)
@@ -8,8 +9,11 @@ CMonsterParent::CMonsterParent(LPDIRECT3DDEVICE9 pGraphicDevice)
 	m_ComRenderer = nullptr;
 	m_ComVIBuffer = nullptr;
 	m_ComTexture = nullptr;
-	m_ComCollision = nullptr;
-//	m_ComShader = nullptr;
+	m_Com_Viewport = nullptr;
+	m_Sphere.mCenterPosition = _float2(0, 0);
+	m_Sphere.mRadius = 10.0f;
+	mFrameCount = 0;
+
 }
 
 CMonsterParent::CMonsterParent(const CMonsterParent& rhs)
@@ -20,14 +24,15 @@ CMonsterParent::CMonsterParent(const CMonsterParent& rhs)
 	m_ComRenderer = rhs.m_ComRenderer;
 	m_ComVIBuffer = rhs.m_ComVIBuffer;
 	m_ComTexture = rhs.m_ComTexture;
-	m_ComCollision = rhs.m_ComCollision;
-//	m_ComShader = rhs.m_ComShader;
+	m_Com_Viewport = rhs.m_Com_Viewport;
+
 
 	Safe_AddRef(m_ComTransform);
 	Safe_AddRef(m_ComRenderer);
 	Safe_AddRef(m_ComVIBuffer);
 	Safe_AddRef(m_ComTexture);
-	Safe_AddRef(m_ComCollision);
+	Safe_AddRef(m_Com_Viewport);
+
 //	Safe_AddRef(m_ComShader);
 }
 
@@ -46,6 +51,9 @@ HRESULT CMonsterParent::Initialize_Clone(void * pArg)
 
 	FAILED_CHECK(SetUp_Components());
 
+	m_Sphere.mCenterPosition = _float2(0, 0);
+	m_Sphere.mRadius = 30.0f;
+	mFrameCount = 0;
 	return S_OK;
 }
 
@@ -60,7 +68,7 @@ _int CMonsterParent::LateUpdate(_float fDeltaTime)
 {
 	FAILED_CHECK(__super::LateUpdate(fDeltaTime));
 
-	
+
 	return _int();
 }
 
@@ -91,7 +99,7 @@ _int CMonsterParent::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture()))
+	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(g_fDeltaTime,&mFrameCount)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -119,6 +127,41 @@ HRESULT CMonsterParent::SetPos(_float3 pos)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, pos);
 
 	return S_OK;
+}
+
+_float3 CMonsterParent::Update_CameraPosition(_float z)
+{
+	_Matrix MatView;
+	_float3 CameraPos;
+	
+	auto CameraList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Camera_Main));
+	CCamera* camobj = (CCamera*)CameraList->front();
+	if (camobj == nullptr)return _float3(0,0,0);
+
+	_float3 CamPos = camobj->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_POS);
+	_float3 camLook = camobj->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_LOOK);
+	CamPos += camLook * z;
+
+	return CamPos;
+
+}
+
+_float3 CMonsterParent::Update_CameraPosition(_float3 ObjectPosition, _float z)
+{
+	// objPosition 기준으로 카메라 위치 Z값으로 재설정
+
+	_Matrix MatView;
+	_float3 CameraPos;
+
+	auto CameraList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Camera_Main));
+	CCamera* camobj = (CCamera*)CameraList->front();
+	if (camobj == nullptr)return _float3(0, 0, 0);
+
+	_float3 NewObjectPos = ObjectPosition;
+	_float3 camLook = camobj->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_LOOK);
+	ObjectPosition += camLook * z;
+	
+	return NewObjectPos;
 }
 
 _float3 CMonsterParent::GetScreenToWorld(_float2 screenPos)
@@ -155,8 +198,6 @@ _float3 CMonsterParent::GetScreenToWorld(_float2 screenPos)
 	return newPos;
 }
 
-
-
 HRESULT CMonsterParent::SetUp_Components()
 {
 
@@ -175,13 +216,11 @@ HRESULT CMonsterParent::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 
-
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_ComCollision)))
-		return E_FAIL;
-
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_Monster), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_CollisionView), TAG_COM(Com_CollisionView), (CComponent**)&m_Com_Viewport)))
+		return E_FAIL;
+	
 	//if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Test), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
 	//	return E_FAIL;
 	
@@ -196,7 +235,9 @@ void CMonsterParent::Free()
 	Safe_Release(m_ComRenderer);
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComTexture);
-	Safe_Release(m_ComCollision);	
+	Safe_Release(m_Com_Viewport);
+
+	
 //	Safe_Release(m_ComShader);
 	__super::Free();
 	

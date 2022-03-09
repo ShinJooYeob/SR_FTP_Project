@@ -9,6 +9,7 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "Collision.h"
+#include "Com_CollisionViewPort.h"
 #include "Inventory.h"
 #include "Shader.h"
 

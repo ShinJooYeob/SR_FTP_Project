@@ -56,6 +56,7 @@ public:
 		float mTimerMax;
 		EasingTypeID mEasingType;
 
+
 	};
 
 private:
@@ -73,9 +74,7 @@ public:
 	virtual void Action(float timeDelta) override;
 
 	static _float3 EaseingFloat3(EasingTypeID id, _float3 StartPos, _float3 EndPos, float curTime, float maxTime);
-
-
-
+	   
 };
 
 
@@ -90,10 +89,14 @@ public:
 	typedef struct Action_Attack_Desc
 	{
 		_uint mAttackCount; // 공격 횟수
-		CCom_Gun::E_BulletType meBuelletType;
-		CCom_Gun * mCom_Gun;
-		float mTimerMax;
+		_uint mBulletSpeed;
+		_float3 mDir;
+		E_BulletType meBuelletType;
+		
+		class CMonsterParent* mMonsterObject;
+		class CCamera_Main* mCameraMain;
 
+		float mTimerMax;
 	};
 
 private:
@@ -108,16 +111,12 @@ public:
 	virtual bool InitAction()override;
 	// Pattern을(를) 통해 상속됨
 	virtual void Action(float timeDelta) override;
-
 };
+
 
 // 회전 패턴
 
-
 // 날아가는 패턴
-
-
-
 
 // 그로기
 class CBoss_Pattern_Groggy : public IAction

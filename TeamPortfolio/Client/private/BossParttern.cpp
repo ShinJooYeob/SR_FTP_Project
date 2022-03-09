@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\public\BossParttern.h"
 #include "..\public\BossMonster.h"
+#include "Camera_Main.h"
 
 
 _float3 CBoss_Action_Move::EaseingFloat3(EasingTypeID id, _float3 StartPos, _float3 EndPos, float curTime, float maxTime)
@@ -70,8 +71,8 @@ bool CBoss_Pattern_Attack::InitAction()
 	if (__super::InitAction() == false)
 		return false;
 
-	if (mDesc.mCom_Gun == nullptr)
-		return false;
+		if (mDesc.mMonsterObject == nullptr)
+			return false;
 
 	mCurrentTimer = 0;
 	mCurrentAttackCount = 0;
@@ -86,13 +87,36 @@ void CBoss_Pattern_Attack::Action(float timeDelta)
 		return;
 
 	// 공격 횟수만큼 ID로 총알을 쏜다.
+	if (mCurrentAttackCount >= mDesc.mAttackCount)
+	{
+		m_isActionEnd = true;
+		return;
+	}
+
 
 	mCurrentTimer += timeDelta;
-
 	if (mCurrentTimer >= mDesc.mTimerMax)
 	{
 		mCurrentTimer = 0;
 		mCurrentAttackCount++;
+
+		// 타입에 따른 총알 생성 + 업데이트
+		switch ( mDesc.meBuelletType)
+		{
+		case BULLETTYPE_PlayerTarget:
+			((CBossMonster*)mDesc.mMonsterObject)->CreateObjectBullet_Target();
+
+			break;
+		case BULLETTYPE_Dir:
+			((CBossMonster*)mDesc.mMonsterObject)->CreateObjectBullet_Target_Dir(mDesc.mDir);
+			break;
+
+		case BULLETTYPE_CamDir:
+			mDesc.mDir = mDesc.mCameraMain->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_RIGHT);
+			((CBossMonster*)mDesc.mMonsterObject)->CreateObjectBullet_Target_Dir(mDesc.mDir, mDesc.mBulletSpeed);
+		default:
+			break;
+		}
 	}
 
 
