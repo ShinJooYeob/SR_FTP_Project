@@ -91,22 +91,50 @@ _int CTerrainCube::Render()
 	if (nullptr == m_ComVIBuffer || m_ComTransform == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-		return E_FAIL;
+	// if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+	// 	return E_FAIL;
+	// 
+	// if (FAILED(m_ComTexture->Bind_Texture(1)))
+	// 	return E_FAIL;
+	// 
+	// if (FAILED(SetUp_RenderState()))
+	// 	return E_FAIL;
+	// 
+	// if (FAILED(m_ComVIBuffer->Render()))
+	// 	return E_FAIL;
+	// 
+	// if (FAILED(Release_RenderState()))
+	// 	return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture(1)))
-		return E_FAIL;
 
-	if (FAILED(SetUp_RenderState()))
-		return E_FAIL;
+	// ¼ÎÀÌ´õ ·»´õ¸µ
 
-	if (FAILED(m_ComVIBuffer->Render()))
-		return E_FAIL;
+	_Matrix		WorldMatrix, ViewMatrix, ProjMatrix;
+	_Matrix		ViewMatrixInverse;
 
-	if (FAILED(Release_RenderState()))
-		return E_FAIL;
+	WorldMatrix = m_ComTransform->Get_WorldMatrix();
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &ViewMatrix);
+	m_pGraphicDevice->GetTransform(D3DTS_PROJECTION, &ProjMatrix);
+
+	D3DXMatrixInverse(&ViewMatrixInverse, nullptr, &ViewMatrix);
+
+	m_ComShader->SetUp_ValueOnShader("g_WorldMatrix", D3DXMatrixTranspose(&WorldMatrix, &WorldMatrix), sizeof(_Matrix));
+	m_ComShader->SetUp_ValueOnShader("g_ViewMatrix", D3DXMatrixTranspose(&ViewMatrix, &ViewMatrix), sizeof(_Matrix));
+	m_ComShader->SetUp_ValueOnShader("g_ProjMatrix", D3DXMatrixTranspose(&ProjMatrix, &ProjMatrix), sizeof(_Matrix));
+	m_ComTexture->Bind_OnShader(m_ComShader, "g_TextureCUBE", 1);
+
+	m_ComShader->SetUp_ValueOnShader("g_vCamPosition", &ViewMatrixInverse.m[3][0], sizeof(_float4));
 
 
+
+
+	FAILED_CHECK(m_ComShader->Begin_Shader(1));
+	FAILED_CHECK(m_ComVIBuffer->Render());
+	FAILED_CHECK(m_ComShader->End_Shader());
+
+
+
+	
 
 	return _int();
 }
@@ -148,6 +176,9 @@ HRESULT CTerrainCube::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_pCollisionCom)))
 		return E_FAIL;
 
+
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Cube), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -223,10 +254,12 @@ void CTerrainCube::Free()
 	__super::Free();
 
 	Safe_Release(m_PlayerTransform);
+	Safe_Release(m_ComShader);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComColiisionBuffer);
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComRenderer);
+	
 }

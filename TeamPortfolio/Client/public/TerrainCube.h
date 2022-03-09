@@ -41,6 +41,7 @@ private:
 	CTransform*			m_ComTransform = nullptr;
 	CRenderer*			m_ComRenderer = nullptr;
 	CTexture*			m_ComTexture = nullptr;
+	CShader*			m_ComShader = nullptr;
 
 	/* 충돌처리 */
 	CCollision*		m_pCollisionCom = nullptr;
@@ -48,6 +49,7 @@ private:
 
 	CTransform*			m_PlayerTransform = nullptr;
 	_bool				m_bIsArticle = false;
+
 
 public:
 	static CTerrainCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

@@ -303,7 +303,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 #pragma endregion
 
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 99999999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -491,7 +491,7 @@ HRESULT CLoader::Load_Scene_Stage1(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 999999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -561,7 +561,7 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 999999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -725,7 +725,7 @@ HRESULT CLoader::Load_Scene_Stage_Boss(_bool * _IsClientQuit, CRITICAL_SECTION *
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 9999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -879,7 +879,7 @@ HRESULT CLoader::Load_Scene_TUTORIAL(_bool * _IsClientQuit, CRITICAL_SECTION * _
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 999999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 

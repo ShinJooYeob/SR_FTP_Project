@@ -925,6 +925,12 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Test3.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_TerrainCube.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
     <FxCompile Include="..\bin\ShaderFiles\Shader_Test.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
