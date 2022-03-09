@@ -216,6 +216,7 @@
     <ClInclude Include="..\public\Scene_Tutorial.h" />
     <ClInclude Include="..\public\UI_Start.h" />
     <ClInclude Include="..\public\UI_BossStageEntryUI.h" />
+    <ClInclude Include="..\public\UI_BossStatusUI.h" />
     <ClInclude Include="..\public\UI_Status.h" />
     <ClInclude Include="..\public\PauseUI.h" />
     <ClInclude Include="..\public\LobyScroll.h" />
@@ -314,6 +315,7 @@
     <ClCompile Include="..\private\Scene_Tutorial.cpp" />
     <ClCompile Include="..\private\UI_Start.cpp" />
     <ClCompile Include="..\private\UI_BossStageEntryUI.cpp" />
+    <ClCompile Include="..\private\UI_BossStatusUI.cpp" />
     <ClCompile Include="..\private\UI_Status.cpp" />
     <ClCompile Include="..\private\PauseUI.cpp" />
     <ClCompile Include="..\private\LobyScroll.cpp" />

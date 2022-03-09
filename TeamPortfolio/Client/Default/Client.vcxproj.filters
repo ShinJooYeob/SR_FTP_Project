@@ -319,6 +319,9 @@
     <Filter Include="01.GameObject\MonsterObject\Boss\1.Boss">
       <UniqueIdentifier>{a5eac6d6-e36f-4bfb-96b3-a3d50c8446ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\UI_BossStatusUI">
+      <UniqueIdentifier>{f11b516a-ecb4-4871-bb33-11808a3c5736}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -618,6 +621,9 @@
     <ClInclude Include="..\public\Com_Gun.h">
       <Filter>01.GameObject\MonsterObject\Boss\3.GunCom</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_BossStatusUI.h">
+      <Filter>01.GameObject\UI\UI_BossStatusUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -904,6 +910,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Com_Gun.cpp">
       <Filter>01.GameObject\MonsterObject\Boss\3.GunCom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_BossStatusUI.cpp">
+      <Filter>01.GameObject\UI\UI_BossStatusUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

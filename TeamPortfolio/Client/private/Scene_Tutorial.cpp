@@ -106,8 +106,8 @@ HRESULT CScene_Tutorial::Initialize()
 	//TransformPos = _float3(4.f, 0.f, 0.f);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_BigOwlHead", TEXT("Prototype_GameObject_BigOwlHead"), &TransformPos));
 
-	//TransformPos = _float3(4.f, 0.f, 0.f);
-	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
+	TransformPos = _float3(4.f, 0.f, 0.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
 
 	//TransformPos = _float3(4.f, 0.f, 0.f);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_LightHouse", TEXT("Prototype_GameObject_LightHouse"), &TransformPos));
