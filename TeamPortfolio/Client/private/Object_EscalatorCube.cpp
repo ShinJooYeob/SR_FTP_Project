@@ -206,7 +206,7 @@ void CObject_EscalatorCube::Set_Particle()
 	tDesc.TotalParticleTime = 0.f;
 
 	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
-	tDesc.EachParticleLifeTime = 30.f;
+	tDesc.EachParticleLifeTime = 2.7f;
 
 	//파티클의 사이즈를 설정
 	tDesc.ParticleSize = _float3(1.f, 1.f, 1.f);
@@ -244,8 +244,8 @@ void CObject_EscalatorCube::Set_Particle()
 	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
 	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
 	tDesc.ParticleColorChage = true;
-	tDesc.TargetColor = _float3(43.f, 240.f, 201.f);
-	tDesc.TargetColor2 = _float3(89.f, 67.f, 216.f);
+	tDesc.TargetColor = _float3(241, 181, 241);
+	tDesc.TargetColor2 = _float3(200.f, 191.f, 231.f);
 
 
 	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
@@ -285,7 +285,7 @@ void CObject_EscalatorCube::Return_Particle()
 	tDesc.TotalParticleTime = 0.f;
 
 	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
-	tDesc.EachParticleLifeTime = 30.f;
+	tDesc.EachParticleLifeTime = 2.7f;
 
 	//파티클의 사이즈를 설정
 	tDesc.ParticleSize = _float3(1.f, 1.f, 1.f);
@@ -323,8 +323,8 @@ void CObject_EscalatorCube::Return_Particle()
 	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
 	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
 	tDesc.ParticleColorChage = true;
-	tDesc.TargetColor = _float3(250.f, 211.f, 33.f);
-	tDesc.TargetColor2 = _float3(244.f, 67.f, 216.f);
+	tDesc.TargetColor = _float3(176.f, 249.f, 174.f);
+	tDesc.TargetColor2 = _float3(240.f, 206.f, 183.f);
 
 
 	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것

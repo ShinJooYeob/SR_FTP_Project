@@ -533,7 +533,7 @@ HRESULT CPlayer::SetUp_ParticleDesc()
 	m_ArrParticleDesc[0].eParticleID = Particle_Fixed;
 	m_ArrParticleDesc[0].TotalParticleTime = 0.f;
 	m_ArrParticleDesc[0].EachParticleLifeTime = 1000.f;
-	m_ArrParticleDesc[0].ParticleSize = _float3(1.0f, 0.5f, 1.0f);
+	m_ArrParticleDesc[0].ParticleSize = _float3(1.5f, 0.75f, 1.5f);
 	m_ArrParticleDesc[0].Particle_Power = 1;
 	m_ArrParticleDesc[0].PowerRandomRange = _float2(0.9f, 1.1f);
 	m_ArrParticleDesc[0].MaxParticleCount = 1;
@@ -556,7 +556,7 @@ HRESULT CPlayer::SetUp_ParticleDesc()
 	m_ArrParticleDesc[1].eParticleID = Particle_Fixed;
 	m_ArrParticleDesc[1].TotalParticleTime = 0.f;
 	m_ArrParticleDesc[1].EachParticleLifeTime = 1000.f;
-	m_ArrParticleDesc[1].ParticleSize = _float3(1.5f, 0.7f, 1.5f);
+	m_ArrParticleDesc[1].ParticleSize = _float3(2.25f, 1.05f, 2.25f);
 	m_ArrParticleDesc[1].Particle_Power = 1;
 	m_ArrParticleDesc[1].PowerRandomRange = _float2(0.9f, 1.1f);
 	m_ArrParticleDesc[1].MaxParticleCount = 1;
@@ -603,7 +603,7 @@ HRESULT CPlayer::SetUp_ParticleDesc()
 	m_ArrParticleDesc[3].eParticleID = Particle_Fixed;
 	m_ArrParticleDesc[3].TotalParticleTime = 0.f;
 	m_ArrParticleDesc[3].EachParticleLifeTime = 0.8f;
-	m_ArrParticleDesc[3].ParticleSize = _float3(1.0f, 1.5f, 1.0f);
+	m_ArrParticleDesc[3].ParticleSize = _float3(1.5f, 2.25f, 1.5f);
 	m_ArrParticleDesc[3].Particle_Power = 1;
 	m_ArrParticleDesc[3].PowerRandomRange = _float2(0.9f, 1.1f);
 	m_ArrParticleDesc[3].MaxParticleCount = 1;
