@@ -32,6 +32,8 @@ public:
 public:
 	HRESULT CreateObjectBullet_Target();
 
+	virtual HRESULT ViewPortHit(CGameObject* hitobj)override;
+
 protected:
 	virtual HRESULT SetUp_Components();
 	virtual HRESULT SetUp_RenderState()override;

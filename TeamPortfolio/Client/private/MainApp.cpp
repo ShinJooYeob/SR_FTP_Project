@@ -234,9 +234,6 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), CTexture::Create(m_pGraphicDevice,&TextureDesc))))
 		return E_FAIL;
 
-
-
-
 	//플레이어 텍스처 생성
 	//Player Texture
 	TextureDesc.szTextFilePath = TEXT("Player.txt");
@@ -282,7 +279,7 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	Safe_AddRef(m_pCollision);
 
 	// 뷰포트용 콜리전 프로토타입 생성
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Collision"), m_pCollisionView = CCom_CollisionViewPort::Create(m_pGraphicDevice))))
+	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_CollisionView), m_pCollisionView = CCom_CollisionViewPort::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	Safe_AddRef(m_pCollisionView);
 

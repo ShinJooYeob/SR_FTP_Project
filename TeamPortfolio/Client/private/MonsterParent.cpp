@@ -62,7 +62,7 @@ _int CMonsterParent::LateUpdate(_float fDeltaTime)
 {
 	FAILED_CHECK(__super::LateUpdate(fDeltaTime));
 
-	
+
 	return _int();
 }
 
@@ -179,7 +179,9 @@ HRESULT CMonsterParent::SetUp_Components()
 
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_Monster), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_CollisionView), TAG_COM(Com_CollisionView), (CComponent**)&m_Com_Viewport)))
+		return E_FAIL;
+	
 	//if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Test), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
 	//	return E_FAIL;
 	

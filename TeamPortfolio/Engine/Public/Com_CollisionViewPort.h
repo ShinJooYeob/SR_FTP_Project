@@ -32,6 +32,7 @@ public:
 	HRESULT AddCollisionView(COLLISION_VIEW_TYPE type, CGameObject* object);
 
 	// 월드 -> view 좌표
+	_float2 WorldToView(_float3 pos);
 
 	// 충돌 체크
 	void Update_ViewPortCollision();

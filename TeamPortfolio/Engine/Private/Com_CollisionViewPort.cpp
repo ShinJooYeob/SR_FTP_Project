@@ -44,6 +44,29 @@ HRESULT CCom_CollisionViewPort::AddCollisionView(COLLISION_VIEW_TYPE type, CGame
 	return S_OK;
 }
 
+_float2 CCom_CollisionViewPort::WorldToView(_float3 worldPos)
+{
+	// 월드 -> 뷰 -> 투영 -> 뷰포트
+	_Matrix ViewMatrix;
+	_Matrix ProjMatrix;
+	_float3 WorldPos = worldPos;
+
+	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &ViewMatrix);
+	m_pGraphicDevice->GetTransform(D3DTS_PROJECTION, &ProjMatrix);
+	D3DXVec3TransformCoord(&WorldPos, &WorldPos, &ViewMatrix);
+	D3DXVec3TransformCoord(&WorldPos, &WorldPos, &ProjMatrix);
+	
+	D3DVIEWPORT9	ViewPortDesc;
+	m_pGraphicDevice->GetViewport(&ViewPortDesc);
+	
+	// -1 ~ 1 = 0 ~ 1280
+	WorldPos.x = (WorldPos.x + 1) * (ViewPortDesc.Width  * 0.5f);
+	WorldPos.y = (1- WorldPos.y ) * (ViewPortDesc.Height * 0.5f);
+
+	_float2 newPos = _float2(WorldPos.x, worldPos.y);
+	return newPos;
+}
+
 void CCom_CollisionViewPort::Update_ViewPortCollision()
 {
 	// 좌표 업데이트
@@ -61,15 +84,6 @@ void CCom_CollisionViewPort::Update_ViewPortCollision()
 			}
 		}
 	}
-	
-
-	// MYSPHERE s;
-
-	// 1. 뷰포트 좌표로 변경
-
-	// 2. 뷰포트 좌표에서 충돌검사
-
-	// 3. 충돌시 함수 실행
 }
 
 void CCom_CollisionViewPort::Release_ViewPortCollision()

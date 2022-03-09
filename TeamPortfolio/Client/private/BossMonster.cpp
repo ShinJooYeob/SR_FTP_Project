@@ -56,7 +56,7 @@ _int CBossMonster::Update(_float fDeltaTime)
 		// 위치 초기화
 		CTransform* trans = (CTransform*)mPlayerTarget->Get_Component(TAG_COM(Com_Transform));
 		_float3 playerPos = trans->Get_MatrixState(CTransform::STATE_POS);
-		playerPos.y += 1;
+	//	playerPos.y += 1;
 
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, playerPos);
 
@@ -78,7 +78,11 @@ _int CBossMonster::LateUpdate(_float fDeltaTime)
 	if (m_ComRenderer == nullptr)
 		return -1;
 
+
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
+	m_Com_Viewport->WorldToView(GetPos());
+
+	m_Com_Viewport->AddCollisionView(CCom_CollisionViewPort::COLL_MONSTER, this);
 
 	return _int();
 }
@@ -177,14 +181,14 @@ HRESULT CBossMonster::Set_TestMovePattern1()
 	CBoss_Action_Move::Action_Move_Desc desc = {};
 
 	desc.mMonsterObject = this;
-	desc.mEndScreenPos = _float2(200, 720 * 0.2f);
+	desc.mEndScreenPos = _float2(1280*0.5f, 720*0.5f);
 	desc.mTimerMax = 0.5f;
 	desc.mEasingType = TYPE_Linear;
 	mQueue_Partern.push(new CBoss_Action_Move(desc));
 
 
 	desc.mMonsterObject = this;
-	desc.mEndScreenPos = _float2(1080, 720*0.2f);
+	desc.mEndScreenPos = _float2(1280 * 0.5f, 720 * 0.5f);
 	desc.mTimerMax = 0.5f;
 	desc.mEasingType = TYPE_Linear;
 	mQueue_Partern.push(new CBoss_Action_Move(desc));
@@ -242,6 +246,15 @@ HRESULT CBossMonster::CreateObjectBullet_Target()
 
 	mComGun->CreateBullet_Target(m_eNowSceneNum, Position,TargetDir);
 
+	return S_OK;
+}
+
+HRESULT CBossMonster::ViewPortHit(CGameObject * hitobj)
+{
+	if (!lstrcmp(hitobj->Get_Layer_Tag(), TAG_LAY(Layer_Bullet)))
+	{
+		bool a = true;
+	}
 	return S_OK;
 }
 

@@ -55,6 +55,8 @@ protected:
 	CRenderer*	 m_ComRenderer;
 	CVIBuffer*	 m_ComVIBuffer;
 	CTexture*	 m_ComTexture;
+	
+	CCom_CollisionViewPort* m_Com_Viewport;
 
 	// ºŒ¿Ã¥ı √ﬂ∞°
 	// CShader*	 m_ComShader;
