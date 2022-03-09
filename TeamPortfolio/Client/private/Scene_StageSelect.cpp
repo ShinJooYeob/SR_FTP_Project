@@ -44,8 +44,8 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 
 
-	_float3 TransformPos = _float3(-6.5f, 13.5f, 10.f);
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_BigGreenTree", TEXT("Prototype_GameObject_BigGreenTree"), &TransformPos));
+	/*_float3 TransformPos = _float3(-6.5f, 13.5f, 10.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_BigGreenTree", TEXT("Prototype_GameObject_BigGreenTree"), &TransformPos));*/
 
 	//FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
 

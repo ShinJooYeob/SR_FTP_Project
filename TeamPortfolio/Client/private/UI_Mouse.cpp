@@ -148,7 +148,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		tDesc.TotalParticleTime = 0.5f;
 		tDesc.EachParticleLifeTime = 0.5f;
 		tDesc.ParticleSize = _float3(45.f, 45.f, 45.f);
-		tDesc.Particle_Power = 0.0001f;
+		tDesc.Particle_Power = 0.00001f;
 		tDesc.PowerRandomRange = _float2(1.f, 1.f);
 		tDesc.MaxParticleCount = 1;
 		tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
