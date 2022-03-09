@@ -42,13 +42,15 @@ public:
 	void SetMoveDir(_float3 dir) { mDesc.MoveDir = dir; }
 	void SetBulletType(E_BulletType type) { mDesc.BulletType = type; }
 
+	virtual HRESULT CreateObject(_int Damage);
+	virtual HRESULT Hit(_int Damage);
+	virtual HRESULT Die();
+
 protected:
 	virtual HRESULT SetUp_RenderState() override;
 	virtual HRESULT Release_RenderState() override;
 
-	virtual HRESULT CreateObject(_int Damage);
-	virtual HRESULT Hit(_int Damage);
-	virtual HRESULT Die();
+
 
 
 private:

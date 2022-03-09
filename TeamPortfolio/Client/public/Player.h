@@ -48,7 +48,8 @@ public:
 	_bool Get_CoolDownStart(_int eSKILL) { return m_tCoolDown[eSKILL].m_bCoolDownStart; }
 	void Set_CoolDownStart_False(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = false; }
 	void Set_CoolDownStart_True(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = true; }
-
+	
+	CTransform* Get_TransformCom() { return m_ComTransform; }
 
 	HRESULT Set_StageEnd(_int IsKindsOfEnd);
 

@@ -30,6 +30,7 @@ private:
 
 public:
 	HRESULT AddCollisionView(COLLISION_VIEW_TYPE type, CGameObject* object);
+	_bool isScreenOutPos(_float2 Pos, _float offset);
 
 	// ¿ùµå -> view ÁÂÇ¥
 	_float2 WorldToView(_float3 pos);
@@ -39,6 +40,8 @@ public:
 	void Release_ViewPortCollision();
 
 private:
+	D3DVIEWPORT9	mViewPortDesc;
+
 	list<CGameObject*>				m_List_CollisionViewObjects[COLL_END];
 	typedef list<CGameObject*>		COLLISIONOBJECTS;
 

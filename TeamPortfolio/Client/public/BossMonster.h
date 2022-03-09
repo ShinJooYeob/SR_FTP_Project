@@ -16,6 +16,12 @@ BEGIN(Client)
 // 보스 몬스터 
 class CBossMonster final : public CMonsterParent
 {
+public:
+	//enum PatternID
+	//{
+	//	PATTERN_MOVE, PATTERN_ATTACK, PATTERN_END
+
+	//};
 protected:
 	explicit CBossMonster(LPDIRECT3DDEVICE9	pGraphicDevice);
 	explicit CBossMonster(const CBossMonster& rhs);
@@ -34,14 +40,16 @@ public:
 
 	virtual HRESULT ViewPortHit(CGameObject* hitobj)override;
 
+
+	virtual HRESULT CreateObject(_int Damage);
+	virtual HRESULT Hit(_int Damage);
+	virtual HRESULT Die();
+
 protected:
 	virtual HRESULT SetUp_Components();
 	virtual HRESULT SetUp_RenderState()override;
 	virtual HRESULT Release_RenderState()override;
-	
-	virtual HRESULT CreateObject(_int Damage);
-	virtual HRESULT Hit(_int Damage);
-	virtual HRESULT Die();
+
 
 private:
 	void Update_BossPattern(_float deltatime);
@@ -51,19 +59,25 @@ private:
 	HRESULT Set_TestAttackPattern1();
 	HRESULT Choose_NextPattern();
 
+private:
+	float	mPatternTime;
+	int		mNextPattern;
+
+
 protected:
-	CGameObject*	mPlayerTarget;
-	int				mNextPattern;
+	CPlayer*	mPlayerTarget;
 
 	// 총알 담당 컴포넌트
 	// 총 컴포넌트를 참조해서 총알 패턴 구현
 	class CCom_Gun*			mComGun;
 
-	// 패턴 / 총알 잘 나오는지 보고
-	class IAction* mCurrentPattern;
-	queue<class IAction*> mQueue_Partern;
+	class IAction*			mCurrentPattern;
+	queue<class IAction*>	mQueue_Partern;
 
-	float mPatternTime;
+	D3DVIEWPORT9			mViewPort;
+
+	
+
 
 public:
 	static CBossMonster* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

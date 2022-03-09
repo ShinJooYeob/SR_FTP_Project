@@ -63,6 +63,11 @@ _int CBullet::LateUpdate(_float fDeltaTime)
 	m_Sphere.mCenterPosition = m_Com_Viewport->WorldToView(GetPos());
 	m_Com_Viewport->AddCollisionView(CCom_CollisionViewPort::COLL_BULLET,this);
 
+	// 화면밖이면 죽음
+	if (m_Com_Viewport->isScreenOutPos(m_Sphere.mCenterPosition,m_Sphere.mRadius))
+	{
+		Die();
+	}
 	return _int();
 }
 
@@ -116,6 +121,8 @@ HRESULT CBullet::Hit(_int Damage)
 
 HRESULT CBullet::Die()
 {
+	DIED();
+
 	return S_OK;
 }
 

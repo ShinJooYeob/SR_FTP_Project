@@ -56,6 +56,7 @@ public:
 		float mTimerMax;
 		EasingTypeID mEasingType;
 
+
 	};
 
 private:

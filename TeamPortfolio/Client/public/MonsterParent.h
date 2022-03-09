@@ -37,6 +37,11 @@ public: // For. ObjectFunc
 	HRESULT MoveDir(_float3 Dir, _float Timer){	m_ComTransform->MovetoDir(Dir, Timer);}
 	_float3 GetScreenToWorld(_float2 screenPos);
 
+	// 생성 피격 죽음 연출 개별 설정
+	virtual HRESULT CreateObject(_int Damage)PURE;
+	virtual HRESULT Hit(_int Damage)PURE;
+	virtual HRESULT Die()PURE;
+
 protected:
 	// 컴포넌트 초기화
 	// 몬스터들은 동일한 컴포넌트 사용.
@@ -44,10 +49,7 @@ protected:
 	virtual HRESULT SetUp_RenderState()PURE;
 	virtual HRESULT Release_RenderState()PURE;
 
-	// 생성 피격 죽음 연출 개별 설정
-	virtual HRESULT CreateObject(_int Damage)PURE;
-	virtual HRESULT Hit(_int Damage)PURE;
-	virtual HRESULT Die()PURE;
+
 
 protected:
 	// Components

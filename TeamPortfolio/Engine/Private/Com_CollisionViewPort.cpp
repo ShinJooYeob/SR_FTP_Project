@@ -15,6 +15,8 @@ CCom_CollisionViewPort::CCom_CollisionViewPort(const CCom_CollisionViewPort & rh
 
 HRESULT CCom_CollisionViewPort::Initialize_Prototype(void * pArg)
 {
+	m_pGraphicDevice->GetViewport(&mViewPortDesc);
+
 	return S_OK;
 }
 
@@ -51,6 +53,27 @@ HRESULT CCom_CollisionViewPort::AddCollisionView(COLLISION_VIEW_TYPE type, CGame
 	return S_OK;
 }
 
+_bool CCom_CollisionViewPort::isScreenOutPos(_float2 Pos, _float offset)
+{
+
+	float WINCX = mViewPortDesc.Width;
+	float WINCY = mViewPortDesc.Height;
+
+	if (Pos.x < 0-offset || 
+		Pos.x > WINCX+offset)
+	{
+		return true;
+	}
+
+	if (Pos.y < 0 - offset ||
+		Pos.y > WINCY + offset)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 _float2 CCom_CollisionViewPort::WorldToView(_float3 worldPos)
 {
 	// ¿ùµå -> ºä -> Åõ¿µ -> ºäÆ÷Æ®
@@ -63,12 +86,11 @@ _float2 CCom_CollisionViewPort::WorldToView(_float3 worldPos)
 	D3DXVec3TransformCoord(&WorldPos, &WorldPos, &ViewMatrix);
 	D3DXVec3TransformCoord(&WorldPos, &WorldPos, &ProjMatrix);
 	
-	D3DVIEWPORT9	ViewPortDesc;
-	m_pGraphicDevice->GetViewport(&ViewPortDesc);
+
 	
 	// -1 ~ 1 = 0 ~ 1280
-	WorldPos.x = (WorldPos.x + 1) * (ViewPortDesc.Width  * 0.5f);
-	WorldPos.y = (1- WorldPos.y ) * (ViewPortDesc.Height * 0.5f);
+	WorldPos.x = (WorldPos.x + 1) * (mViewPortDesc.Width  * 0.5f);
+	WorldPos.y = (1- WorldPos.y ) * (mViewPortDesc.Height * 0.5f);
 
 	_float2 newPos = _float2(WorldPos.x, WorldPos.y);
 	return newPos;

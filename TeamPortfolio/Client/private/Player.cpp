@@ -2,6 +2,7 @@
 #include "..\public\Player.h"
 #include "Camera_Main.h"
 #include "UI_Result.h"
+#include "MonsterParent.h"
 
 
 
@@ -328,7 +329,7 @@ HRESULT CPlayer::ViewPortHit(CGameObject * hitobj)
 			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
 			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT, g_fDeltaTime);
 		}
-
+		((CMonsterParent*)hitobj)->Die();
 	}
 	return S_OK;
 }

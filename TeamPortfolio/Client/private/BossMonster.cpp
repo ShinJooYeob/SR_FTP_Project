@@ -2,6 +2,7 @@
 #include "..\public\BossMonster.h"
 #include "..\public\BossParttern.h"
 #include "Com_Gun.h"
+#include "Player.h"
 
 CBossMonster::CBossMonster(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CMonsterParent(pGraphicDevice)
@@ -19,11 +20,11 @@ HRESULT CBossMonster::Initialize_Prototype(void * pArg)
 {
 	FAILED_CHECK(__super::Initialize_Prototype(pArg));
 	mPlayerTarget = nullptr;
-	mComGun = nullptr;
+	mComGun = nullptr;	
 	mCurrentPattern = nullptr;
+
 	mPatternTime = 0;
 	mNextPattern = 0;
-
 	return S_OK;
 }
 
@@ -34,8 +35,11 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 	mPlayerTarget = nullptr;
 	mCurrentPattern = nullptr;
 
+
 	m_ComTransform->Scaled(_float3(5, 5, 5));
-	m_ComTexture->Change_TextureLayer(TEXT("Idle"));
+	m_ComTexture->Change_TextureLayer(TEXT("Idle1"));
+
+	m_pGraphicDevice->GetViewport(&mViewPort);
 
 	mPatternTime = 0;
 	mNextPattern = 0;
@@ -48,21 +52,21 @@ _int CBossMonster::Update(_float fDeltaTime)
 	if (mPlayerTarget == nullptr)
 	{
 		auto playerlist  = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Player));
-		mPlayerTarget = playerlist->front();
+		mPlayerTarget = (CPlayer*)playerlist->front();
 		Safe_AddRef(mPlayerTarget);
 		if (mPlayerTarget == nullptr)
 			return 0;
 
 		// 위치 초기화
-		CTransform* trans = (CTransform*)mPlayerTarget->Get_Component(TAG_COM(Com_Transform));
+		CTransform* trans = mPlayerTarget->Get_TransformCom();
 		_float3 playerPos = trans->Get_MatrixState(CTransform::STATE_POS);
-	//	playerPos.y += 1;
+		playerPos.y += 1;
 
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, playerPos);
 
 	}
 	mPatternTime += fDeltaTime;
-	if (mPatternTime < 5)
+	if (mPatternTime < 3)
 		return 0;
 
 	// AI 업데이트
@@ -149,6 +153,7 @@ HRESULT CBossMonster::Die()
 
 void CBossMonster::Update_BossPattern(_float deltatime)
 {
+	
 	if (mQueue_Partern.empty())
 	{
 		Choose_NextPattern();		
@@ -178,49 +183,64 @@ void CBossMonster::Update_BossPattern(_float deltatime)
 
 HRESULT CBossMonster::Set_TestMovePattern1()
 {
-	CBoss_Action_Move::Action_Move_Desc desc = {};
+	CBoss_Action_Move::Action_Move_Desc descMove = {};
+	CBoss_Pattern_Attack::Action_Attack_Desc descAttack = {};
 
-	desc.mMonsterObject = this;
-	desc.mEndScreenPos = _float2(1280*0.5f, 720*0.5f);
-	desc.mTimerMax = 0.5f;
-	desc.mEasingType = TYPE_Linear;
-	mQueue_Partern.push(new CBoss_Action_Move(desc));
+	descAttack.mMonsterObject = this;
+	descMove.mMonsterObject = this;
+
+	descMove.mEndScreenPos = _float2(mViewPort.Width *0.5f, mViewPort.Height * 0.5f);
+	descMove.mTimerMax = 0.3f;
+	descMove.mEasingType = TYPE_Linear;
+	mQueue_Partern.push(new CBoss_Action_Move(descMove));
+	
+	descAttack.mAttackCount = 5;
+	descAttack.meBuelletType = E_BulletType::BULLETTYPE_Dir;
+	descAttack.mTimerMax = 0.3f;
+	mQueue_Partern.push(new CBoss_Pattern_Attack(descAttack));
 
 
-	desc.mMonsterObject = this;
-	desc.mEndScreenPos = _float2(1280 * 0.5f, 720 * 0.5f);
-	desc.mTimerMax = 0.5f;
-	desc.mEasingType = TYPE_Linear;
-	mQueue_Partern.push(new CBoss_Action_Move(desc));
+	descMove.mEndScreenPos = _float2(mViewPort.Width *0.3f, mViewPort.Height * 0.5f);
+	descMove.mTimerMax = 0.3f;
+	descMove.mEasingType = TYPE_Linear;
+	mQueue_Partern.push(new CBoss_Action_Move(descMove));
+
+	descMove.mEndScreenPos = _float2(mViewPort.Width *0.7f, mViewPort.Height * 0.5f);
+	descMove.mTimerMax = 0.3f;
+	descMove.mEasingType = TYPE_Linear;
+	mQueue_Partern.push(new CBoss_Action_Move(descMove));
+
+
+	descMove.mEndScreenPos = _float2(mViewPort.Width *0.3f, mViewPort.Height * 0.5f);
+	descMove.mTimerMax = 0.3f;
+	descMove.mEasingType = TYPE_Linear;
+	mQueue_Partern.push(new CBoss_Action_Move(descMove));
+
+	descMove.mEndScreenPos = _float2(mViewPort.Width *0.7f, mViewPort.Height * 0.5f);
+	descMove.mTimerMax = 0.3f;
+	descMove.mEasingType = TYPE_Linear;
+	mQueue_Partern.push(new CBoss_Action_Move(descMove));
 
 	return S_OK;
 }
 
 HRESULT CBossMonster::Set_TestAttackPattern1()
 {
-	CBoss_Pattern_Attack::Action_Attack_Desc desc = {};
-	desc.mAttackCount = 5;
-	desc.mMonsterObject = this;
-	desc.meBuelletType = E_BulletType::BULLETTYPE_Dir;
-	desc.mTimerMax = 0.3f;
+	//CBoss_Pattern_Attack::Action_Attack_Desc desc = {};
+	//desc.mAttackCount = 5;
+	//desc.mMonsterObject = this;
+	//desc.meBuelletType = E_BulletType::BULLETTYPE_Dir;
+	//desc.mTimerMax = 0.3f;
 
 
-	mQueue_Partern.push(new CBoss_Pattern_Attack(desc));
-
-	// CBoss_Pattern_Attack::Action_Attack_Desc desc = {};
-	// desc.mAttackCount = 5;
-	// desc.mCom_Gun = mComGun;
-	// desc.meBuelletType = CCom_Gun::E_BulletType::BULLETTYPE_Dir;
-	// 
-	// mQueue_Partern.push(new CBoss_Pattern_Attack(desc));
-
+	//mQueue_Partern.push(new CBoss_Pattern_Attack(desc));
 
 	return S_OK;
 }
 
 HRESULT CBossMonster::Choose_NextPattern()
 {
-	if (mNextPattern %2 ==  0)
+	if (mNextPattern % 2 ==  0)
 	{
 		Set_TestMovePattern1();
 	}
@@ -229,21 +249,22 @@ HRESULT CBossMonster::Choose_NextPattern()
 		Set_TestAttackPattern1();
 
 	}
-
+	
 	mNextPattern++;
 	return S_OK;
 }
 
 HRESULT CBossMonster::CreateObjectBullet_Target()
 {
-	CTransform* trans = (CTransform*)mPlayerTarget->Get_Component(TAG_COM(Com_Transform));
+	CTransform* trans = mPlayerTarget->Get_TransformCom();
 	_float3 playerPos = trans->Get_MatrixState(CTransform::STATE_POS);
 	_float3 Position = GetPos();
+
 	_float3 TargetDir = {0,0,0};
 
 	TargetDir = playerPos - Position;
 	TargetDir = TargetDir.Get_Nomalize();
-
+	
 	mComGun->CreateBullet_Target(m_eNowSceneNum, Position,TargetDir);
 
 	return S_OK;
