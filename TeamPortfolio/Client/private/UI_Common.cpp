@@ -256,7 +256,7 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 		temp.y = (ImageUIDesc.y - ImageUIDesc.w * 0.5f);//top
 		temp.z = (ImageUIDesc.x + ImageUIDesc.z * 0.5f);//right
 		temp.w = (ImageUIDesc.y + ImageUIDesc.w * 0.5f);//bottom
-		temp.y = temp.y + fDeltaTime*50.f / 3.f; // ¹öÆ°Å©±â/ÄðÅ¸ÀÓ
+		temp.y = temp.y + fDeltaTime*50.f / 0.f; // ¹öÆ°Å©±â/ÄðÅ¸ÀÓ
 
 		m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
@@ -264,7 +264,7 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 
 
 
-		if (m_fCooltime.z > 3.f)//ÄðÅ¸ÀÓ ÀûÀ¸¸éµÊ
+		if (m_fCooltime.z > 0.f)//ÄðÅ¸ÀÓ ÀûÀ¸¸éµÊ
 		{
 			m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
 			m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
@@ -288,7 +288,7 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 		temp.y = (ImageUIDesc.y - ImageUIDesc.w * 0.5f);//top
 		temp.z = (ImageUIDesc.x + ImageUIDesc.z * 0.5f);//right
 		temp.w = (ImageUIDesc.y + ImageUIDesc.w * 0.5f);//bottom
-		temp.y = temp.y + fDeltaTime*50.f / 3.f; // ¹öÆ°Å©±â/ÄðÅ¸ÀÓ
+		temp.y = temp.y + fDeltaTime*50.f / 60.f; // ¹öÆ°Å©±â/ÄðÅ¸ÀÓ
 
 		m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));
@@ -296,7 +296,7 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 
 
 
-		if (m_fCooltime.w > 3.f)//ÄðÅ¸ÀÓ ÀûÀ¸¸éµÊ
+		if (m_fCooltime.w > 60.f)//ÄðÅ¸ÀÓ ÀûÀ¸¸éµÊ
 		{
 			m_ComTransform->Set_MatrixState(CTransform::STATE_RIGHT, _float3(1.f, 0, 0));
 			m_ComTransform->Set_MatrixState(CTransform::STATE_UP, _float3(0, 1.f, 0));

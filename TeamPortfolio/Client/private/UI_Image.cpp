@@ -191,9 +191,9 @@ HRESULT CUI_Image::SetUp_RenderState()
 		//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
 
 
-		/*m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 20);
-		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);*/
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	}
 
 	return S_OK;
