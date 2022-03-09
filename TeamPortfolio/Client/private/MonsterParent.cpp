@@ -8,6 +8,7 @@ CMonsterParent::CMonsterParent(LPDIRECT3DDEVICE9 pGraphicDevice)
 	m_ComRenderer = nullptr;
 	m_ComVIBuffer = nullptr;
 	m_ComTexture = nullptr;
+	m_Com_Viewport = nullptr;
 	m_Sphere.mCenterPosition = _float2(0, 0);
 	m_Sphere.mRadius = 30.0f;
 
@@ -21,12 +22,14 @@ CMonsterParent::CMonsterParent(const CMonsterParent& rhs)
 	m_ComRenderer = rhs.m_ComRenderer;
 	m_ComVIBuffer = rhs.m_ComVIBuffer;
 	m_ComTexture = rhs.m_ComTexture;
+	m_Com_Viewport = rhs.m_Com_Viewport;
 
 
 	Safe_AddRef(m_ComTransform);
 	Safe_AddRef(m_ComRenderer);
 	Safe_AddRef(m_ComVIBuffer);
 	Safe_AddRef(m_ComTexture);
+	Safe_AddRef(m_Com_Viewport);
 
 //	Safe_AddRef(m_ComShader);
 }
@@ -196,7 +199,9 @@ void CMonsterParent::Free()
 	Safe_Release(m_ComRenderer);
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComTexture);
+	Safe_Release(m_Com_Viewport);
 
+	
 //	Safe_Release(m_ComShader);
 	__super::Free();
 	

@@ -5,7 +5,7 @@
 BEGIN(Engine)
 class CGameObject;
 
-// #TODO 뷰포트 충돌 / 구 충돌로 처리
+// 뷰포트 충돌 / 구 충돌로 처리
 
 class ENGINE_DLL CCom_CollisionViewPort final: public CComponent
 {

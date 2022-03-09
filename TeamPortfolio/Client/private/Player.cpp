@@ -194,6 +194,7 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 		return E_FAIL;
 
 	// 충돌 그룹
+	NULL_CHECK_BREAK(m_pCollisionViewCom);
 	m_Sphere.mRadius = 10;
 	m_Sphere.mCenterPosition = m_pCollisionViewCom->WorldToView(m_ComTransform->Get_MatrixState(CTransform::STATE_POS));
 	m_pCollisionViewCom->AddCollisionView(CCom_CollisionViewPort::COLL_PLAYER, this);
@@ -319,10 +320,15 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 
 HRESULT CPlayer::ViewPortHit(CGameObject * hitobj)
 {
-	// ViewPort 좌표 충돌
 	if (!lstrcmp(hitobj->Get_Layer_Tag(), TAG_LAY(Layer_Bullet)))
 	{
-		 bool a = true;
+		// #TODO 플레이어 피격
+		if (!m_bIsDead)
+		{
+			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
+			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT, g_fDeltaTime);
+		}
+
 	}
 	return S_OK;
 }

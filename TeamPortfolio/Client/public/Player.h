@@ -66,6 +66,7 @@ private:
 	/* 충돌처리 */
 	CCollision*		m_pCollisionCom = nullptr;
 	CCom_CollisionViewPort* m_pCollisionViewCom = nullptr;
+
 private:
 	LOGINDESC				m_LoginDesc;
 

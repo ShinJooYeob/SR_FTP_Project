@@ -18,8 +18,6 @@ HRESULT CBullet::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
-
-
 	return S_OK;
 }
 

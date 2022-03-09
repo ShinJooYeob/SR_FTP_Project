@@ -26,9 +26,7 @@ HRESULT CCom_CollisionViewPort::Initialize_Clone(void * pArg)
 
 _bool CCom_CollisionViewPort::isCollisionSphere(const MYSPHERE & a, const MYSPHERE & b)
 {
-	// 충돌 체크
-
-
+	// 원 충돌 체크
 	_float xx = b.mCenterPosition.x - a.mCenterPosition.x;
 	_float yy = b.mCenterPosition.y - a.mCenterPosition.y;
 
@@ -49,7 +47,6 @@ HRESULT CCom_CollisionViewPort::AddCollisionView(COLLISION_VIEW_TYPE type, CGame
 
 
 	m_List_CollisionViewObjects[type].push_back(object);
-	// object->Update_ViewPos();
 	Safe_AddRef(object);
 	return S_OK;
 }
@@ -79,7 +76,7 @@ _float2 CCom_CollisionViewPort::WorldToView(_float3 worldPos)
 
 void CCom_CollisionViewPort::Update_ViewPortCollision()
 {
-	// 좌표 업데이트
+	// 좌표 업데이트하고 들어와야함
 	for (int i = 0; i < COLL_END - 1; i++)
 	{
 		for (int j = 1; j < COLL_END; j++)
@@ -93,7 +90,6 @@ void CCom_CollisionViewPort::Update_ViewPortCollision()
 					if (isCollisionSphere(obj1->GetSphere(), obj2->GetSphere()))
 					{
 						obj1->ViewPortHit(obj2);
-						obj2->ViewPortHit(obj1);
 					}
 				}
 			}
@@ -129,12 +125,14 @@ CCom_CollisionViewPort * CCom_CollisionViewPort::Create(LPDIRECT3DDEVICE9 pGraph
 
 CComponent * CCom_CollisionViewPort::Clone(void * pArg)
 {
-	
+	this->AddRef();
 	return this;
 }
 
 void CCom_CollisionViewPort::Free()
 {
+	__super::Free();
+
 	for (_uint i = 0; i < COLL_END; ++i)
 	{
 		for (auto& RenderObject : m_List_CollisionViewObjects[i])
@@ -143,4 +141,5 @@ void CCom_CollisionViewPort::Free()
 		}
 		m_List_CollisionViewObjects[i].clear();
 	}
+
 }
