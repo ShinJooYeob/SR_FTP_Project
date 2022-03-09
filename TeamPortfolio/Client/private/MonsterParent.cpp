@@ -8,7 +8,7 @@ CMonsterParent::CMonsterParent(LPDIRECT3DDEVICE9 pGraphicDevice)
 	m_ComRenderer = nullptr;
 	m_ComVIBuffer = nullptr;
 	m_ComTexture = nullptr;
-	m_Sphere.mCenterRadius = _float2(0, 0);
+	m_Sphere.mCenterPosition = _float2(0, 0);
 	m_Sphere.mRadius = 30.0f;
 
 }
@@ -46,7 +46,7 @@ HRESULT CMonsterParent::Initialize_Clone(void * pArg)
 
 	FAILED_CHECK(SetUp_Components());
 
-	m_Sphere.mCenterRadius = _float2(0, 0);
+	m_Sphere.mCenterPosition = _float2(0, 0);
 	m_Sphere.mRadius = 30.0f;
 	return S_OK;
 }

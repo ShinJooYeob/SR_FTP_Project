@@ -193,6 +193,12 @@ _int CPlayer::LateUpdate(_float fDeltaTime)
 	if (FAILED(m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_AFTEROBJ, this)))
 		return E_FAIL;
 
+	// 충돌 그룹
+	m_Sphere.mRadius = 10;
+	m_Sphere.mCenterPosition = m_pCollisionViewCom->WorldToView(m_ComTransform->Get_MatrixState(CTransform::STATE_POS));
+	m_pCollisionViewCom->AddCollisionView(CCom_CollisionViewPort::COLL_PLAYER, this);
+
+	
 
 	return _int();
 }
@@ -309,6 +315,16 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 
 
 	return _int();
+}
+
+HRESULT CPlayer::ViewPortHit(CGameObject * hitobj)
+{
+	// ViewPort 좌표 충돌
+	if (!lstrcmp(hitobj->Get_Layer_Tag(), TAG_LAY(Layer_Bullet)))
+	{
+		 bool a = true;
+	}
+	return S_OK;
 }
 
 void CPlayer::Set_PlayerPause(_float TotalPauseTime, const _tchar* TagAnim, _float fFrameTime)
@@ -485,7 +501,8 @@ HRESULT CPlayer::SetUp_Components()
 	
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_pCollisionCom)))
 		return E_FAIL;
-
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_CollisionView), TAG_COM(Com_CollisionView), (CComponent**)&m_pCollisionViewCom)))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -1315,6 +1332,7 @@ void CPlayer::Free()
 	Safe_Release(m_pCarryObjectTransform);
 	Safe_Release(m_pCamera_Main);
 	Safe_Release(m_pCollisionCom);
+	Safe_Release(m_pCollisionViewCom);
 	Safe_Release(m_ComInventory);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);

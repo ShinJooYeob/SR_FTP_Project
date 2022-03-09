@@ -28,7 +28,17 @@ _bool CCom_CollisionViewPort::isCollisionSphere(const MYSPHERE & a, const MYSPHE
 {
 	// 충돌 체크
 
-	return true;
+
+	_float xx = b.mCenterPosition.x - a.mCenterPosition.x;
+	_float yy = b.mCenterPosition.y - a.mCenterPosition.y;
+
+	_float distance = xx * xx + yy * yy;
+
+	_float Radius = a.mRadius + b.mRadius;
+	Radius *= Radius;
+
+
+	return distance < Radius;
 }
 
 HRESULT CCom_CollisionViewPort::AddCollisionView(COLLISION_VIEW_TYPE type, CGameObject * object)
@@ -63,26 +73,32 @@ _float2 CCom_CollisionViewPort::WorldToView(_float3 worldPos)
 	WorldPos.x = (WorldPos.x + 1) * (ViewPortDesc.Width  * 0.5f);
 	WorldPos.y = (1- WorldPos.y ) * (ViewPortDesc.Height * 0.5f);
 
-	_float2 newPos = _float2(WorldPos.x, worldPos.y);
+	_float2 newPos = _float2(WorldPos.x, WorldPos.y);
 	return newPos;
 }
 
 void CCom_CollisionViewPort::Update_ViewPortCollision()
 {
 	// 좌표 업데이트
-	for (int i = 0; i < COLL_END-1; i++)
+	for (int i = 0; i < COLL_END - 1; i++)
 	{
-		for (auto& obj1 : m_List_CollisionViewObjects[i])
+		for (int j = 1; j < COLL_END; j++)
 		{
-			for (auto& obj2 : m_List_CollisionViewObjects[i + 1])
+			if (i == j) continue;
+
+			for (auto& obj1 : m_List_CollisionViewObjects[i])
 			{
-				if (isCollisionSphere(obj1->GetSphere(), obj2->GetSphere()))
+				for (auto& obj2 : m_List_CollisionViewObjects[j])
 				{
-					obj1->ViewPortHit(obj2);
-					obj2->ViewPortHit(obj1);
+					if (isCollisionSphere(obj1->GetSphere(), obj2->GetSphere()))
+					{
+						obj1->ViewPortHit(obj2);
+						obj2->ViewPortHit(obj1);
+					}
 				}
 			}
 		}
+
 	}
 }
 

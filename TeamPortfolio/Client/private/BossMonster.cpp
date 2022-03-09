@@ -80,7 +80,7 @@ _int CBossMonster::LateUpdate(_float fDeltaTime)
 
 
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
-	m_Com_Viewport->WorldToView(GetPos());
+	m_Sphere.mCenterPosition = m_Com_Viewport->WorldToView(GetPos());
 
 	m_Com_Viewport->AddCollisionView(CCom_CollisionViewPort::COLL_MONSTER, this);
 
@@ -253,8 +253,10 @@ HRESULT CBossMonster::ViewPortHit(CGameObject * hitobj)
 {
 	if (!lstrcmp(hitobj->Get_Layer_Tag(), TAG_LAY(Layer_Bullet)))
 	{
-		bool a = true;
+		// bool a = true;
 	}
+
+
 	return S_OK;
 }
 

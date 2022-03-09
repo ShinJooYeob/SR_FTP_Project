@@ -61,6 +61,8 @@ _int CBullet::LateUpdate(_float fDeltaTime)
 		return E_FAIL;
 
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
+
+	m_Sphere.mCenterPosition = m_Com_Viewport->WorldToView(GetPos());
 	m_Com_Viewport->AddCollisionView(CCom_CollisionViewPort::COLL_BULLET,this);
 
 	return _int();
