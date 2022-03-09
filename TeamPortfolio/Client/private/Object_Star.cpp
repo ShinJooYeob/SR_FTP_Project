@@ -261,6 +261,14 @@ void CObject_Star::Set_Particle()
 
 	//tDesc.vUp = _float3(1, 1, 0);
 
+	tDesc.ParticleStartRandomPosMin = _float3(-0.5f, -0.5f, -0.5f);
+	tDesc.ParticleStartRandomPosMax = _float3(0.5f, 0.5f, 0.5f);
+
+	tDesc.MustDraw = true;
+	//오브젝트 뒤에 가려지지 않게 만듬
+
+	//tDesc.IsParticleFameEndtoDie = false;
+	//프레임이 한번만 돌것인지 정함
 
 	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
 	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);

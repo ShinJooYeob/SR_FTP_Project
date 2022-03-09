@@ -33,6 +33,9 @@ public:
 	virtual _int Object_Transfer(CGameObject * pDestObjects, _float fDeltaTime);
 
 	void UsedPotal(_float fTimeDelta) { m_Seconds += fTimeDelta; }
+
+	void	Set_Particle();
+
 private:
 	HRESULT SetUp_Components();
 

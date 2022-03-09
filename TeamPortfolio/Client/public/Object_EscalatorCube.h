@@ -39,6 +39,8 @@ public:
 
 	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
 	virtual _int Collision_Descent(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime);
+	void	Set_Particle();
+	void	Return_Particle();
 
 private:
 	HRESULT SetUp_Components();
@@ -63,6 +65,8 @@ private:
 
 	_bool					m_bSoundSwitch = false;
 	_bool					m_bSoundCollison = false;
+
+	_float					ParticleTime = 0;
 
 
 	ESCALATORDESC			m_EscalatorDesc;

@@ -40,6 +40,8 @@ public:
 
 	void UsedPotal(_float fTimeDelta) { m_Seconds += fTimeDelta; }
 
+	void	Set_Particle();
+
 private:
 	HRESULT SetUp_Components();
 

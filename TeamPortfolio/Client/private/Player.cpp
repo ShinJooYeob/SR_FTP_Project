@@ -546,7 +546,6 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 		m_ComTransform->Set_MoveSpeed(2.5f);
 		m_fJumpPower *= 2.f;
 
-
 		m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("carrydown"), TEXT("Idle"),12.f);
 		GetSingle(CGameInstance)->PlaySound(TEXT("JY_Box_Drop.mp3"), CHANNEL_OBJECT);
 		GetSingle(CGameInstance)->PlaySound(TEXT("JY_Isaac_Hurt_Grunt2.mp3"), CHANNEL_PLAYER, 1.f);
