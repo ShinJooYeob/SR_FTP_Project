@@ -430,8 +430,8 @@ HRESULT CScene_Tutorial::Ready_Layer_Object_PortalCube(const _tchar * pLayerTag)
 {
 	CObject_PortalCube_A::POTALDESC tagDesc;
 
-	tagDesc.vPos_A_Cube = _float3(13, 18, 74);
-	tagDesc.vPos_B_Cube = _float3(12, 25, 83);
+	tagDesc.vPos_A_Cube = _float3(13, 19, 74);
+	tagDesc.vPos_B_Cube = _float3(12, 26, 83);
 	tagDesc.iNowScene = SCENEID::SCENE_TUTORIAL;
 
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, TEXT("Layer_Potal"), TEXT("Prototype_GameObject_Object_PortalCube_A"), &tagDesc))

@@ -35,6 +35,8 @@ private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
+	void	Particle_Dust();
+
 private:
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
