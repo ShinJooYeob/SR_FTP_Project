@@ -182,4 +182,14 @@ namespace Engine
 	}OUTPUT_OBJECTINFO;
 
 
+	typedef struct tag_Sphere
+	{
+		tag_Sphere()
+		{
+			mRadius = 0; mCenterRadius = _float2(0, 0);
+		}
+
+		_float2 mCenterRadius; // 중점
+		_float mRadius; // 범위
+	}MYSPHERE;
 }

@@ -8,8 +8,9 @@ CMonsterParent::CMonsterParent(LPDIRECT3DDEVICE9 pGraphicDevice)
 	m_ComRenderer = nullptr;
 	m_ComVIBuffer = nullptr;
 	m_ComTexture = nullptr;
-	m_ComCollision = nullptr;
-//	m_ComShader = nullptr;
+	m_Sphere.mCenterRadius = _float2(0, 0);
+	m_Sphere.mRadius = 30.0f;
+
 }
 
 CMonsterParent::CMonsterParent(const CMonsterParent& rhs)
@@ -20,14 +21,13 @@ CMonsterParent::CMonsterParent(const CMonsterParent& rhs)
 	m_ComRenderer = rhs.m_ComRenderer;
 	m_ComVIBuffer = rhs.m_ComVIBuffer;
 	m_ComTexture = rhs.m_ComTexture;
-	m_ComCollision = rhs.m_ComCollision;
-//	m_ComShader = rhs.m_ComShader;
+
 
 	Safe_AddRef(m_ComTransform);
 	Safe_AddRef(m_ComRenderer);
 	Safe_AddRef(m_ComVIBuffer);
 	Safe_AddRef(m_ComTexture);
-	Safe_AddRef(m_ComCollision);
+
 //	Safe_AddRef(m_ComShader);
 }
 
@@ -46,6 +46,8 @@ HRESULT CMonsterParent::Initialize_Clone(void * pArg)
 
 	FAILED_CHECK(SetUp_Components());
 
+	m_Sphere.mCenterRadius = _float2(0, 0);
+	m_Sphere.mRadius = 30.0f;
 	return S_OK;
 }
 
@@ -175,10 +177,6 @@ HRESULT CMonsterParent::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_VIBuffer_Rect), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 
-
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Collision), TAG_COM(Com_Collision), (CComponent**)&m_ComCollision)))
-		return E_FAIL;
-
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_Monster), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 
@@ -196,7 +194,7 @@ void CMonsterParent::Free()
 	Safe_Release(m_ComRenderer);
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComTexture);
-	Safe_Release(m_ComCollision);	
+
 //	Safe_Release(m_ComShader);
 	__super::Free();
 	

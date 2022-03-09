@@ -171,7 +171,6 @@
     <ClInclude Include="..\public\BossMonster.h" />
     <ClInclude Include="..\public\BossParttern.h" />
     <ClInclude Include="..\public\Bullet.h" />
-    <ClInclude Include="..\public\Com_CollisionViewPort.h" />
     <ClInclude Include="..\public\Com_Gun.h" />
     <ClInclude Include="..\public\MonsterParent.h" />
     <ClInclude Include="..\public\Camera_Main.h" />
@@ -272,7 +271,6 @@
     <ClCompile Include="..\private\BossMonster.cpp" />
     <ClCompile Include="..\private\BossParttern.cpp" />
     <ClCompile Include="..\private\Bullet.cpp" />
-    <ClCompile Include="..\private\Com_CollisionViewPort.cpp" />
     <ClCompile Include="..\private\Com_Gun.cpp" />
     <ClCompile Include="..\private\MonsterParent.cpp" />
     <ClCompile Include="..\private\Camera_Main.cpp" />

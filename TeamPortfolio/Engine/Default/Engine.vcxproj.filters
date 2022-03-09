@@ -148,6 +148,9 @@
     <Filter Include="01.Utility\05.ComponentMgr\01.Components\StateMachine">
       <UniqueIdentifier>{0d8b35ec-1306-4625-95e0-6108027747ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\05.ComponentMgr\01.Components\CollisionView">
+      <UniqueIdentifier>{dfbdd1c8-ab89-44dd-bc78-a894106cf613}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -284,6 +287,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Shader.cpp">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Com_CollisionViewPort.cpp">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\CollisionView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -445,6 +451,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Shader.h">
       <Filter>01.Utility\05.ComponentMgr\01.Components\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Com_CollisionViewPort.h">
+      <Filter>01.Utility\05.ComponentMgr\01.Components\CollisionView</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

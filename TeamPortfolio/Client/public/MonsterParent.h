@@ -54,10 +54,8 @@ protected:
 	CTransform*	 m_ComTransform;
 	CRenderer*	 m_ComRenderer;
 	CVIBuffer*	 m_ComVIBuffer;
-	CCollision*  m_ComCollision;
-	
-
 	CTexture*	 m_ComTexture;
+
 	// ºŒ¿Ã¥ı √ﬂ∞°
 	// CShader*	 m_ComShader;
 

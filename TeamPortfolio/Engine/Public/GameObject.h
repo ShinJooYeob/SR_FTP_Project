@@ -41,6 +41,7 @@ public:
 	virtual HRESULT ReInitialize(void* pArg = nullptr) { return S_OK; };
 
 	virtual HRESULT ViewPortHit(CGameObject* hitobj) { return S_OK; }
+	const MYSPHERE& GetSphere() const { return m_Sphere; }
 protected:
 	map<const _tchar*, class CComponent*>	m_mapComponets;
 	typedef map<const _tchar*, class CComponent*>	COMPONENTS;
@@ -52,9 +53,9 @@ protected:
 	const _tchar*				m_Layer_Tag = nullptr;;
 	_float						m_fCamDistance;
 	_bool						m_isDied = false;
+	MYSPHERE					m_Sphere; // 뷰포트 충돌용
 
-	// 들어오는 데이터
-//	OUTPUT_OBJECTINFO*			m_pLoadInfoData = nullptr;
+
 protected:
 	HRESULT Add_Component(_uint iScenenNum, const _tchar* tagPrototype,const _tchar* tagComponent, CComponent** ppOut , void* pArg =nullptr);
 	HRESULT Change_Component(_uint iScenenNum, const _tchar* tagPrototype, const _tchar* tagComponent, CComponent** ppOut, void* pArg = nullptr);
