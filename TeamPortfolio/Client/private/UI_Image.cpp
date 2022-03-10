@@ -285,7 +285,7 @@ _int CUI_Image::Render()
 					temp = L" [Quest1]";
 					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 110.f }, { 20.f,30.f }, _float3(255, 255, 255));
 
-					temp2 = L"Use Speedup\n6times" ;
+					temp2 = L"Use turn Ca\nmera 6times" ;
 					GetSingle(CGameInstance)->Render_UI_Font(temp2, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 17.5f,27.f }, _float3(139, 0, 139),(_uint)m_fTextFrame);
 					
 					temp3 = L"achievement\nrate:" + wstring(szbuf) + L"%";
@@ -298,7 +298,7 @@ _int CUI_Image::Render()
 					temp = L" [Quest2]";
 					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 110.f }, { 20.f,30.f }, _float3(255, 255, 255));
 
-					temp2 = L"Use Dubbleu\np 6times";
+					temp2 = L"Collect 12\n stars";
 					GetSingle(CGameInstance)->Render_UI_Font(temp2, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 17.5f,27.f }, _float3(139, 0, 139), (_uint)m_fTextFrame);
 
 					temp3 = L"achievement\nrate:" + wstring(szbuf) + L"%";
@@ -308,12 +308,30 @@ _int CUI_Image::Render()
 					}
 					break;
 				case QUEST_3:
-					/*temp = L"  [Quest3]\nUse Rotation\n5times\nachievement\nrate:" + wstring(szbuf) + L"%";
-					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 18.5f,28.5f }, _float3(0, 0, 0));*/
+					temp = L" [Quest3]";
+					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 110.f }, { 20.f,30.f }, _float3(255, 255, 255));
+
+					temp2 = L"Clear all \n3 stages";
+					GetSingle(CGameInstance)->Render_UI_Font(temp2, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 17.5f,27.f }, _float3(139, 0, 139), (_uint)m_fTextFrame);
+
+					temp3 = L"achievement\nrate:" + wstring(szbuf) + L"%";
+					if (m_fTextFrame > (_uint)(temp2.length()))
+					{
+						GetSingle(CGameInstance)->Render_UI_Font(temp3, { m_vUIDesc.x - 85.f,m_vUIDesc.y + 25.f }, { 17.5f,27.f }, _float3(250, 128, 114));
+					}
 					break;
 				case QUEST_4:
-					/*temp = L" [Quest4]\nUse Timeup\n5times\nachievement\nrate:" + wstring(szbuf) + L"%";
-					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 18.5f,28.5f }, _float3(0, 0, 0));*/
+					temp = L" [Quest4]";
+					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 110.f }, { 20.f,30.f }, _float3(255, 255, 255));
+
+					temp2 = L"Clear the B\noss stage";
+					GetSingle(CGameInstance)->Render_UI_Font(temp2, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 17.5f,27.f }, _float3(139, 0, 139), (_uint)m_fTextFrame);
+
+					temp3 = L"achievement\nrate:" + wstring(szbuf) + L"%";
+					if (m_fTextFrame > (_uint)(temp2.length()))
+					{
+						GetSingle(CGameInstance)->Render_UI_Font(temp3, { m_vUIDesc.x - 85.f,m_vUIDesc.y + 25.f }, { 17.5f,27.f }, _float3(250, 128, 114));
+					}
 					break;
 				defalut:
 					break;
