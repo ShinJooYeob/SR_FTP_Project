@@ -164,6 +164,13 @@ _int CScene_StageSelect::Update(_float fDeltaTime)
 				return E_FAIL;
 			break;
 		}
+		case SCENEID::SCENE_BOSS:
+		{
+			m_StageReturnBlock = _float3(8.5f, -9, 7);
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_BOSS), SCENEID::SCENE_LOADING)))
+				return E_FAIL;
+			break;
+		}
 		}
 	}
 
@@ -610,13 +617,13 @@ HRESULT CScene_StageSelect::Ready_Layer_StageEntryCollsionObject(const _tchar * 
 
 
 	//보스 스테이지 입구
-	//tDesc.vPos = _float3(8, -9, 7);
-	//tDesc.eTargetScene = SCENE_보스;
-	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &tDesc))
-	//	return E_FAIL;
-	//tDesc.vPos = _float3(9, -9, 7);
-	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &tDesc))
-	//	return E_FAIL;
+	tDesc.vPos = _float3(8, -9, 7);
+	tDesc.eTargetScene = SCENE_BOSS;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &tDesc))
+		return E_FAIL;
+	tDesc.vPos = _float3(9, -9, 7);
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object_StageEntry"), &tDesc))
+		return E_FAIL;
 
 	return S_OK;
 }

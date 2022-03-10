@@ -479,29 +479,30 @@ HRESULT CUI_BossStatusUI::Update_MouseButton(_float fTimeDelta)
 
 HRESULT CUI_BossStatusUI::Update_Animation(_float fTimeDelta)
 {
-	
-	//////타이머바 애니메이션////////////////////////////////////////////////////////////////////
-	m_fTimeBarPassedTime += fTimeDelta;
-	m_NowColor = EaseingFloat3(TYPE_Linear, m_StartColor, m_TargetColor, m_fTimeBarPassedTime, 1.f);
-	if (m_fTimeBarPassedTime > 1.f)
+	if (!m_bIsStageEnd)
 	{
-		m_NowColor = m_StartColor = m_TargetColor;
-		m_TargetColor = _float3(rand() % 255, rand() % 255, rand() % 255);
-		m_fTimeBarPassedTime = 0;
+		//////타이머바 애니메이션////////////////////////////////////////////////////////////////////
+		m_fTimeBarPassedTime += fTimeDelta;
+		m_NowColor = EaseingFloat3(TYPE_Linear, m_StartColor, m_TargetColor, m_fTimeBarPassedTime, 1.f);
+		if (m_fTimeBarPassedTime > 1.f)
+		{
+			m_NowColor = m_StartColor = m_TargetColor;
+			m_TargetColor = _float3(rand() % 255, rand() % 255, rand() % 255);
+			m_fTimeBarPassedTime = 0;
+		}
+
+
+		_float Timer = m_pResult->Get_NowTime() / m_pResult->Get_MaxTime();
+		m_vBarRect[2].right = m_vUIDesc[0].x + m_vUIDesc[0].z * 0.3f - (m_vUIDesc[0].z * 0.6f * Timer);
+
+		if (Timer >= 1)
+		{
+			m_bIsStageEnd = true;
+			m_pPlayer->Set_StageEnd(0);
+			m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);
+		}
+
 	}
-
-
-	_float Timer = m_pResult->Get_NowTime() / m_pResult->Get_MaxTime();
-	m_vBarRect[2].right = m_vUIDesc[0].x + m_vUIDesc[0].z * 0.3f - (m_vUIDesc[0].z * 0.6f * Timer);
-
-	if (Timer >= 1)
-	{
-		m_bIsStageEnd = true;
-		m_pPlayer->Set_StageEnd(0);
-		m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);
-	}
-
-
 
 
 	if (m_bVersusPointChange)
