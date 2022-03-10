@@ -127,7 +127,9 @@ HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index, list<SPECIALCUBE*>* s
 				continue;
 
 			CTransform* trans = (CTransform*)newObj->Get_Component(TAG_COM(Com_Transform));
+			_float3 scale =trans->Get_MatrixScale();
 			trans->Set_Matrix(Infodata->WorldMatData);
+			trans->Scaled(scale);
 
 			// 특수큐브는 내부에서 텍스처 변경
 			if (Infodata->CubeID == 0)

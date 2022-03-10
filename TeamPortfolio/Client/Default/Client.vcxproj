@@ -378,7 +378,9 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_TerrainCube.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_Test.hlsl" />
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Test3.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

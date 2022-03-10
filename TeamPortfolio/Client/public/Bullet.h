@@ -18,7 +18,7 @@ class CBullet final: public CMonsterParent
 public:
 	typedef struct tag_BulletDesc
 	{
-		E_BulletType BulletType;
+		E_BulletType_MOVE BulletType;
 		_float3 StartPos;
 		_float3 MoveDir;
 		_float  BulletSpeed;
@@ -42,7 +42,7 @@ public:
 
 public:
 	void SetMoveDir(_float3 dir) { mDesc.MoveDir = dir; }
-	void SetBulletType(E_BulletType type) { mDesc.BulletType = type; }
+	void SetBulletType(E_BulletType_MOVE type) { mDesc.BulletType = type; }
 	void SetBulletSpeed(_float speed);
 
 	virtual HRESULT ViewPortHit(CGameObject* hitobj)override;	

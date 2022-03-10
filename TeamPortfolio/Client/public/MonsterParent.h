@@ -32,7 +32,12 @@ public:
 	
 public: // For. ObjectFunc
 	HRESULT SetPos(_float3 pos);
-
+	void Set_Scale(float val)
+	{
+		m_ComTransform->Scaled(_float3(val, val, val));
+	}
+	
+	CTransform* GetTransform() const { return m_ComTransform; }
 	_float3 GetPos() { return m_ComTransform->Get_MatrixState(CTransform::STATE_POS); }
 	_float3 GetScale() { return m_ComTransform->Get_MatrixScale(); }
 	HRESULT MoveDir(_float3 Dir, _float Timer){	m_ComTransform->MovetoDir(Dir, Timer);}
@@ -51,8 +56,7 @@ protected:
 	virtual HRESULT Release_RenderState()PURE;
 	
 	// 카메라 위치 기준으로 위치 옮기기
-	_float3 Update_CameraPosition(_float z=20);
-	_float3 Update_CameraPosition(_float3 ObjectPosition, _float z = 20);
+	virtual _float3 Update_CameraPosition(_float3 localPos);
 
 
 protected:

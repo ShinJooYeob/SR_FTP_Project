@@ -37,6 +37,8 @@ HRESULT CBullet::Initialize_Clone(void * pArg)
 		SetPos(mDesc.StartPos);
 	}
 		
+	Set_Scale(2.0f);
+
 	return S_OK;
 }
 
@@ -48,7 +50,7 @@ _int CBullet::Update(_float fDeltaTime)
 
 	switch (mDesc.BulletType)
 	{
-	case BULLETTYPE_Dir:
+	case BULLETTYPE_MOVE_NOMAL:
 		m_ComTransform->MovetoDir(mDesc.MoveDir, fDeltaTime);
 		break;
 
@@ -109,7 +111,7 @@ HRESULT CBullet::SetUp_RenderState()
 
 HRESULT CBullet::Release_RenderState()
 {
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	return S_OK;
 

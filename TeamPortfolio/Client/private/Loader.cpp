@@ -194,6 +194,12 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	TextureDesc.szTextFilePath = TEXT("ClearEffect.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(SCENE_STATIC, L"Prototype_Component_Texture_Effect_StageClear", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+		
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("JH_Effect.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(SCENE_STATIC, L"Prototype_Component_Texture_JH_Effect", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 
 	////버텍스 파서들 모음
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
@@ -357,7 +363,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 #pragma endregion
 
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 99999999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -545,7 +551,7 @@ HRESULT CLoader::Load_Scene_Stage1(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 999999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -619,7 +625,7 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 999999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -801,7 +807,7 @@ HRESULT CLoader::Load_Scene_Stage_Boss(_bool * _IsClientQuit, CRITICAL_SECTION *
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 9999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 
@@ -908,7 +914,7 @@ HRESULT CLoader::Load_Scene_TUTORIAL(_bool * _IsClientQuit, CRITICAL_SECTION * _
 
 	RELEASE_INSTANCE(CGameInstance);
 	EnterCriticalSection(_CriSec);
-	m_iLoadingMaxCount = 999999;
+	m_iLoadingMaxCount = 1;
 	m_iLoadingProgressCount = 0;
 	LeaveCriticalSection(_CriSec);
 

@@ -42,11 +42,18 @@ public:
 	CCamera_Main* Get_MainCamera() { return mMainCamera; }
 	const _tchar*	Get_NowTextureTag()const;				//주엽 => 보스 스테이터스 창에 나오는 보스 이미지 변경할때 쓰려고 만든거
 
+
+
 public:
-	HRESULT CreateObjectBullet_Target();
-	HRESULT CreateObjectBullet_Target_Dir(_float3 dir, _float speed =1.0f);
 
 	_float3 Get_OffsetPos(_float3 offset);
+	_float3 GetLocalPos() const { return mCameralocalPosition; }
+
+	void SetLocalPos(_float3 pos)
+	{
+		mCameralocalPosition = pos;
+	}
+	virtual _float3 Update_CameraPosition(_float3 localPos);
 
 	virtual HRESULT ViewPortHit(CGameObject* hitobj)override;
 
@@ -72,8 +79,12 @@ private:
 
 private:
 	// 패턴 설정 함수 캡슐화
-	void Set_MovePattern(_float2 screenPos, _float time, EasingTypeID id);
-	void Set_AttackPattern(_float attackcount, E_BulletType bulletType, _float time, _float speed=1, _float3 moveidr = _float3(1,0,0));
+	void Set_MovePattern(_float2 endPos, _float time, EasingTypeID id);
+	void Set_Attack_WorldPattern(_float3 startPosOffset, _float3 endPos,_float count ,_float speed=1,_float dealytime=1,
+		E_BulletType_MOVE type2 = BULLETTYPE_MOVE_NOMAL);
+
+	void CBossMonster::Set_Attack_LocalDirPattern(_float3 startPosOffset, _float angle, _float count, _float speed, _float dealytime=1, 
+		E_BulletType_MOVE type2 = BULLETTYPE_MOVE_NOMAL);
 
 
 private:
@@ -84,6 +95,7 @@ private:
 protected:
 	CPlayer*		mPlayerTarget;
 	CCamera_Main*	mMainCamera;
+	_float3			mCameralocalPosition;
 
 	// 총알 담당 컴포넌트
 	// 총 컴포넌트를 참조해서 총알 패턴 구현

@@ -196,6 +196,7 @@ enum COMPONENTPROTOTYPEID
 	Prototype_Collision,
 	Prototype_CollisionView,
 	Prototype_Shader_Test,
+	Prototype_Shader_Cube,
 	Prototype_Gun,
 	//////////////////////////////////////////////////////////////////////////
 	Prototype_VIBuffer_Rect,
@@ -232,6 +233,8 @@ static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 		break;
 	case Prototype_Shader_Test:
 		return TEXT("Prototype_Component_Shader_Test");
+	case Prototype_Shader_Cube:
+		return TEXT("Prototype_Component_Shader_Cube");
 		break;
 	case Prototype_Gun:
 		return TEXT("Prototype_Component_Gun");
@@ -422,10 +425,10 @@ enum E_CUBEID
 	CUBEID_POTAL,
 	CUBEID_ELEVETOR,
 	CUBEID_ORBIT,
-	CUBEID_VANISH, // ªÁ∂Û¡¸
-	CUBEID_APPEAR, // ≥™≈∏≥≤
-	CUBEID_ARTICLEOBJECT, //¡÷ø±
-	CUBEID_STAR=10, //∫∞ª˝º∫
+	CUBEID_VANISH, // ÏÇ¨ÎùºÏßê
+	CUBEID_APPEAR, // ÎÇòÌÉÄÎÇ®
+	CUBEID_ARTICLEOBJECT, //Ï£ºÏóΩ
+	CUBEID_STAR=10, //Î≥ÑÏÉùÏÑ±
 	CUBEID_FIXED,
 
 	CUBEID_END,
@@ -440,10 +443,10 @@ enum MOUSETYPEID
 	MOUSE_END
 };
 
-enum E_BulletType
+// ÎÇ†ÏïÑÍ∞ÄÎäî ÌÉÄÏûÖ
+enum E_BulletType_MOVE
 {
-	BULLETTYPE_PlayerTarget,
-	BULLETTYPE_Dir,
-	BULLETTYPE_CamDir,
-	BULLETTYPE_END,
+	BULLETTYPE_MOVE_NOMAL,
+	BULLETTYPE_MOVE_END
+
 };

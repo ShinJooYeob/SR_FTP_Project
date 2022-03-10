@@ -91,5 +91,25 @@ typedef struct tagLoginDesc
 }LOGINDESC;
 
 
+// 전역화함
+static float GetRandomFloat(float lowBound, float highBound)
+{
+	if (lowBound >= highBound) // bad input
+		return lowBound;
+	float f = (rand() % 10000) * 0.0001f;
+	return (f * (highBound - lowBound)) + lowBound;
+}
+
+static void GetRandomVector(
+	_float3* out,
+	_float3* min,
+	_float3* max)
+{
+	out->x = GetRandomFloat(min->x, max->x);
+	out->y = GetRandomFloat(min->y, max->y);
+	out->z = GetRandomFloat(min->z, max->z);
+}
+
+
 
 END

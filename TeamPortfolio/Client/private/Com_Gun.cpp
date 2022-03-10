@@ -12,28 +12,41 @@ CCom_Gun::CCom_Gun(const CCom_Gun & rhs)
 {
 }
 
-HRESULT CCom_Gun::CreateBullet_Target(_uint sceneid, _float3 startPos, _float3 moveidr, _float speed, _uint count)
+HRESULT CCom_Gun::CreateBullet_Target(_float3 startPos, _float3 targetPos, _float speed, E_BulletType_MOVE type)
 {
 
-	for (int i = 0; i < count; i++)
-	{
-		CBullet::BULLETDESC desc;
-		desc.BulletType = BULLETTYPE_Dir;
-		desc.MoveDir = moveidr;
-		desc.StartPos = startPos;
-		desc.BulletSpeed = speed;
+	CBullet::BULLETDESC desc;
+	desc.BulletType = type;
 
-		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), &desc));
-	
+	_float3 TargetPos = startPos - targetPos;
+	TargetPos = TargetPos.Get_Nomalize();
+	desc.MoveDir = TargetPos;
+	desc.StartPos = startPos;
+	desc.BulletSpeed = speed;
 
-	}
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(mDesc.mSceneID, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), &desc));
+
 	return S_OK;
 }
 
-HRESULT CCom_Gun::DestoryBullet_All(_uint sceneid)
+HRESULT CCom_Gun::CreateBullet_Dir(_float3 startPos, _float3 moveidr, _float speed, E_BulletType_MOVE type)
+{
+	CBullet::BULLETDESC desc;
+	desc.BulletType = type;
+	desc.MoveDir = moveidr;
+	desc.StartPos = startPos;
+	desc.BulletSpeed = speed;
+
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(mDesc.mSceneID, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), &desc));
+
+	return S_OK;
+
+}
+
+HRESULT CCom_Gun::DestoryBullet_All()
 {
 	// 날아가게 설정
-	list<CGameObject*>* bulletList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(sceneid, TAG_LAY(Layer_Bullet));
+	list<CGameObject*>* bulletList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(mDesc.mSceneID, TAG_LAY(Layer_Bullet));
 	for (auto obj : *bulletList)
 	{
 		obj->DIED();
@@ -49,6 +62,11 @@ HRESULT CCom_Gun::Initialize_Prototype(void * pArg)
 
 HRESULT CCom_Gun::Initialize_Clone(void * pArg)
 {
+	if (pArg != nullptr)
+	{
+		memcpy(&mDesc, pArg, sizeof(tagGunDesc));		
+	}
+
 	return S_OK;
 }
 

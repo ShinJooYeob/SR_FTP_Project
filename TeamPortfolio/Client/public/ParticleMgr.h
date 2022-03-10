@@ -17,7 +17,6 @@ private:
 public:
 	HRESULT Initialize_ParticleMgr(LPDIRECT3DDEVICE9 pGraphicDevice);
 
-
 public:
 	HRESULT Create_ParticleObject(_uint eSceneID, PARTICLEDESC tParticleDesc);
 	HRESULT Create_ParticleObject_AddSub(_uint eSceneID, PARTICLEDESC tParticleDesc, PARTICLEDESC tSubParticleDesc);
