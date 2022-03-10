@@ -72,7 +72,9 @@ _int CUI_Image::Update(_float fDeltaTime)
 		return E_FAIL;
 	m_fTextFrame += fDeltaTime * 10;
 	
-	m_fTime = 255-(255*0.01*GetSingle(CQuest)->Get_QuestNeedPercent(m_iNowQuest));
+	m_fTime = (255-(255*0.01*GetSingle(CQuest)->Get_QuestNeedPercent(m_iNowQuest)));
+	if (m_fTime < 0)
+		m_fTime = 0.f;
 	if (!lstrcmp(L"Common_1", m_pImageName)|| !lstrcmp(L"Common_2", m_pImageName)|| !lstrcmp(L"Common_3", m_pImageName)|| !lstrcmp(L"Common_4", m_pImageName)|| !lstrcmp(L"Common_5", m_pImageName)
 		)
 	{
@@ -110,9 +112,12 @@ _int CUI_Image::Update(_float fDeltaTime)
 				{
 					m_fTextFrame = 0;
 					m_TextRenderBegin = true;
+
 				}
 				else
+				{
 					m_TextRenderBegin = false;
+				}
 			}
 		}
 	}
@@ -149,18 +154,20 @@ _int CUI_Image::Update(_float fDeltaTime)
 
 
 	
-	if (m_iBigger == BIGGER_OFF && m_vUIDesc.z>20)
+	/*if (m_iBigger == BIGGER_OFF && m_vUIDesc.z>20)
 	{
 		m_vUIDesc.z -= 20;
 		m_vUIDesc.w -= 18;
 
 		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc)))
 			return E_FAIL;
-
-
 	}
-	return _int();
 
+	if (!lstrcmp(L"Completed", m_pImageName)&& )*/
+
+		
+		
+	return _int();
 }
 
 HRESULT CUI_Image::SetUp_RenderState()
@@ -171,6 +178,28 @@ HRESULT CUI_Image::SetUp_RenderState()
 	{
 		m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, m_fTime);
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	}
+	else if (!lstrcmp(L"Completed", m_pImageName))
+	{
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		//Sour => 현재 그리려고하는 그림의 색
+		//Dest => 직전까지 화면에 그려진 색
+		//
+		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+		m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+		m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(m_iAlpha, 255, 255, 255));
+		//
+		//
+		//m_pGraphicDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+
+
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 20);
 		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	}
 	else
@@ -311,7 +340,7 @@ _int CUI_Image::Render()
 					temp = L" [Quest3]";
 					GetSingle(CGameInstance)->Render_UI_Font(temp, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 110.f }, { 20.f,30.f }, _float3(255, 255, 255));
 
-					temp2 = L"Clear all \n3 stages";
+					temp2 = L"Clear 4 st\nages";
 					GetSingle(CGameInstance)->Render_UI_Font(temp2, { m_vUIDesc.x - 85.f,m_vUIDesc.y - 65.f }, { 17.5f,27.f }, _float3(139, 0, 139), (_uint)m_fTextFrame);
 
 					temp3 = L"achievement\nrate:" + wstring(szbuf) + L"%";
@@ -402,7 +431,11 @@ void CUI_Image::Set_ImageName(TCHAR * pImageName)
 	{
 		m_ComTexture->Change_TextureLayer(L"Quest_2");
 	}
-
+	else if (!lstrcmp(L"Completed", m_pImageName))
+	{
+		m_ComTexture->Change_TextureLayer(L"Completed");
+		m_fDepth = -0.01;
+	}
 	else if (!lstrcmp(L"Quest_3", m_pImageName))
 	{
 		m_ComTexture->Change_TextureLayer(L"Bar2");

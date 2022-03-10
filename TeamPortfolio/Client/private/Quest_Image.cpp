@@ -183,10 +183,9 @@ HRESULT CQuest_Image::Ready_Layer_UI_Image(const _tchar * pLayerTag)
 	temp->Set_NowQuest(QUEST_4);
 	m_UIList.emplace(L"Quest_Image_4", (CUI*)temp);
 
-	temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y +100, 120.f,10.f)));
-	temp->Set_ImageName(L"Quest_3");
-	temp->Set_NowQuest(QUEST_1);
-	m_UIList.emplace(L"Quest_Image_5", (CUI*)temp);
+	/*temp = (CUI_Image*)(Find_UI(TEXT("UI_ProtoType_Image"))->Clone(&_float4(m_vUIDesc.x, m_vUIDesc.y+120 , 120.f, 80.f)));
+	temp->Set_ImageName(L"Completed");
+	m_UIList.emplace(L"Quest_Image_6", (CUI*)temp);*/
 
 	return S_OK;
 }

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\Camera_Main.h"
 #include "GameInstance.h"
-
-
+#include "Player.h"
+#include "Inventory.h"
 _uint CALLBACK CameraEffectThread(void* _Prameter)
 {
 	THREADARG tThreadArg{};
@@ -90,28 +90,44 @@ _int CCamera_Main::LateUpdate(_float fDeltaTime)
 	//렌더링 그룹에 넣어주는 역활
 
 	CGameInstance* pInstace = GetSingle(CGameInstance);
-
-	if(pInstace->Get_DIKeyState(DIK_TAB) & DIS_Press)
+	
+	
+	CInventory* temp=(CInventory*)pInstace->Get_Commponent_By_LayerIndex(SCENE_STATIC, TEXT("Layer_Player"), TEXT("Com_Inventory"), 0);
+	
+	if(temp!=nullptr&&(temp->Get_Skill_Level(SKILL_CAMERA))&&pInstace->Get_DIKeyState(DIK_TAB) & DIS_Press)
 	{
+		CPlayer* Player = (CPlayer*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENEID::SCENE_STATIC, TAG_LAY(LAYERID::Layer_Player), 0));
+		/*if (Player->Get_CoolDownStart(SKILL_CAMERA) == false)
+			m_bMinimapStart = true;*/
 		if (pInstace->Get_DIKeyState(DIK_TAB) & DIS_Down)
+		{
 			m_MapOpenTime = 0;
+			if (Player->Get_CoolDownStart(SKILL_CAMERA) == false)
+			{
+				m_bMinimapStart = true;
+				Player->Set_CoolDownStart_True(SKILL_CAMERA);
+			}
+			else
+				m_bMinimapStart = false;
+		}
+		if(m_bMinimapStart)
+		{
+			if (FAILED(m_ComRenderer->Add_MainCamemra(this)))
+				return E_FAIL;
+
+			if (FAILED(m_MiniMapUI->LateUpdate(fDeltaTime)))
+				return E_FAIL;
+
+			m_MapOpenTime += fDeltaTime;
+			_float EsaingValue = pInstace->Easing(TYPE_BounceOut, 0, (_float)g_iWinCY, m_MapOpenTime, 2.f);
+
+			if (m_MapOpenTime > 2.f)
+				EsaingValue = g_iWinCY;
+
+			if (FAILED(m_MiniMapUI->Reset_MiniMapSize({ EsaingValue ,EsaingValue })))
+				return E_FAIL;
+		}
 		
-
-		if (FAILED(m_ComRenderer->Add_MainCamemra(this)))
-			return E_FAIL;
-
-		if (FAILED(m_MiniMapUI->LateUpdate(fDeltaTime)))
-			return E_FAIL;
-
-		m_MapOpenTime += fDeltaTime;
-
-		_float EsaingValue = pInstace->Easing(TYPE_BounceOut, 0, (_float)g_iWinCY, m_MapOpenTime, 2.f);
-
-		if (m_MapOpenTime > 2.f)
-			EsaingValue = g_iWinCY;
-		
-		if(FAILED(m_MiniMapUI->Reset_MiniMapSize({ EsaingValue ,EsaingValue })))
-			return E_FAIL;
 	}
 
 	if (pInstace->Get_DIKeyState(DIK_M) & DIS_Down) {
@@ -236,7 +252,7 @@ HRESULT CCamera_Main::Revolution_Turn_AxisY_CW(_float3 vRevPos, _float fTimeDelt
 	vRevPos.y = vCameraPos.y;
 	m_pTransform->LookAt(vRevPos);
 
-
+	
 	return S_OK;
 
 
@@ -246,6 +262,7 @@ HRESULT CCamera_Main::Revolution_Turn_AxisY_CCW(_float3 vRevPos, _float fTimeDel
 {
 	if (FAILED(Revolution_Turn_AxisY_CW(vRevPos, -fTimeDelta)))
 		return E_FAIL;
+	
 	return S_OK;
 }
 
@@ -855,7 +872,7 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 		if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_E) & DIS_Down)
 		{
 
-
+			GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_1, 1);
 			m_CameraDesc.vWorldRotAxis = _float3(0, 0, 16.f).PosVector_Matrix(m_pTransform->Get_WorldMatrix());
 
 
@@ -879,7 +896,7 @@ HRESULT CCamera_Main::Input_Keyboard(_float fDeltaTime)
 
 		if (!m_IsTurning && pInstance->Get_DIKeyState(DIK_Q) & DIS_Down)
 		{
-
+			GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_1, 1);
 			m_CameraDesc.vWorldRotAxis = _float3(0, 0, 16.f).PosVector_Matrix(m_pTransform->Get_WorldMatrix());
 
 			m_fStartAngle = (m_eLoookState) * 90.f;
