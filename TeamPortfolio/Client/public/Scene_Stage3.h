@@ -39,8 +39,19 @@ private:
 
 	D3DLIGHT9		m_Light;
 
-	HRESULT Createparticle_Scene3();
-	void Create_Meteo();
+	
+	// 이펙트
+	HRESULT Update_MapEffect(float timer);
+	void Createparticle_Scene3();
+	PARTICLEDESC Create_MeteoDesc(bool isRight);
+	PARTICLEDESC Create_Star();
+
+private:
+	CGameObject* mPlayer = nullptr;
+
+	float mParticleTime_Metao = 0;
+	float mParticleTime_Star = 0;
+
 
 
 	

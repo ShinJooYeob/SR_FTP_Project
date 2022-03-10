@@ -111,7 +111,9 @@ static void GetRandomVector(
 	out->y = GetRandomFloat(min->y, max->y);
 	out->z = GetRandomFloat(min->z, max->z);
 }
-
-
-
+static bool GetRandomBool()
+{
+	int random = (rand() % 10000) + 1;
+	return 10000 * 0.5 < random;
+}
 END
