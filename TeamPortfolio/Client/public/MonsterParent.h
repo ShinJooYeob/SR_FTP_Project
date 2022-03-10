@@ -43,6 +43,7 @@ public: // For. ObjectFunc
 	HRESULT MoveDir(_float3 Dir, _float Timer){	m_ComTransform->MovetoDir(Dir, Timer);}
 	_float3 GetScreenToWorld(_float2 screenPos);
 
+
 	// 생성 피격 죽음 연출 개별 설정
 	virtual HRESULT CreateObject(_int Damage)PURE;
 	virtual HRESULT Hit(_int Damage)PURE;
@@ -67,6 +68,7 @@ protected:
 	CTexture*	 m_ComTexture;
 	
 	CCom_CollisionViewPort* m_Com_Viewport;
+
 
 	// 셰이더 추가
 	// CShader*	 m_ComShader;

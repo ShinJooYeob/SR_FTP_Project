@@ -12,6 +12,7 @@ class CTransform;
 class CInventory;
 END
 
+BEGIN(Client)
 
 class CUI_BossStatusUI final :public CUI
 {
@@ -35,6 +36,7 @@ public:
 	HRESULT Set_Player(CGameObject* pPlayer);
 	HRESULT Set_ResultUI(CGameObject* pResult);
 
+	_bool	Get_bCanHit() { return (m_bIsStageEnd)? (!m_bIsStageEnd ):(!m_bVersusPointChange); }
 
 	void	Change_VersusPoint(_float vChangePoint);
 
@@ -107,3 +109,5 @@ public:
 	virtual void Free()override;
 
 };
+
+END

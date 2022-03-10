@@ -3,6 +3,7 @@
 #include "Camera_Main.h"
 #include "UI_Result.h"
 #include "MonsterParent.h"
+#include "UI_BossStatusUI.h"
 
 
 
@@ -326,13 +327,18 @@ HRESULT CPlayer::ViewPortHit(CGameObject * hitobj)
 {
 	if (!lstrcmp(hitobj->Get_Layer_Tag(), TAG_LAY(Layer_Bullet)))
 	{
-		// #TODO 플레이어 피격
-		if (!m_bIsDead)
+		if (m_BossStatusUI->Get_bCanHit())
 		{
-			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
-			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT, g_fDeltaTime);
+
+			// #TODO 플레이어 피격
+			if (!m_bIsDead)
+			{
+				m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
+				m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT, g_fDeltaTime);
+				m_BossStatusUI->Change_VersusPoint(1);
+			}
+			((CMonsterParent*)hitobj)->Die();
 		}
-		((CMonsterParent*)hitobj)->Die();
 	}
 	return S_OK;
 }

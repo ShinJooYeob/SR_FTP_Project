@@ -37,7 +37,7 @@ HRESULT CUI_BossStatusUI::Initialize_Clone(void * pArg)
 
 	FAILED_CHECK(SetUp_UIDesc());
 
-
+	m_fDepth = 300;
 
 
 	return S_OK;
@@ -66,8 +66,6 @@ _int CUI_BossStatusUI::LateUpdate(_float fDeltaTime)
 {
 	if (FAILED(__super::LateUpdate(fDeltaTime)))
 		return E_FAIL;
-
-
 
 
 
@@ -194,7 +192,7 @@ HRESULT CUI_BossStatusUI::Second_SetUp_RenderState()
 {
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 180);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	//상태바
@@ -332,9 +330,11 @@ HRESULT CUI_BossStatusUI::Set_ResultUI(CGameObject * pResult)
 
 void CUI_BossStatusUI::Change_VersusPoint(_float vChangePoint)
 {
-	m_fNowVersusPoint += vChangePoint;
+	m_fNowVersusPoint -= vChangePoint;
 	m_fStartPoint = m_fEasingPoint;
 	m_bVersusPointChange = true;
+
+
 	m_fPassedTime = 0;
 	m_fTargetPoint = m_fNowVersusPoint;
 
@@ -363,12 +363,14 @@ HRESULT CUI_BossStatusUI::SetUp_Components()
 
 	m_pPlayer = (CPlayer*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player)));
 	NULL_CHECK_BREAK(m_pPlayer);
-
+	m_pPlayer->Set_BossStatusUI(this);
 	Safe_AddRef(m_pPlayer);
 
 
 	m_pBoss = (CBossMonster*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, TAG_LAY(Layer_Monster)));
 	NULL_CHECK_BREAK(m_pBoss);
+
+	m_pBoss->Set_BossStatusUI(this);
 
 	Safe_AddRef(m_pBoss);
 	
@@ -414,8 +416,8 @@ HRESULT CUI_BossStatusUI::SetUp_UIDesc()
 	//플레이어바
 	m_vBarRect[0].left = m_vUIDesc[0].x - m_vUIDesc[0].z * 0.3f;
 	m_vBarRect[0].right = m_vUIDesc[3].x;
-	m_vBarRect[0].top = m_vUIDesc[0].y + 8;
-	m_vBarRect[0].bottom = m_vUIDesc[0].y + 32;
+	m_vBarRect[0].top = m_vUIDesc[0].y -2;
+	m_vBarRect[0].bottom = m_vUIDesc[0].y + 34;
 
 	//보스 바
 	m_vBarRect[1].left = m_vUIDesc[3].x;
@@ -425,10 +427,10 @@ HRESULT CUI_BossStatusUI::SetUp_UIDesc()
 
 
 	//타이머 바
-	m_vBarRect[2].left = m_vUIDesc[0].x - m_vUIDesc[0].z * 0.3f;
-	m_vBarRect[2].right = m_vUIDesc[0].x + m_vUIDesc[0].z * 0.3f;
+	m_vBarRect[2].left = m_vUIDesc[0].x - m_vUIDesc[0].z * 0.31f;
+	m_vBarRect[2].right = m_vUIDesc[0].x + m_vUIDesc[0].z * 0.31f;
 	m_vBarRect[2].top = m_vUIDesc[0].y - 45;
-	m_vBarRect[2].bottom = m_vUIDesc[0].y + 8;
+	m_vBarRect[2].bottom = m_vUIDesc[0].y - 2;
 
 
 
@@ -443,15 +445,15 @@ HRESULT CUI_BossStatusUI::SetUp_UIDesc()
 
 HRESULT CUI_BossStatusUI::Update_MouseButton(_float fTimeDelta)
 {
-	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_O) & DIS_Down )
-	{
-		Change_VersusPoint(-1);
-	}
-	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_P) & DIS_Down)
-	{
-		Change_VersusPoint(1);
+	//if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_O) & DIS_Down )
+	//{
+	//	Change_VersusPoint(1);
+	//}
+	//if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_P) & DIS_Down)
+	//{
+	//	Change_VersusPoint(-1);
 
-	}
+	//}
 
 
 
@@ -493,7 +495,7 @@ HRESULT CUI_BossStatusUI::Update_Animation(_float fTimeDelta)
 
 
 		_float Timer = m_pResult->Get_NowTime() / m_pResult->Get_MaxTime();
-		m_vBarRect[2].right = m_vUIDesc[0].x + m_vUIDesc[0].z * 0.3f - (m_vUIDesc[0].z * 0.6f * Timer);
+		m_vBarRect[2].right = m_vUIDesc[0].x + m_vUIDesc[0].z * 0.31f - (m_vUIDesc[0].z * 0.62f * Timer);
 
 		if (Timer >= 1)
 		{
@@ -534,7 +536,7 @@ HRESULT CUI_BossStatusUI::Update_Animation(_float fTimeDelta)
 		{
 			m_bIsStageEnd = true;
 			m_pPlayer->Set_StageEnd(0);
-			m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);
+			m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);	
 		}
 		else if (m_fEasingPoint / m_fTotalVersusPoint >= 1)
 		{

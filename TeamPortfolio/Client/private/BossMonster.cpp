@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Bullet.h"
 
+#include "UI_BossStatusUI.h"
 #include "ParticleObejct.h"
 
 CBossMonster::CBossMonster(LPDIRECT3DDEVICE9 pGraphicDevice)
@@ -369,21 +370,26 @@ HRESULT CBossMonster::ViewPortHit(CGameObject * hitobj)
 {
 	if (!lstrcmp(hitobj->Get_Layer_Tag(), TAG_LAY(Layer_Bullet)))
 	{
-		float lifetime = (int)((CBullet*)hitobj)->GetLifeTime();
-		if (lifetime > 1.0f)
+		if (m_BossStatusUI->Get_bCanHit())
 		{
-			if (mMainCamera->Get_bIsTuring())
-				return S_OK;
-			if (
-				mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Left_Axis ||
-				mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Right_Axis
-				)
+			float lifetime = (int)((CBullet*)hitobj)->GetLifeTime();
+			if (lifetime > 1.0f)
 			{
-				return S_OK;
+				if (mMainCamera->Get_bIsTuring())
+					return S_OK;
+				if (
+					mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Left_Axis ||
+					mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Right_Axis
+					)
+				{
+					return S_OK;
+				}
+
+				((CBullet*)hitobj)->Die();
+				Hit(-1);
+				m_BossStatusUI->Change_VersusPoint(-1);
 			}
 
-			((CBullet*)hitobj)->Die();
-			Hit(-1);
 		}
 	}
 	return S_OK;

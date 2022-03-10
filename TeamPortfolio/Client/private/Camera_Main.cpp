@@ -795,7 +795,7 @@ HRESULT CCamera_Main::SetUp_Components()
 	m_ParticleDesc.TargetColor2 = _float3(53, 255.f, 11);
 
 	m_ParticleDesc.m_bIsUI = true;
-	m_ParticleDesc.m_bUIDepth = 10000;
+	m_ParticleDesc.m_bUIDepth = 200;
 
 	m_ParticleDesc.ParticleStartRandomPosMin = _float3(0.0f, 0.f, 0.0f);
 	m_ParticleDesc.ParticleStartRandomPosMax = _float3(0.f, 0.f, 0.0f);

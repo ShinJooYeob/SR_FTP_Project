@@ -48,7 +48,9 @@ public:
 	_bool Get_CoolDownStart(_int eSKILL) { return m_tCoolDown[eSKILL].m_bCoolDownStart; }
 	void Set_CoolDownStart_False(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = false; }
 	void Set_CoolDownStart_True(_int eSKILL) { m_tCoolDown[eSKILL].m_bCoolDownStart = true; }
-	
+
+	void	Set_BossStatusUI(class CUI_BossStatusUI* pObj) { m_BossStatusUI = pObj; }
+
 	CTransform* Get_TransformCom() { return m_ComTransform; }
 
 	HRESULT Set_StageEnd(_int IsKindsOfEnd);
@@ -109,6 +111,8 @@ private:
 	CTransform*				m_pCarryObjectTransform = nullptr;
 
 	CCamera_Main*			m_pCamera_Main = nullptr;
+
+	class CUI_BossStatusUI* m_BossStatusUI = nullptr; 
 
 	////////¿∫«ı¿Ã∞° ∞«µÎ
 public:

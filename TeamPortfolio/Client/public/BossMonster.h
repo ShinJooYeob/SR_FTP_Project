@@ -41,7 +41,7 @@ public:
 	CCamera_Main::CameraLookStateID	Get_CameraLookState() const;
 	CCamera_Main* Get_MainCamera() { return mMainCamera; }
 	const _tchar*	Get_NowTextureTag()const;				//주엽 => 보스 스테이터스 창에 나오는 보스 이미지 변경할때 쓰려고 만든거
-
+	void	Set_BossStatusUI(class CUI_BossStatusUI* pObj) { m_BossStatusUI = pObj; }
 
 
 public:
@@ -90,6 +90,8 @@ private:
 private:
 	float	mPatternTime;
 	int		mNextPattern;
+
+	class   CUI_BossStatusUI* m_BossStatusUI = nullptr;
 
 
 protected:

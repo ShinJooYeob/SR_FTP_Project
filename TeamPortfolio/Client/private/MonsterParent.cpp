@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "UI_BossStatusUI.h"
 #include "..\public\MonsterParent.h"
 #include "Camera_Main.h"
 
@@ -54,6 +55,9 @@ HRESULT CMonsterParent::Initialize_Clone(void * pArg)
 	m_Sphere.mCenterPosition = _float2(0, 0);
 	m_Sphere.mRadius = 30.0f;
 	mFrameCount = 0;
+
+	
+
 	return S_OK;
 }
 
@@ -162,6 +166,7 @@ _float3 CMonsterParent::GetScreenToWorld(_float2 screenPos)
 
 	return newPos;
 }
+
 
 HRESULT CMonsterParent::SetUp_Components()
 {
