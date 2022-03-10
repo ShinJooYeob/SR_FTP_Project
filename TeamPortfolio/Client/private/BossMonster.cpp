@@ -157,17 +157,15 @@ HRESULT CBossMonster::SetUp_Components()
 
 HRESULT CBossMonster::SetUp_RenderState()
 {
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pGraphicDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 100);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	return S_OK;
 }
 
 HRESULT CBossMonster::Release_RenderState()
 {
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	return S_OK;
 }
@@ -233,8 +231,6 @@ HRESULT CBossMonster::Set_TestPattern1()
 	//Set_AttackPattern(startPos, _float3(-1, 0, 0), 10, 6, 0.5f,
 	//	BULLETTYPE_CREATE_DIR, BULLETTYPE_MOVE_NOMAL);
 
-
-
 	Set_MovePattern(_float2(RightX, Topy), 1.f, TYPE_Linear);
 	Set_MovePattern(_float2(RightX, Bottomy), 1.f, TYPE_Linear);
 	
@@ -262,16 +258,16 @@ HRESULT CBossMonster::Set_TestPattern2()
 		Set_MovePattern(_float2(RightX, TargetY), 1.f, TYPE_Linear);
 		if (mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Front_Axis)
 		{
-			Set_Attack_WorldPattern(SpawnOffset,
-				_float3(-1,0,0),
+			Set_Attack_LocalDirPattern(SpawnOffset,
+				180,
 				2, 6, 1.0f,
 				BULLETTYPE_MOVE_NOMAL);
 		}
 
 		else if (mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Back_Axis)
 		{
-			Set_Attack_WorldPattern(SpawnOffset,
-				_float3(1, 0, 0),
+			Set_Attack_LocalDirPattern(SpawnOffset,
+				0,
 				2, 6, 1.0f,
 				BULLETTYPE_MOVE_NOMAL);
 		}

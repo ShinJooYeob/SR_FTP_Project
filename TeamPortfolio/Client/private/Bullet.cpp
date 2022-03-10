@@ -111,7 +111,7 @@ HRESULT CBullet::SetUp_RenderState()
 
 HRESULT CBullet::Release_RenderState()
 {
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	return S_OK;
 

@@ -39,6 +39,10 @@ private:
 
 	D3DLIGHT9		m_Light;
 
+	HRESULT Createparticle_Scene3();
+
+
+	
 public:
 	static CScene_Stage3* Create(LPDIRECT3DDEVICE9 GraphicDevice);
 	virtual void Free() override;
