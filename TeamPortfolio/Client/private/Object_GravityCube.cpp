@@ -295,7 +295,7 @@ void CObject_GravityCube::Set_Particle_BlackDust()
 	tDesc.IsParticleFameEndtoDie = false;
 	//프레임이 한번만 돌것인지 정함
 
-	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
 
 
 

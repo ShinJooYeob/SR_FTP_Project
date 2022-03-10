@@ -55,6 +55,14 @@ private:
 	CUI *		Find_UI(const _tchar * tagUI); //UI 겹치는게 있는지 체크
 	CUI *		Find_Button(const _tchar * tagUIList); //이게 클론을 찾음
 
+	void		Set_Particle_Firecracker2_A();
+	void		Set_Particle_Firecracker2_B();
+
+	void		Set_Particle_Firecracker_A();
+	void		Set_Particle_Firecracker_B();
+
+	void		Set_Particle_Cry();
+
 private:
 	CTexture*				m_ComTexture = nullptr;
 	CTransform*				m_ComTransform = nullptr;
@@ -109,6 +117,8 @@ private:
 	////////////////////////
 	_uint			m_iOldFrameTexture = 0;
 	_bool			m_bFrameTexture = true;
+
+	_bool			m_bParticle_Switch = false;
 
 public:
 	static CUI_Result* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

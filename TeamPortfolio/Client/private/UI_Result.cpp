@@ -88,11 +88,11 @@ _int CUI_Result::Update(_float fDeltaTime)
 	//	m_bClear = true;
 	//}
 
-	//if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
-	//{
-	//	m_bClear = true;
-	//	m_bAfterAnimIsClear = true;
-	//}
+	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
+	{
+		m_bClear = true;
+		m_bAfterAnimIsClear = true;
+	}
 
 	if (m_bStopSwitch == false)
 	{
@@ -358,6 +358,435 @@ CUI * CUI_Result::Find_Button(const _tchar * tagUIList)
 	return iter->second;
 }
 
+void CUI_Result::Set_Particle_Firecracker2_A()
+{
+	PARTICLEDESC tDesc;
+	tDesc.eParticleID = Particle_Fountain;
+	tDesc.TotalParticleTime = 1000.f;
+	tDesc.EachParticleLifeTime = 2.f;
+
+	tDesc.ParticleSize = _float3(40.f, 40.f, 40.f);
+
+	tDesc.Particle_Power = -600;
+
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+
+	tDesc.MaxParticleCount = 25;
+
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+
+	tDesc.szTextureLayerTag = TEXT("Particle_Firecracker2");
+
+	tDesc.m_bIsTextureAutoFrame = false;
+
+	tDesc.FixedTarget = _float3(960, 610, 0);
+
+	tDesc.MaxBoundary = _float3(400, 400, 400);
+
+	tDesc.ParticleColorChage = true;
+	tDesc.TargetColor = _float3(46.f, 231.f, 60.f);
+	tDesc.TargetColor2 = _float3(255.f, 0.f, 00.f);
+
+	tDesc.m_bIsUI = true;
+
+	tDesc.ParticleStartRandomPosMin = _float3(-0.5f, -0.5f, -0.5f);
+	tDesc.ParticleStartRandomPosMax = _float3(0.5f, 0.5f, 0.5f);
+
+	tDesc.MustDraw = true;
+	tDesc.IsParticleFameEndtoDie = false;
+
+	tDesc.m_bUIDepth = -9999;
+	tDesc.bSubPraticle = true;
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+
+	//Sub
+	PARTICLEDESC tSubParticleDesc = {};
+
+	tSubParticleDesc.TotalParticleTime = 3000.f;
+	tSubParticleDesc.EachParticleLifeTime = 0.35f;
+	tSubParticleDesc.eParticleID = Particle_Fountain;
+
+	tSubParticleDesc.ParticleSize = _float3(20.f, 20.f, 20.f);
+
+	tSubParticleDesc.Particle_Power = -600;
+	tSubParticleDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+
+	tSubParticleDesc.MaxParticleCount = 10;
+
+	tSubParticleDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	tSubParticleDesc.szTextureLayerTag = TEXT("Particle_Firecracker2");
+
+	tSubParticleDesc.m_bIsTextureAutoFrame = false;
+	tSubParticleDesc.fAutoFrameMul = 10.f;
+	tSubParticleDesc.FollowingTarget = nullptr;
+	tSubParticleDesc.FixedTarget = _float3();
+
+	tSubParticleDesc.MaxBoundary = _float3(100, 20, 100);
+	tSubParticleDesc.ParticleColorChage = false;
+
+	tSubParticleDesc.m_bIsUI = false;
+	tSubParticleDesc.ParticleStartRandomPosMin = _float3(0.f, 0.0f, 0.0f);
+	tSubParticleDesc.ParticleStartRandomPosMax = _float3(0.f, 0.0f, 0.0f);
+
+	tSubParticleDesc.vUp = _float3(0, 1, 0);
+
+	tSubParticleDesc.m_bIsUI = true;
+
+	tSubParticleDesc.MustDraw = false;
+	tSubParticleDesc.IsParticleFameEndtoDie = false;
+	tSubParticleDesc.AlphaBlendON = true;
+
+	GetSingle(CParticleMgr)->Create_ParticleObject_AddSub(m_eNowSceneNum, tDesc, tSubParticleDesc);
+
+}
+
+void CUI_Result::Set_Particle_Firecracker2_B()
+{
+	//PARTICLEDESC tDesc;
+	////파티클이 흩날리는 종류 설정
+	//tDesc.eParticleID = Particle_Fountain;
+
+	////총 파티클이 몇초동안 흩날릴 것인지 설정
+	//tDesc.TotalParticleTime = 1.f;
+
+	////파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
+	//tDesc.EachParticleLifeTime = 2.f;
+
+	////파티클의 사이즈를 설정
+	//tDesc.ParticleSize = _float3(40.f, 40.f, 40.f);
+
+	////파티클의 파워(이동속도)를 결정
+	//tDesc.Particle_Power = -600;
+
+	////파티클의 파워(이동속도)의 랜덤 범위를 결정
+	//tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+
+	////파티클이 한번에 최대 몇개까지 보일 것인지 설정
+	//tDesc.MaxParticleCount = 25;
+
+	////파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
+	//tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+
+	////파티클 텍스처 레이어 스테이트키를 변경할 수 있음
+	//tDesc.szTextureLayerTag = TEXT("Particle_Firecracker2");
+
+	////텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+	//tDesc.m_bIsTextureAutoFrame = false;
+
+	////FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
+	////FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
+	////단 둘중 하나만 사용 가능
+	////둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
+	////FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
+	////tDesc.FollowingTarget = m_ComTransform;
+	//tDesc.FixedTarget = _float3(320, 610, 0);
+
+	////파티클의 최대 이탈 범위(range)를 설정해 줌 
+	////FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
+	//tDesc.MaxBoundary = _float3(400, 400, 400);
+
+	////텍스처의 색상을 변경할 수 있는 기능 온오프
+	////만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
+	////true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
+	//tDesc.ParticleColorChage = true;
+	//tDesc.TargetColor = _float3(46.f, 231.f, 60.f);
+	//tDesc.TargetColor2 = _float3(255.f, 0.f, 00.f);
+
+	////만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
+	////UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
+	////World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
+	//tDesc.m_bIsUI = true;
+
+	////방향을 설정하고 싶을 때 사용하는 옵션
+	////ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
+	////혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
+	///*tDesc.vUp = _float3(-1, -1, 0);*/
+
+	////파티클의 랜덤 설정을 Min과 Max를 정해준다.
+	//tDesc.ParticleStartRandomPosMin = _float3(-0.5f, -0.5f, -0.5f);
+	//tDesc.ParticleStartRandomPosMax = _float3(0.5f, 0.5f, 0.5f);
+
+	//tDesc.MustDraw = true;
+	////오브젝트 뒤에 가려지지 않게 만듬
+
+	//tDesc.IsParticleFameEndtoDie = false;
+	////프레임이 한번만 돌것인지 정함
+
+	//tDesc.m_bUIDepth = -9999;
+
+	//GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+
+	////Sub
+	//PARTICLEDESC tSubParticleDesc = {};
+
+	//tSubParticleDesc.TotalParticleTime = 3000.f;
+	//tSubParticleDesc.EachParticleLifeTime = 0.35f;
+
+	//tSubParticleDesc.ParticleSize = _float3(20.f, 20.f, 20.f);
+
+	//tSubParticleDesc.Particle_Power = -600;
+	//tSubParticleDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+
+	//tSubParticleDesc.MaxParticleCount = 10;
+
+	//tSubParticleDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	//tSubParticleDesc.szTextureLayerTag = TEXT("Particle_Firecracker2");
+
+	//tSubParticleDesc.m_bIsTextureAutoFrame = false;
+	//tSubParticleDesc.fAutoFrameMul = 10.f;
+	//tSubParticleDesc.FollowingTarget = nullptr;
+	//tSubParticleDesc.FixedTarget = _float3();
+
+	//tSubParticleDesc.MaxBoundary = _float3(100, 20, 100);
+	//tSubParticleDesc.ParticleColorChage = false;
+
+	//tSubParticleDesc.m_bIsUI = false;
+	//tSubParticleDesc.ParticleStartRandomPosMin = _float3(0.f, 0.0f, 0.0f);
+	//tSubParticleDesc.ParticleStartRandomPosMax = _float3(0.f, 0.0f, 0.0f);
+
+	//tSubParticleDesc.vUp = _float3(0, 1, 0);
+
+	//tSubParticleDesc.m_bIsUI = true;
+
+	//tSubParticleDesc.MustDraw = false;
+	//tSubParticleDesc.IsParticleFameEndtoDie = false;
+	//tSubParticleDesc.AlphaBlendON = true;
+
+	//GetSingle(CParticleMgr)->Create_ParticleObject_AddSub(m_eNowSceneNum, tDesc, tSubParticleDesc);
+}
+
+void CUI_Result::Set_Particle_Firecracker_A()
+{
+	PARTICLEDESC tDesc;
+	//파티클이 흩날리는 종류 설정
+	tDesc.eParticleID = Particle_Fixed;
+
+	//총 파티클이 몇초동안 흩날릴 것인지 설정
+	tDesc.TotalParticleTime = 0.f;
+
+	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
+	tDesc.EachParticleLifeTime = 2.f;
+
+	//파티클의 사이즈를 설정
+	tDesc.ParticleSize = _float3(20.f, 20.f, 20.f);
+
+	//파티클의 파워(이동속도)를 결정
+	tDesc.Particle_Power = -600;
+
+	//파티클의 파워(이동속도)의 랜덤 범위를 결정
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+
+	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
+	tDesc.MaxParticleCount = 20;
+
+	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+
+	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
+	tDesc.szTextureLayerTag = TEXT("Particle_Firecracker");
+
+	//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+	tDesc.m_bIsTextureAutoFrame = true;
+
+	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
+	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
+	//단 둘중 하나만 사용 가능
+	//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
+	//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
+	//tDesc.FollowingTarget = m_ComTransform;
+	tDesc.FixedTarget = _float3(g_iWinCX >> 1, g_iWinCY >> 1, 0);
+
+	//파티클의 최대 이탈 범위(range)를 설정해 줌 
+	//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
+	tDesc.MaxBoundary = _float3(640, 360, 0);
+
+	//텍스처의 색상을 변경할 수 있는 기능 온오프
+	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
+	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
+	tDesc.ParticleColorChage = true;
+	tDesc.TargetColor = _float3(46.f, 231.f, 60.f);
+	tDesc.TargetColor2 = _float3(255.f, 0.f, 00.f);
+
+	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
+	//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
+	//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
+	tDesc.m_bIsUI = true;
+
+	//방향을 설정하고 싶을 때 사용하는 옵션
+	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
+	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
+	/*tDesc.vUp = _float3(-1, -1, 0);*/
+
+	//파티클의 랜덤 설정을 Min과 Max를 정해준다.
+	tDesc.ParticleStartRandomPosMin = _float3(-640.f, -360.f, -0.5f);
+	tDesc.ParticleStartRandomPosMax = _float3(640.f, 360.f, 0.5f);
+
+	tDesc.MustDraw = true;
+	//오브젝트 뒤에 가려지지 않게 만듬
+
+	tDesc.IsParticleFameEndtoDie = false;
+	//프레임이 한번만 돌것인지 정함
+
+	tDesc.m_bUIDepth = -9999;
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+}
+
+void CUI_Result::Set_Particle_Firecracker_B()
+{
+	PARTICLEDESC tDesc;
+	//파티클이 흩날리는 종류 설정
+	tDesc.eParticleID = Particle_Fixed;
+
+	//총 파티클이 몇초동안 흩날릴 것인지 설정
+	tDesc.TotalParticleTime = 1000.f;
+
+	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
+	tDesc.EachParticleLifeTime = 2.f;
+
+	//파티클의 사이즈를 설정
+	tDesc.ParticleSize = _float3(20.f, 20.f, 20.f);
+
+	//파티클의 파워(이동속도)를 결정
+	tDesc.Particle_Power = -600;
+
+	//파티클의 파워(이동속도)의 랜덤 범위를 결정
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+
+	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
+	tDesc.MaxParticleCount = 20;
+
+	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+
+	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
+	tDesc.szTextureLayerTag = TEXT("Particle_Firecracker");
+
+	//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+	tDesc.m_bIsTextureAutoFrame = true;
+
+	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
+	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
+	//단 둘중 하나만 사용 가능
+	//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
+	//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
+	//tDesc.FollowingTarget = m_ComTransform;
+	tDesc.FixedTarget = _float3(g_iWinCX >> 1, g_iWinCY >> 1, 0);
+
+	//파티클의 최대 이탈 범위(range)를 설정해 줌 
+	//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
+	tDesc.MaxBoundary = _float3(640, 360, 0);
+
+	//텍스처의 색상을 변경할 수 있는 기능 온오프
+	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
+	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
+	tDesc.ParticleColorChage = true;
+	tDesc.TargetColor = _float3(40.f, 46.f, 255.f);
+	tDesc.TargetColor2 = _float3(40.f, 255.f, 62.f);
+
+	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
+	//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
+	//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
+	tDesc.m_bIsUI = true;
+
+	//방향을 설정하고 싶을 때 사용하는 옵션
+	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
+	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
+	/*tDesc.vUp = _float3(-1, -1, 0);*/
+
+	//파티클의 랜덤 설정을 Min과 Max를 정해준다.
+	tDesc.ParticleStartRandomPosMin = _float3(-640.f, -360.f, -0.5f);
+	tDesc.ParticleStartRandomPosMax = _float3(640.f, 360.f, 0.5f);
+
+	tDesc.MustDraw = true;
+	//오브젝트 뒤에 가려지지 않게 만듬
+
+	tDesc.IsParticleFameEndtoDie = false;
+	//프레임이 한번만 돌것인지 정함
+
+	tDesc.m_bUIDepth = -9999;
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+}
+
+void CUI_Result::Set_Particle_Cry()
+{
+	PARTICLEDESC tDesc;
+	//파티클이 흩날리는 종류 설정
+	tDesc.eParticleID = Particle_Straight;
+
+	//총 파티클이 몇초동안 흩날릴 것인지 설정
+	tDesc.TotalParticleTime = 2.f;
+
+	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
+	tDesc.EachParticleLifeTime = 6.f;
+
+	//파티클의 사이즈를 설정
+	tDesc.ParticleSize = _float3(30.f, 30.f, 30.f);
+
+	//파티클의 파워(이동속도)를 결정
+	tDesc.Particle_Power = 400;
+
+	//파티클의 파워(이동속도)의 랜덤 범위를 결정
+	tDesc.PowerRandomRange = _float2(0.3f, 1.8f);
+
+	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
+	tDesc.MaxParticleCount = 30;
+
+	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+
+	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
+	tDesc.szTextureLayerTag = TEXT("Particle_Sweat");
+
+	//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+	tDesc.m_bIsTextureAutoFrame = false;
+
+	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
+	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
+	//단 둘중 하나만 사용 가능
+	//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
+	//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
+	//tDesc.FollowingTarget = m_ComTransform;
+	tDesc.FixedTarget = _float3(g_iWinCX >> 1, 0, 0);
+
+	//파티클의 최대 이탈 범위(range)를 설정해 줌 
+	//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
+	tDesc.MaxBoundary = _float3(640, 720, 0);
+
+	//텍스처의 색상을 변경할 수 있는 기능 온오프
+	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
+	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
+	tDesc.ParticleColorChage = false;
+	tDesc.TargetColor = _float3(46.f, 231.f, 60.f);
+	tDesc.TargetColor2 = _float3(255.f, 0.f, 00.f);
+
+	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
+	//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
+	//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
+	tDesc.m_bIsUI = true;
+
+	//방향을 설정하고 싶을 때 사용하는 옵션
+	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
+	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
+	/*tDesc.vUp = _float3(-1, -1, 0);*/
+
+	//파티클의 랜덤 설정을 Min과 Max를 정해준다.
+	tDesc.ParticleStartRandomPosMin = _float3(-640.f, 0.f, 0.f);
+	tDesc.ParticleStartRandomPosMax = _float3(640.f, 0.f, 0.f);
+
+	tDesc.MustDraw = true;
+	//오브젝트 뒤에 가려지지 않게 만듬
+
+	tDesc.IsParticleFameEndtoDie = false;
+	//프레임이 한번만 돌것인지 정함
+
+	tDesc.m_bUIDepth = -9999;
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+}
+
 HRESULT CUI_Result::Ready_Layer_RankStar(const _tchar * pLayerTag)
 {
 	CUI_RankStar::RANKSTARDESC	tagRankStarDesc;
@@ -529,6 +958,7 @@ HRESULT CUI_Result::SetUp_Pont()
 				{
 
 					GetSingle(CGameInstance)->PlaySound(L"EH_Mission_Failed.wav", CHANNEL_UI);
+					Set_Particle_Cry();
 					SoundSwitch = true;
 				}
 
@@ -563,6 +993,14 @@ HRESULT CUI_Result::SetUp_Pont()
 			if (m_fFrameTexture > 10)
 			{
 				GetSingle(CGameInstance)->Render_UI_Font(TempString, { 500.f,360.f }, { 25.f,60.f }, _float3(123, 104, 238), m_fFrameTexture - 10);
+				if (m_bParticle_Switch == false)
+				{
+					Set_Particle_Firecracker2_A();
+					Set_Particle_Firecracker2_B();
+
+					m_bParticle_Switch = true;
+				}
+
 			}
 
 			if (FAILED(Release_RenderState()))
@@ -585,6 +1023,8 @@ HRESULT CUI_Result::SetUp_Pont()
 				{
 
 					GetSingle(CGameInstance)->PlaySound(L"EH_Mission_Clear.wav", CHANNEL_UI);
+					Set_Particle_Firecracker_A();
+					Set_Particle_Firecracker_B();
 					SoundSwitch = true;
 				}
 			}
