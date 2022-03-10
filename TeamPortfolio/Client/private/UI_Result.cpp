@@ -613,7 +613,18 @@ HRESULT CUI_Result::SetUp_Player()
 
 	if(m_fMaxTime>m_fTimer)
 	{
+		/////////퀘스트 정보 전달 -진우/////////
+		if (!(Player->getBestClear(m_eNowSceneNum)))
+		{
+			if(m_eNowSceneNum==SCENE_BOSS)
+				GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_4, 1);
+			else
+				GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_3, 1);
+
+		}
+		////////////////////////////////////////
 		Player->SetBestClear(m_eNowSceneNum, m_fTimer);
+		
 	}
 	TempBestClear = Player->getBestClear(m_eNowSceneNum);
 

@@ -921,7 +921,6 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 						}
 						else {
 							m_tCoolDown[SKILL_SPEEDUP].m_bCoolDownStart = true;
-							GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_1, 1);
 							m_bIsRunning = true;
 							m_ComTransform->Set_MoveSpeed(2.5f + m_ComInventory->Get_Skill_Level(SKILL_SPEEDUP) * 0.25f);
 							GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, m_ArrParticleDesc[3]);

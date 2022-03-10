@@ -197,9 +197,9 @@ HRESULT CMainApp::Ready_SingletonMgr()
 
 	GetSingle(CQuest)->Initialize_Quest(QUEST_END);
 	GetSingle(CQuest)->Set_QuestGoal(QUEST_1, 6);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_2, 3);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_3, 5);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_4, 5);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_2, 12);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_3, 4);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_4, 1);
 
 	GetSingle(CLoginMgr)->Initialize_LoginMgr();
 

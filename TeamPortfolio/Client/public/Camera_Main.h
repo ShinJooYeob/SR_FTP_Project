@@ -78,7 +78,7 @@ private:
 	_float						m_fStartAngle = 0;
 	_float						m_fTargetAngle = 0;
 	_bool						m_IsTurning = false;
-
+	_bool						m_bMinimapStart = false;
 
 	CTexture*				m_ComTexture = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
