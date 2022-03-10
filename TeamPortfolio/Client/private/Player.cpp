@@ -413,6 +413,7 @@ HRESULT CPlayer::Set_StageEnd(_int IsKindsOfEnd)
 			break;
 
 		case 1:	// Stage End By StageClear
+		{
 
 			m_bIsStageEnd = 1;
 			m_ComTexture->Change_TextureLayer(TEXT("victory"), 10.f);
@@ -425,7 +426,7 @@ HRESULT CPlayer::Set_StageEnd(_int IsKindsOfEnd)
 			GetSingle(CGameInstance)->PlaySound(TEXT("JY_opentreasure.wav"), CHANNEL_PLAYER);
 
 			_float3 PlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-			_float4 Arg = { PlayerPos.x,PlayerPos.y,PlayerPos.z,TempResult->Get_RankStar() };
+			_float4 Arg = { PlayerPos.x,PlayerPos.y,PlayerPos.z,_float(TempResult->Get_RankStar()) };
 
 
 
@@ -435,6 +436,7 @@ HRESULT CPlayer::Set_StageEnd(_int IsKindsOfEnd)
 
 
 			break;
+		}
 
 		case 2:
 

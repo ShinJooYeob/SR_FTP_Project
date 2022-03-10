@@ -310,7 +310,11 @@ HRESULT CScene_Stage2::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerT
 	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(0.f, 1.f, 0.f)))
 	//	return E_FAIL; 
 
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"),&_float3(5.f, 64.f, -24.f)))
+	_float3 TransformPos = _float3(5.f, 64.5f, -28.2f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TreasureBox", TEXT("Prototype_GameObject_TreasureBox"), &TransformPos));
+
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"),&_float3(5.f, 64.f, -28.f)))
 		return E_FAIL;
 
 

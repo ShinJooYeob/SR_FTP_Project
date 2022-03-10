@@ -199,29 +199,30 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Penguin", pGameInstance->Create_ParsedObject(L"PenguinVertex.txt", L"PenguinIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigGreenTree", pGameInstance->Create_ParsedObject(L"BigGreenTreeVertex.txt", L"BigGreenTreeIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreasureBox", pGameInstance->Create_ParsedObject(L"TreasureVertex.txt", L"TreasureIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreasureBox", pGameInstance->Create_ParsedObject(L"TreasureVertex.txt", L"TreasureIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_DeathSkull", pGameInstance->Create_ParsedObject(L"DeathSkullVertex.txt", L"DeathSkullIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TombStone", pGameInstance->Create_ParsedObject(L"TombStoneVertex.txt", L"TombStoneIndex.txt")));
-	
-	//올빼미 머리 몸통세트
+	//
+	////올빼미 머리 몸통세트
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwl", pGameInstance->Create_ParsedObject(L"BigOwlVertex.txt", L"BigOwlIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwlHead", pGameInstance->Create_ParsedObject(L"BigOwlHeadVertex.txt", L"BigOwlHeadIndex.txt")));
-	
+	//
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Bell", pGameInstance->Create_ParsedObject(L"BellVertex.txt", L"BellIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_LightHouse", pGameInstance->Create_ParsedObject(L"LightHouseVertex.txt", L"LightHouseIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MiniTree", pGameInstance->Create_ParsedObject(L"MiniTreeVertex.txt", L"MiniTreeIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_ZuHeadWhite", pGameInstance->Create_ParsedObject(L"ZuHeadWhiteVertex.txt", L"ZuHeadWhiteIndex.txt")));
-	
-	//풍차세트
+	//
+	////풍차세트
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillBlue", pGameInstance->Create_ParsedObject(L"WindmillBlueVertex.txt", L"WindmillBlueIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillStick", pGameInstance->Create_ParsedObject(L"WindmillStickVertex.txt", L"WindmillStickIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigWindmill", pGameInstance->Create_ParsedObject(L"BigWindmillVertex.txt", L"BigWindmillIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillCore", pGameInstance->Create_ParsedObject(L"WindmillCoreVertex.txt", L"WindmillCoreIndex.txt")));
-	
+	//
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Alien", pGameInstance->Create_ParsedObject(L"AlienVertex.txt", L"AlienIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MapleTree", pGameInstance->Create_ParsedObject(L"MapleTreeVertex.txt", L"MapleTreeIndex.txt")));
 	
 	////
+
 
 
 #pragma endregion
@@ -309,6 +310,49 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 
 	if (FAILED(pGameInstance->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI")))
 		return E_FAIL;
+
+
+	/////////////게임오브젝트 파서들
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Blossoms"), CParsedObject_Blossoms::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Penguin"), CParsedObject_Penguin::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BigGreenTree"), CParsedObject_BigGreenTree::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TreasureBox"), CParsedObject_TreasureBox::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TombStone"), CParsedObject_TombStone::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	//올빼미 머리 몸통 세트------
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BigOwl"), CParsedObject_BigOwl::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BigOwlHead"), CParsedObject_BigOwlHead::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	//-------
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Bell"), CParsedObject_Bell::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_LightHouse"), CParsedObject_LightHouse::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_MiniTree"), CParsedObject_MiniTree::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_ZuHeadWhite"), CParsedObject_ZuHeadWhite::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	//풍차들
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_WindmillBlue"), CParsedObject_WindmillBlue::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_WindmillStick"), CParsedObject_WindmillStick::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BigWindmill"), CParsedObject_BigWindmill::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_WindmillCore"), CParsedObject_WindmillCore::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Alien"), CParsedObject_Alien::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_MapleTree"), CParsedObject_MapleTree::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	//////////////////////////////////
 
 #pragma endregion
 
@@ -555,6 +599,10 @@ HRESULT CLoader::Load_Scene_Stage2(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	TextureDesc.szTextFilePath = TEXT("UI_Start.txt");
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_StartUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.szTextFilePath = TEXT("Parsed.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, L"Prototype_Component_Texture_Parsed", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 #pragma endregion
@@ -853,47 +901,7 @@ HRESULT CLoader::Load_Scene_TUTORIAL(_bool * _IsClientQuit, CRITICAL_SECTION * _
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Npc_izaacTuto"), CNpc_izaacTuto::Create(m_pGraphicDevice))))
 		return E_FAIL;
-	/////////////게임오브젝트 파서들
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Blossoms"), CParsedObject_Blossoms::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Penguin"), CParsedObject_Penguin::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BigGreenTree"), CParsedObject_BigGreenTree::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TreasureBox"), CParsedObject_TreasureBox::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TombStone"), CParsedObject_TombStone::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	//올빼미 머리 몸통 세트------
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BigOwl"), CParsedObject_BigOwl::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BigOwlHead"), CParsedObject_BigOwlHead::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	//-------
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Bell"), CParsedObject_Bell::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_LightHouse"), CParsedObject_LightHouse::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_MiniTree"), CParsedObject_MiniTree::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_ZuHeadWhite"), CParsedObject_ZuHeadWhite::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	
-	//풍차들
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_WindmillBlue"), CParsedObject_WindmillBlue::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_WindmillStick"), CParsedObject_WindmillStick::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BigWindmill"), CParsedObject_BigWindmill::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_WindmillCore"), CParsedObject_WindmillCore::Create(m_pGraphicDevice))))
-		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Alien"), CParsedObject_Alien::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_MapleTree"), CParsedObject_MapleTree::Create(m_pGraphicDevice))))
-		return E_FAIL;
-	//////////////////////////////////
 
 #pragma endregion
 

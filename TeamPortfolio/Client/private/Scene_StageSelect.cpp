@@ -93,7 +93,6 @@ HRESULT CScene_StageSelect::Initialize()
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Penguine", TEXT("Prototype_GameObject_Penguine")));
 
 
-	FAILED_CHECK(Ready_Layer_Test(L"Layer_Test"));
 
 	return S_OK;
 }
@@ -630,10 +629,6 @@ HRESULT CScene_StageSelect::Ready_Layer_StageEntryCollsionObject(const _tchar * 
 	return S_OK;
 }
 
-HRESULT CScene_StageSelect::Ready_Layer_Test(const _tchar * pLayerTag)
-{
-	return S_OK;
-}
 
 HRESULT CScene_StageSelect::Ready_Layer_Object_VanishCube(const _tchar * pLayerTag)
 {

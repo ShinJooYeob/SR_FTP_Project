@@ -50,14 +50,14 @@ HRESULT CEffect_StageClear::Initialize_Clone(void * pArg)
 		STAROBJATT ObjAtt;
 		ObjAtt.vPos = ObjAtt.vPlayerPos = vPlayerPos;
 		ObjAtt.fDegreeAngle = 360 / m_iAcheiveStarNum *i;
-		ObjAtt.fAge = ((i) - _float (m_iAcheiveStarNum)  ) * 0.2f;
+		ObjAtt.fAge = ((i) - _float (m_iAcheiveStarNum)  ) * 0.3f;
 		ObjAtt.LifeTime = 5;
-		ObjAtt.fDist = 4;
+		ObjAtt.fDist = 6;
 		ObjAtt.bIsDead = false;
 
 		ObjAtt.vTargetPos = Caculate_TargetPos(ObjAtt.vPlayerPos, ObjAtt.fDegreeAngle, ObjAtt.fDist);
 
-		ObjAtt.vTargetPos.y += (ObjAtt.fDist  * 2.f) / _float(m_iAcheiveStarNum) * (-abs(_float(m_iAcheiveStarNum) * 0.5f - i));
+		ObjAtt.vTargetPos.y += (ObjAtt.fDist  * 2.f) / _float(m_iAcheiveStarNum) * (abs(_float(m_iAcheiveStarNum) * 0.5f - i));
 
 		m_StarObjectList.push_back(ObjAtt);
 	}
@@ -103,9 +103,9 @@ _int CEffect_StageClear::Update(_float fTimeDelta)
 			{
 				iter->fAge += fTimeDelta;
 
-				if (iter->fAge > -0.2f)
+				if (iter->fAge > -0.3f)
 				{
-					iter->vPos = EaseingFloat3(TYPE_Linear, iter->vPlayerPos, iter->vTargetPos, iter->fAge + 0.5f, 0.5f);
+					iter->vPos = EaseingFloat3(TYPE_Linear, iter->vPlayerPos, iter->vTargetPos, iter->fAge + 0.3f, 0.3f);
 				}
 				if (iter->fAge >= 0)
 				{
@@ -128,11 +128,11 @@ _int CEffect_StageClear::Update(_float fTimeDelta)
 			if (!(iter->bIsDead))
 			{
 				iter->fAge += fTimeDelta;
-				iter->fDist = pInstance->Easing(TYPE_Linear, 4, 0, iter->fAge, iter->LifeTime);
+				iter->fDist = pInstance->Easing(TYPE_Linear, 6, 0, iter->fAge, iter->LifeTime);
 				iter->fDegreeAngle -= fTimeDelta * 360.f;
 
 				iter->vPos = Caculate_TargetPos(iter->vPlayerPos, iter->fDegreeAngle, iter->fDist);
-				iter->vPos.y += (iter->fDist  * 2.f) / _float(m_iAcheiveStarNum) * (-abs(_float(m_iAcheiveStarNum) * 0.5f - i));
+				iter->vPos.y += (iter->fDist  * 2.f) / _float(m_iAcheiveStarNum) * (abs(_float(m_iAcheiveStarNum) * 0.5f - i));
 
 
 				m_ParticleDesc.FixedTarget = iter->vPos;
