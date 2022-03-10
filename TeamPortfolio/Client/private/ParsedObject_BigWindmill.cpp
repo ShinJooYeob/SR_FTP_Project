@@ -30,14 +30,15 @@ HRESULT CParsedObject_BigWindmill::Initialize_Clone(void * pArg)
 		return E_FAIL;
 
 	if (pArg != nullptr) {
-		_float3 vSettingPoint;
-		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		memcpy(&m_BigWindmill, pArg, sizeof(BIGWINDMILLDESC));
 		m_Layer_Tag = (TEXT("Layer_BigWindmill"));
 		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_BigWindmill.Transform);
 	}
 
 	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("BigWindmill")));
+
+	m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(180));
 
 	return S_OK;
 }
@@ -46,6 +47,8 @@ _int CParsedObject_BigWindmill::Update(_float fTimeDelta)
 {
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
+
+	m_ComTransform->Turn_CW(_float3(0, 0, 1), fTimeDelta);
 
 
 

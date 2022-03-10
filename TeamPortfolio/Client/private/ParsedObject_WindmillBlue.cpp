@@ -28,15 +28,17 @@ HRESULT CParsedObject_WindmillBlue::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	if (pArg != nullptr) {
-		_float3 vSettingPoint;
-		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+	if (pArg != nullptr)
+	{
+		memcpy(&m_WindmillBlue, pArg, sizeof(WINDMILLBLUEDESC));
 		m_Layer_Tag = (TEXT("Layer_WindmillBlue"));
 		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_WindmillBlue.fTransform);
 	}
 
 	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("WindmillBlue")));
+
+	m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(180));
 
 	return S_OK;
 }
@@ -46,7 +48,7 @@ _int CParsedObject_WindmillBlue::Update(_float fTimeDelta)
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
-
+	m_ComTransform->Turn_CW(_float3(0, 0, 1), fTimeDelta);
 
 	return _int();
 }
