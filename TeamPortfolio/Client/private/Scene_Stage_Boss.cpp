@@ -55,7 +55,7 @@ HRESULT CScene_Stage_Boss::Initialize()
 	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
 	FAILED_CHECK(Ready_Layer_PauseUI(TEXT("Layer_PauseUI")));
 	FAILED_CHECK(Ready_Layer_Object_BossStatusUI(TEXT("Layer_BossStatusUI")))
-	//FAILED_CHECK(Ready_Layer_Object_BossEntry(TEXT("Layer_BossEntry")));
+	FAILED_CHECK(Ready_Layer_Object_BossEntry(TEXT("Layer_BossEntry")));
 
 	//////////////////////////////////////////////////////////////////////////
 
