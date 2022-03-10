@@ -42,6 +42,7 @@ public:
 	void		Set_Clear_Wait_AnimTime(_bool bIsClear, _float MaxAnimTime);
 	HRESULT		Ready_Layer_RankStar(const _tchar * pLayerTag);
 	void		Set_RankStar();
+	_int		Get_RankStar() {return RankNumber;}
 
 
 	void		Set_MaxTime(_float fMaxtime) { m_fMaxTime= fMaxtime; };

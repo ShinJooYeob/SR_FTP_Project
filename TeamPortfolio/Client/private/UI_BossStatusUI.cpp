@@ -483,8 +483,8 @@ HRESULT CUI_BossStatusUI::Update_Animation(_float fTimeDelta)
 	{
 		//////타이머바 애니메이션////////////////////////////////////////////////////////////////////
 		m_fTimeBarPassedTime += fTimeDelta;
-		m_NowColor = EaseingFloat3(TYPE_Linear, m_StartColor, m_TargetColor, m_fTimeBarPassedTime, 1.f);
-		if (m_fTimeBarPassedTime > 1.f)
+		m_NowColor = EaseingFloat3(TYPE_Linear, m_StartColor, m_TargetColor, m_fTimeBarPassedTime, 0.7f);
+		if (m_fTimeBarPassedTime > 0.7f)
 		{
 			m_NowColor = m_StartColor = m_TargetColor;
 			m_TargetColor = _float3(rand() % 255, rand() % 255, rand() % 255);

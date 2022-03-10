@@ -418,9 +418,21 @@ HRESULT CPlayer::Set_StageEnd(_int IsKindsOfEnd)
 			m_ComTexture->Change_TextureLayer(TEXT("victory"), 10.f);
 			m_pCamera_Main->Set_VictoryTurnAxis(m_ComTransform->Get_MatrixState(CTransform::STATE_POS), m_vCameraPivot);
 			m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_VICTORY, g_fDeltaTime, 5.f);
-			((CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")))->Set_Clear_Wait_AnimTime(true, 7.f);
+
+			CUI_Result* TempResult = ((CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")));
+			TempResult->Set_Clear_Wait_AnimTime(true, 7.f);
 			GetSingle(CGameInstance)->Stop_ChannelSound(CHANNEL_BGM);
 			GetSingle(CGameInstance)->PlaySound(TEXT("JY_opentreasure.wav"), CHANNEL_PLAYER);
+
+			_float3 PlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+			_float4 Arg = { PlayerPos.x,PlayerPos.y,PlayerPos.z,TempResult->Get_RankStar() };
+
+
+
+			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STATIC, L"Layer_ClearEffect", TEXT("ProtoType_GameObject_Effect_StageClear")
+			,&Arg))
+				return E_FAIL;
+
 
 			break;
 

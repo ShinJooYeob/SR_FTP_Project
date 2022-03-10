@@ -35,6 +35,8 @@ private:
 	HRESULT Ready_Layer_StageEntryCollsionObject(const _tchar* pLayerTag);
 
 
+	HRESULT Ready_Layer_Test(const _tchar* pLayerTag);
+
 
 	HRESULT Ready_Layer_GravityCube(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_JumpCube(const _tchar* pLayerTag);

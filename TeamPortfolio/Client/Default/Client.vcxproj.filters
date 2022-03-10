@@ -322,6 +322,9 @@
     <Filter Include="01.GameObject\UI\UI_BossStatusUI">
       <UniqueIdentifier>{f11b516a-ecb4-4871-bb33-11808a3c5736}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\Effect">
+      <UniqueIdentifier>{99c3cd24-35c8-4365-ac53-d9f3885d37ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -624,6 +627,9 @@
     <ClInclude Include="..\public\UI_BossStatusUI.h">
       <Filter>01.GameObject\UI\UI_BossStatusUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Effect_StageClear.h">
+      <Filter>01.GameObject\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -913,6 +919,9 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_BossStatusUI.cpp">
       <Filter>01.GameObject\UI\UI_BossStatusUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_StageClear.cpp">
+      <Filter>01.GameObject\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

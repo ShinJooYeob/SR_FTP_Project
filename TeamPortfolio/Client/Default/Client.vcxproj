@@ -214,6 +214,7 @@
     <ClInclude Include="..\public\Object_Star.h" />
     <ClInclude Include="..\public\Scene_Stage_Boss.h" />
     <ClInclude Include="..\public\Scene_Tutorial.h" />
+    <ClInclude Include="..\public\Effect_StageClear.h" />
     <ClInclude Include="..\public\UI_Start.h" />
     <ClInclude Include="..\public\UI_BossStageEntryUI.h" />
     <ClInclude Include="..\public\UI_BossStatusUI.h" />
@@ -313,6 +314,7 @@
     <ClCompile Include="..\private\Object_Star.cpp" />
     <ClCompile Include="..\private\Scene_Stage_Boss.cpp" />
     <ClCompile Include="..\private\Scene_Tutorial.cpp" />
+    <ClCompile Include="..\private\Effect_StageClear.cpp" />
     <ClCompile Include="..\private\UI_Start.cpp" />
     <ClCompile Include="..\private\UI_BossStageEntryUI.cpp" />
     <ClCompile Include="..\private\UI_BossStatusUI.cpp" />

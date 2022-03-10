@@ -46,6 +46,7 @@
 #include "Collision_Object.h"
 #include "Collision_Object_StageEntry.h"
 #include "Object_QrcodeCube.h"
+#include "Effect_StageClear.h"
 
 #include "ParticleObejct.h"
 
@@ -189,6 +190,11 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (FAILED(pGameInstance->Add_Component_Prototype(SCENE_STATIC, L"Prototype_Component_Texture_JY_Effect", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("ClearEffect.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(SCENE_STATIC, L"Prototype_Component_Texture_Effect_StageClear", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 	////버텍스 파서들 모음
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Penguin", pGameInstance->Create_ParsedObject(L"PenguinVertex.txt", L"PenguinIndex.txt")));
@@ -297,6 +303,9 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Object_particle_Suck"), CParticleeObj_Suck::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("ProtoType_GameObject_Effect_StageClear"), CEffect_StageClear::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_GameObject_To_Layer(SCENEID::SCENE_STATIC, L"Mouse_UI", L"Prototype_Mouse_UI")))
 		return E_FAIL;
