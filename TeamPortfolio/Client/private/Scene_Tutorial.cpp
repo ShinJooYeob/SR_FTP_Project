@@ -131,6 +131,9 @@ HRESULT CScene_Tutorial::Initialize()
 	//TransformPos = _float3(4.f, 0.f, 0.f);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_MapleTree", TEXT("Prototype_GameObject_MapleTree"), &TransformPos));
 
+	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
 	return S_OK;
 }
 

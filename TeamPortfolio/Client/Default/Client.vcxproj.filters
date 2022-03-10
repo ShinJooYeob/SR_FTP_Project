@@ -319,6 +319,9 @@
     <Filter Include="01.GameObject\MonsterObject\Boss\1.Boss">
       <UniqueIdentifier>{a5eac6d6-e36f-4bfb-96b3-a3d50c8446ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\TreeOfDeath">
+      <UniqueIdentifier>{bb36995d-4ae2-426d-8830-4977dbd695d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -618,6 +621,7 @@
     <ClInclude Include="..\public\Com_Gun.h">
       <Filter>01.GameObject\MonsterObject\Boss\3.GunCom</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_TreeOfDeath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -905,6 +909,7 @@
     <ClCompile Include="..\private\Com_Gun.cpp">
       <Filter>01.GameObject\MonsterObject\Boss\3.GunCom</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_TreeOfDeath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

@@ -37,6 +37,9 @@ private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
+	void	Set_Particle_BlackDust();
+	void	Set_Particle_DustSmall();
+
 private:
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
@@ -45,8 +48,9 @@ private:
 
 	CCollision*				m_pCollisionCom = nullptr;
 
-	
 	_float					m_fFrame = 0;
+
+	_float					ParticleTime = 0;
 public:
 	static CObject_GravityCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg) override;

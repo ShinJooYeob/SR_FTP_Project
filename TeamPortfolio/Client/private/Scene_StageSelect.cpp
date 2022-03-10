@@ -42,6 +42,7 @@ HRESULT CScene_StageSelect::Initialize()
 
 	if (FAILED(Ready_Layer_Object_QrcodeCube(TEXT("Layer_Object_QrcodeCube"))))
 		return E_FAIL;
+	
 
 	//FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
 

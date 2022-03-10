@@ -115,6 +115,9 @@ public:
 	void					SetBestClear(_uint _Stage, _float _timer);
 	_float					getBestClear(_uint _Stage) { return StageBestClear[_Stage]; }
 
+	void					Set_Particle_Sweat();
+	void					Particle_Dust(CTransform* _pTransform);
+
 	_float					StageBestClear[SCENE_END];
 	_bool					m_bFixSoundSwitch = false;
 	////////////////

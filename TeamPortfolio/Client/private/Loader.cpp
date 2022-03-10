@@ -73,6 +73,7 @@
 #include "ParsedObject_WindmillCore.h"
 #include "ParsedObject_Alien.h"
 #include "ParsedObject_MapleTree.h"
+#include "ParsedObject_TreeOfDeath.h"
 
 
 
@@ -213,6 +214,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Alien", pGameInstance->Create_ParsedObject(L"AlienVertex.txt", L"AlienIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MapleTree", pGameInstance->Create_ParsedObject(L"MapleTreeVertex.txt", L"MapleTreeIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreeOfDeath", pGameInstance->Create_ParsedObject(L"TreeOfDeathVertex.txt", L"TreeOfDeathIndex.txt")));
 	
 	////
 
@@ -871,6 +873,9 @@ HRESULT CLoader::Load_Scene_TUTORIAL(_bool * _IsClientQuit, CRITICAL_SECTION * _
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Alien"), CParsedObject_Alien::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_MapleTree"), CParsedObject_MapleTree::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TreeOfDeath"), CParsedObject_TreeOfDeath::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	//////////////////////////////////
 

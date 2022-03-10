@@ -201,6 +201,7 @@
     <ClInclude Include="..\public\ParsedObject_MiniTree.h" />
     <ClInclude Include="..\public\ParsedObject_TombStone.h" />
     <ClInclude Include="..\public\ParsedObject_TreasureBox.h" />
+    <ClInclude Include="..\public\ParsedObject_TreeOfDeath.h" />
     <ClInclude Include="..\public\ParsedObject_WindmillBlue.h" />
     <ClInclude Include="..\public\ParsedObject_WindmillCore.h" />
     <ClInclude Include="..\public\ParsedObject_WindmillStick.h" />
@@ -299,6 +300,7 @@
     <ClCompile Include="..\private\ParsedObject_MiniTree.cpp" />
     <ClCompile Include="..\private\ParsedObject_TombStone.cpp" />
     <ClCompile Include="..\private\ParsedObject_TreasureBox.cpp" />
+    <ClCompile Include="..\private\ParsedObject_TreeOfDeath.cpp" />
     <ClCompile Include="..\private\ParsedObject_WindmillBlue.cpp" />
     <ClCompile Include="..\private\ParsedObject_WindmillCore.cpp" />
     <ClCompile Include="..\private\ParsedObject_WindmillStick.cpp" />

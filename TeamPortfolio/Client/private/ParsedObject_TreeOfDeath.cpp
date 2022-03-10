@@ -1,28 +1,26 @@
 #include "stdafx.h"
-#include "..\public\Object_FixCube.h"
+#include "..\public\ParsedObject_TreeOfDeath.h"
 
 
-CObject_FixCube::CObject_FixCube(LPDIRECT3DDEVICE9 pGraphic_Device)
-	: CGameObject(pGraphic_Device)
-{
-
-}
-
-CObject_FixCube::CObject_FixCube(const CObject_FixCube & rhs)
-	: CGameObject(rhs)
+CParsedObject_TreeOfDeath::CParsedObject_TreeOfDeath(LPDIRECT3DDEVICE9 pGraphic_Device)
+	: CParsedObject(pGraphic_Device)
 {
 }
 
-HRESULT CObject_FixCube::Initialize_Prototype(void * pArg)
+CParsedObject_TreeOfDeath::CParsedObject_TreeOfDeath(const CParsedObject_TreeOfDeath & rhs)
+	: CParsedObject(rhs)
+{
+}
+
+HRESULT CParsedObject_TreeOfDeath::Initialize_Prototype(void * pArg)
 {
 	if (FAILED(__super::Initialize_Prototype(pArg)))
 		return E_FAIL;
 
-
 	return S_OK;
 }
 
-HRESULT CObject_FixCube::Initialize_Clone(void * pArg)
+HRESULT CParsedObject_TreeOfDeath::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
 		return E_FAIL;
@@ -31,30 +29,30 @@ HRESULT CObject_FixCube::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-
-
 	if (pArg != nullptr) {
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
+		m_Layer_Tag = (TEXT("Layer_TreeOfDeath"));
+		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
-		m_Layer_Tag = TEXT("Layer_FixCube");
-		m_ComTexture->Change_TextureLayer(L"FixedCube");
 	}
+
+	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("TreeOfDeath")));
 
 	return S_OK;
 }
 
-_int CObject_FixCube::Update(_float fTimeDelta)
+_int CParsedObject_TreeOfDeath::Update(_float fTimeDelta)
 {
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
-	m_pCollisionCom->Add_CollisionGroup(CCollision::COLLISIONGROUP::COLLISION_FLEXIBLE, this);
+
 
 	return _int();
 }
 
-_int CObject_FixCube::LateUpdate(_float fTimeDelta)
+_int CParsedObject_TreeOfDeath::LateUpdate(_float fTimeDelta)
 {
 	if (0 > __super::LateUpdate(fTimeDelta))
 		return -1;
@@ -62,39 +60,37 @@ _int CObject_FixCube::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
-	//if (FAILED(SetUp_OnTerrain(fTimeDelta)))
-	//	return -1;
+
 	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
 }
 
-_int CObject_FixCube::Render()
+_int CParsedObject_TreeOfDeath::Render()
 {
+	if (FAILED(__super::Render()))
+		return E_FAIL;
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture(2)))
+	if (FAILED(m_ComTexture->Bind_Texture()))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
 		return E_FAIL;
 
-	if (FAILED(m_ComVIBuffer->Render()))
-		return E_FAIL;
+	FAILED_CHECK(m_ComVIBuffer->Render());
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
 
-
-
-	return S_OK;
+	return _int();
 }
 
-_int CObject_FixCube::LateRender()
+_int CParsedObject_TreeOfDeath::LateRender()
 {
 	if (FAILED(__super::LateRender()))
 		return E_FAIL;
@@ -102,88 +98,79 @@ _int CObject_FixCube::LateRender()
 	return _int();
 }
 
-_int CObject_FixCube::Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
+_int CParsedObject_TreeOfDeath::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_Distance, _float fDeltaTime)
 {
-	if (!lstrcmp(pDestObjects->Get_Layer_Tag(), TAG_LAY(Layer_Player)) || !lstrcmp(pDestObjects->Get_Layer_Tag(), TEXT("Layer_FixCube")))
-	{
-	}
 
 	return _int();
 }
 
-HRESULT CObject_FixCube::SetUp_Components()
+
+HRESULT CParsedObject_TreeOfDeath::SetUp_Components()
 {
-	/* For.트랜스폼 */
+	/* For.Com_Transform */
 	CTransform::TRANSFORMDESC		TransformDesc;
 	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
 
 	TransformDesc.fMovePerSec = 5.f;
 	TransformDesc.fRotationPerSec = D3DXToRadian(90.0f);
 
-	/* For.트랜스폼 */
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
 
 	/* For. 텍스쳐*/
-	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Cube_Texture"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Texture_Parsed"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+		return E_FAIL;
+	/* For.Com_VIBuffer_Cube */
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_TreeOfDeath"), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
 		return E_FAIL;
 
-	/* For.렌더러 */
+	/* For.Com_Renderer */
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_ComRenderer)))
 		return E_FAIL;
 
-	/* For.버텍스 큐브 */
-
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"), TAG_COM(Com_VIBuffer), (CComponent**)&m_ComVIBuffer)))
-		return E_FAIL;
 
 
 	///////////////////////////////////////////////////////
-	/* For.콜리전 */
+	/* For.Com_Collision */
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Collision"), TEXT("Com_Collision"), (CComponent**)&m_pCollisionCom)))
 		return E_FAIL;
 	//////////////////////////////////////////////
-
 	return S_OK;
 }
 
-HRESULT CObject_FixCube::SetUp_RenderState()
+HRESULT CParsedObject_TreeOfDeath::SetUp_RenderState()
 {
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
-	//m_pGraphic_Device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	//m_pGraphic_Device->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-	//m_pGraphic_Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	//m_pGraphic_Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-	/*
-	_float4		vSourColor, vDestColor;
-
-	(vSourColor.rgb) * vSourColor.a + (vDestColor.rgb) * (1.f - vSourColor.a);*/
 
 	return S_OK;
 }
 
-HRESULT CObject_FixCube::Release_RenderState()
+HRESULT CParsedObject_TreeOfDeath::Release_RenderState()
 {
+	m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
+	///////////////////////////
+	///////////////////////////////
+
 	return S_OK;
 }
 
-CObject_FixCube * CObject_FixCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)
+CParsedObject_TreeOfDeath * CParsedObject_TreeOfDeath::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)
 {
-	CObject_FixCube* pInstance = new CObject_FixCube(pGraphic_Device);
+	CParsedObject_TreeOfDeath* pInstance = new CParsedObject_TreeOfDeath(pGraphic_Device);
 
 	if (FAILED(pInstance->Initialize_Prototype(pArg)))
 	{
-		MSGBOX("Fail to Create CObject_FixCube");
+		MSGBOX("Fail to Create CParsedObject_TreeOfDeath");
 		Safe_Release(pInstance);
 
 	}
@@ -192,13 +179,13 @@ CObject_FixCube * CObject_FixCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, voi
 	return pInstance;
 }
 
-CGameObject * CObject_FixCube::Clone(void * pArg)
+CGameObject * CParsedObject_TreeOfDeath::Clone(void * pArg)
 {
-	CObject_FixCube* pInstance = new CObject_FixCube((*this));
+	CParsedObject_TreeOfDeath* pInstance = new CParsedObject_TreeOfDeath((*this));
 
 	if (FAILED(pInstance->Initialize_Clone(pArg)))
 	{
-		MSGBOX("Fail to Create CObject_FixCube");
+		MSGBOX("Fail to Create CParsedObject_TreeOfDeath");
 		Safe_Release(pInstance);
 
 	}
@@ -207,13 +194,13 @@ CGameObject * CObject_FixCube::Clone(void * pArg)
 	return pInstance;
 }
 
-void CObject_FixCube::Free()
+void CParsedObject_TreeOfDeath::Free()
 {
 	__super::Free();
 
 	Safe_Release(m_ComVIBuffer);
+	Safe_Release(m_ComTexture);
 	Safe_Release(m_pCollisionCom);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComRenderer);
-	Safe_Release(m_ComTexture);
 }

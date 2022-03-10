@@ -50,6 +50,8 @@ private:
 
 	CCollision*				m_pCollisionCom = nullptr;
 
+	_float					seconds = 0;
+	_float					m_RotAngle = 0;
 
 
 public:

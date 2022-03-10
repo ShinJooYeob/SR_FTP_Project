@@ -299,6 +299,7 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 		{
 			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("buttonclick"), TEXT("Idle"), 4.f);
 			GetSingle(CGameInstance)->PlaySound(L"EH_Orbit.wav", CHANNEL_OBJECT);
+			Set_Particle_Sweat();
 		}
 	}
 	//
@@ -482,6 +483,158 @@ void CPlayer::SetBestClear(_uint _Stage, _float _timer)
 	{
 		StageBestClear[_Stage] = _timer;
 	}
+}
+
+void CPlayer::Set_Particle_Sweat()
+{
+	PARTICLEDESC tDesc;
+	//파티클이 흩날리는 종류 설정
+	tDesc.eParticleID = Particle_Straight;
+
+	//총 파티클이 몇초동안 흩날릴 것인지 설정
+	tDesc.TotalParticleTime = 0.f;
+
+	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
+	tDesc.EachParticleLifeTime = 1.f;
+
+	//파티클의 사이즈를 설정
+	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
+	//파티클의 파워(이동속도)를 결정
+	tDesc.Particle_Power = 5;
+	//파티클의 파워(이동속도)의 랜덤 범위를 결정
+	tDesc.PowerRandomRange = _float2(0.8f, 1.2f);
+	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
+	tDesc.MaxParticleCount = 5;
+
+	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
+	tDesc.szTextureLayerTag = TEXT("Particle_Sweat");
+	//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+	tDesc.m_bIsTextureAutoFrame = false;
+
+
+	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
+	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
+	//단 둘중 하나만 사용 가능
+	//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
+	//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
+	tDesc.FollowingTarget = m_ComTransform;
+	//tDesc.FixedTarget = _float3(0,3,0);
+
+
+	//파티클의 최대 이탈 범위(range)를 설정해 줌 
+	//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
+	tDesc.MaxBoundary = _float3(3, 3, 3);
+
+
+	//텍스처의 색상을 변경할 수 있는 기능 온오프
+	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
+	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
+	tDesc.ParticleColorChage = false;
+	tDesc.TargetColor = _float3(255.f, 255.f, 0.f);
+	tDesc.TargetColor2 = _float3(244.f, 40.f, 11.f);
+
+
+	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
+	//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
+	//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
+	tDesc.m_bIsUI = false;
+	//UI Depth 설정 (UI 가려지는거 순서 결정할때 쓰는 변수)
+	tDesc.m_bUIDepth = 1;
+
+	//방향을 설정하고 싶을 때 사용하는 옵션
+	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
+	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
+
+	tDesc.vUp = _float3(0, -1, 0);
+
+	tDesc.ParticleStartRandomPosMin = _float3(-0.4f, 0.4f, -0.4f);
+	tDesc.ParticleStartRandomPosMax = _float3(0.4f, 0.4f, 0.4f);
+
+	tDesc.MustDraw = true;
+	//오브젝트 뒤에 가려지지 않게 만듬
+
+	//tDesc.IsParticleFameEndtoDie = false;
+	//프레임이 한번만 돌것인지 정함
+
+
+	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+}
+
+void CPlayer::Particle_Dust(CTransform* _pTransform)
+{
+	PARTICLEDESC tDesc;
+	//파티클이 흩날리는 종류 설정
+	tDesc.eParticleID = Particle_Fixed;
+
+	//총 파티클이 몇초동안 흩날릴 것인지 설정
+	tDesc.TotalParticleTime = 0.f;
+	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
+	tDesc.EachParticleLifeTime = 100.f;
+
+	//파티클의 사이즈를 설정
+	tDesc.ParticleSize = _float3(3.f, 3.f, 3.f);
+	//파티클의 파워(이동속도)를 결정
+	tDesc.Particle_Power = 1;
+	//파티클의 파워(이동속도)의 랜덤 범위를 결정
+	tDesc.PowerRandomRange = _float2(1.f, 1.f);
+
+	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
+	tDesc.MaxParticleCount = 1;
+
+	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
+	tDesc.szTextureLayerTag = TEXT("Particle_Dust");
+	//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+	tDesc.m_bIsTextureAutoFrame = true;
+	tDesc.fAutoFrameMul = 2.5f;
+	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
+	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
+	//단 둘중 하나만 사용 가능
+	//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
+	//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
+
+	tDesc.FollowingTarget = _pTransform;//(CTransform*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player))->Get_Component(TAG_COM(Com_Transform)));
+	//_float3 ParticlePos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+	//tDesc.FixedTarget = ParticlePos + _float3(0.2f, 0.f, 0.f);
+
+	//파티클의 최대 이탈 범위(range)를 설정해 줌 
+	//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
+	tDesc.MaxBoundary = _float3(10, 10, 10);
+
+	//텍스처의 색상을 변경할 수 있는 기능 온오프
+	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
+	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
+	tDesc.ParticleColorChage = false;
+	tDesc.TargetColor = _float3(237, 28, 36);
+	tDesc.TargetColor2 = _float3(53, 255.f, 11);
+
+	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
+	//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
+	//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
+	tDesc.m_bIsUI = false;
+
+
+	//방향을 설정하고 싶을 때 사용하는 옵션
+	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
+	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
+	tDesc.vUp = _float3(0, 0.f, 0);
+
+
+	tDesc.ParticleStartRandomPosMin = _float3(0.1f, 0.1f, 0.f);
+	tDesc.ParticleStartRandomPosMax = _float3(0.1f, 0.1f, 0.f);
+
+	tDesc.MustDraw = true;
+	//오브젝트 뒤에 가려지지 않게 만듬
+
+	tDesc.IsParticleFameEndtoDie = true;
+	//프레임이 한번만 돌것인지 정함
+
+	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
 }
 
 HRESULT CPlayer::SetUp_Components()
@@ -688,6 +841,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 			m_ComTransform->Get_MatrixState(CTransform::STATE_POS) +
 			(m_ComTransform->Get_MatrixState(CTransform::STATE_RIGHT) * 0.6f));
 
+		Particle_Dust(m_pCarryObjectTransform);
 
 		Safe_Release(m_pCarryObject);
 		Safe_Release(m_pCarryObjectTransform);
