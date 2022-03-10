@@ -57,11 +57,12 @@ private:	_float			m_fFrame = 0.f;
 			map<const _tchar*, CUI*>			m_UIList;
 			map<const _tchar*, CUI*>			m_UIPrototypes;
 			bool			m_bIsPress = false;
-			_float4			m_vUIDesc;
-			_tchar*			m_BiggerTag=L"";
+			_float4			m_vUIDesc[2];
+			_tchar*			m_BiggerTag=nullptr;
 			_bool			m_bQuestBiggerOn=false;
 			_bool			m_bBiggerStart = true;
 			_float			m_fTextFrame = 0;
+			_uint			m_iAlpha = 0;
 public:
 	HRESULT			Update_UIButtonList(_float fTimeDelta);
 	HRESULT			Update_UIList(_float fTimeDelta);
@@ -74,7 +75,8 @@ private:
 
 
 
-	HRESULT SetUp_RenderState();
+	HRESULT SetUp_FirstRenderState();
+	
 	HRESULT Release_RenderState();
 
 public:

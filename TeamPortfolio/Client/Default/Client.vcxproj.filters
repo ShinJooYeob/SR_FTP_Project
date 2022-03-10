@@ -328,6 +328,9 @@
     <Filter Include="01.GameObject\ParsedObject\EH_ParsedObject\TreeOfDeath">
       <UniqueIdentifier>{bb36995d-4ae2-426d-8830-4977dbd695d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\UI\UI_Complete">
+      <UniqueIdentifier>{3751d645-6365-471c-95bf-c8b4a65cd68b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -634,6 +637,7 @@
       <Filter>01.GameObject\Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParsedObject_TreeOfDeath.h" />
+    <ClInclude Include="..\public\UI_Complete.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -928,6 +932,7 @@
       <Filter>01.GameObject\Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParsedObject_TreeOfDeath.cpp" />
+    <ClCompile Include="..\private\UI_Complete.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

@@ -62,6 +62,7 @@ private:
 	_int			m_iNowSKill = 0;
 	_int			m_iNowQuest = 0;
 	_float			m_fTextFrame = 0.f;
+	_bool			m_bBigComplete = false;
 
 	_bool			m_bEasingStart=false;
 	_float4			m_vEasingDesc;//x 스타트 y타겟 z패스드타임 w총시간
@@ -69,6 +70,7 @@ public:
 	RECT			Get_Rect() const{ return m_rcRect; }
 	_float4			Get_UIDesc()  { return m_vUIDesc; }
 	_int			Get_ImageBigger() { return m_iBigger; }
+	_bool			Get_BigComplete() { return m_bBigComplete; }
 
 	void			Set_NowQuest(_int eQuest) { m_iNowQuest = eQuest; }
 	void			Set_NowSKill(_int eSKILL) { m_iNowSKill = eSKILL; }

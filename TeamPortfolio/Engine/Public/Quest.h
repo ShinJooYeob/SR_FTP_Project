@@ -20,9 +20,10 @@ public:
 	_int	Get_QuestGoal(_int eQuest) { return m_iQuestGoalIndex[eQuest]; }
 	_int	Get_QuestCurrent(_int eQuest) { return m_iQuestIndex[eQuest]; }
 	_int	Get_QuestNeedPercent (_int eQuest);
+	_bool	Get_QuestComplete(void);
 private:
 	_int*		m_iQuestGoalIndex=nullptr;
-
+	_int		m_iQuestComplete = 0;
 	_int*		m_iQuestIndex=nullptr;
 	_int		m_iMaxQuest;
 private:
