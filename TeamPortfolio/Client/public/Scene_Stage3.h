@@ -40,6 +40,7 @@ private:
 	D3DLIGHT9		m_Light;
 
 	HRESULT Createparticle_Scene3();
+	void Create_Meteo();
 
 
 	
