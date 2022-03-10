@@ -443,12 +443,10 @@ enum MOUSETYPEID
 	MOUSE_END
 };
 
-enum E_BulletType
+// 날아가는 타입
+enum E_BulletType_MOVE
 {
-	BULLETTYPE_PlayerTarget,
-	BULLETTYPE_Dir,
-	BULLETTYPE_CamDir,
-
-	BULLETTYPE_END,
+	BULLETTYPE_MOVE_NOMAL,
+	BULLETTYPE_MOVE_END
 
 };

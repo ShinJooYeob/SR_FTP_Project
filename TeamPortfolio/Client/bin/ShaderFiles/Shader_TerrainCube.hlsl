@@ -138,13 +138,14 @@ PS_OUT PS_MAIN_CUBE(PS_IN In)
 	float		fDistanceRatio = fDistance/100 * 2;
 
 
-	fDistanceRatio = ceil(fDistanceRatio*10)/10;
+	fDistanceRatio = ceil(fDistanceRatio*20)/20;
 
 //	vector		vEffectColor = (vector)1.f;
 
-	 if (fDistanceRatio >= 0.7f)
+	 if (fDistanceRatio >= 0.8f)
 	 	fDistanceRatio = 0.8f;
-	 if (fDistanceRatio <= 0.2f)
+
+	 if (fDistanceRatio <= 0.3f)
 		 fDistanceRatio = 0.0f;
 
 

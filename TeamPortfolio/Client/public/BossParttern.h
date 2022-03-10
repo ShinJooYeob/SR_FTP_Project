@@ -43,70 +43,89 @@ public:
 };
 
 // 움직임 패턴
-class CBoss_Action_Move : public IAction
+class CBoss_Action_Move_Local : public IAction
 {
 	// 목표 위치
 	// 도달 시간
 	// 이징 타입
 public:
-	typedef struct Action_Move_Desc
+	typedef struct Action_MoveLocal_Desc
 	{
-		_float2 mEndScreenPos;
-		class CMonsterParent* mMonsterObject;
+		_float3 mEndLocalPos;
+		class CBossMonster* mMonsterObject;
 		float mTimerMax;
 		EasingTypeID mEasingType;
-
-
 	};
 
 private:
-	Action_Move_Desc mDesc;
-	_float3 mStartPos;
+	Action_MoveLocal_Desc mDesc;
+	_float3 mStartLocalPos;
 	float mCurrentTimer;
-	_float3 mEndPos;
 
 public:
 	// 생성자에서 패턴 정보 받기
-	explicit CBoss_Action_Move(Action_Move_Desc desc);
+	explicit CBoss_Action_Move_Local(Action_MoveLocal_Desc desc);
 	
 	virtual bool InitAction()override;
 	// Pattern을(를) 통해 상속됨
 	virtual void Action(float timeDelta) override;
 
 	static _float3 EaseingFloat3(EasingTypeID id, _float3 StartPos, _float3 EndPos, float curTime, float maxTime);
-	   
+	static _float3 EaseingFloat2(EasingTypeID id, _float3 StartPos, _float3 EndPos, float curTime, float maxTime);
+
 };
 
 
+
 // 공격
-class CBoss_Pattern_Attack : public IAction
+typedef struct Action_BulletCommon
 {
-	// 총알 방향
-	// 총알 타입
-	// 총알 개수
+	_uint mAttackCount; 
+	_uint mBulletSpeed;
+	_float3 mBulletSpawnOffset;
+	_float3 mEndPos;
+	E_BulletType_MOVE	meBulletType_Move;
+	float mDealyTimeMax;
+	class CBossMonster* mMonsterObject;
 
-public:
-	typedef struct Action_Attack_Desc
-	{
-		_uint mAttackCount; // 공격 횟수
-		_uint mBulletSpeed;
-		_float3 mDir;
-		E_BulletType meBuelletType;
-		
-		class CMonsterParent* mMonsterObject;
-		class CCamera_Main* mCameraMain;
+};
 
-		float mTimerMax;
-	};
-
+class CBoss_Pattern_Attack_WorldDir : public IAction
+{
 private:
-	Action_Attack_Desc mDesc;
+	Action_BulletCommon mDesc;
+
+	class CCom_Gun* mGunComponent;
+	_float3 mStartPosition;
 	_float	mCurrentTimer;
 	_int	mCurrentAttackCount;
 
 public:
 	// 생성자에서 패턴 정보 받기
-	explicit CBoss_Pattern_Attack(Action_Attack_Desc desc);
+	explicit CBoss_Pattern_Attack_WorldDir(Action_BulletCommon desc);
+
+	virtual bool InitAction()override;
+	// Pattern을(를) 통해 상속됨
+	virtual void Action(float timeDelta) override;
+};
+
+// 로컬 방향으로 
+class CBoss_Pattern_Attack_LocalDir : public IAction
+{
+public:
+
+	_float mAngle;
+private:
+	Action_BulletCommon mDescBullet;
+
+	class CCom_Gun* mGunComponent;
+	_float3 mStartPosition;
+	_float	mCurrentTimer;
+	_int	mCurrentAttackCount;
+
+public:
+	// 생성자에서 패턴 정보 받기
+	explicit CBoss_Pattern_Attack_LocalDir(Action_BulletCommon desc);
 
 	virtual bool InitAction()override;
 	// Pattern을(를) 통해 상속됨
@@ -114,17 +133,7 @@ public:
 };
 
 
-// 회전 패턴
 
-// 날아가는 패턴
-
-// 그로기
-class CBoss_Pattern_Groggy : public IAction
-{
-public:
-	// Pattern을(를) 통해 상속됨
-	virtual void Action(float timeDelta) override;
-};
 
 
 END

@@ -11,7 +11,13 @@ BEGIN(Client)
 // ÃÑ¾ËÆÐÅÏÀ» ¸¸µå´Â ÃÑ ÄÄÆ÷³ÍÆ®
 class CCom_Gun final: public CComponent
 {
+public:
+	typedef struct tagGunDesc	
+	{
+		_uint mSceneID;
 
+	}GUNDESC;
+		
 
 private:
 	explicit CCom_Gun(LPDIRECT3DDEVICE9	pGraphicDevice);
@@ -19,16 +25,25 @@ private:
 	virtual	~CCom_Gun() = default;
 
 public:
-   // #TODO ÃÑ¾Ë ÆÐÅÏ
-	// »ý¼º½Ã Å¸°Ù¹æÇâÀ» ¼³Á¤
-	HRESULT CreateBullet_Target(_uint sceneid, _float3 startPos, _float3 moveidr, _float speed=1.f, _uint count=1);
-	HRESULT DestoryBullet_All(_uint sceneid);
+   // #TODO ÃÑ¾Ë ÆÐÅÏ¼³Á¤
+
+	// Å¸°ÙÅº
+	HRESULT CreateBullet_Target(_float3 startPos, _float3 targetPos, _float speed=1.f, E_BulletType_MOVE type = BULLETTYPE_MOVE_NOMAL);
+	// ¹æÇâÅº
+	HRESULT CreateBullet_Dir(_float3 startPos, _float3 moveidr, _float speed = 1.f,E_BulletType_MOVE type = BULLETTYPE_MOVE_NOMAL);
+
+	// ¿øÇüÅº
+
+	
+	HRESULT DestoryBullet_All();
 
 
 public:
 	HRESULT Initialize_Prototype(void * pArg);
 	HRESULT Initialize_Clone(void * pArg);
 
+private:
+	tagGunDesc mDesc;
 	
 
 

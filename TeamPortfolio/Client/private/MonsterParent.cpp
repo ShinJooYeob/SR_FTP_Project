@@ -129,41 +129,6 @@ HRESULT CMonsterParent::SetPos(_float3 pos)
 	return S_OK;
 }
 
-_float3 CMonsterParent::Update_CameraPosition(_float z)
-{
-	_Matrix MatView;
-	_float3 CameraPos;
-	
-	auto CameraList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Camera_Main));
-	CCamera* camobj = (CCamera*)CameraList->front();
-	if (camobj == nullptr)return _float3(0,0,0);
-
-	_float3 CamPos = camobj->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_POS);
-	_float3 camLook = camobj->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_LOOK);
-	CamPos += camLook * z;
-
-	return CamPos;
-
-}
-
-_float3 CMonsterParent::Update_CameraPosition(_float3 ObjectPosition, _float z)
-{
-	// objPosition 기준으로 카메라 위치 Z값으로 재설정
-
-	_Matrix MatView;
-	_float3 CameraPos;
-
-	auto CameraList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Camera_Main));
-	CCamera* camobj = (CCamera*)CameraList->front();
-	if (camobj == nullptr)return _float3(0, 0, 0);
-
-	_float3 NewObjectPos = ObjectPosition;
-	_float3 camLook = camobj->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_LOOK);
-	ObjectPosition += camLook * z;
-	
-	return NewObjectPos;
-}
-
 _float3 CMonsterParent::GetScreenToWorld(_float2 screenPos)
 {
 	// 임의의 스크린 좌표를 월드 좌표로 변환
@@ -226,6 +191,22 @@ HRESULT CMonsterParent::SetUp_Components()
 	
 
 	return S_OK;
+}
+
+_float3 CMonsterParent::Update_CameraPosition(_float3 localPos)
+{
+	// 카메라 위치의 로컬이라 가정하고 카메라의 월드를 곱해준다.
+
+	_float3 NewWorldPos = localPos;
+
+	auto CameraList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Camera_Main));
+	CCamera* camobj = (CCamera*)CameraList->front();
+	
+	if (camobj == nullptr)
+		return localPos;
+
+	D3DXVec3TransformCoord(&NewWorldPos, &NewWorldPos, &camobj->Get_Camera_Transform()->Get_WorldMatrix());
+	return NewWorldPos;
 }
 
 

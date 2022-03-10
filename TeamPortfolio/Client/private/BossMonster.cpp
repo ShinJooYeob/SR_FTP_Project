@@ -40,8 +40,9 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 	mCurrentPattern = nullptr;
 
 
-	m_ComTransform->Scaled(_float3(5, 5, 5));
+
 	m_ComTexture->Change_TextureLayer(TEXT("Idle1"));
+	Set_Scale(8);
 
 	m_pGraphicDevice->GetViewport(&mViewPort);
 
@@ -54,6 +55,8 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 
 	mMaxHp = 10;
 	mHp = mMaxHp;
+	m_Sphere.mRadius = 150.0f;
+
 	return S_OK;
 }
 
@@ -62,35 +65,35 @@ _int CBossMonster::Update(_float fDeltaTime)
 	FAILED_CHECK(__super::Update(fDeltaTime));
 	if (mPlayerTarget == nullptr)
 	{
-		auto playerlist  = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Player));
+		auto playerlist = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Player));
 		mPlayerTarget = (CPlayer*)playerlist->front();
 		Safe_AddRef(mPlayerTarget);
 		if (mPlayerTarget == nullptr)
 			return 0;
 
 		// 위치 초기화
-		CTransform* trans = mPlayerTarget->Get_TransformCom();
-		_float3 playerPos = trans->Get_MatrixState(CTransform::STATE_POS);
-		playerPos.y += 1;
+		mCameralocalPosition = _float3(100, 0, 20);
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, Update_CameraPosition(mCameralocalPosition));
 
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, playerPos);
+
+		// CTransform* trans = mPlayerTarget->Get_TransformCom();
+		// _float3 playerPos = trans->Get_MatrixState(CTransform::STATE_POS);
+		// playerPos.y += 1;
+		// m_ComTransform->Set_MatrixState(CTransform::STATE_POS, playerPos);
 
 	}
 	mPatternTime += fDeltaTime;
 	if (mPatternTime < 1)
 		return 0;
 
-	
+	// 카메라 업데이트
+	mCameralocalPosition.z = 20;
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS,Update_CameraPosition(mCameralocalPosition));
 
-	_float3 newPos = GetPos();
-
-	newPos = Update_CameraPosition(newPos);
-	SetPos(newPos);
 
 
 	// AI 업데이트
 	// 큐에서 패턴을 하나씩 실행한다.
-
 	Update_BossPattern(fDeltaTime);
 	return _int();
 }
@@ -104,8 +107,8 @@ _int CBossMonster::LateUpdate(_float fDeltaTime)
 		Die();
 
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
-	m_Sphere.mCenterPosition = m_Com_Viewport->WorldToView(GetPos());
 
+	m_Sphere.mCenterPosition = m_Com_Viewport->WorldToView(GetPos());
 	m_Com_Viewport->AddCollisionView(CCom_CollisionViewPort::COLL_MONSTER, this);
 
 	return _int();
@@ -144,7 +147,9 @@ HRESULT CBossMonster::SetUp_Components()
 	FAILED_CHECK(__super::SetUp_Components());
 
 	// 총 컴포넌트 초기화
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Gun), TAG_COM(Com_Gun), (CComponent**)&mComGun)))
+	CCom_Gun::GUNDESC desc;
+	desc.mSceneID = m_eNowSceneNum;
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Gun), TAG_COM(Com_Gun), (CComponent**)&mComGun,&desc)))
 		return E_FAIL;	
 
 	return S_OK;
@@ -217,45 +222,59 @@ void CBossMonster::Update_BossPattern(_float deltatime)
 
 HRESULT CBossMonster::Set_TestPattern1()
 {
-	float wincx = mViewPort.Width;
-	float wincy = mViewPort.Height;
-
-	float LeftPos = wincx * 0.1f;
-
-	//	Set_MovePattern(_float2(LeftPos, wincy*0.1f), 0.3f, TYPE_QuadIn);
-	//	Set_AttackPattern(1, BULLETTYPE_Dir, 1.0f, _float3(1, 0, 0));
+	float RightX = 10;
+	float Topy = 5;
+	float Bottomy = -5;
 
 
-	Set_MovePattern(_float2(LeftPos, wincy*0.2f), 0.1f, TYPE_QuadIn);
+	//Set_AttackPattern(startPos, _float3(-1, 0, 0), 10, 6,0.5f,
+	//	BULLETTYPE_CREATE_DIR,BULLETTYPE_MOVE_NOMAL);
+	//
+	//Set_AttackPattern(startPos, _float3(-1, 0, 0), 10, 6, 0.5f,
+	//	BULLETTYPE_CREATE_DIR, BULLETTYPE_MOVE_NOMAL);
 
-	Set_AttackPattern(5, BULLETTYPE_CamDir, 0.3f, 6.0f, _float3());
 
-	Set_MovePattern(_float2(LeftPos, wincy*0.5f), 0.3f, TYPE_QuadIn);
-	Set_MovePattern(_float2(LeftPos, wincy*0.1f), 0.3f, TYPE_QuadIn);
-	Set_MovePattern(_float2(LeftPos, wincy*0.6f), 0.3f, TYPE_QuadIn);
 
+	Set_MovePattern(_float2(RightX, Topy), 1.f, TYPE_Linear);
+	Set_MovePattern(_float2(RightX, Bottomy), 1.f, TYPE_Linear);
 	
+	//Set_MovePattern(_float2(RightX, Topy), 1.f, TYPE_Linear);
+	//Set_MovePattern(_float2(RightX, Bottomy), 1.f, TYPE_Linear);
 
+	//Set_MovePattern(_float2(RightX, Topy), 1.f, TYPE_Linear);
+	//Set_MovePattern(_float2(RightX, Bottomy), 1.f, TYPE_Linear);
 
 	return S_OK;
 }
 
 HRESULT CBossMonster::Set_TestPattern2()
 {
-	float wincx = mViewPort.Width;
-	float wincy = mViewPort.Height;
+	float RightX = 10;
+	float Topy = 5.f;
+	float Bottomy = -2.f;
+	float TargetY = GetRandomFloat(Bottomy, Topy);
 
-	float LeftPos = wincx * 0.1f;
+	_float3 SpawnOffset = _float3(0, -3, 0);
 
-	Set_MovePattern(_float2(LeftPos, wincy*0.5f), 0.5f, TYPE_Linear);
-
-	float randFloat = GetRandomFloat(0.1f, 0.8f);
-
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 1; i++)
 	{
-		randFloat = GetRandomFloat(0.1f, 0.8f);
-		Set_MovePattern(_float2(LeftPos, wincy*randFloat), 0.2f, TYPE_Linear);
-		Set_AttackPattern(2, BULLETTYPE_CamDir, 0.5f,4.0f, _float3());
+		TargetY = GetRandomFloat(Bottomy, Topy);
+		Set_MovePattern(_float2(RightX, TargetY), 1.f, TYPE_Linear);
+		if (mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Front_Axis)
+		{
+			Set_Attack_WorldPattern(SpawnOffset,
+				_float3(-1,0,0),
+				2, 6, 1.0f,
+				BULLETTYPE_MOVE_NOMAL);
+		}
+
+		else if (mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Back_Axis)
+		{
+			Set_Attack_WorldPattern(SpawnOffset,
+				_float3(1, 0, 0),
+				2, 6, 1.0f,
+				BULLETTYPE_MOVE_NOMAL);
+		}
 
 	}
 
@@ -277,56 +296,57 @@ HRESULT CBossMonster::Choose_NextPattern()
 	return S_OK;
 }
 
-void CBossMonster::Set_MovePattern(_float2 screenPos,_float time, EasingTypeID id)
+void CBossMonster::Set_MovePattern(_float2 endPos,_float time, EasingTypeID id)
 {
-	CBoss_Action_Move::Action_Move_Desc descMove = {};
+	CBoss_Action_Move_Local::Action_MoveLocal_Desc descMove = {};
 
 	descMove.mMonsterObject = this;
 
-	descMove.mEndScreenPos = screenPos;
+	descMove.mEndLocalPos = _float3(endPos.x, endPos.y,mCameralocalPosition.z);
 	descMove.mTimerMax = time;
 	descMove.mEasingType = id;
-	mQueue_Partern.push(new CBoss_Action_Move(descMove));
+	mQueue_Partern.push(new CBoss_Action_Move_Local(descMove));
 }
 
-void CBossMonster::Set_AttackPattern(_float attackcount, E_BulletType bulletType, _float time,_float speed, _float3 moveidr)
+void CBossMonster::Set_Attack_WorldPattern(_float3 startPosOffset, _float3 endPos, _float count, _float speed, _float dealytime, E_BulletType_MOVE type2)
 {
-	CBoss_Pattern_Attack::Action_Attack_Desc descAttack = {};
+	Action_BulletCommon descAttack = {};
 
 	descAttack.mMonsterObject = this;
-	descAttack.mCameraMain =  mMainCamera;
 
-	descAttack.mAttackCount = attackcount;
-	descAttack.meBuelletType = bulletType;
-	descAttack.mTimerMax = time;
-	descAttack.mBulletSpeed = speed;
-	descAttack.mDir = moveidr.Get_Nomalize();
-	mQueue_Partern.push(new CBoss_Pattern_Attack(descAttack));
-}
-
-HRESULT CBossMonster::CreateObjectBullet_Target()
-{
-	CTransform* trans = mPlayerTarget->Get_TransformCom();
-	_float3 playerPos = trans->Get_MatrixState(CTransform::STATE_POS);
-	_float3 GunPos = Get_OffsetPos(_float3(0,-1,0));
-
-	_float3 TargetDir = {0,0,0};
-
-	TargetDir = playerPos - GunPos;
-	TargetDir = TargetDir.Get_Nomalize();
+	descAttack.mAttackCount = count;
 	
-	mComGun->CreateBullet_Target(m_eNowSceneNum, GunPos,TargetDir);
+	descAttack.mBulletSpawnOffset = startPosOffset;
+	descAttack.mEndPos = endPos;
+	descAttack.mBulletSpeed = speed;
 
-	return S_OK;
+	descAttack.mDealyTimeMax = dealytime;
+	descAttack.meBulletType_Move = type2;
+
+
+	mQueue_Partern.push(new CBoss_Pattern_Attack_WorldDir(descAttack));
 }
 
-HRESULT CBossMonster::CreateObjectBullet_Target_Dir(_float3 dir,_float speed)
+void CBossMonster::Set_Attack_LocalDirPattern(_float3 startPosOffset, _float angle, _float count, _float speed, _float dealytime, E_BulletType_MOVE type2)
 {
-	_float3 GunPos = Get_OffsetPos(_float3(0, -1, 0));
+	Action_BulletCommon descAttack = {};
 
-	mComGun->CreateBullet_Target(m_eNowSceneNum, GunPos, dir, speed);
+	descAttack.mMonsterObject = this;
 
-	return S_OK;
+	descAttack.mAttackCount = count;
+
+	descAttack.mBulletSpawnOffset = startPosOffset;
+	descAttack.mEndPos = _float3(0,0,0);
+	descAttack.mBulletSpeed = speed;
+
+	descAttack.mDealyTimeMax = dealytime;
+	descAttack.meBulletType_Move = type2;
+
+	CBoss_Pattern_Attack_LocalDir* patternDir = new CBoss_Pattern_Attack_LocalDir(descAttack);
+	patternDir->mAngle = angle;
+
+	mQueue_Partern.push(patternDir);
+
 }
 
 _float3 CBossMonster::Get_OffsetPos(_float3 offset)
@@ -336,12 +356,20 @@ _float3 CBossMonster::Get_OffsetPos(_float3 offset)
 	return newPos;
 }
 
+_float3 CBossMonster::Update_CameraPosition(_float3 localPos)
+{
+	_float3 NewPos = localPos;
+
+	D3DXVec3TransformCoord(&NewPos, &NewPos, &mMainCamera->Get_Camera_Transform()->Get_WorldMatrix());
+	return (NewPos);
+}
+
 HRESULT CBossMonster::ViewPortHit(CGameObject * hitobj)
 {
 	if (!lstrcmp(hitobj->Get_Layer_Tag(), TAG_LAY(Layer_Bullet)))
 	{
 		float lifetime = (int)((CBullet*)hitobj)->GetLifeTime();
-		if (lifetime > 2.0f)
+		if (lifetime > 1.0f)
 		{
 			if (mMainCamera->Get_bIsTuring())
 				return S_OK;
@@ -349,7 +377,9 @@ HRESULT CBossMonster::ViewPortHit(CGameObject * hitobj)
 				mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Left_Axis ||
 				mMainCamera->Get_CameraLookState() == CCamera_Main::Look_Right_Axis
 				)
+			{
 				return S_OK;
+			}
 
 			((CBullet*)hitobj)->Die();
 			Hit(-1);

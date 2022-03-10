@@ -41,11 +41,18 @@ public:
 	CCamera_Main::CameraLookStateID	Get_CameraLookState() const;
 	CCamera_Main* Get_MainCamera() { return mMainCamera; }
 
+
+
 public:
-	HRESULT CreateObjectBullet_Target();
-	HRESULT CreateObjectBullet_Target_Dir(_float3 dir, _float speed =1.0f);
 
 	_float3 Get_OffsetPos(_float3 offset);
+	_float3 GetLocalPos() const { return mCameralocalPosition; }
+
+	void SetLocalPos(_float3 pos)
+	{
+		mCameralocalPosition = pos;
+	}
+	virtual _float3 Update_CameraPosition(_float3 localPos);
 
 	virtual HRESULT ViewPortHit(CGameObject* hitobj)override;
 
@@ -71,8 +78,12 @@ private:
 
 private:
 	// ÆÐÅÏ ¼³Á¤ ÇÔ¼ö Ä¸½¶È­
-	void Set_MovePattern(_float2 screenPos, _float time, EasingTypeID id);
-	void Set_AttackPattern(_float attackcount, E_BulletType bulletType, _float time, _float speed=1, _float3 moveidr = _float3(1,0,0));
+	void Set_MovePattern(_float2 endPos, _float time, EasingTypeID id);
+	void Set_Attack_WorldPattern(_float3 startPosOffset, _float3 endPos,_float count ,_float speed=1,_float dealytime=1,
+		E_BulletType_MOVE type2 = BULLETTYPE_MOVE_NOMAL);
+
+	void CBossMonster::Set_Attack_LocalDirPattern(_float3 startPosOffset, _float angle, _float count, _float speed, _float dealytime=1, 
+		E_BulletType_MOVE type2 = BULLETTYPE_MOVE_NOMAL);
 
 
 private:
@@ -83,6 +94,7 @@ private:
 protected:
 	CPlayer*		mPlayerTarget;
 	CCamera_Main*	mMainCamera;
+	_float3			mCameralocalPosition;
 
 	// ÃÑ¾Ë ´ã´ç ÄÄÆ÷³ÍÆ®
 	// ÃÑ ÄÄÆ÷³ÍÆ®¸¦ ÂüÁ¶ÇØ¼­ ÃÑ¾Ë ÆÐÅÏ ±¸Çö
