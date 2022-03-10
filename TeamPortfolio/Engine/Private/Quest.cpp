@@ -70,6 +70,23 @@ _int CQuest::Get_QuestNeedPercent(_int eQuest)
 		return -1;
 }
 
+_bool CQuest::Get_QuestComplete(void)
+{
+	int Quest[4] = {};
+	for (int i = 0; i < m_iMaxQuest; ++i)
+	{
+		if (m_iQuestGoalIndex[i] <= m_iQuestIndex[i])
+			Quest[i] = 1;
+		else
+			Quest[i] = 0;
+	}
+	m_iQuestComplete = Quest[0] + Quest[1] + Quest[2] + Quest[3];
+	if (m_iQuestComplete == 4)
+		return true;
+	else
+		return false;
+}
+
 
 void CQuest::Free()
 {
