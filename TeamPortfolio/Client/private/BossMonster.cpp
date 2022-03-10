@@ -138,6 +138,11 @@ CCamera_Main::CameraLookStateID CBossMonster::Get_CameraLookState()const
 	return mMainCamera->Get_CameraLookState();
 }
 
+const _tchar * CBossMonster::Get_NowTextureTag() const
+{
+	return m_ComTexture->Get_NowTextureTag();
+}
+
 
 HRESULT CBossMonster::SetUp_Components()
 {

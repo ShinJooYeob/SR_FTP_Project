@@ -446,7 +446,7 @@ HRESULT CScene_Stage3::Ready_Layer_Terrain(_uint sceneid,list<SPECIALCUBE*>* lis
 				memcpy(&potalDesc.vPos_B_Cube, &(data->WorldMat.m[3]), sizeof(_float3));
 				// »ý¼º
 				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STAGE3,
-					TAG_LAY(Layer_Terrain), TAG_OP(Prototype_PortalCube_A),
+					/*TAG_LAY(Layer_Terrain)*/TEXT("Layer_Potal"), TAG_OP(Prototype_PortalCube_A),
 					&potalDesc);
 
 			}

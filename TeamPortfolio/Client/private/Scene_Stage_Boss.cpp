@@ -10,6 +10,7 @@
 #include "Object_OrbitButton.h"
 #include "Object_Star.h"
 #include "UI_Result.h"
+#include "UI_BossStatusUI.h"
 
 
 CScene_Stage_Boss::CScene_Stage_Boss(LPDIRECT3DDEVICE9 GraphicDevice)
@@ -29,8 +30,6 @@ HRESULT CScene_Stage_Boss::Initialize()
 	FAILED_CHECK(Ready_Layer_Player(TAG_LAY(Layer_Player), _float3(0, 11, 0)));
 	FAILED_CHECK(Ready_Layer_Monster(TAG_LAY(Layer_Monster)));
 
-//	FAILED_CHECK(Ready_Layer_PauseUI(TEXT("Layer_PauseUI")));
-//	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
 //	FAILED_CHECK(Ready_Layer_UI_Start(TEXT("Layer_UI_Start")));
 //	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
 
@@ -47,7 +46,20 @@ HRESULT CScene_Stage_Boss::Initialize()
 
 
 	GetSingle(CGameInstance)->PlayBGM(L"JH_Stage3_BGM.mp3");
-	GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.1f);
+	//GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.1f);
+
+
+
+	/////////////////////보스 엔트리 테스트/////////////////////////////////////////////////////
+
+	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
+	FAILED_CHECK(Ready_Layer_PauseUI(TEXT("Layer_PauseUI")));
+	FAILED_CHECK(Ready_Layer_Object_BossStatusUI(TEXT("Layer_BossStatusUI")))
+	//FAILED_CHECK(Ready_Layer_Object_BossEntry(TEXT("Layer_BossEntry")));
+
+	//////////////////////////////////////////////////////////////////////////
+
+
 
 	return S_OK;
 }
@@ -74,21 +86,9 @@ _int CScene_Stage_Boss::Update(_float fDeltaTime)
 				return E_FAIL;
 			break;
 		}
-		case SCENEID::SCENE_STAGE1:
+		case SCENEID::SCENE_BOSS:
 		{
-			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING)))
-				return E_FAIL;
-			break;
-		}
-		case SCENEID::SCENE_STAGE2:
-		{
-			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING)))
-				return E_FAIL;
-			break;
-		}
-		case SCENEID::SCENE_STAGE3:
-		{
-			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING)))
+			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_BOSS), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
 			break;
 		}
@@ -163,9 +163,9 @@ HRESULT CScene_Stage_Boss::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
 		return E_FAIL;
 
-//	_float3 ActionPos[5] = { _float3(0, 10.f, -2.f) ,_float3(13.f, -14.f, -15.f) ,_float3(-7.f, -10.f, -20.f),_float3(-10.f, 19.f, -12.f),_float3(0.f, 32.f, -26.f) };
+	_float3 ActionPos[1] = { _float3(0, 10.f, -2.f) };
 
-//	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,4))
+	FAILED_CHECK(pMainCam->ReInitialize(ActionPos, 1));
 
 
 	pMainCam->Set_NowSceneNum(SCENE_BOSS);
@@ -309,7 +309,7 @@ HRESULT CScene_Stage_Boss::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
 				memcpy(&potalDesc.vPos_B_Cube, &(data->WorldMat.m[3]), sizeof(_float3));
 				// 생성
 				GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STAGE2,
-					TAG_LAY(Layer_Terrain), TAG_OP(Prototype_PortalCube_A),
+					/*TAG_LAY(Layer_Terrain)*/TEXT("Layer_Potal"), TAG_OP(Prototype_PortalCube_A),
 					&potalDesc);
 
 			}
@@ -343,7 +343,38 @@ HRESULT CScene_Stage_Boss::Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata)
 	return S_OK;
 }
 
+HRESULT CScene_Stage_Boss::Ready_Layer_Object_BossEntry(const _tchar * pLayerTag)
+{
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("Prototype_GameObject_BossEntry")))
+		return E_FAIL;
 
+	return S_OK;
+}
+
+HRESULT CScene_Stage_Boss::Ready_Layer_Object_BossStatusUI(const _tchar * pLayerTag)
+{
+	list<CGameObject*>* pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, TAG_LAY(Layer_Player));
+
+	NULL_CHECK_BREAK(pPlayerList);
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("Prototype_GameObject_BossStatusUI")))
+		return E_FAIL;
+	
+	CUI_BossStatusUI* pStatusUI = (CUI_BossStatusUI*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_BOSS, pLayerTag));
+
+	if (pStatusUI == nullptr)
+		return E_FAIL;
+
+	FAILED_CHECK(pStatusUI->Set_Player(pPlayerList->front()));
+
+
+	CUI_Result* pResult = (CUI_Result*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_BOSS, TEXT("Layer_UI_Result")));
+	if (pResult == nullptr)
+		return E_FAIL;
+	FAILED_CHECK(pStatusUI->Set_ResultUI(pResult));
+
+	return S_OK;
+}
 
 CScene_Stage_Boss * CScene_Stage_Boss::Create(LPDIRECT3DDEVICE9 GraphicDevice)
 {

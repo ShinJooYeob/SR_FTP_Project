@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "BossMonster.h"
 #include "UI_Result.h"
 #include "..\public\UI_BossStatusUI.h"
 
@@ -36,18 +37,10 @@ HRESULT CUI_BossStatusUI::Initialize_Clone(void * pArg)
 
 	FAILED_CHECK(SetUp_UIDesc());
 
+
+
+
 	return S_OK;
-}
-void CUI_BossStatusUI::Set_UI_TransformRect( _float4 vRect)
-{
-	//vRect.x,y,z,w=top,left,bottom,right
-	_float4 vResult{};
-	/*너비*/vResult.z = vRect.w-vRect.y;
-	/*높이*/vResult.w = vRect.z-vRect.x;
-	/*x좌표*/vResult.x = vRect.y + vResult.z*0.5f;
-	/*y좌표*/vResult.y = vRect.x + vResult.w*0.5f;
-	Set_UI_Transform(m_ComTransform, vResult);
-	
 }
 
 _int CUI_BossStatusUI::Update(_float fDeltaTime)
@@ -90,12 +83,13 @@ _int CUI_BossStatusUI::Render()
 		return E_FAIL;
 
 
-
+	//시간 바
+	FAILED_CHECK(Zero_SetUp_RenderState());
+	//바 움직임
 	FAILED_CHECK(First_SetUp_RenderState());
-	
+	//스테이터스 전체 이미지
 	FAILED_CHECK(Second_SetUp_RenderState());
 
-	FAILED_CHECK(Third_SetUp_RenderState());
 
 
 
@@ -115,154 +109,194 @@ _int CUI_BossStatusUI::LateRender()
 	return _int();
 }
 
+HRESULT CUI_BossStatusUI::Zero_SetUp_RenderState()
+{
+
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG2);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TFACTOR);
+
+	if (m_NowColor.x < 0) m_NowColor.x = 0; if (m_NowColor.x > 255) m_NowColor.x = 255;
+	if (m_NowColor.y < 0) m_NowColor.y = 0; if (m_NowColor.y > 255) m_NowColor.y = 255;
+	if (m_NowColor.z < 0) m_NowColor.z = 0; if (m_NowColor.z > 255) m_NowColor.z = 255;
+
+	m_pGraphicDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_XRGB(_uint(m_NowColor.x), _uint(m_NowColor.y), _uint(m_NowColor.z)));
+
+	if (FAILED(Set_UI_Transform(m_ComTransform, TransRect_to_UIDesc(m_vBarRect[2]))))
+		return E_FAIL;
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
+
+	if (FAILED(m_ComTexture->Bind_Texture(7)))
+		return E_FAIL;
+	if (FAILED(m_ComVIBuffer->Render()))
+		return E_FAIL;
+
+
+
+
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	m_pGraphicDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
+
+
+
+	return S_OK;
+}
+
 HRESULT CUI_BossStatusUI::First_SetUp_RenderState()
 {
 	if (nullptr == m_pGraphicDevice)
 		return E_FAIL;
 
-	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[0])))
+
+
+	//HP BAR 
+	if (FAILED(Set_UI_Transform(m_ComTransform, TransRect_to_UIDesc(m_vBarRect[0]))))
+		return E_FAIL;
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
+
+	if (FAILED(m_ComTexture->Bind_Texture(1)))
+		return E_FAIL;
+	if (FAILED(m_ComVIBuffer->Render()))
+		return E_FAIL;
+
+
+
+	if (FAILED(Set_UI_Transform(m_ComTransform, TransRect_to_UIDesc(m_vBarRect[1]))))
+		return E_FAIL;
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
+
+	if (FAILED(m_ComTexture->Bind_Texture(2)))
+		return E_FAIL;
+	if (FAILED(m_ComVIBuffer->Render()))
+		return E_FAIL;
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 180);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	//디비전 라인
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[3])))
 		return E_FAIL;
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"GradationBar"));
-
-	if (FAILED(m_ComTexture->Bind_Texture(1)))
+	if (FAILED(m_ComTexture->Bind_Texture(3)))
 		return E_FAIL;
-
-
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-
-	_uint iAlpha = (m_pResult->Get_NowTime()) / (_float)m_fTotalTimerTime * 255.f;
-	if (iAlpha >= 254)
-	{
-		iAlpha = 255;
-		m_pPlayer->Set_StageEnd(0);
-		m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);
-	}
-	if (iAlpha < 0)
-		iAlpha = 0;
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, iAlpha);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
-
-	if (FAILED(m_ComTexture->Bind_Texture(0)))
-		return E_FAIL;
-
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 1);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-	if (FAILED(m_ComVIBuffer->Render()))
-		return E_FAIL;
-
 
 	return S_OK;
 }
 
 HRESULT CUI_BossStatusUI::Second_SetUp_RenderState()
 {
-	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[1])))
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+	//상태바
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[0])))
 		return E_FAIL;
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 150);
-
-
-	const _tchar* TempTag = m_pPlayer->Get_NowTextureTag();
-
-	if (m_bIsStatusChage)
-	{
-
-
-		if (TempTag != nullptr)
-		{
-			if (!m_fHurtedTime && !lstrcmp(TempTag, L"hurt"))
-				m_fHurtedTime += g_fDeltaTime;
-		}
-
-		if (FAILED(m_ComTexture->Bind_Texture(3)))
-			return E_FAIL;
-
-		if (FAILED(m_ComVIBuffer->Render()))
-			return E_FAIL;
-	}
-	else
-	{
-		if (FAILED(m_ComTexture->Bind_Texture(2)))
-			return E_FAIL;
-
-		if (FAILED(m_ComVIBuffer->Render()))
-			return E_FAIL;
-
-
-		m_vUIDesc[1].y -= 10;
-
-		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[1])))
-			return E_FAIL;
-		if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-			return E_FAIL;
-
-
-		if (TempTag != nullptr)
-		{
-			m_ComTexture2->Change_TextureLayer_Wait(TempTag);
-			if (!m_fHurtedTime && !lstrcmp(TempTag, L"hurt"))
-				m_fHurtedTime += g_fDeltaTime;
-		}
-
-
-		if (FAILED(m_ComTexture2->Bind_Texture_AutoFrame(g_fDeltaTime)))
-			return E_FAIL;
-		if (FAILED(m_ComVIBuffer->Render()))
-			return E_FAIL;
-
-		m_vUIDesc[1].y += 10;
-	}
-
-	
-	return S_OK;
-}
-
-HRESULT CUI_BossStatusUI::Third_SetUp_RenderState()
-{
-
-	FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"walk"));
-
-	if (FAILED(m_ComTexture->Bind_Texture(_uint(m_fWalkFrame))))
+	if (FAILED(m_ComTexture->Bind_Texture(0)))
+		return E_FAIL;
+	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
 
-	_int iPlayerLife = m_pPlayer->Get_PlayerLife();
-	if (iPlayerLife > 0  && iPlayerLife <= 3)
-	{
 
-	for (_uint i = 0; i < (_uint)iPlayerLife; i++)
+
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 180);
+	//플레이어 얼굴 이미지
+
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[1])))
+		return E_FAIL;
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
+
+	if (m_PlayerPictureClicked)
 	{
-		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[i + 2])))
+		if (FAILED(m_ComTexture->Bind_Texture(5)))
+			return E_FAIL;
+		if (FAILED(m_ComVIBuffer->Render()))
+			return E_FAIL;
+
+	}
+	else {
+		if (FAILED(m_ComTexture->Bind_Texture(4)))
+			return E_FAIL;
+		if (FAILED(m_ComVIBuffer->Render()))
+			return E_FAIL;
+
+		const _tchar* TextureTag = m_pPlayer->Get_NowTextureTag();
+
+		if (TextureTag != nullptr)
+		{
+			FAILED_CHECK(m_ComTexture_Player->Change_TextureLayer_Wait(TextureTag));
+		}
+		
+
+		if (FAILED(m_ComTexture_Player->Bind_Texture_AutoFrame(g_fDeltaTime)))
+			return E_FAIL;
+		if (FAILED(m_ComVIBuffer->Render()))
+			return E_FAIL;
+
+	}
+
+	//보스 얼굴 이미지
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 32);
+
+	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[2])))
+		return E_FAIL;
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
+		return E_FAIL;
+
+	if (m_BossPictureClicked)
+	{	
+		if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[2])))
 			return E_FAIL;
 
 		if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 			return E_FAIL;
 
-		if (i == iPlayerLife - 1 && m_fHurtedTime)
-		{
-			FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"hurt"));
-
-			if (FAILED(m_ComTexture->Bind_Texture((_uint)(m_fWalkFrame))))
-				return E_FAIL;
-		}
-
+		if (FAILED(m_ComTexture->Bind_Texture(6)))
+			return E_FAIL;
 		if (FAILED(m_ComVIBuffer->Render()))
 			return E_FAIL;
+
+
 	}
+	else {
+		if (FAILED(m_ComTexture->Bind_Texture(4)))
+			return E_FAIL;
+		if (FAILED(m_ComVIBuffer->Render()))
+			return E_FAIL;
+
+
+		const _tchar* TextureTag = m_pBoss->Get_NowTextureTag();
+
+		if (TextureTag != nullptr)
+		{
+			FAILED_CHECK(m_ComTexture_Boss->Change_TextureLayer_Wait(TextureTag));
+		}
+
+
+		if (FAILED(m_ComTexture_Boss->Bind_Texture_AutoFrame(g_fDeltaTime)))
+			return E_FAIL;
+		if (FAILED(m_ComVIBuffer->Render()))
+			return E_FAIL;
 
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+
+	
 	return S_OK;
 }
 
@@ -275,11 +309,6 @@ HRESULT CUI_BossStatusUI::Release_RenderState()
 	return S_OK;
 }
 
-HRESULT CUI_BossStatusUI::Set_TotalTimerSec(_float iTotalSec)
-{
-	m_fTotalTimerTime  = iTotalSec;
-	return S_OK	;
-}
 
 HRESULT CUI_BossStatusUI::Set_Player(CGameObject * pPlayer)
 {
@@ -297,9 +326,18 @@ HRESULT CUI_BossStatusUI::Set_ResultUI(CGameObject * pResult)
 		return E_FAIL;
 
 	m_pResult = (CUI_Result*)pResult;
-	Set_TotalTimerSec(m_pResult->Get_MaxTime());
 
 	return S_OK;
+}
+
+void CUI_BossStatusUI::Change_VersusPoint(_float vChangePoint)
+{
+	m_fNowVersusPoint += vChangePoint;
+	m_fStartPoint = m_fEasingPoint;
+	m_bVersusPointChange = true;
+	m_fPassedTime = 0;
+	m_fTargetPoint = m_fNowVersusPoint;
+
 }
 
 HRESULT CUI_BossStatusUI::SetUp_Components()
@@ -314,10 +352,27 @@ HRESULT CUI_BossStatusUI::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Transform"), TEXT("Com_Transform"), (CComponent**)&m_ComTransform, &TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Texture_StatusUI"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TEXT("Prototype_Component_Texture_BossStatusUI"), TEXT("Com_Texture"), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_Player), TEXT("Com_Texture_2"), (CComponent**)&m_ComTexture2)))
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Texture_Player), TEXT("Com_Texture_Player"), (CComponent**)&m_ComTexture_Player)))
 		return E_FAIL;
+	if (FAILED(__super::Add_Component(m_eNowSceneNum, TAG_CP(Prototype_Texture_Monster), TEXT("Com_Texture_Boss"), (CComponent**)&m_ComTexture_Boss)))
+		return E_FAIL;
+
+
+
+	m_pPlayer = (CPlayer*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player)));
+	NULL_CHECK_BREAK(m_pPlayer);
+
+	Safe_AddRef(m_pPlayer);
+
+
+	m_pBoss = (CBossMonster*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(m_eNowSceneNum, TAG_LAY(Layer_Monster)));
+	NULL_CHECK_BREAK(m_pBoss);
+
+	Safe_AddRef(m_pBoss);
+	
+
 
 
 	return S_OK;
@@ -325,29 +380,62 @@ HRESULT CUI_BossStatusUI::SetUp_Components()
 
 HRESULT CUI_BossStatusUI::SetUp_UIDesc()
 {
-	m_vUIDesc[0].x = 315;
-	m_vUIDesc[0].y = 30;
-	m_vUIDesc[0].z = 400;
-	m_vUIDesc[0].w = 20;
+	m_vUIDesc[0].x = g_iWinCX*0.5f;
+	m_vUIDesc[0].z = g_iWinCX;
+	m_vUIDesc[0].w = m_vUIDesc[0].x * 0.25f;
+	m_vUIDesc[0].y = g_iWinCY - m_vUIDesc[0].w * 0.5f + 25;
 
 
-	m_vUIDesc[1].x = 70;
-	m_vUIDesc[1].y = 70;
 	m_vUIDesc[1].z = 100;
 	m_vUIDesc[1].w = 100;
+	m_vUIDesc[1].x = m_vUIDesc[0].x - m_vUIDesc[0].z * 0.5f + m_vUIDesc[1].z *0.5f;
+	m_vUIDesc[1].y = m_vUIDesc[0].y;
 
 
-	for (_uint i = 0 ; i < 3;i++)
-	{
-		m_vUIDesc[i + 2].x = 150 + i*50.f;
-		m_vUIDesc[i + 2].y = 90;
-		m_vUIDesc[i + 2].z = 50;
-		m_vUIDesc[i + 2].w = 50;
-	}
+	m_vUIDesc[2].z = 100;
+	m_vUIDesc[2].w = 100;
+	m_vUIDesc[2].x = m_vUIDesc[0].x + m_vUIDesc[0].z * 0.5f - m_vUIDesc[1].z *0.5f;
+	m_vUIDesc[2].y = m_vUIDesc[0].y;
 
-	FAILED_CHECK(Set_TotalTimerSec(60));
 
-	m_bIsStatusChage = false;
+
+
+	m_fEasingPoint = m_fStartPoint = m_fNowVersusPoint = m_fTotalVersusPoint * 0.5f;
+
+	//디비전 라인
+	m_vUIDesc[3].z = 40;
+	m_vUIDesc[3].w = 40;
+	m_vUIDesc[3].x = m_vUIDesc[0].x -370 + (740 * m_fNowVersusPoint/ m_fTotalVersusPoint);
+	m_vUIDesc[3].y = m_vUIDesc[0].y + 20;
+
+
+
+
+	//플레이어바
+	m_vBarRect[0].left = m_vUIDesc[0].x - m_vUIDesc[0].z * 0.3f;
+	m_vBarRect[0].right = m_vUIDesc[3].x;
+	m_vBarRect[0].top = m_vUIDesc[0].y + 8;
+	m_vBarRect[0].bottom = m_vUIDesc[0].y + 32;
+
+	//보스 바
+	m_vBarRect[1].left = m_vUIDesc[3].x;
+	m_vBarRect[1].right = m_vUIDesc[0].x + m_vUIDesc[0].z * 0.3f;
+	m_vBarRect[1].top = m_vBarRect[0].top;
+	m_vBarRect[1].bottom = m_vBarRect[0].bottom;
+
+
+	//타이머 바
+	m_vBarRect[2].left = m_vUIDesc[0].x - m_vUIDesc[0].z * 0.3f;
+	m_vBarRect[2].right = m_vUIDesc[0].x + m_vUIDesc[0].z * 0.3f;
+	m_vBarRect[2].top = m_vUIDesc[0].y - 45;
+	m_vBarRect[2].bottom = m_vUIDesc[0].y + 8;
+
+
+
+
+	m_NowColor = m_StartColor = _float3(rand() % 255, rand() % 255, rand() % 255);
+	m_TargetColor = _float3(rand() % 255, rand() % 255, rand() % 255);
+	m_fTimeBarPassedTime = 0;
 
 
 	return S_OK;
@@ -355,6 +443,18 @@ HRESULT CUI_BossStatusUI::SetUp_UIDesc()
 
 HRESULT CUI_BossStatusUI::Update_MouseButton(_float fTimeDelta)
 {
+	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_O) & DIS_Down )
+	{
+		Change_VersusPoint(-1);
+	}
+	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_P) & DIS_Down)
+	{
+		Change_VersusPoint(1);
+
+	}
+
+
+
 	CGameInstance* pInstance = GetSingle(CGameInstance);
 
 	if (pInstance->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Down)
@@ -365,37 +465,87 @@ HRESULT CUI_BossStatusUI::Update_MouseButton(_float fTimeDelta)
 
 		if (PtInRect(&TransUIDesc_to_Rect(m_vUIDesc[1]), ptMouse))
 		{
-			m_bIsStatusChage = !m_bIsStatusChage;
+			m_PlayerPictureClicked = !m_PlayerPictureClicked;
+		}
+
+		if (PtInRect(&TransUIDesc_to_Rect(m_vUIDesc[2]), ptMouse))
+		{
+			m_BossPictureClicked = !m_BossPictureClicked;
 		}
 	}
+
 	return S_OK;
 }
 
 HRESULT CUI_BossStatusUI::Update_Animation(_float fTimeDelta)
 {
-
-
-	m_fWalkFrame += fTimeDelta * 6.f;
-	if (m_fWalkFrame > 6)
-		m_fWalkFrame = 0;
-
-
-	if (m_fHurtedTime != 0)
+	
+	//////타이머바 애니메이션////////////////////////////////////////////////////////////////////
+	m_fTimeBarPassedTime += fTimeDelta;
+	m_NowColor = EaseingFloat3(TYPE_Linear, m_StartColor, m_TargetColor, m_fTimeBarPassedTime, 1.f);
+	if (m_fTimeBarPassedTime > 1.f)
 	{
-		m_fHurtedTime += fTimeDelta;
-		if (m_fHurtedTime > 1.2f)
-		{
-			m_fHurtedTime = 0;
-			m_pPlayer->Set_PlayerLife(-1);
-		}
+		m_NowColor = m_StartColor = m_TargetColor;
+		m_TargetColor = _float3(rand() % 255, rand() % 255, rand() % 255);
+		m_fTimeBarPassedTime = 0;
 	}
 
-	if (m_pPlayer->Get_PlayerLife() <=0 )
-	{
 
+	_float Timer = m_pResult->Get_NowTime() / m_pResult->Get_MaxTime();
+	m_vBarRect[2].right = m_vUIDesc[0].x + m_vUIDesc[0].z * 0.3f - (m_vUIDesc[0].z * 0.6f * Timer);
+
+	if (Timer >= 1)
+	{
+		m_bIsStageEnd = true;
 		m_pPlayer->Set_StageEnd(0);
 		m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);
 	}
+
+
+
+
+	if (m_bVersusPointChange)
+	{
+		m_fPassedTime += fTimeDelta;
+		m_fEasingPoint = GetSingle(CGameInstance)->Easing(TYPE_QuarticOut, m_fStartPoint, m_fTargetPoint, m_fPassedTime);
+
+		if (m_fPassedTime > 1.f)
+		{
+			m_fStartPoint = m_fTargetPoint;
+			m_fEasingPoint = m_fTargetPoint;
+			m_bVersusPointChange = false;
+		}
+
+		_float Value = m_fEasingPoint / m_fTotalVersusPoint;
+		if (Value > 1)
+			Value = 1;
+		else if (Value < 0)
+			Value = 0;
+
+		m_vUIDesc[3].x = m_vUIDesc[0].x  - 370 +  (740 * Value);
+		m_vBarRect[0].right = m_vBarRect[1].left = m_vUIDesc[3].x;
+	}
+
+	if (!m_bIsStageEnd)
+	{
+
+		if (m_fEasingPoint / m_fTotalVersusPoint <= 0)
+		{
+			m_bIsStageEnd = true;
+			m_pPlayer->Set_StageEnd(0);
+			m_pResult->Set_Clear_Wait_AnimTime(false, 3.f);
+		}
+		else if (m_fEasingPoint / m_fTotalVersusPoint >= 1)
+		{
+			m_bIsStageEnd = true;
+			for (_uint i = 0; i < 5; i++)
+			{
+				m_pResult->Set_RankStar();
+			}
+			m_pPlayer->Set_StageEnd(1);
+		}
+	}
+
 
 	return S_OK	;
 }
@@ -413,6 +563,30 @@ RECT CUI_BossStatusUI::TransUIDesc_to_Rect(_float4 UIDesc)
 	return tRsult;
 }
 
+_float4 CUI_BossStatusUI::TransRect_to_UIDesc(RECT vRect)
+{
+	//vRect.x,y,z,w=top,left,bottom,right
+	_float4 vResult{};
+
+	/*너비*/vResult.z = vRect.right - vRect.left;
+	/*높이*/vResult.w = vRect.bottom - vRect.top;
+	/*x좌표*/vResult.x = vRect.left + vResult.z *0.5f;
+	/*y좌표*/vResult.y = vRect.top + vResult.w * 0.5f;
+
+
+	return vResult;
+}
+
+_float3 CUI_BossStatusUI::EaseingFloat3(EasingTypeID id, _float3 StartPos, _float3 EndPos, _float curTime, _float maxTime)
+{
+	_float3 newPos = _float3(0, 0, 0);
+	newPos.x = GetSingle(CGameInstance)->Easing(id, StartPos.x, EndPos.x, curTime, maxTime);
+	newPos.y = GetSingle(CGameInstance)->Easing(id, StartPos.y, EndPos.y, curTime, maxTime);
+	newPos.z = GetSingle(CGameInstance)->Easing(id, StartPos.z, EndPos.z, curTime, maxTime);
+
+
+	return newPos;
+}
 
 
 
@@ -451,8 +625,14 @@ void CUI_BossStatusUI::Free()
 {
 	__super::Free();
 
+	if (m_bIsClone)
+	{
+		Safe_Release(m_pPlayer);
+		Safe_Release(m_pBoss);
+	}
 	
-	Safe_Release(m_ComTexture2);
+	Safe_Release(m_ComTexture_Player);
+	Safe_Release(m_ComTexture_Boss);
 	Safe_Release(m_ComTexture);
 	Safe_Release(m_ComTransform);
 	Safe_Release(m_ComVIBuffer);

@@ -149,6 +149,7 @@ HRESULT CMainApp::Scene_Change(SCENEID eSceneID)
 	case SCENEID::SCENE_STAGE1:
 	case SCENEID::SCENE_STAGE2:
 	case SCENEID::SCENE_STAGE3:
+	case SCENEID::SCENE_BOSS:
 	case SCENEID::SCENE_IMGUISCENE:
 
 		//Scene_Change에 디폴트로 false true 이걸 트루로 바꿔준다?

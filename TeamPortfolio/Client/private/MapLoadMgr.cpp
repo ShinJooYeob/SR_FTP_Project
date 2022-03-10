@@ -99,6 +99,26 @@ HRESULT CMapLoadMgr::LoadMap(SCENEID sceneid, _uint index, list<SPECIALCUBE*>* s
 			tex->Set_LoadTexutreNumber(Infodata->TexDesc.StateIndex);
 
 		}
+		else if(Infodata->CubeID == CUBEID_GRAVITY)
+		{
+
+			CGameObject* newObj = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(sceneid, /*TAG_LAY(Layer_Terrain)*/TEXT("Layer_Gravity"))->back();
+			if (newObj == nullptr)
+				continue;
+
+			CTransform* trans = (CTransform*)newObj->Get_Component(TAG_COM(Com_Transform));
+			_float3 vSacle = trans->Get_MatrixScale();
+			trans->Set_Matrix(Infodata->WorldMatData);
+			trans->Scaled(vSacle);
+
+			// 특수큐브는 내부에서 텍스처 변경
+			if (Infodata->CubeID == 0)
+			{
+				CTexture* tex = (CTexture*)newObj->Get_Component(TAG_COM(Com_Texture));
+				tex->Change_TextureLayer(Infodata->TexDesc.szStateKey);
+				tex->Set_LoadTexutreNumber(Infodata->TexDesc.StateIndex);
+			}
+		}
 		else
 		{
 
@@ -264,7 +284,7 @@ bool CMapLoadMgr::CubeID2Create(_uint sceneid, OUTPUT_OBJECTINFO& info, list<SPE
 
 	case CUBEID_GRAVITY:
 		GetSingle(CGameInstance)->Add_GameObject_To_Layer(sceneid,
-			TAG_LAY(Layer_Terrain), TAG_OP(Prototype_GravityCube),
+			/*TAG_LAY(Layer_Terrain)*/TEXT("Layer_Gravity"), TAG_OP(Prototype_GravityCube),
 			_float3(0, 0, 0));
 		break;
 	case CUBEID_JUMP:

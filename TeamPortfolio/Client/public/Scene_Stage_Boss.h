@@ -35,6 +35,12 @@ private:
 
 
 
+
+	HRESULT Ready_Layer_Object_BossEntry(const _tchar* pLayerTag);
+
+	HRESULT Ready_Layer_Object_BossStatusUI(const _tchar* pLayerTag);
+
+
 	D3DLIGHT9		m_Light;
 
 public:

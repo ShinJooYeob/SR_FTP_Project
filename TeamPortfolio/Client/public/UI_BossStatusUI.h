@@ -32,44 +32,74 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
-	HRESULT First_SetUp_RenderState();
-	HRESULT Second_SetUp_RenderState();
-	HRESULT Third_SetUp_RenderState();
-	HRESULT Release_RenderState();
-
-	HRESULT Set_TotalTimerSec(_float iTotalSec);
 	HRESULT Set_Player(CGameObject* pPlayer);
 	HRESULT Set_ResultUI(CGameObject* pResult);
 
-public:
-	void			Set_UI_TransformRect(_float4 vRect);
+
+	void	Change_VersusPoint(_float vChangePoint);
 
 private:
 	CTexture*				m_ComTexture = nullptr;
-	CTexture*				m_ComTexture2 = nullptr;
+	CTexture*				m_ComTexture_Player = nullptr;
+	CTexture*				m_ComTexture_Boss = nullptr;
 	CTransform*				m_ComTransform = nullptr;
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 
-	_float					m_fTotalTimerTime = 0;
+
+	
 
 private:
-	_float4			m_vUIDesc[5];
-	_float			m_fWalkFrame = 0;
-	_float			m_fHurtedTime = 0;
+	_float4			m_vUIDesc[4];
+	RECT			m_vBarRect[3];
 
 
-	_bool			m_bIsStatusChage = false;
+	_float			m_fTotalVersusPoint = 10;
+	_float			m_fNowVersusPoint;
+
+	_bool			m_bIsStageEnd = false;
+
+	_bool			m_PlayerPictureClicked = false;
+	_bool			m_BossPictureClicked = false;
+
+
+	_bool			m_bVersusPointChange = false;
+
+	_float			m_fStartPoint = 0;
+	_float			m_fTargetPoint = 0;
+	_float			m_fPassedTime = 0;
+	_float			m_fEasingPoint = 0;
+
+
+
+	_float3			m_StartColor = _float3(255, 255, 255);
+	_float3			m_TargetColor = _float3(255, 255, 255);
+	_float3			m_NowColor = _float3(255, 255, 255);
+	_float			m_fTimeBarPassedTime = 0;
+
+
+
 	class CUI_Result*		m_pResult = nullptr;
 
 	class CPlayer*	m_pPlayer = nullptr;
+	class CBossMonster*	m_pBoss = nullptr;
 
 private:
 	HRESULT			SetUp_Components();
 	HRESULT			SetUp_UIDesc();
 	HRESULT			Update_MouseButton(_float fTimeDelta);
 	HRESULT			Update_Animation(_float fTimeDelta);
+
+
+	HRESULT			Zero_SetUp_RenderState();
+	HRESULT			First_SetUp_RenderState();
+	HRESULT			Second_SetUp_RenderState();
+	HRESULT			Release_RenderState();
+
 	RECT			TransUIDesc_to_Rect(_float4 UIDesc);
+	_float4			TransRect_to_UIDesc(RECT UIDesc);
+
+	_float3			EaseingFloat3(EasingTypeID id, _float3 StartPos, _float3 EndPos, _float curTime, _float maxTime);
 
 public:
 	static CUI_BossStatusUI* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

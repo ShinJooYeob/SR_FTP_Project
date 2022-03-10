@@ -23,6 +23,7 @@
 #include "Npc_geezer.h"
 #include "Npc_izaac.h"
 #include "UI_BossStageEntryUI.h"
+#include "UI_BossStatusUI.h"
 #include "Npc_izaacTuto.h"
 
 #include "Object_FixCube.h"
@@ -200,7 +201,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwl", pGameInstance->Create_ParsedObject(L"BigOwlVertex.txt", L"BigOwlIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwlHead", pGameInstance->Create_ParsedObject(L"BigOwlHeadVertex.txt", L"BigOwlHeadIndex.txt")));
 	
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Bell", pGameInstance->Create_ParsedObject(L"BellVertex.txt", L"BellIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Bell", pGameInstance->Create_ParsedObject(L"BellVertex.txt", L"BellIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_LightHouse", pGameInstance->Create_ParsedObject(L"LightHouseVertex.txt", L"LightHouseIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MiniTree", pGameInstance->Create_ParsedObject(L"MiniTreeVertex.txt", L"MiniTreeIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_ZuHeadWhite", pGameInstance->Create_ParsedObject(L"ZuHeadWhiteVertex.txt", L"ZuHeadWhiteIndex.txt")));
@@ -704,9 +705,20 @@ HRESULT CLoader::Load_Scene_Stage_Boss(_bool * _IsClientQuit, CRITICAL_SECTION *
 	// 몬스터 텍스처
 	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
 	TextureDesc.szTextFilePath = TEXT("Monster.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(SCENE_STATIC, TAG_CP(Prototype_Texture_Monster), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TAG_CP(Prototype_Texture_Monster), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	////////////////////
+	///////////////보스 엔트리용///////////////////////////////////////////////////////////
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("UI_BossEntry.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_BossEntry"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("BossStatusUI.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_BossStatusUI"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
 
 #pragma endregion
 
@@ -720,6 +732,13 @@ HRESULT CLoader::Load_Scene_Stage_Boss(_bool * _IsClientQuit, CRITICAL_SECTION *
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TAG_OP(Prototype_Bullet),
 		CBullet::Create(m_pGraphicDevice,nullptr))))
 		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BossEntry"), CUI_BossStageEntryUI::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BossStatusUI"), CUI_BossStatusUI::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
 #pragma endregion
 
 
@@ -794,14 +813,7 @@ HRESULT CLoader::Load_Scene_TUTORIAL(_bool * _IsClientQuit, CRITICAL_SECTION * _
 	TextureDesc.szTextFilePath = TEXT("PotalTexture.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
-	////////////////////
-	///////////////보스 엔트리용///////////////////////////////////////////////////////////
-	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
-	TextureDesc.szTextFilePath = TEXT("UI_BossEntry.txt");
-	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_BossEntry"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
-		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BossEntry"), CUI_BossStageEntryUI::Create(m_pGraphicDevice))))
-		return E_FAIL;
+
 
 	/////////////////파서들 실험중
 	//벚꽃

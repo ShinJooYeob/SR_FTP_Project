@@ -49,13 +49,6 @@ HRESULT CScene_Tutorial::Initialize()
 		return E_FAIL;
 	///////////////////
 
-
-	/////////////////////보스 엔트리 테스트/////////////////////////////////////////////////////
-
-	FAILED_CHECK(Ready_Layer_Object_BossEntry(TEXT("Layer_BossEntry")));
-	
-	//////////////////////////////////////////////////////////////////////////
-
 	// 로드된 오브젝트 정보로 그리기
 	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
 		SCENEID::SCENE_TUTORIAL,
@@ -106,8 +99,8 @@ HRESULT CScene_Tutorial::Initialize()
 	//TransformPos = _float3(4.f, 0.f, 0.f);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_BigOwlHead", TEXT("Prototype_GameObject_BigOwlHead"), &TransformPos));
 
-	TransformPos = _float3(4.f, 0.f, 0.f);
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
+	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
 
 	//TransformPos = _float3(4.f, 0.f, 0.f);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_LightHouse", TEXT("Prototype_GameObject_LightHouse"), &TransformPos));
@@ -440,13 +433,7 @@ HRESULT CScene_Tutorial::Ready_Layer_Object_PortalCube(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CScene_Tutorial::Ready_Layer_Object_BossEntry(const _tchar * pLayerTag)
-{
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("Prototype_GameObject_BossEntry")))
-		return E_FAIL;
 
-	return S_OK;
-}
 
 HRESULT CScene_Tutorial::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
 {

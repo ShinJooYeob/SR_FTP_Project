@@ -98,24 +98,13 @@ _int CScene_Stage2::Update(_float fDeltaTime)
 				return E_FAIL;
 			break;
 		}
-		case SCENEID::SCENE_STAGE1:
-		{
-			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING)))
-				return E_FAIL;
-			break;
-		}
 		case SCENEID::SCENE_STAGE2:
 		{
 			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE2), SCENEID::SCENE_LOADING)))
 				return E_FAIL;
 			break;
 		}
-		case SCENEID::SCENE_STAGE3:
-		{
-			if (FAILED(GetSingle(CGameInstance)->Scene_Change(CScene_Loading::Create(m_pGraphicDevice, SCENEID::SCENE_STAGE1), SCENEID::SCENE_LOADING)))
-				return E_FAIL;
-			break;
-		}
+
 		}
 	}
 

@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "UI.h"
+#include "UI_Result.h"
 
 
 BEGIN(Engine)
@@ -60,7 +60,7 @@ private:
 
 
 	_bool			m_bIsStatusChage = false;
-	class CUI_Result*		m_pResult = nullptr;
+	CUI_Result*		m_pResult = nullptr;
 
 	class CPlayer*	m_pPlayer = nullptr;
 
