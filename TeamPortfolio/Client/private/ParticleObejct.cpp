@@ -450,7 +450,7 @@ HRESULT CParticleObject::SetUp_RenderState()
 		m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 		m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, _uint(m_ParticleDesc.m_fAlphaTestValue));
 		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 		//
 
@@ -458,7 +458,7 @@ HRESULT CParticleObject::SetUp_RenderState()
 	else {
 
 		m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 100);
+		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, _uint(m_ParticleDesc.m_fAlphaTestValue));
 		m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	}

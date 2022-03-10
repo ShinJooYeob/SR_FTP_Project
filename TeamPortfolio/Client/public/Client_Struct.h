@@ -75,6 +75,8 @@ typedef struct tagParticleDesc
 
 	_bool	bSubPraticle = false;
 
+	_float		m_fAlphaTestValue = 100.f;
+
 }PARTICLEDESC;
 
 

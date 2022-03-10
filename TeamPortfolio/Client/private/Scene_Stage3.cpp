@@ -480,6 +480,9 @@ void CScene_Stage3::Create_Meteo()
 	tDesc.MustDraw = true;
 	tDesc.IsParticleFameEndtoDie = false;
 
+	//tDesc.AlphaBlendON = true;
+	tDesc.m_fAlphaTestValue = 180.f;
+
 	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
 	GetSingle(CParticleMgr)->Create_ParticleObject(SCENE_STAGE3, tDesc);
 
