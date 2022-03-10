@@ -88,11 +88,11 @@ _int CUI_Result::Update(_float fDeltaTime)
 	//	m_bClear = true;
 	//}
 
-	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
-	{
-		m_bClear = true;
-		m_bAfterAnimIsClear = true;
-	}
+	//if (GetSingle(CGameInstance)->Get_DIMouseButtonState(CInput_Device::MBS_LBUTTON) & DIS_Press)
+	//{
+	//	m_bClear = true;
+	//	m_bAfterAnimIsClear = true;
+	//}
 
 	if (m_bStopSwitch == false)
 	{
