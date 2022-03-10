@@ -135,6 +135,14 @@ _int CObject_GravityCube::Collision_Gravity(_float fDeltaTime)
 	{
 		fDeltaTime *= 0.5f; // 속도 조절 가능
 		Player->MovetoTarget(GravityCubePos, fDeltaTime);
+
+		ParticleTime += fDeltaTime;
+		if (ParticleTime > 0.2f)
+		{
+			Set_Particle_BlackDust();
+			Set_Particle_DustSmall();
+			ParticleTime = 0;
+		}
 	}
 
 
@@ -213,6 +221,184 @@ HRESULT CObject_GravityCube::Release_RenderState()
 
 
 	return S_OK;
+}
+
+void CObject_GravityCube::Set_Particle_BlackDust()
+{
+	PARTICLEDESC tDesc;
+	//파티클이 흩날리는 종류 설정
+	tDesc.eParticleID = Particle_Suck;
+
+	//총 파티클이 몇초동안 흩날릴 것인지 설정
+	tDesc.TotalParticleTime = 1.f;
+
+	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
+	tDesc.EachParticleLifeTime = 1.0f;
+
+	//파티클의 사이즈를 설정
+	tDesc.ParticleSize = _float3(0.1f, 0.1f, 0.1f);
+
+	//파티클의 파워(이동속도)를 결정
+	tDesc.Particle_Power = 4;
+
+	//파티클의 파워(이동속도)의 랜덤 범위를 결정
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+
+	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
+	tDesc.MaxParticleCount = 5;
+
+	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+
+	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
+	tDesc.szTextureLayerTag = TEXT("Particle_BlackDust");
+
+	//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+	tDesc.m_bIsTextureAutoFrame = false;
+
+	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
+	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
+	//단 둘중 하나만 사용 가능
+	//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
+	//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
+	tDesc.FollowingTarget = m_ComTransform;
+	//tDesc.FixedTarget = _float3(10, 10, 1);
+
+	//파티클의 최대 이탈 범위(range)를 설정해 줌 
+	//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
+	tDesc.MaxBoundary = _float3(10, 5, 10);
+
+	//텍스처의 색상을 변경할 수 있는 기능 온오프
+	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
+	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
+	tDesc.ParticleColorChage = false;
+	tDesc.TargetColor = _float3(237, 186, 186);
+	tDesc.TargetColor2 = _float3(200.f, 192.f, 231.f);
+
+	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
+	//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
+	//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
+	tDesc.m_bIsUI = false;
+
+	//방향을 설정하고 싶을 때 사용하는 옵션
+	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
+	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
+	/*tDesc.vUp = _float3(-1, -1, 0);*/
+
+	//파티클의 랜덤 설정을 Min과 Max를 정해준다.
+	tDesc.ParticleStartRandomPosMin = _float3(-5, -5, -5);
+	tDesc.ParticleStartRandomPosMax = _float3(5, 5, 5);
+
+	tDesc.MustDraw = true;
+	//오브젝트 뒤에 가려지지 않게 만듬
+
+	tDesc.IsParticleFameEndtoDie = false;
+	//프레임이 한번만 돌것인지 정함
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+
+
+
+	//벚꽃
+	//PARTICLEDESC tDesc;
+	//tDesc.eParticleID = Particle_Suck;
+	//tDesc.TotalParticleTime = 3600.f;
+	//tDesc.EachParticleLifeTime = 1.0f;
+	//tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
+	//tDesc.Particle_Power = 4;
+	//tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+	//tDesc.MaxParticleCount = 100;
+	//tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	//tDesc.szTextureLayerTag = TEXT("greenleaf");
+	//tDesc.m_bIsTextureAutoFrame = false;
+	//tDesc.FollowingTarget = m_ComTransform;
+	////tDesc.FixedTarget = _float3(10, 10, 1);
+	//tDesc.MaxBoundary = _float3(10, 5, 10);
+	//tDesc.ParticleColorChage = true;
+	//tDesc.TargetColor = _float3(237, 186, 186);
+	//tDesc.TargetColor2 = _float3(200.f, 192.f, 231.f);
+	//tDesc.ParticleStartRandomPosMin = _float3(-10, -10, -10);
+	//tDesc.ParticleStartRandomPosMax = _float3(10, 10, 10);
+
+
+	//tDesc.m_bIsUI = false;
+	///*tDesc.vUp = _float3(-1, -1, 0);*/
+	//GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
+}
+
+void CObject_GravityCube::Set_Particle_DustSmall()
+{
+	PARTICLEDESC tDesc;
+	//파티클이 흩날리는 종류 설정
+	tDesc.eParticleID = Particle_Suck;
+
+	//총 파티클이 몇초동안 흩날릴 것인지 설정
+	tDesc.TotalParticleTime = 0.f;
+
+	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
+	tDesc.EachParticleLifeTime = 20.f;
+
+	//파티클의 사이즈를 설정
+	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
+
+	//파티클의 파워(이동속도)를 결정
+	tDesc.Particle_Power = 4;
+
+	//파티클의 파워(이동속도)의 랜덤 범위를 결정
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+
+	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
+	tDesc.MaxParticleCount = 10;
+
+	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+
+	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
+	tDesc.szTextureLayerTag = TEXT("Particle_DustSmall");
+
+	//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
+	tDesc.m_bIsTextureAutoFrame = true;
+
+	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
+	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
+	//단 둘중 하나만 사용 가능
+	//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
+	//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
+	tDesc.FollowingTarget = m_ComTransform;
+	//tDesc.FixedTarget = _float3(10, 10, 1);
+
+	//파티클의 최대 이탈 범위(range)를 설정해 줌 
+	//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
+	tDesc.MaxBoundary = _float3(10, 5, 10);
+
+	//텍스처의 색상을 변경할 수 있는 기능 온오프
+	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
+	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
+	tDesc.ParticleColorChage = false;
+	tDesc.TargetColor = _float3(237, 186, 186);
+	tDesc.TargetColor2 = _float3(200.f, 192.f, 231.f);
+
+	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
+	//UI 로 그리게 될 경우 위의 모든 좌표는 API 좌표 기준으로 셋팅할 것
+	//World로 그리게 될 경우 위의 모든 좌표는 월드 좌표 기준으로 셋팅할 것
+	tDesc.m_bIsUI = false;
+
+	//방향을 설정하고 싶을 때 사용하는 옵션
+	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
+	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
+	/*tDesc.vUp = _float3(-1, -1, 0);*/
+
+	//파티클의 랜덤 설정을 Min과 Max를 정해준다.
+	tDesc.ParticleStartRandomPosMin = _float3(-5, -5, -5);
+	tDesc.ParticleStartRandomPosMax = _float3(5, 5, 5);
+
+	tDesc.MustDraw = true;
+	//오브젝트 뒤에 가려지지 않게 만듬
+
+	tDesc.IsParticleFameEndtoDie = true;
+	//프레임이 한번만 돌것인지 정함
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
 }
 
 CObject_GravityCube * CObject_GravityCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, void * pArg)

@@ -63,6 +63,10 @@ HRESULT CScene_Stage1::Initialize()
 
 	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"EH_Spiral_of_Secrets.mp3")));
 
+
+	_float3 TransformPos = _float3(22.5f, 67.5f, -2.2f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_Blossoms", TEXT("Prototype_GameObject_Blossoms"),&TransformPos));
+
 	return S_OK;
 }
 
