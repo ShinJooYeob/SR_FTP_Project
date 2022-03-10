@@ -16,6 +16,10 @@ BEGIN(Client)
 
 class CParsedObject_BigWindmill final : public CParsedObject
 {
+public:
+	typedef struct tagBigWindmill {
+		_float3 Transform;
+	}BIGWINDMILLDESC;
 private:
 	explicit CParsedObject_BigWindmill(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CParsedObject_BigWindmill(const CParsedObject_BigWindmill& rhs);
@@ -41,6 +45,7 @@ private:
 	HRESULT Release_RenderState();
 
 private:
+	BIGWINDMILLDESC			m_BigWindmill;
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;

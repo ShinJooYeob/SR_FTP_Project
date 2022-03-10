@@ -16,6 +16,10 @@ BEGIN(Client)
 
 class CParsedObject_WindmillBlue final : public CParsedObject
 {
+public:
+	typedef struct tagWindmillBlue {
+		_float3 fTransform;
+	}WINDMILLBLUEDESC;
 private:
 	explicit CParsedObject_WindmillBlue(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CParsedObject_WindmillBlue(const CParsedObject_WindmillBlue& rhs);
@@ -41,13 +45,13 @@ private:
 	HRESULT Release_RenderState();
 
 private:
+	WINDMILLBLUEDESC		m_WindmillBlue;
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;
 	CVIBuffer_Parsed*		m_ComVIBuffer = nullptr;
 
 	CCollision*				m_pCollisionCom = nullptr;
-
 
 
 public:

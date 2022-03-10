@@ -116,6 +116,9 @@ HRESULT CScene_Tutorial::Initialize()
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_WindmillBlue"), &TransformPos));
 	
 	//TransformPos = _float3(4.f, 0.f, 0.f);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_BigWindmill"), &TransformPos));
+
+	//TransformPos = _float3(4.f, 0.f, 0.f);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
 
 	//TransformPos = _float3(1.f, 0.f, 0.f);

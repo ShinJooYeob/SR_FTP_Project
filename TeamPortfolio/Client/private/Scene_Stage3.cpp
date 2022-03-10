@@ -56,6 +56,8 @@ HRESULT CScene_Stage3::Initialize()
 	GetSingle(CGameInstance)->PlayBGM(L"JH_Stage3_BGM.mp3");
 	GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.5f);
 
+	_float3 TransformPos = _float3(4.f, 2.f, 0.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
 	return S_OK;
 }
 

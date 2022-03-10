@@ -35,6 +35,10 @@ private:
 	HRESULT Ready_Layer_StageEndCollsionObject(const _tchar* pLayerTag);			//==>따로 직접 위치 좌표 설정해줘야할 것들
 	//HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);
 
+private:
+	HRESULT	Set_WindmillBlue();
+	HRESULT	Set_BigWindmill();
+
 
 	D3DLIGHT9		m_Light;
 

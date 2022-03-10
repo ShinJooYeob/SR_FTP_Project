@@ -11,6 +11,9 @@
 #include "..\public\UI_Result.h"
 #include "..\public\Object_Star.h"
 
+#include "ParsedObject_BigWindmill.h"
+#include "ParsedObject_WindmillBlue.h"
+
 
 CScene_Stage1::CScene_Stage1(LPDIRECT3DDEVICE9 GraphicDevice)
 	:CScene(GraphicDevice)
@@ -64,9 +67,12 @@ HRESULT CScene_Stage1::Initialize()
 	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"EH_Spiral_of_Secrets.mp3")));
 
 
-	_float3 TransformPos = _float3(22.5f, 67.5f, -2.2f);
+	_float3 TransformPos = _float3(22.7f, 67.5f, -2.2f);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_Blossoms", TEXT("Prototype_GameObject_Blossoms"),&TransformPos));
 
+	Set_WindmillBlue();
+	Set_BigWindmill();
+	
 	return S_OK;
 }
 
@@ -177,7 +183,7 @@ HRESULT CScene_Stage1::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
 		return E_FAIL;
 
-	_float3 ActionPos[5] = { _float3(10.f, 40.f, 10.f) ,_float3(20.f, 42.f, -1.f) ,_float3(35.f, 46.f, -32.f),_float3(62.f, 60.f, 65.f),_float3(21.f, 64.f, -3.f) };
+	_float3 ActionPos[5] = { _float3(10.f, 40.f, 10.f) ,_float3(20.f, 42.f, -1.f) ,_float3(35.f, 46.f, -32.f),_float3(62.f, 60.f, 65.f),_float3(23.f, 63.f, -5.f) };
 
 	FAILED_CHECK(pMainCam->ReInitialize(ActionPos,5))
 
@@ -287,7 +293,7 @@ HRESULT CScene_Stage1::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
-	StarDesc.fTransform = _float3(21.f, 64.f, -3.f);
+	StarDesc.fTransform = _float3(23.f, 63.f, -5.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
@@ -297,12 +303,48 @@ HRESULT CScene_Stage1::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 HRESULT CScene_Stage1::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
 {
 	//_float3(21.f, 64.f, -3.f);
-	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(21.f, 63.f, -4.f)))
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(23.f, 63.f, -5.f)))
 		return E_FAIL;
 
 	//튜토리얼에 쓰임
 	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(0.f, 22.f, 75.f)))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_Stage1::Set_WindmillBlue()
+{
+	CParsedObject_WindmillBlue::WINDMILLBLUEDESC WindmillBlueDesc;
+	//막대 2개로 y는 + 2
+	//풍차는 최종 막대 + 1시켜줄 것 또한 z축은 -2
+
+	_float3 TransformPos;
+
+	WindmillBlueDesc.fTransform = _float3(4.f, 3.f, -2.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_WindmillBlue"), &WindmillBlueDesc));
+
+	TransformPos = _float3(4.f, 2.f, 0.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+
+	return S_OK;
+}
+HRESULT CScene_Stage1::Set_BigWindmill()
+{
+	CParsedObject_BigWindmill::BIGWINDMILLDESC BigWindmillDesc;
+	////막대 2개로 y는 + 6
+	////풍차는 최종 막대 + 1시켜줄 것 또한 z축은 -4
+	_float3 TransformPos;
+
+	BigWindmillDesc.Transform = _float3(4.f, 7.f, -4.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_BigWindmill", TEXT("Prototype_GameObject_BigWindmill"), &BigWindmillDesc));
+
+	TransformPos = _float3(4.f, 2.f, 0.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+	TransformPos = _float3(4.f, 6.f, 0.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+
+
 
 	return S_OK;
 }
