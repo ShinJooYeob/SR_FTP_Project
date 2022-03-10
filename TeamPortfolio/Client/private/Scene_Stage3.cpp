@@ -95,8 +95,12 @@ _int CScene_Stage3::Update(_float fDeltaTime)
 		}
 		}
 	}
+	else {
 
-	Update_MapEffect(fDeltaTime);
+		Update_MapEffect(fDeltaTime);
+
+	}
+
 	return 0;
 }
 

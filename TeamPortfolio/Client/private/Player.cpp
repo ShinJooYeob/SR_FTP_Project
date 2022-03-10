@@ -383,7 +383,7 @@ HRESULT CPlayer::ReInitialize(void * pArg)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vStartPos);
 	m_ComTransform->Set_MoveSpeed(2.5f);
 
-	if (vStartPos != _float3(0, 1, 0))
+	if (vStartPos != _float3(0, 1, 0) && vStartPos != _float3(0, 11, 0))
 	{
 		m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("exit"), TEXT("Idle"), 9.f);
 		GetSingle(CGameInstance)->PlaySound(TEXT("JY_exitdoor.wav"), CHANNEL_PLAYER, 1.f); 
