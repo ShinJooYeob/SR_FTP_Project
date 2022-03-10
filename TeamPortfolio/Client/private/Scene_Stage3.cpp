@@ -94,6 +94,7 @@ _int CScene_Stage3::Update(_float fDeltaTime)
 		}
 	}
 
+	Update_MapEffect(fDeltaTime);
 	return 0;
 }
 
@@ -341,7 +342,40 @@ HRESULT CScene_Stage3::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag
 	return S_OK;
 }
 
-HRESULT CScene_Stage3::Createparticle_Scene3()
+HRESULT CScene_Stage3::Update_MapEffect(float timer)
+{
+	mParticleTime_Metao -= timer;
+	if (mParticleTime_Metao < 0)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			PARTICLEDESC desc = Create_MeteoDesc(GetRandomBool());
+			mParticleTime_Metao = desc.TotalParticleTime;
+			GetSingle(CParticleMgr)->Create_ParticleObject(SCENE_STAGE3, desc);
+		}
+
+	}
+
+	mParticleTime_Star -= timer;
+	if (mParticleTime_Star < 0)
+	{
+		PARTICLEDESC  desc  = Create_Star();
+		mParticleTime_Star = desc.TotalParticleTime;
+		for (int i = 0; i < 1; i++)
+		{
+			GetSingle(CParticleMgr)->Create_ParticleObject(SCENE_STAGE3, desc);
+		}
+	}
+
+
+
+	
+	
+
+	return S_OK;
+}
+
+void CScene_Stage3::Createparticle_Scene3()
 {
 	//PARTICLEDESC tDesc;
 	////파티클이 흩날리는 종류 설정
@@ -418,33 +452,28 @@ HRESULT CScene_Stage3::Createparticle_Scene3()
 	////Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
 	//GetSingle(CParticleMgr)->Create_ParticleObject(SCENE_STAGE3, tDesc);
 
-	Create_Meteo();
 
-	return S_OK;
 }
 
-void CScene_Stage3::Create_Meteo()
+PARTICLEDESC CScene_Stage3::Create_MeteoDesc(bool isRight)
 {
 	// 둥둥 떠다니는 운석 이펙트
 	PARTICLEDESC tDesc;
 	tDesc.eParticleID = Particle_Ball;
 
-	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JH_Effect");
-	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
-	tDesc.szTextureLayerTag = TEXT("meteor_A");
+
 
 	//총 파티클이 몇초동안 흩날릴 것인지 설정
-	tDesc.TotalParticleTime = 30.0f;
+	tDesc.TotalParticleTime = 10.0f;
 	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
-	tDesc.EachParticleLifeTime = 30.0f;
-	tDesc.Particle_Power = 1.f;
+	tDesc.EachParticleLifeTime = 5.f;
+	tDesc.Particle_Power = 0.8f;
 
-	float randSize = GetRandomFloat(1.f, 5.f);
-
+	float randSize = GetRandomFloat(0.2, 1.5f);
 	tDesc.ParticleSize = _float3(randSize, randSize, randSize);
-	tDesc.PowerRandomRange = _float2(0.5f, 0.8f);
+	tDesc.PowerRandomRange = _float2(0.5f, 2.f);
 
-	tDesc.MaxParticleCount = 3;
+	tDesc.MaxParticleCount = 2;
 
 	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
 	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
@@ -453,43 +482,106 @@ void CScene_Stage3::Create_Meteo()
 	//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
 	// tDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player))->Get_Component(TAG_COM(Com_Transform)));
 	
-	tDesc.FixedTarget = _float3(0, 2, 0);
+	tDesc.FollowingTarget = (CTransform*)mPlayer->Get_Component(TAG_COM(Com_Transform));
+
+	//파티클의 최대 이탈 범위(range)를 설정해 줌
+	//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
+	tDesc.MaxBoundary = _float3(20, 20, 5);
+
+	// 파티클 시작 위치 랜덤
+	tDesc.ParticleStartRandomPosMin = _float3(-10, -10, -2);
+	tDesc.ParticleStartRandomPosMax = _float3(15,15, 2);
+
+	//방향을 설정하고 싶을 때 사용하는 옵션
+	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
+	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
+	
+	// _float3 randVec;
+	// GetRandomVector(&randVec,&_float3(-1, -1, 0), &_float3(1, -1, 0));
+	
+	tDesc.vUp = _float3(0,0,0);
+
+	tDesc.m_bIsTextureAutoFrame = true;
+	tDesc.fAutoFrameMul = 2.f;
+
+
+	tDesc.ParticleColorChage = false;
+	tDesc.m_bIsUI = false;
+	tDesc.MustDraw = false;
+	tDesc.IsParticleFameEndtoDie = false;
+
+	//tDesc.AlphaBlendON = true;
+	tDesc.m_fAlphaTestValue = 150.f;
+
+	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JH_Effect");
+	if(isRight)
+		tDesc.szTextureLayerTag = TEXT("meteor_A");
+	else 
+		tDesc.szTextureLayerTag = TEXT("meteor_B");
+	return tDesc;
+
+
+}
+
+PARTICLEDESC CScene_Stage3::Create_Star()
+{
+	// 둥둥 떠다니는 운석 이펙트
+	PARTICLEDESC tDesc;
+	tDesc.eParticleID = Particle_Fixed;
+
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_JH_Effect");
+	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
+	tDesc.szTextureLayerTag = TEXT("star");
+
+	//총 파티클이 몇초동안 흩날릴 것인지 설정
+	tDesc.TotalParticleTime = 3.0f;
+	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
+	tDesc.EachParticleLifeTime = 0.5f;
+	tDesc.Particle_Power = 1.0f;
+
+	float randSize = GetRandomFloat(0.3f, 1.5f);
+
+	tDesc.ParticleSize = _float3(randSize, randSize, randSize);
+	tDesc.PowerRandomRange = _float2(0.8f, 1.2f);
+
+	tDesc.MaxParticleCount = 10;
+
+	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
+	//FollowingTarget을 사용하면 해당 오브젝트를 따라다니면서 파티클이 흩날려짐
+	//단 둘중 하나만 사용 가능
+	//둘다 사용하고 싶을 경우에는 파티클을 2개 만들어서 사용할 것
+	//FollowingTarget의 경우 따라다녀야할 오브젝트의 CTransform 컴포넌트를 넣어주면 됨
+	// tDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player))->Get_Component(TAG_COM(Com_Transform)));
+
+	tDesc.FollowingTarget = (CTransform*)mPlayer->Get_Component(TAG_COM(Com_Transform));
 
 	//파티클의 최대 이탈 범위(range)를 설정해 줌
 	//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
 	tDesc.MaxBoundary = _float3(15, 15, 15);
 
 	// 파티클 시작 위치 랜덤
-	tDesc.ParticleStartRandomPosMin = _float3(-5, 0, 0);
-	tDesc.ParticleStartRandomPosMax = _float3(5.f, 0, 0);
+	tDesc.ParticleStartRandomPosMin = _float3(-15, -15, -10);
+	tDesc.ParticleStartRandomPosMax = _float3(15.f, 15, 10);
 
 	//방향을 설정하고 싶을 때 사용하는 옵션
 	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
 	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
-	_float3 randVec;
-	GetRandomVector(&randVec,&_float3(-1, -1, 0), &_float3(1, -1, 0));
-	
-	tDesc.vUp = randVec;
+	tDesc.vUp = _float3(0,1,0);
 
-	tDesc.m_bIsTextureAutoFrame = true;
-	tDesc.fAutoFrameMul = 1.0f;
+	tDesc.m_bIsTextureAutoFrame = false;
+	tDesc.fAutoFrameMul = 2.f;
 
 
 	tDesc.ParticleColorChage = false;
 	tDesc.m_bIsUI = false;
-	tDesc.MustDraw = true;
+	tDesc.MustDraw = false;
 	tDesc.IsParticleFameEndtoDie = false;
+	tDesc.AlphaBlendON = true;
 
-	//tDesc.AlphaBlendON = true;
-	tDesc.m_fAlphaTestValue = 180.f;
+	// tDesc.m_fAlphaTestValue = 180.f;
 
-	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
-	GetSingle(CParticleMgr)->Create_ParticleObject(SCENE_STAGE3, tDesc);
-
-	tDesc.szTextureLayerTag = TEXT("meteor_B");
-	GetSingle(CParticleMgr)->Create_ParticleObject(SCENE_STAGE3, tDesc);
-
-
+	return tDesc;
 }
 
 HRESULT CScene_Stage3::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
@@ -519,11 +611,16 @@ HRESULT CScene_Stage3::Ready_Layer_Player(const _tchar * pLayerTag)
 
 		GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGE3);
 		pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
-		(pPlayerList->front())->ReInitialize(&_float3(0.f, 1.f, 0));
+		mPlayer = pPlayerList->front();
+		Safe_AddRef(mPlayer);
+		mPlayer->ReInitialize(&_float3(0.f, 1.f, 0));
+		
 	}
 	else
 	{
-		(pPlayerList->front())->ReInitialize(&_float3(0.f, 1.f, 0));
+		mPlayer = pPlayerList->front();
+		Safe_AddRef(mPlayer);
+		mPlayer->ReInitialize(&_float3(0.f, 1.f, 0));
 	}
 
 	return S_OK;
@@ -659,6 +756,6 @@ CScene_Stage3 * CScene_Stage3::Create(LPDIRECT3DDEVICE9 GraphicDevice)
 void CScene_Stage3::Free()
 {
 	GetSingle(CMapLoadMgr)->DestroyInstance();
-
+	Safe_Release(mPlayer);
 	__super::Free();
 }

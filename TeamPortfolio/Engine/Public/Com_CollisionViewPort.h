@@ -34,6 +34,7 @@ public:
 
 	// 월드 -> view 좌표
 	_float2 WorldToView(_float3 pos);
+	// _float3 ViewToWorldTo(_float2 pos);
 
 	// 충돌 체크
 	void Update_ViewPortCollision();
