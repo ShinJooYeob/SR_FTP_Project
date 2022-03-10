@@ -55,11 +55,8 @@ private:
 	CUI *		Find_UI(const _tchar * tagUI); //UI 겹치는게 있는지 체크
 	CUI *		Find_Button(const _tchar * tagUIList); //이게 클론을 찾음
 
-	void		Set_Particle_Firecracker2_A();
-	void		Set_Particle_Firecracker2_B();
-
-	void		Set_Particle_Firecracker_A();
-	void		Set_Particle_Firecracker_B();
+	void		Set_Particle_Firecracker2();
+	void		Set_Particle_Firecracker();
 
 	void		Set_Particle_Cry();
 
