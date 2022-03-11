@@ -20,6 +20,8 @@ HRESULT CParsedObject_Alien::Initialize_Prototype(void * pArg)
 	return S_OK;
 }
 
+
+static _uint s_iTotalAlienCounter = 0;
 HRESULT CParsedObject_Alien::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
@@ -35,10 +37,17 @@ HRESULT CParsedObject_Alien::Initialize_Clone(void * pArg)
 		m_Layer_Tag = (TEXT("Layer_Alien"));
 		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+
+		m_DefaultPos = vSettingPoint;
+		if (!s_iTotalAlienCounter)
+			m_ComVIBuffer->Fix_Vertex_By_Postion(_float3(0.0f, 2.5f, 0.0f));
+
 	}
 
 	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("Alien")));
 
+
+	s_iTotalAlienCounter++;
 	return S_OK;
 }
 
@@ -48,6 +57,47 @@ _int CParsedObject_Alien::Update(_float fTimeDelta)
 		return -1;
 
 
+	if (m_fFrameTime < 0.5f)
+	{
+		m_fFrameTime += fTimeDelta;
+		m_ChangingY = GetSingle(CGameInstance)->Easing(TYPE_Linear, 0, 2.f, m_fFrameTime, 0.5f);
+		m_fAngle = GetSingle(CGameInstance)->Easing(TYPE_Linear, 0, 45, m_fFrameTime, 0.5f);
+
+		if (m_fFrameTime > 0.5f)
+		{
+			m_ChangingY = 2.f;
+			m_fAngle = 45.f;
+		}
+
+	}
+	else if (m_fFrameTime < 0.75f)
+	{
+		m_fFrameTime += fTimeDelta;
+		m_ChangingY = GetSingle(CGameInstance)->Easing(TYPE_Linear, 2.f, 0, m_fFrameTime - 0.5f, 0.25f);
+
+		if (m_fFrameTime > 0.75f)
+		{
+			m_ChangingY = 0.f;
+		}
+	}
+	else if(m_fFrameTime < 1.50f)
+	{
+		m_fFrameTime += fTimeDelta;
+		m_fAngle = GetSingle(CGameInstance)->Easing(TYPE_Linear, 45, 90, m_fFrameTime - 0.75f, 0.75f);
+
+		if (m_fFrameTime > 1.5f)
+		{
+			m_fAngle = 90;
+		}
+	}
+	else
+	{
+		m_fFrameTime = 0;
+	}
+
+
+	m_ComTransform->Rotation_CW(_float3(0,1,0), D3DXToRadian( m_fAngle));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, m_DefaultPos +_float3(0, m_ChangingY,0));
 
 	return _int();
 }

@@ -50,6 +50,15 @@ private:
 
 
 
+	_float3					m_DefaultPos;
+	_float					m_ChangingY = 0;
+	_float					m_fFrameTime = 0;
+	_float					m_fAngle = 0;
+
+	_float					m_fStartAngle = 0;
+	_float					m_fTargetAngle = 0;
+
+
 public:
 	static CParsedObject_Alien* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CGameObject* Clone(void* pArg) override;

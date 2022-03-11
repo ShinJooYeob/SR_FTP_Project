@@ -76,6 +76,13 @@ HRESULT CScene_Tutorial::Initialize()
 
 	_float3 TransformPos = _float3(10.f, 0.f, 0.f);
 
+
+	TransformPos = _float3(0.f, 0.f, 0.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+
 	//TransformPos = _float3(0, 0, 0);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwl", TEXT("Prototype_GameObject_BigOwl"), &TransformPos));
 	//TransformPos = _float3(0, 0, 0);
@@ -125,14 +132,10 @@ HRESULT CScene_Tutorial::Initialize()
 	//TransformPos = _float3(4.f, 0.f, 0.f);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
 
-	//TransformPos = _float3(1.f, 0.f, 0.f);
-	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
 
 	//TransformPos = _float3(4.f, 0.f, 0.f);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_MapleTree", TEXT("Prototype_GameObject_MapleTree"), &TransformPos));
 
-	//TransformPos = _float3(4.f, 0.f, 0.f);
-	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
 
 	return S_OK;
 }
