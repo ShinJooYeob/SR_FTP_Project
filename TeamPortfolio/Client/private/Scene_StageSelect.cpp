@@ -37,6 +37,7 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Common(TAG_LAY(Layer_UI_Common))))
 		return E_FAIL;
+	FAILED_CHECK(Ready_Layer_ParsedObject());
 	Make_Particle();
 	FAILED_CHECK(Ready_Layer_StageEntryCollsionObject(L"Layer_Collision_StageEntry"));
 
@@ -44,7 +45,7 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Complete(TEXT("Layer_UI_Complete"))))
 		return E_FAIL;
-
+	
 	//FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
 
 
@@ -91,12 +92,9 @@ HRESULT CScene_StageSelect::Initialize()
 	}
 	SpecialCubeList.clear();
 
+	
 	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"JW_SelectBGM.ogg")));
-	_float3 temp = _float3(-6.5, 13.5, 10);
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_BigGreenTree", TEXT("Prototype_GameObject_BigGreenTree"),(void*)temp));
-
-
-
+	
 	return S_OK;
 }
 
@@ -229,7 +227,18 @@ HRESULT CScene_StageSelect::Ready_Layer_SkyBox(const _tchar * pLayerTag)
 
 	return S_OK;
 }
+HRESULT CScene_StageSelect::Ready_Layer_ParsedObject()
+{
+	_float3 temp = _float3(9.0, 22.5, 25.0);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_MapleTree", TEXT("Prototype_GameObject_MapleTree"), &temp));
+	temp = _float3(20.0, 12.5, 16);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_MapleTree", TEXT("Prototype_GameObject_MapleTree"), &temp));
+	temp = _float3(-6.0, 15.5, 11);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_BigGreenTree", TEXT("Prototype_GameObject_BigGreenTree"), &temp));
+	temp = _float3(12.0, 15.5, -8);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_BigGreenTree", TEXT("Prototype_GameObject_BigGreenTree"), &temp));
 
+}
 HRESULT CScene_StageSelect::Ready_Layer_NPC(const _tchar * pLayerTag)
 {
 	CNpc::NPCDESC NpcDesc;
@@ -679,30 +688,6 @@ HRESULT CScene_StageSelect::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 
 void CScene_StageSelect::Make_Particle()
 {
-	
-	//tDesc.eParticleID = Particle_Ball;
-	//tDesc.TotalParticleTime = 3600.f;
-	//tDesc.EachParticleLifeTime = 4.0f;
-	//tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
-	//tDesc.Particle_Power = 1.5;
-	//tDesc.PowerRandomRange = _float2(0.8f, 1.f);
-	//tDesc.MaxParticleCount = 40;
-	//tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
-	//tDesc.szTextureLayerTag = TEXT("redleaf");
-	//tDesc.m_bIsTextureAutoFrame = false;
-	////tDesc.FollowingTarget = m_ComTransform;
-	//tDesc.FixedTarget = _float3(10, 5, 19);
-	//tDesc.MaxBoundary = _float3(100, 100, 100);
-	//tDesc.ParticleColorChage = true;
-	//tDesc.TargetColor = _float3(240, 153, 94);
-	//tDesc.TargetColor2 = _float3(0.f, 182.f, 25.f);
-	//tDesc.m_bIsUI = false;
-	///*tDesc.vUp = _float3(-1, -1, 0);*/
-	//GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
-
-	
-	
-
 	PARTICLEDESC tDesc;
 
 	tDesc.eParticleID = Particle_Cone;
@@ -716,15 +701,83 @@ void CScene_StageSelect::Make_Particle()
 	tDesc.szTextureLayerTag = TEXT("redleaf");
 	tDesc.m_bIsTextureAutoFrame = false;
 	tDesc.fAutoFrameMul = 5.f;
-	tDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player))->Get_Component(TAG_COM(Com_Transform)));
-	/*tDesc.FixedTarget = _float3(-3, 7, 10);*/
+	tDesc.FixedTarget = _float3(8.0, 22.5, 25.0);
 	tDesc.MaxBoundary = _float3(100, 100, 100);
 	tDesc.ParticleColorChage = true;
 	tDesc.TargetColor = _float3(240, 153, 94);
 	tDesc.TargetColor2 = _float3(0.f, 182.f, 25.f);
 	tDesc.m_bIsUI = false;
-	tDesc.ParticleStartRandomPosMin = _float3(-10.f, 0.f, -10.f);
-	tDesc.ParticleStartRandomPosMax = _float3(10.f, 10.f, 10.f);
+	tDesc.ParticleStartRandomPosMin = _float3(-3.f, -3.f, 3.f);
+	tDesc.ParticleStartRandomPosMax = _float3(3.f, 3.f, 3.f);
+	tDesc.vUp = _float3(0, -1, 0);
+	tDesc.MustDraw = true;
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
+
+	tDesc.eParticleID = Particle_Cone;
+	tDesc.TotalParticleTime = 3600.f;
+	tDesc.EachParticleLifeTime = 4.0f;
+	tDesc.ParticleSize = _float3(0.35f, 0.35f, 0.35f);
+	tDesc.Particle_Power = 3.f;
+	tDesc.PowerRandomRange = _float2(0.8f, 1.f);
+	tDesc.MaxParticleCount = 15;
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	tDesc.szTextureLayerTag = TEXT("redleaf");
+	tDesc.m_bIsTextureAutoFrame = false;
+	tDesc.fAutoFrameMul = 5.f;
+	tDesc.FixedTarget = _float3(20.0, 12.5, 16);
+	tDesc.MaxBoundary = _float3(100, 100, 100);
+	tDesc.ParticleColorChage = true;
+	tDesc.TargetColor = _float3(240, 153, 94);
+	tDesc.TargetColor2 = _float3(0.f, 182.f, 25.f);
+	tDesc.m_bIsUI = false;
+	tDesc.ParticleStartRandomPosMin = _float3(-3.f, -3.f, 3.f);
+	tDesc.ParticleStartRandomPosMax = _float3(3.f, 3.f, 3.f);
+	tDesc.vUp = _float3(0, -1, 0);
+	tDesc.MustDraw = true;
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
+
+	tDesc.eParticleID = Particle_Cone;
+	tDesc.TotalParticleTime = 3600.f;
+	tDesc.EachParticleLifeTime = 4.0f;
+	tDesc.ParticleSize = _float3(0.35f, 0.35f, 0.35f);
+	tDesc.Particle_Power = 3.f;
+	tDesc.PowerRandomRange = _float2(0.8f, 1.f);
+	tDesc.MaxParticleCount = 15;
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	tDesc.szTextureLayerTag = TEXT("greenleaf2");
+	tDesc.m_bIsTextureAutoFrame = false;
+	tDesc.fAutoFrameMul = 5.f;
+	tDesc.FixedTarget = _float3(-6.0, 15.5, 11);
+	tDesc.MaxBoundary = _float3(100, 100, 100);
+	tDesc.ParticleColorChage = false;
+	tDesc.TargetColor = _float3(240, 153, 94);
+	tDesc.TargetColor2 = _float3(0.f, 182.f, 25.f);
+	tDesc.m_bIsUI = false;
+	tDesc.ParticleStartRandomPosMin = _float3(-3.f, -3.f, 3.f);
+	tDesc.ParticleStartRandomPosMax = _float3(3.f, 3.f, 3.f);
+	tDesc.vUp = _float3(0, -1, 0);
+	tDesc.MustDraw = true;
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
+
+	tDesc.eParticleID = Particle_Cone;
+	tDesc.TotalParticleTime = 3600.f;
+	tDesc.EachParticleLifeTime = 4.0f;
+	tDesc.ParticleSize = _float3(0.35f, 0.35f, 0.35f);
+	tDesc.Particle_Power = 3.f;
+	tDesc.PowerRandomRange = _float2(0.8f, 1.f);
+	tDesc.MaxParticleCount = 15;
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	tDesc.szTextureLayerTag = TEXT("greenleaf2");
+	tDesc.m_bIsTextureAutoFrame = false;
+	tDesc.fAutoFrameMul = 5.f;
+	tDesc.FixedTarget = _float3(12.0, 15.5, -6);
+	tDesc.MaxBoundary = _float3(100, 100, 100);
+	tDesc.ParticleColorChage = false;
+	tDesc.TargetColor = _float3(240, 153, 94);
+	tDesc.TargetColor2 = _float3(0.f, 182.f, 25.f);
+	tDesc.m_bIsUI = false;
+	tDesc.ParticleStartRandomPosMin = _float3(-3.f, -3.f, 3.f);
+	tDesc.ParticleStartRandomPosMax = _float3(3.f, 3.f, 3.f);
 	tDesc.vUp = _float3(0, -1, 0);
 	tDesc.MustDraw = true;
 	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGESELECT, tDesc);
@@ -733,6 +786,7 @@ void CScene_StageSelect::Make_Particle()
 
 CScene_StageSelect * CScene_StageSelect::Create(LPDIRECT3DDEVICE9 GraphicDevice)
 {
+	
 	CScene_StageSelect* pTempGame = new CScene_StageSelect(GraphicDevice);
 
 	if (FAILED(pTempGame->Initialize()))

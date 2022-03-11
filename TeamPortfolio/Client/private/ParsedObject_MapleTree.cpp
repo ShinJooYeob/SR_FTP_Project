@@ -33,12 +33,11 @@ HRESULT CParsedObject_MapleTree::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_MapleTree"));
-		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
+		m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
 	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("MapleTree")));
-
 	return S_OK;
 }
 
@@ -61,7 +60,7 @@ _int CParsedObject_MapleTree::LateUpdate(_float fTimeDelta)
 		return -1;
 
 
-	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS),7))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
@@ -74,8 +73,7 @@ _int CParsedObject_MapleTree::Render()
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
-
-
+	
 	if (FAILED(m_ComTexture->Bind_Texture()))
 		return E_FAIL;
 
