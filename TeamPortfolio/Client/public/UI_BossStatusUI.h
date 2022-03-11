@@ -39,6 +39,8 @@ public:
 	_bool	Get_bCanHit() { return (m_bIsStageEnd)? (!m_bIsStageEnd ):(!m_bVersusPointChange); }
 
 	void	Change_VersusPoint(_float vChangePoint);
+	_float  Get_TargetPotint() const { return m_fTargetPoint; }
+
 
 private:
 	CTexture*				m_ComTexture = nullptr;

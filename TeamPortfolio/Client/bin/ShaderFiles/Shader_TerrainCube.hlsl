@@ -1,6 +1,6 @@
 
 float4x4	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-vector		g_vPlayerPosition, g_vPlayerViewPosition;
+vector		g_vPlayerPosition;
 
 textureCUBE	g_TextureCUBE;
 
@@ -23,6 +23,7 @@ struct VS_OUT
 	float3 vTexUV : TEXCOORD0;
 	float3 vViewPosition : TEXCOORD1;
 	float3 vWorldPosition : TEXCOORD2;
+	float3 vPlayerViewPosition: TEXCOORD3;
 
 };
 
@@ -35,6 +36,9 @@ VS_OUT VS_MAIN(VS_IN In)
 	vector			vPosition = mul(float4(In.vPosition, 1.f), g_WorldMatrix);
 	Out.vWorldPosition = vPosition;
 	Out.vViewPosition = mul(vPosition, g_ViewMatrix).xyz;
+
+	Out.vPlayerViewPosition = mul(g_vPlayerPosition, g_ViewMatrix).xyz;
+
 	vPosition = float4(Out.vViewPosition, 1);
 
 	Out.vPosition = mul(vPosition, g_ProjMatrix);
@@ -54,6 +58,7 @@ struct PS_IN
 	float3 vTexUV : TEXCOORD0;
 	float3 vViewPosition : TEXCOORD1;
 	float3 vWorldPosition : TEXCOORD2;
+	float3 vPlayerViewPosition: TEXCOORD3;
 
 };
 
@@ -132,9 +137,10 @@ PS_OUT PS_MAIN_CUBE_PLAYERVIEW(PS_IN In)
 
 	float4	vColor = texCUBE(DefaultSampler, In.vTexUV);
 
-	float	fDistance = length((In.vViewPosition) - (g_vPlayerViewPosition));
+//	float	fDistance = length(In.vViewPosition) - length(In.vPlayerViewPosition);
+	float	fDistance = (In.vViewPosition).z - (In.vPlayerViewPosition).z;
 
-	float	fDistanceRatio = fDistance * 0.05f;;
+	float	fDistanceRatio = abs(fDistance) * 0.1f;;
 
 	//if (fDistanceRatio > 0.6f)
 	//	fDistanceRatio = 0.8;
@@ -163,17 +169,18 @@ technique Default_Technique
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_MAIN_CUBE_VIEW();
 	}
+
 	pass Cube2
 	{
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_MAIN_CUBE_PLAYER();
 	}
-	// pass Cube3
-	// {
-	// 	VertexShader = compile vs_3_0 VS_MAIN();
-	// 	PixelShader = compile ps_3_0 PS_MAIN_CUBE_PLAYERVIEW();
-	// }
 
+	//pass Cube3
+	//{
+	//	VertexShader = compile vs_3_0 VS_MAIN();
+	//	PixelShader = compile ps_3_0 PS_MAIN_CUBE_PLAYERVIEW();
+	//}
 	// pass PlayerPass
 	// {
 	// 	CullMode = None;

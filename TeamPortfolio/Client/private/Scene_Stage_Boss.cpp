@@ -43,10 +43,9 @@ HRESULT CScene_Stage_Boss::Initialize()
 		Safe_Delete(data);
 	}
 	SpecialCubeList.clear();
+	// GetSingle(CGameInstance)->PlayBGM(L"JH_Stage3_BGM.mp3");
+	GetSingle(CGameInstance)->PlayBGM(L"JH_Boss_BGM2.wav");
 
-
-	GetSingle(CGameInstance)->PlayBGM(L"JH_Stage3_BGM.mp3");
-	//GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.1f);
 
 
 

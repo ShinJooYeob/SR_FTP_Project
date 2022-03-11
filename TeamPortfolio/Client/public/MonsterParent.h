@@ -48,6 +48,7 @@ public: // For. ObjectFunc
 	virtual HRESULT CreateObject(_int Damage)PURE;
 	virtual HRESULT Hit(_int Damage)PURE;
 	virtual HRESULT Die()PURE;
+	virtual void	Update_Die(float deltatime);
 
 protected:
 	// 컴포넌트 초기화
@@ -59,6 +60,7 @@ protected:
 	// 카메라 위치 기준으로 위치 옮기기
 	virtual _float3 Update_CameraPosition(_float3 localPos);
 
+	
 
 protected:
 	// Components
@@ -67,11 +69,15 @@ protected:
 	CVIBuffer*	 m_ComVIBuffer;
 	CTexture*	 m_ComTexture;
 	
-	CCom_CollisionViewPort* m_Com_Viewport;
-
-
 	// 셰이더 추가
 	CShader*	 m_ComShader;
+	
+	// 뷰포트 충돌
+	CCom_CollisionViewPort* m_Com_Viewport;
+
+	// 죽기전 객체
+	bool mbDying = false;
+
 
 
 	float mFrameCount;

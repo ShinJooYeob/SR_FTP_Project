@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "..\public\Com_Gun.h"
-#include "..\public\Bullet.h"
+#include "BossMonster.h"
 
 CCom_Gun::CCom_Gun(LPDIRECT3DDEVICE9 pGraphicDevice)
  : CComponent(pGraphicDevice)
@@ -10,6 +10,11 @@ CCom_Gun::CCom_Gun(LPDIRECT3DDEVICE9 pGraphicDevice)
 CCom_Gun::CCom_Gun(const CCom_Gun & rhs)
 	: CComponent(rhs)
 {
+}
+
+void CCom_Gun::Set_MonsterObject(CBossMonster * monster)
+{	
+	mBossMonster = monster;	
 }
 
 HRESULT CCom_Gun::CreateBullet_Target(_float3 startPos, _float3 targetPos, _float speed, E_BulletType_MOVE type)
@@ -24,7 +29,8 @@ HRESULT CCom_Gun::CreateBullet_Target(_float3 startPos, _float3 targetPos, _floa
 	desc.StartPos = startPos;
 	desc.BulletSpeed = speed;
 
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(mDesc.mSceneID, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), &desc));
+	Push_BackBulletList(desc);
+
 
 	return S_OK;
 }
@@ -37,7 +43,9 @@ HRESULT CCom_Gun::CreateBullet_Dir(_float3 startPos, _float3 moveidr, _float spe
 	desc.StartPos = startPos;
 	desc.BulletSpeed = speed;
 
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(mDesc.mSceneID, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), &desc));
+	// 여기서는 정보만 추가
+	Push_BackBulletList(desc);
+
 
 	return S_OK;
 
@@ -66,6 +74,66 @@ HRESULT CCom_Gun::Initialize_Clone(void * pArg)
 	{
 		memcpy(&mDesc, pArg, sizeof(tagGunDesc));		
 	}
+
+	mListBullets.clear();
+	mStateGun = CCom_Gun::STATE_GUN_NONE;
+
+	return S_OK;
+}
+
+HRESULT CCom_Gun::Update_CreateBullet(float deltatime)
+{
+
+	// 1. 애니메이션 실행
+	// 2. 시간에 맞게 총알을 쏨
+	// 3. 애니메이션이 끝날때까지 기다림
+
+
+
+	switch (mStateGun)
+	{
+	case Client::CCom_Gun::STATE_GUN_NONE:
+		if (mListBullets.empty() == false)
+			mStateGun = STATE_GUN_START;
+		break;
+	case Client::CCom_Gun::STATE_GUN_START:
+		mBossMonster->Start_AttackAniMaion(11.f);		
+		mCurrentTimer = FIX_BulletTime;
+		mStateGun = CCom_Gun::STATE_GUN_SHOOT;
+		break;
+
+	case Client::CCom_Gun::STATE_GUN_SHOOT:
+		mCurrentTimer -= deltatime;
+		if (mCurrentTimer<0 )
+		{
+			mCurrentTimer = FIX_BulletEndTime;
+			CBullet::BULLETDESC desc = mListBullets.front();
+			mListBullets.pop_front();
+			GetSingle(CGameInstance)->PlaySound(TEXT("JH_Boss_Attack0.wav"), CHANNEL_OBJECT);
+			FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(mDesc.mSceneID, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), &desc));
+			mStateGun = CCom_Gun::STATE_GUN_RETIRE;
+
+		}
+		break;
+	case Client::CCom_Gun::STATE_GUN_RETIRE:
+		mCurrentTimer -= deltatime;
+		if (mCurrentTimer<0)
+		{
+			mStateGun = STATE_GUN_NONE;
+		}
+		break;
+	case Client::CCom_Gun::STATE_GUN_END:
+		break;
+	default:
+		break;
+	}
+
+	return S_OK;
+}
+
+HRESULT CCom_Gun::Push_BackBulletList(CBullet::BULLETDESC b)
+{
+	mListBullets.push_back(b);
 
 	return S_OK;
 }
@@ -97,4 +165,6 @@ CComponent * CCom_Gun::Clone(void * pArg)
 
 void CCom_Gun::Free()
 {
+
+	__super::Free();
 }

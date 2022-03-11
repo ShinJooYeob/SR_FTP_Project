@@ -54,9 +54,12 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 	mPatternTime = 0;
 	mNextPattern = 0;
 
-	mMaxHp = 10;
+	mMaxHp = 6;
 	mHp = mMaxHp;
 	m_Sphere.mRadius = 150.0f;
+	
+	// #TODO 피격 공격음 넣기
+	// GetSingle(CGameInstance)->PlaySound();
 
 	return S_OK;
 }
@@ -92,6 +95,7 @@ _int CBossMonster::Update(_float fDeltaTime)
 	m_ComTransform->Set_MatrixState(CTransform::STATE_POS,Update_CameraPosition(mCameralocalPosition));
 
 
+	mComGun->Update_CreateBullet(fDeltaTime);
 
 	// AI 업데이트
 	// 큐에서 패턴을 하나씩 실행한다.
@@ -107,7 +111,7 @@ _int CBossMonster::LateUpdate(_float fDeltaTime)
 	if (mHp <= 0)
 		Die();
 
-	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_ALPHA, this);
+	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	m_Sphere.mCenterPosition = m_Com_Viewport->WorldToView(GetPos());
 	m_Com_Viewport->AddCollisionView(CCom_CollisionViewPort::COLL_MONSTER, this);
@@ -147,6 +151,19 @@ const _tchar * CBossMonster::Get_NowTextureTag() const
 	return m_ComTexture->Get_NowTextureTag();
 }
 
+void CBossMonster::Update_Die(float deltatime)
+{
+	if (mbDying == false)
+		return;
+
+	// 죽음 연출 후 삭제
+	mTimer -= deltatime;;
+	if (mTimer <= 0)
+	{
+		DIED();
+	}
+}
+
 
 HRESULT CBossMonster::SetUp_Components()
 {
@@ -157,6 +174,7 @@ HRESULT CBossMonster::SetUp_Components()
 	desc.mSceneID = m_eNowSceneNum;
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Gun), TAG_COM(Com_Gun), (CComponent**)&mComGun,&desc)))
 		return E_FAIL;	
+	mComGun->Set_MonsterObject(this);
 
 	return S_OK;
 }
@@ -183,14 +201,35 @@ HRESULT CBossMonster::CreateObject(_int Damage)
 
 HRESULT CBossMonster::Hit(_int Damage)
 {
-	mHp += Damage;
+	if (mbDying)
+		return S_OK;
 
+	mHp += Damage;
+	m_BossStatusUI->Change_VersusPoint(Damage);
+	
+
+	if (mMaxHp >= m_BossStatusUI->Get_TargetPotint())
+	{
+		mbDying = true;
+		m_ComTexture->Change_TextureLayer_Wait(TEXT("Die"), 6.0f);
+		GetSingle(CGameInstance)->PlaySound(TEXT("JH_Boss_Destory.wav"), CHANNEL_EFFECT);
+
+		mTimer = FIX_DEADANIMATIONTIMER;
+	}
+	else
+	{
+		GetSingle(CGameInstance)->PlaySound(TEXT("JH_Boss_Hit.wav"), CHANNEL_EFFECT);
+		m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("Hit"), TEXT("Idle1"), 1.0f);
+	}
+
+	
 	return S_OK;
 }
 
 HRESULT CBossMonster::Die()
 {
-	DIED();
+	
+
 	return S_OK;
 }
 
@@ -246,17 +285,18 @@ HRESULT CBossMonster::Set_TestPattern1()
 	//Set_MovePattern(_float2(RightX, Topy), 1.f, TYPE_Linear);
 	//Set_MovePattern(_float2(RightX, Bottomy), 1.f, TYPE_Linear);
 
+
 	return S_OK;
 }
 
-HRESULT CBossMonster::Set_TestPattern2()
+HRESULT CBossMonster::Set_TestAttackPattern()
 {
 	float RightX = 10;
 	float Topy = 5.f;
 	float Bottomy = -2.f;
 	float TargetY = GetRandomFloat(Bottomy, Topy);
 
-	_float3 SpawnOffset = _float3(0, -3, 0);
+	_float3 SpawnOffset = _float3(-1, -2, 0);
 
 	for (int i = 0; i < 1; i++)
 	{
@@ -278,6 +318,8 @@ HRESULT CBossMonster::Set_TestPattern2()
 				BULLETTYPE_MOVE_NOMAL);
 		}
 
+
+
 	}
 
 	return S_OK;
@@ -291,7 +333,7 @@ HRESULT CBossMonster::Choose_NextPattern()
 	}
 	else
 	{
-		Set_TestPattern2();
+		Set_TestAttackPattern();
 	}
 	
 	mNextPattern++;
@@ -358,6 +400,11 @@ _float3 CBossMonster::Get_OffsetPos(_float3 offset)
 	return newPos;
 }
 
+void CBossMonster::Start_AttackAniMaion(float frameSpeed)
+{
+	m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("Attack"), TEXT("Idle1"), frameSpeed);
+}
+
 _float3 CBossMonster::Update_CameraPosition(_float3 localPos)
 {
 	_float3 NewPos = localPos;
@@ -387,7 +434,7 @@ HRESULT CBossMonster::ViewPortHit(CGameObject * hitobj)
 
 				((CBullet*)hitobj)->Die();
 				Hit(-1);
-				m_BossStatusUI->Change_VersusPoint(-1);
+
 			}
 
 		}

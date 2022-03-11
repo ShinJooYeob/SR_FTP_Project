@@ -18,11 +18,8 @@ BEGIN(Client)
 class CBossMonster final : public CMonsterParent
 {
 public:
-	//enum PatternID
-	//{
-	//	PATTERN_MOVE, PATTERN_ATTACK, PATTERN_END
+	const float FIX_DEADANIMATIONTIMER = 2;
 
-	//};
 protected:
 	explicit CBossMonster(LPDIRECT3DDEVICE9	pGraphicDevice);
 	explicit CBossMonster(const CBossMonster& rhs);
@@ -42,6 +39,8 @@ public:
 	CCamera_Main* Get_MainCamera() { return mMainCamera; }
 	const _tchar*	Get_NowTextureTag()const;				//주엽 => 보스 스테이터스 창에 나오는 보스 이미지 변경할때 쓰려고 만든거
 	void	Set_BossStatusUI(class CUI_BossStatusUI* pObj) { m_BossStatusUI = pObj; }
+	
+	virtual void	Update_Die(float deltatime)override;
 
 
 public:
@@ -53,6 +52,8 @@ public:
 	{
 		mCameralocalPosition = pos;
 	}
+	void	Start_AttackAniMaion(float frameSpeed=6.0f);
+
 	virtual _float3 Update_CameraPosition(_float3 localPos);
 
 	virtual HRESULT ViewPortHit(CGameObject* hitobj)override;
@@ -73,7 +74,7 @@ private:
 
 	// #TODO 심화 몬스터 패턴 정의
 	HRESULT Set_TestPattern1();
-	HRESULT Set_TestPattern2();
+	HRESULT Set_TestAttackPattern();
 //	HRESULT Set_TestPattern3();
 	HRESULT Choose_NextPattern();
 
@@ -90,7 +91,7 @@ private:
 private:
 	float	mPatternTime;
 	int		mNextPattern;
-
+	float	mTimer;
 	class   CUI_BossStatusUI* m_BossStatusUI = nullptr;
 
 
@@ -111,6 +112,8 @@ protected:
 
 	_int					mHp;
 	_int					mMaxHp;
+
+
 
 public:
 	static CBossMonster* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

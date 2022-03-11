@@ -329,10 +329,12 @@ HRESULT CPlayer::ViewPortHit(CGameObject * hitobj)
 	{
 		if (m_BossStatusUI->Get_bCanHit())
 		{
-
 			// #TODO 플레이어 피격
 			if (!m_bIsDead)
 			{
+				GetSingle(CGameInstance)->PlaySound(TEXT("JY_Isaac_Hurt_Grunt0.mp3"), CHANNEL_PLAYER);
+				GetSingle(CGameInstance)->PlaySound(TEXT("JY_Scared_Whimper_2.mp3"), CHANNEL_PLAYER);
+
 				m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("hurt"), TEXT("Idle"), 8.f);
 				m_pCamera_Main->CameraEffect(CCamera_Main::CAM_EFT_HIT, g_fDeltaTime);
 				m_BossStatusUI->Change_VersusPoint(1);
