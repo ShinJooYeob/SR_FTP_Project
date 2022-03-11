@@ -383,7 +383,7 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\bin\ShaderFiles\Shader_TerrainCube.hlsl" />
-    <FxCompile Include="..\bin\ShaderFiles\Shader_Test.hlsl" />
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Monster.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_Test3.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

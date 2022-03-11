@@ -191,8 +191,8 @@ HRESULT CMonsterParent::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_CollisionView), TAG_COM(Com_CollisionView), (CComponent**)&m_Com_Viewport)))
 		return E_FAIL;
 	
-	//if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Test), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
-	//	return E_FAIL;
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Monster), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
+		return E_FAIL;
 	
 
 	return S_OK;

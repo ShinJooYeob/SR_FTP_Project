@@ -10,7 +10,6 @@
 #include "UI_Common.h"
 #include "ParticleMgr.h"
 
-#include "Com_Gun.h"
 
 CMainApp::CMainApp()
 	:m_pGameInstance(GetSingle(CGameInstance))
@@ -291,14 +290,7 @@ HRESULT CMainApp::Ready_Static_Component_Prototype()
 	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Inventory"), CInventory::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	// 셰이더 프로토타입 생성
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Shader_Test), CShader::Create(m_pGraphicDevice, TEXT("../Bin/ShaderFiles/Shader_Test.hlsl")))))
-		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Shader_Cube), CShader::Create(m_pGraphicDevice, TEXT("../Bin/ShaderFiles/Shader_TerrainCube.hlsl")))))
-		return E_FAIL;
-	// 총 컴포넌트 생성
-	if (FAILED(m_pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Gun), CCom_Gun::Create(m_pGraphicDevice))))
-		return E_FAIL;
+
 
 	return S_OK;
 }

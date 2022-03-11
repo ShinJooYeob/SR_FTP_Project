@@ -195,7 +195,7 @@ enum COMPONENTPROTOTYPEID
 	Prototype_Inventory,
 	Prototype_Collision,
 	Prototype_CollisionView,
-	Prototype_Shader_Test,
+	Prototype_Shader_Monster,
 	Prototype_Shader_Cube,
 	Prototype_Gun,
 	//////////////////////////////////////////////////////////////////////////
@@ -231,7 +231,7 @@ static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 	case Prototype_Inventory:
 		return TEXT("Prototype_Component_Inventory");
 		break;
-	case Prototype_Shader_Test:
+	case Prototype_Shader_Monster:
 		return TEXT("Prototype_Component_Shader_Test");
 	case Prototype_Shader_Cube:
 		return TEXT("Prototype_Component_Shader_Cube");

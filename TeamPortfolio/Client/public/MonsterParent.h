@@ -71,7 +71,7 @@ protected:
 
 
 	// ºŒ¿Ã¥ı √ﬂ∞°
-	// CShader*	 m_ComShader;
+	CShader*	 m_ComShader;
 
 
 	float mFrameCount;
