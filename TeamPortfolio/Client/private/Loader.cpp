@@ -216,7 +216,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 
 
 	////버텍스 파서들 모음
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
 	////버텍스 파서들 모음
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Penguin", pGameInstance->Create_ParsedObject(L"PenguinVertex.txt", L"PenguinIndex.txt")));
@@ -231,9 +231,9 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_ZuHeadWhite", pGameInstance->Create_ParsedObject(L"ZuHeadWhiteVertex.txt", L"ZuHeadWhiteIndex.txt")));
 	//
 	////풍차세트
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillBlue", pGameInstance->Create_ParsedObject(L"WindmillBlueVertex.txt", L"WindmillBlueIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillStick", pGameInstance->Create_ParsedObject(L"WindmillStickVertex.txt", L"WindmillStickIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigWindmill", pGameInstance->Create_ParsedObject(L"BigWindmillVertex.txt", L"BigWindmillIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillBlue", pGameInstance->Create_ParsedObject(L"WindmillBlueVertex.txt", L"WindmillBlueIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillStick", pGameInstance->Create_ParsedObject(L"WindmillStickVertex.txt", L"WindmillStickIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigWindmill", pGameInstance->Create_ParsedObject(L"BigWindmillVertex.txt", L"BigWindmillIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillCore", pGameInstance->Create_ParsedObject(L"WindmillCoreVertex.txt", L"WindmillCoreIndex.txt")));
 	//
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MapleTree", pGameInstance->Create_ParsedObject(L"MapleTreeVertex.txt", L"MapleTreeIndex.txt")));

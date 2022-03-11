@@ -47,8 +47,8 @@ HRESULT CScene_StageSelect::Initialize()
 	}
 	else
 	{
-		_float3 TransformPos = _float3(0.f, 0.f, 0.f);
-		//_float3 TransformPos = _float3(8.f, 22.3f, 9.5f);
+		//_float3 TransformPos = _float3(0.f, 0.f, 0.f);
+		_float3 TransformPos = _float3(8.f, 25.3f, 9.5f);
 		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
 
 	}
@@ -102,6 +102,8 @@ HRESULT CScene_StageSelect::Initialize()
 	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"JW_SelectBGM.ogg")));
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Penguine", TEXT("Prototype_GameObject_Penguine")));
 
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_BigGreenTree", TEXT("Prototype_GameObject_BigGreenTree")));
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_MapleTree", TEXT("Prototype_GameObject_MapleTree")));
 
 
 	return S_OK;

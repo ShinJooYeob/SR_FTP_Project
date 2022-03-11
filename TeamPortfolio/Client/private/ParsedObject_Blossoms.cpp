@@ -33,7 +33,7 @@ HRESULT CParsedObject_Blossoms::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_Blossoms"));
-		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
+		m_ComTransform->Scaled(_float3(1.35f, 1.35f, 1.35f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
@@ -61,7 +61,7 @@ _int CParsedObject_Blossoms::LateUpdate(_float fTimeDelta)
 		return -1;
 
 
-	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS),8))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();

@@ -38,7 +38,7 @@ HRESULT CParsedObject_MapleTree::Initialize_Clone(void * pArg)
 	}
 
 	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("MapleTree")));
-
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3 (5.f,5.f,5.f));
 	return S_OK;
 }
 

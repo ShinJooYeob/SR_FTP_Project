@@ -53,7 +53,7 @@ private:
 	_float					seconds = 0;
 	_float					m_RotAngle = 0;
 
-	_float					m_distance = 8;
+	_float					m_distance = 0;
 	_float					i = 1;
 
 

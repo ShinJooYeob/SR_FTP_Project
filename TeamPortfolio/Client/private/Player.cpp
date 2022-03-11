@@ -510,22 +510,22 @@ void CPlayer::Set_Particle_Dust()
 {
 	PARTICLEDESC tDesc;
 	//파티클이 흩날리는 종류 설정
-	tDesc.eParticleID = Particle_Fixed;
+	tDesc.eParticleID = Particle_Ball;
 
 	//총 파티클이 몇초동안 흩날릴 것인지 설정
-	tDesc.TotalParticleTime = 0.f;
+	tDesc.TotalParticleTime = 1.7f;
 
 	//파티클 하나 하나가 몇초동안 흩날릴 것인지 설정
-	tDesc.EachParticleLifeTime = 1.f;
+	tDesc.EachParticleLifeTime = 0.3f;
 
 	//파티클의 사이즈를 설정
-	tDesc.ParticleSize = _float3(10.f, 10.f, 10.f);
+	tDesc.ParticleSize = _float3(3.f, 3.f, 3.f);
 	//파티클의 파워(이동속도)를 결정
 	tDesc.Particle_Power = 5;
 	//파티클의 파워(이동속도)의 랜덤 범위를 결정
 	tDesc.PowerRandomRange = _float2(0.8f, 1.2f);
 	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
-	tDesc.MaxParticleCount = 1;
+	tDesc.MaxParticleCount = 10;
 
 	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
 	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
@@ -546,7 +546,7 @@ void CPlayer::Set_Particle_Dust()
 
 	//파티클의 최대 이탈 범위(range)를 설정해 줌 
 	//FollowingTarget 이나 FixedTarget 의 좌표 기준으로 해당 범위(+, -)를 벗어나지 않음
-	tDesc.MaxBoundary = _float3(3, 3, 3);
+	tDesc.MaxBoundary = _float3(0.7f, 0.7f, 0.7f);
 
 
 	//텍스처의 색상을 변경할 수 있는 기능 온오프
@@ -570,13 +570,13 @@ void CPlayer::Set_Particle_Dust()
 
 	tDesc.vUp = _float3(0, 0, 0);
 
-	tDesc.ParticleStartRandomPosMin = _float3(0.f, 0.f, 0.f);
-	tDesc.ParticleStartRandomPosMax = _float3(0.0f, 0.f, 0.f);
+	tDesc.ParticleStartRandomPosMin = _float3(-0.3f, -0.3f, -0.3f);
+	tDesc.ParticleStartRandomPosMax = _float3(0.3f, 0.3f, 0.3f);
 
 	tDesc.MustDraw = true;
 	//오브젝트 뒤에 가려지지 않게 만듬
 
-	tDesc.IsParticleFameEndtoDie = true;
+	tDesc.IsParticleFameEndtoDie = false;
 	//프레임이 한번만 돌것인지 정함
 	tDesc.AlphaBlendON = true;
 	tDesc.m_fAlphaTestValue = 0.f;

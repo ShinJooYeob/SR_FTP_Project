@@ -39,6 +39,7 @@ private:
 private:
 	HRESULT	Set_WindmillBlue();
 	HRESULT	Set_BigWindmill();
+	HRESULT	Set_Blossom();
 
 
 	D3DLIGHT9		m_Light;

@@ -33,8 +33,7 @@ HRESULT CParsedObject_Bell::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_Bell"));
-		//m_ComTransform->Scaled(_float3(0.8f, 0.8f, 0.8f));
-		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
+		m_ComTransform->Scaled(_float3(0.8f, 0.8f, 0.8f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
@@ -83,44 +82,20 @@ _int CParsedObject_Bell::LateUpdate(_float fTimeDelta)
 	//	m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
 
 //}
-	//if (m_distance > 12.5)
-	//{
-	//	i = -1;
-	//}
-	//if (m_distance < 6.5)
-	//{
-	//	i = 1;
-	//}
-	//if (m_distance > 3)
-	//{
-	//	i = -1;
-	//}
-	//if (m_distance < -3)
-	//{
-	//	i = 1;
-	//}
-	//m_distance += (fTimeDelta * i);
-	////_float3 Pos = _float3(8.f, 25.3f, m_distance);
-	//_float3 Pos = _float3(0, 0, m_distance);
-
-	//m_ComTransform->LookAt(Pos);
-
-
-	static _float temp = 0;
 
 	if (seconds < 1)
 	{
-		temp += fTimeDelta * 30;
+		m_distance += fTimeDelta * 19;
 
 	}
 	else if(seconds < 3)
 	{
-		temp -= fTimeDelta * 30;
+		m_distance -= fTimeDelta * 19;
 
 	}
 	else if (seconds < 4)
 	{
-		temp += fTimeDelta * 30;
+		m_distance += fTimeDelta * 19;
 
 	}
 	else
@@ -128,7 +103,7 @@ _int CParsedObject_Bell::LateUpdate(_float fTimeDelta)
 		seconds = 0;
 	}
 
-	m_ComTransform->Rotation_CW(_float3(0, 0, 1), D3DXToRadian(temp));
+	m_ComTransform->Rotation_CW(_float3(1, 0, 0), D3DXToRadian(m_distance));
 
 	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);

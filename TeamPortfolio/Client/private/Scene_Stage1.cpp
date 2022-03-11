@@ -67,9 +67,8 @@ HRESULT CScene_Stage1::Initialize()
 	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"EH_Spiral_of_Secrets.mp3")));
 
 
-	_float3 TransformPos = _float3(22.7f, 67.5f, -2.2f);
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_Blossoms", TEXT("Prototype_GameObject_Blossoms"),&TransformPos));
 
+	Set_Blossom();
 	Set_WindmillBlue();
 	Set_BigWindmill();
 	Set_Particle_Blossom();
@@ -437,6 +436,14 @@ HRESULT CScene_Stage1::Set_BigWindmill()
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
 	//////
 
+
+	return S_OK;
+}
+
+HRESULT CScene_Stage1::Set_Blossom()
+{
+	_float3 TransformPos = _float3(23.f, 68.8f, -0.7f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_Blossoms", TEXT("Prototype_GameObject_Blossoms"), &TransformPos));
 
 	return S_OK;
 }
