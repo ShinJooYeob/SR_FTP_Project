@@ -37,10 +37,13 @@ public:
 
 private:
 	HRESULT SetUp_Components();
+	HRESULT SetUp_ParticleDesc();
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
 private:
+	PARTICLEDESC			m_ParticleDesc = {};
+
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;
@@ -49,6 +52,13 @@ private:
 	CCollision*				m_pCollisionCom = nullptr;
 
 
+	_bool					m_bIsUp = false;
+	_float					m_fFrameTime = 0;
+	_float					m_fDegreeAngle = 0.f;
+	_float					m_fTargetAngle = 0;
+	_uint					m_eEasingType = 0;
+
+	class CCamera_Main*			m_pMainCam = nullptr;
 
 public:
 	static CParsedObject_BigOwl* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

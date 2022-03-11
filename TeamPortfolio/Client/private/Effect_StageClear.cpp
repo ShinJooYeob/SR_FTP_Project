@@ -57,7 +57,7 @@ HRESULT CEffect_StageClear::Initialize_Clone(void * pArg)
 
 		ObjAtt.vTargetPos = Caculate_TargetPos(ObjAtt.vPlayerPos, ObjAtt.fDegreeAngle, ObjAtt.fDist);
 
-		ObjAtt.vTargetPos.y += (ObjAtt.fDist  * 2.f) / _float(m_iAcheiveStarNum) * (abs(_float(m_iAcheiveStarNum) * 0.5f - i));
+		ObjAtt.vTargetPos.y += (ObjAtt.fDist  * 2.f) / _float(m_iAcheiveStarNum) * ((_float(m_iAcheiveStarNum) * 0.5f - i));
 
 		m_StarObjectList.push_back(ObjAtt);
 	}
@@ -132,7 +132,7 @@ _int CEffect_StageClear::Update(_float fTimeDelta)
 				iter->fDegreeAngle -= fTimeDelta * 360.f;
 
 				iter->vPos = Caculate_TargetPos(iter->vPlayerPos, iter->fDegreeAngle, iter->fDist);
-				iter->vPos.y += (iter->fDist  * 2.f) / _float(m_iAcheiveStarNum) * (abs(_float(m_iAcheiveStarNum) * 0.5f - i));
+				iter->vPos.y += (iter->fDist  * 2.f) / _float(m_iAcheiveStarNum) * ((_float(m_iAcheiveStarNum) * 0.5f - i));
 
 
 				m_ParticleDesc.FixedTarget = iter->vPos;

@@ -22,7 +22,7 @@ HRESULT CParticleMgr::Initialize_ParticleMgr(LPDIRECT3DDEVICE9 pGraphicDevice)
 
 HRESULT CParticleMgr::Create_ParticleObject(_uint eSceneID, PARTICLEDESC tParticleDesc)
 {
-
+	tParticleDesc.bSubPraticle = false;
 	switch (tParticleDesc.eParticleID)
 	{
 	case Client::Particle_Straight:
@@ -69,6 +69,9 @@ HRESULT CParticleMgr::Create_ParticleObject_AddSub(_uint eSceneID, PARTICLEDESC 
 {
 	list<CGameObject*>* ParticleList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(eSceneID, L"Layer_Particle");
 	CParticleObject* ParticleObj = nullptr;
+
+	tParticleDesc.bSubPraticle = true;
+	tSubParticleDesc.bSubPraticle = false;
 
 	switch (tParticleDesc.eParticleID)
 	{

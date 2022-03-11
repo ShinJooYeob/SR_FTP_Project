@@ -4,6 +4,7 @@
 
 
 
+
 CVIBuffer_Parsed::CVIBuffer_Parsed(LPDIRECT3DDEVICE9 pGraphicDevice)
 	:CVIBuffer(pGraphicDevice)
 {
@@ -111,6 +112,24 @@ HRESULT CVIBuffer_Parsed::Initialize_Clone(void * pArg)
 {
 	return S_OK;
 }
+
+HRESULT CVIBuffer_Parsed::Fix_Vertex_By_Postion(_float3 vPos)
+{
+
+	VTXTEX* pVertices = nullptr;
+
+	m_pVB->Lock(0, 0, (void**)(&pVertices), 0);
+
+
+	for (_uint i = 0; i < m_iNumVertices; i++)
+	{
+		pVertices[i].vPosition += vPos;
+	}
+
+	m_pVB->Unlock();
+	return S_OK;
+}
+
 
 CVIBuffer_Parsed * CVIBuffer_Parsed::Create(LPDIRECT3DDEVICE9 pGraphicDevice, void * pArg)
 {

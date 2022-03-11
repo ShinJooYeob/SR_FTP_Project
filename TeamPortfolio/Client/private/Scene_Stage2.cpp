@@ -68,7 +68,9 @@ HRESULT CScene_Stage2::Initialize()
 
 
 	FAILED_CHECK(Ready_Layer_Particle(L"Layer_Particle"));
+	FAILED_CHECK(Ready_Layer_ParsedObject(L"Layer_ParsedObject"));
 
+	
 	return S_OK;
 }
 
@@ -304,13 +306,224 @@ HRESULT CScene_Stage2::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag
 	return S_OK	;
 }
 
+HRESULT CScene_Stage2::Ready_Layer_ParsedObject(const _tchar * pLayerTag)
+{
+	_float3 TransformPos;
+	//¿Ã»©¹Ì ¸Ó¸® ¸öÅë ¼¼Æ®
+	TransformPos = _float3(14.f, 64.f, -37.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwl", TEXT("Prototype_GameObject_BigOwl"), &TransformPos));
+	TransformPos = _float3(14.f, 64.f, -37.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwlHead", TEXT("Prototype_GameObject_BigOwlHead"), &TransformPos));
+
+	TransformPos = _float3(-1.f, 64.f, -34.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwl", TEXT("Prototype_GameObject_BigOwl"), &TransformPos));
+	TransformPos = _float3(-1.f, 64.f, -34.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwlHead", TEXT("Prototype_GameObject_BigOwlHead"), &TransformPos));
+
+	TransformPos = _float3(-4.f, 64.f, -17.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwl", TEXT("Prototype_GameObject_BigOwl"), &TransformPos));
+	TransformPos = _float3(-4.f, 64.f, -17.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwlHead", TEXT("Prototype_GameObject_BigOwlHead"), &TransformPos));
+
+	TransformPos = _float3(11.f, 64.f, -14.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwl", TEXT("Prototype_GameObject_BigOwl"), &TransformPos));
+	TransformPos = _float3(11.f, 64.f, -14.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwlHead", TEXT("Prototype_GameObject_BigOwlHead"), &TransformPos));
+
+	////////////tomb//////////////////////////////////////////////////////////////
+	 TransformPos = _float3(-16, 18, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	
+	TransformPos = _float3(-3, 20, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(15, 18, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(6, 16, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-4, 11, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-10, 12, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-20, 11, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-7, 6, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(1, 5, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(10, 8, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(21, 7, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(16, 6, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(11, 2, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-19, 1, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-15, -8, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-21, -12, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-2, -6, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(6, -5, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(20, -5, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(14, -8, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-4, -10, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-9, -14, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-17, -17, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-21, -21, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-24, -28, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-11, -23, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(0, -18, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(9, -14, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(18, -17, 0.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+
+
+
+	TransformPos = _float3(-16, 18, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+
+	TransformPos = _float3(-3, 20, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(15, 18, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(6, 16, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-4, 11, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-10, 12, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-20, 11, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-7, 6, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(1, 5, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(10, 8, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(21, 7, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(16, 6, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(11, 2, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-19, 1, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-15, -8, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-21, -12, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-2, -6, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(6, -5, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(20, -5, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(14, -8, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-4, -10, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-9, -14, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-17, -17, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-21, -21, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-24, -28, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(-11, -23, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(0, -18, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(9, -14, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+	TransformPos = _float3(18, -17, 1.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
+
+
+
+
+
+	return S_OK;
+}
+
 HRESULT CScene_Stage2::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
 {
 
 	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(0.f, 1.f, 0.f)))
 	//	return E_FAIL; 
 
-	_float3 TransformPos = _float3(5.f, 64.5f, -28.2f);
+	_float3 TransformPos = _float3(5.f, 64.5f, -27.75f);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TreasureBox", TEXT("Prototype_GameObject_TreasureBox"), &TransformPos));
 
 
@@ -527,10 +740,13 @@ HRESULT CScene_Stage2::Ready_Layer_Player(const _tchar * pLayerTag)
 
 		GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGE2);
 		pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
+		(pPlayerList->front())->ReInitialize(&_float3(5.f, 64.f, -28.f));
 	}
 	else
 	{
-		(pPlayerList->front())->ReInitialize(&_float3(0.f, 1.f, 0));
+
+		//(pPlayerList->front())->ReInitialize(&_float3(0.f, 1.f, 0));
+		(pPlayerList->front())->ReInitialize(&_float3(5.f, 64.f, -28.f));
 
 	}
 

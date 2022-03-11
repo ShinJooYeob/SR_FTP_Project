@@ -76,6 +76,17 @@ HRESULT CScene_Tutorial::Initialize()
 
 	_float3 TransformPos = _float3(10.f, 0.f, 0.f);
 
+	//TransformPos = _float3(0, 0, 0);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwl", TEXT("Prototype_GameObject_BigOwl"), &TransformPos));
+	//TransformPos = _float3(0, 0, 0);
+	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_BigOwlHead", TEXT("Prototype_GameObject_BigOwlHead"), &TransformPos));
+
+
+
+
+
+
+
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Blossoms", TEXT("Prototype_GameObject_Blossoms"),&TransformPos));
 	
 	//TransformPos = _float3(1.f, 0.f, 0.f);
@@ -90,14 +101,7 @@ HRESULT CScene_Tutorial::Initialize()
 	//TransformPos = _float3(2.f, 0.f, 4.f);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_DeathSkull", TEXT("Prototype_GameObject_DeathSkull"), &TransformPos));
 
-	//TransformPos = _float3(4.f, 0.f, 0.f);
-	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_TombStone", TEXT("Prototype_GameObject_TombStone"), &TransformPos));
-	
-	//¿Ã»©¹Ì ¸Ó¸® ¸öÅë ¼¼Æ®
-	//TransformPos = _float3(4.f, 0.f, 0.f);
-	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_BigOwl", TEXT("Prototype_GameObject_BigOwl"), &TransformPos));
-	//TransformPos = _float3(4.f, 0.f, 0.f);
-	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_BigOwlHead", TEXT("Prototype_GameObject_BigOwlHead"), &TransformPos));
+
 
 	//TransformPos = _float3(4.f, 0.f, 0.f);
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));

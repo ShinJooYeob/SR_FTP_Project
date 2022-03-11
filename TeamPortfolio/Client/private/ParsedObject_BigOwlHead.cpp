@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Camera_Main.h"
 #include "..\public\ParsedObject_BigOwlHead.h"
 
 CParsedObject_BigOwlHead::CParsedObject_BigOwlHead(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -19,6 +20,7 @@ HRESULT CParsedObject_BigOwlHead::Initialize_Prototype(void * pArg)
 	return S_OK;
 }
 
+static _uint s_iTotalOwlCounter = 0;
 HRESULT CParsedObject_BigOwlHead::Initialize_Clone(void * pArg)
 {
 	if (FAILED(__super::Initialize_Clone(pArg)))
@@ -32,11 +34,31 @@ HRESULT CParsedObject_BigOwlHead::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_BigOwlHead"));
-		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+		m_ComTransform->Scaled(_float3(0.5f, 0.5f, 0.5f));
+		//m_fDegreeAngle = 180.f;
+		//m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(m_fDegreeAngle));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint );
+
+		if (!s_iTotalOwlCounter)
+			m_ComVIBuffer->Fix_Vertex_By_Postion(_float3(0.5f, 2.75f, -1.5f));
+		//m_ComVIBuffer->Fix_Vertex_By_Postion(_float3(0.5f, 3.f, -1.5f));
 	}
 
-	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("BigOwlHead")));
+
+	if (s_iTotalOwlCounter % 2) {
+		FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("BigOwlHead")));
+		m_bIsUp = true;
+	}
+	else
+	{
+		FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("Penguin")));
+		m_bIsUp = false;
+	}
+	s_iTotalOwlCounter++;
+
+	m_pMainCam = (CCamera_Main*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Camera_Main)));
+	if (m_pMainCam == nullptr)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -46,7 +68,112 @@ _int CParsedObject_BigOwlHead::Update(_float fTimeDelta)
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
+	if (m_bIsUp)
+	{
 
+		if (m_fFrameTime < 0.25f)
+		{
+			m_fFrameTime += fTimeDelta;
+
+			m_fLookAtYPoint = GetSingle(CGameInstance)->Easing(TYPE_Linear, 0, 2.f, m_fFrameTime, 0.25f);
+
+			if (m_fFrameTime > 0.25f)
+			{
+				m_fLookAtYPoint = 2.f;
+			}
+
+		}
+		else if (m_fFrameTime < 0.75f)
+		{
+			m_fFrameTime += fTimeDelta;
+			m_fLookAtYPoint = GetSingle(CGameInstance)->Easing(TYPE_Linear, 2.f, -2.f, m_fFrameTime - 0.25f, 0.5f);
+
+			if (m_fFrameTime > 0.75f)
+			{
+				m_fLookAtYPoint = -2.f;
+			}
+
+		}
+		else if (m_fFrameTime < 1.f)
+		{
+			m_fFrameTime += fTimeDelta;
+			m_fLookAtYPoint = GetSingle(CGameInstance)->Easing(TYPE_Linear, -2.f, 0.f, m_fFrameTime - 0.75f, 0.25f);
+
+			if (m_fFrameTime > 1.f)
+			{
+				m_fLookAtYPoint = 0.f;
+			}
+		}
+		else
+		{
+
+			m_fFrameTime = 0;
+			m_bIsUp = !m_bIsUp;
+		}
+	}
+	else {
+
+
+		if (m_fFrameTime < 0.25f)
+		{
+			m_fFrameTime += fTimeDelta;
+
+			m_fLookAtYPoint = GetSingle(CGameInstance)->Easing(TYPE_Linear, 0, -2.f, m_fFrameTime, 0.25f);
+
+			if (m_fFrameTime > 0.25f)
+			{
+				m_fLookAtYPoint = -2.f;
+			}
+
+		}
+		else if (m_fFrameTime < 0.75f)
+		{
+			m_fFrameTime += fTimeDelta;
+			m_fLookAtYPoint = GetSingle(CGameInstance)->Easing(TYPE_Linear, -2.f, 2.f, m_fFrameTime - 0.25f, 0.5f);
+
+			if (m_fFrameTime > 0.75f)
+			{
+				m_fLookAtYPoint = 2.f;
+			}
+
+		}
+		else if (m_fFrameTime < 1.f)
+		{
+			m_fFrameTime += fTimeDelta;
+			m_fLookAtYPoint = GetSingle(CGameInstance)->Easing(TYPE_Linear, 2.f, 0.f, m_fFrameTime - 0.75f, 0.25f);
+
+			if (m_fFrameTime > 1.f)
+			{
+				m_fLookAtYPoint = 0.f;
+			}
+		}
+		else
+		{
+
+			m_fFrameTime = 0;
+			m_bIsUp = !m_bIsUp;
+		}
+
+
+
+
+
+
+
+
+
+	}
+
+	_float3 vCamPos = m_pMainCam->Get_Camera_Transform()->Get_MatrixState(CTransform::STATE_POS);
+	_float3 vObjPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+
+	vCamPos.y = vObjPos.y;
+
+	_float3 LookAtPos = vObjPos + (vCamPos - vObjPos).Get_Nomalize() * 10.f ;
+
+	LookAtPos.y += m_fLookAtYPoint;
+
+	m_ComTransform->LookAt(LookAtPos);
 
 	return _int();
 }

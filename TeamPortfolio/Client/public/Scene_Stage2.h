@@ -42,6 +42,8 @@ private:
 	HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);
 
 
+	HRESULT Ready_Layer_ParsedObject(const _tchar* pLayerTag);
+
 	D3DLIGHT9		m_Light;
 
 public:

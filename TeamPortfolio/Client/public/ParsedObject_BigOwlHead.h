@@ -48,7 +48,12 @@ private:
 
 	CCollision*				m_pCollisionCom = nullptr;
 
+	_float					m_fLookAtYPoint = 0;
+	_bool					m_bIsUp = false;
+	_float					m_fFrameTime = 0;
 
+
+	class CCamera_Main*			m_pMainCam = nullptr;
 
 public:
 	static CParsedObject_BigOwlHead* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

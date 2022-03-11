@@ -14,6 +14,9 @@ public:
 
 	}PASRSEDDESC;
 
+public:
+	HRESULT Fix_Vertex_By_Postion(_float3 vPos);
+
 private:
 	explicit CVIBuffer_Parsed(LPDIRECT3DDEVICE9 pGraphicDevice);
 	explicit CVIBuffer_Parsed(const CVIBuffer_Parsed& rhs);
