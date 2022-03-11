@@ -111,12 +111,12 @@ _int CNpc_izaacTuto::Render()
 			else if (m_tNpcDesc.eCubeInfo == E_CUBEID::CUBEID_APPEAR)
 			{
 				temp = L"this is a AppearCube\nIf you go closer,\nA Cube will appear";
-				GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.4f, 0.6f), _float3(85, 45, 125), m_fText);
+				GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.4f, 0.6f), _float3(205, 75, 35), m_fText);
 			}
 			else if (m_tNpcDesc.eCubeInfo == E_CUBEID::CUBEID_ELEVETOR)
 			{
 				temp = L"this is a ElevatorCube\nYou can board on the Cube";
-				GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.4f, 0.6f), _float3(116, 65, 105), m_fText);
+				GetSingle(CGameInstance)->Render_World_Font(temp, m_ComTransform->Get_MatrixState(CTransform::STATE_POS) + _float3(0, 1, 0), _float2(0.4f, 0.6f), _float3(216, 50, 110), m_fText);
 			}
 			else if (m_tNpcDesc.eCubeInfo == E_CUBEID::CUBEID_ORBIT)
 			{
