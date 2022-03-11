@@ -843,7 +843,28 @@ HRESULT CPlayer::SetUp_ParticleDesc()
 	m_ArrParticleDesc[4].MustDraw = true;
 	m_ArrParticleDesc[4].IsParticleFameEndtoDie = false;
 
-
+	m_ArrParticleDesc[5].eParticleID = Particle_Straight;
+	m_ArrParticleDesc[5].TotalParticleTime = 0.5f;
+	m_ArrParticleDesc[5].EachParticleLifeTime = 0.5;
+	m_ArrParticleDesc[5].ParticleSize = _float3(0.3f, 0.3f, 0.3f);
+	m_ArrParticleDesc[5].Particle_Power = 1;
+	m_ArrParticleDesc[5].PowerRandomRange = _float2(0.5f, 1.5f);
+	m_ArrParticleDesc[5].MaxParticleCount = 20;
+	m_ArrParticleDesc[5].szTextureProtoTypeTag = TAG_CP(Prototype_Texture_UI);
+	m_ArrParticleDesc[5].szTextureLayerTag = TEXT("DUBBLEJUMP");
+	m_ArrParticleDesc[5].m_bIsTextureAutoFrame = true;
+	m_ArrParticleDesc[5].fAutoFrameMul = 3.f;
+	m_ArrParticleDesc[5].FollowingTarget = m_ComTransform;
+	m_ArrParticleDesc[5].MaxBoundary = _float3(10, 10, 10);
+	m_ArrParticleDesc[5].ParticleColorChage = true;
+	m_ArrParticleDesc[5].TargetColor = _float3(237, 28, 36);
+	m_ArrParticleDesc[5].TargetColor2 = _float3(53, 255.f, 11);
+	m_ArrParticleDesc[5].m_bIsUI = false;
+	m_ArrParticleDesc[5].ParticleStartRandomPosMin = _float3(-0.5f, -0.5f, -0.5f);
+	m_ArrParticleDesc[5].ParticleStartRandomPosMax = _float3(0.5f, 0.5f, 0.5f);
+	m_ArrParticleDesc[5].MustDraw = true;
+	m_ArrParticleDesc[5].IsParticleFameEndtoDie = false;
+	m_ArrParticleDesc[5].vUp = _float3(0, 1, 0);
 	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
 	//GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
 	return S_OK;
@@ -949,7 +970,27 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 			}
 		}
 	}
-
+	///////////////////진우스킬타이머/////////////////
+	if (m_ComInventory->Get_Skill_Level(SKILL_POTION) &&pInstance->Get_DIKeyState(DIK_T) & DIS_Down)
+	{
+		if ((pInstance->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")) != nullptr)
+		{
+			if (m_tCoolDown[SKILL_POTION].m_bCoolDownStart)
+			{
+			}
+			else {
+				/*if (((CUI_Result*)(pInstance->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")))->Get_NowTime() < 30)
+					((CUI_Result*)(pInstance->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")))->Set_PlusTimer(((CUI_Result*)(pInstance->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")))->Get_NowTime()-30);
+				else*/
+				GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, m_ArrParticleDesc[5]);
+				GetSingle(CGameInstance)->PlaySound(TEXT("JW_Timeup.ogg"), CHANNEL_PLAYER);
+					((CUI_Result*)(pInstance->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")))->Set_PlusTimer(30);
+					((CUI_Result*)(pInstance->Get_GameObject_By_LayerIndex(m_eNowSceneNum, L"Layer_UI_Result")))->Set_MaxTimebyTimeUp(30);
+				m_tCoolDown[SKILL_POTION].m_bCoolDownStart = true;
+			}
+		}
+	}
+	//////////////////////////////////////////////////
 	//좌우 이동
 	if (pInstance->Get_DIKeyState(DIK_LEFT) & DIS_Press)
 	{
@@ -1008,8 +1049,6 @@ HRESULT CPlayer::Animation_Change(_float fDeltaTime)
 		m_bTextureReverse = true;
 	else if (pInstance->Get_DIKeyState(DIK_RIGHT) & DIS_Press)
 		m_bTextureReverse = false;
-
-
 
 	if (m_pCarryObject) {
 
