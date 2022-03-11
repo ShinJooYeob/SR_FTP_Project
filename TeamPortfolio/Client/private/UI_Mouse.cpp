@@ -142,7 +142,7 @@ _int CUI_Mouse::Update(_float fDeltaTime)
 		m_ComTexture->Change_TextureLayer_Wait(L"cursor_clicker", 12.f);
 	}
 	if (GetSingle(CGameInstance)->Get_DIMouseButtonState(Engine::CInput_Device::MBS_LBUTTON) & DIS_Up) {
-		GetSingle(CGameInstance)->PlaySound(L"JW_beep1.wav", CHANNEL_UI, 0.4f);
+		GetSingle(CGameInstance)->PlaySound(L"JW_beep1.wav", CHANNEL_UI, 0.25f);
 		m_ComTexture->Change_TextureLayer(L"cursor_pointer");
 		PARTICLEDESC tDesc;
 		tDesc.eParticleID = Particle_Fixed;

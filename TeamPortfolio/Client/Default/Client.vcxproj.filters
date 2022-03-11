@@ -637,7 +637,9 @@
       <Filter>01.GameObject\Effect</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParsedObject_TreeOfDeath.h" />
-    <ClInclude Include="..\public\UI_Complete.h" />
+    <ClInclude Include="..\public\UI_Complete.h">
+      <Filter>01.GameObject\UI\UI_Complete</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -932,7 +934,9 @@
       <Filter>01.GameObject\Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParsedObject_TreeOfDeath.cpp" />
-    <ClCompile Include="..\private\UI_Complete.cpp" />
+    <ClCompile Include="..\private\UI_Complete.cpp">
+      <Filter>01.GameObject\UI\UI_Complete</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

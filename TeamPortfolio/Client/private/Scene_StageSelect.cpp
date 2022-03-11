@@ -42,7 +42,8 @@ HRESULT CScene_StageSelect::Initialize()
 
 	if (FAILED(Ready_Layer_Object_QrcodeCube(TEXT("Layer_Object_QrcodeCube"))))
 		return E_FAIL;
-	
+	if (FAILED(Ready_Layer_UI_Complete(TEXT("Layer_UI_Complete"))))
+		return E_FAIL;
 
 	//FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
 
@@ -259,6 +260,14 @@ HRESULT CScene_StageSelect::Ready_Layer_NPC(const _tchar * pLayerTag)
 	return S_OK;
 
 
+}
+HRESULT CScene_StageSelect::Ready_Layer_UI_Complete(const _tchar * pLayerTag)
+{
+
+	if (FAILED(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_UI_Complete"))))
+		return E_FAIL;
+
+	return S_OK;
 }
 //
 //HRESULT CScene_StageSelect::Ready_Layer_Terrain(const _tchar * pLayerTag)

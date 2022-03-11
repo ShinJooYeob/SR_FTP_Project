@@ -25,6 +25,7 @@
 #include "UI_BossStageEntryUI.h"
 #include "UI_BossStatusUI.h"
 #include "Npc_izaacTuto.h"
+#include "UI_Complete.h"
 
 #include "Object_FixCube.h"
 #include "Object_GravityCube.h"
@@ -469,8 +470,8 @@ HRESULT CLoader::Load_Scene_StageSelect(_bool * _IsClientQuit, CRITICAL_SECTION 
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_Object_QrcodeCube"), CObject_QrcodeCube::Create(m_pGraphicDevice))))
 		return E_FAIL;
-
-
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_UI_Complete"), CUI_Complete::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
 
 
