@@ -7,19 +7,14 @@ sampler DefaultSampler = sampler_state
 {
 	texture = g_Texture;
 
-/*	MagFilter = linear;
-	MipFilter = linear;
-	MinFilter = linear;
 
-	AddressU = wrap;
-	AddressV = wrap;*/	
 };
 
 // VS_SHADER
 struct VS_IN
 {
 	float3 vPosition : POSITION;
-	float2 vTexUV : TEXCOORD0;	
+	float2 vTexUV : TEXCOORD0;
 };
 
 struct VS_OUT
@@ -39,7 +34,7 @@ VS_OUT VS_MAIN(VS_IN In)
 	// vector			Camdir = normalize(vPosition - g_CameraWorldMatrix[3]);
 	// Camdir[3] = vPosition[3];
 
-	
+
 	vPosition = mul(vPosition, g_ViewMatrix);
 
 	Out.vPosition = mul(vPosition, g_ProjMatrix);
@@ -68,7 +63,7 @@ PS_OUT PS_MAIN(PS_IN In)
 }
 
 technique Default_Technique
-{	
+{
 	// 기본 텍스처 랜더링
 	pass Default
 	{

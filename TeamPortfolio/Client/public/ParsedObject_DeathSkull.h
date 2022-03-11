@@ -31,7 +31,6 @@ public:
 
 	virtual _int Render()override;
 	virtual _int LateRender()override;
-	¤¡
 
 private:
 	HRESULT SetUp_Components();
