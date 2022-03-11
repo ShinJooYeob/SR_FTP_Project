@@ -33,7 +33,8 @@ HRESULT CParsedObject_Bell::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_Bell"));
-		m_ComTransform->Scaled(_float3(0.8f, 0.8f, 0.8f));
+		//m_ComTransform->Scaled(_float3(0.8f, 0.8f, 0.8f));
+		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
@@ -62,7 +63,7 @@ _int CParsedObject_Bell::LateUpdate(_float fTimeDelta)
 
 	seconds += fTimeDelta;
 
-	//시간단위 fTimeDelta는 1초를 뜻함
+	////////////////////////////////////////////////시간단위 fTimeDelta는 1초를 뜻함
 	//if (seconds > 3.f)
 	//{
 
@@ -81,19 +82,53 @@ _int CParsedObject_Bell::LateUpdate(_float fTimeDelta)
 	//	///////////////////////////임의의 축,       라디안
 	//	m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
 
+//}
+	//if (m_distance > 12.5)
+	//{
+	//	i = -1;
 	//}
-	if (m_distance > 12.5)
-	{
-		i = -1;
-	}
-	if (m_distance < 6.5)
-	{
-		i = 1;
-	}
-	m_distance += (fTimeDelta * i);
-	_float3 Pos = _float3(8.f, 25.3f, m_distance);
+	//if (m_distance < 6.5)
+	//{
+	//	i = 1;
+	//}
+	//if (m_distance > 3)
+	//{
+	//	i = -1;
+	//}
+	//if (m_distance < -3)
+	//{
+	//	i = 1;
+	//}
+	//m_distance += (fTimeDelta * i);
+	////_float3 Pos = _float3(8.f, 25.3f, m_distance);
+	//_float3 Pos = _float3(0, 0, m_distance);
 
-	m_ComTransform->LookAt(Pos);
+	//m_ComTransform->LookAt(Pos);
+
+
+	static _float temp = 0;
+
+	if (seconds < 1)
+	{
+		temp += fTimeDelta * 30;
+
+	}
+	else if(seconds < 3)
+	{
+		temp -= fTimeDelta * 30;
+
+	}
+	else if (seconds < 4)
+	{
+		temp += fTimeDelta * 30;
+
+	}
+	else
+	{
+		seconds = 0;
+	}
+
+	m_ComTransform->Rotation_CW(_float3(0, 0, 1), D3DXToRadian(temp));
 
 	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
@@ -139,6 +174,8 @@ _int CParsedObject_Bell::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 
 }
 
 
+static _uint iBellCreateCounter = 0;
+
 HRESULT CParsedObject_Bell::SetUp_Components()
 {
 	/* For.Com_Transform */
@@ -169,6 +206,20 @@ HRESULT CParsedObject_Bell::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TEXT("Prototype_Component_Collision"), TEXT("Com_Collision"), (CComponent**)&m_pCollisionCom)))
 		return E_FAIL;
 	//////////////////////////////////////////////
+
+
+
+	if (iBellCreateCounter == 0)
+	{
+		m_ComVIBuffer->Fix_Vertex_By_Postion(_float3(0, -3.5f, 0));
+	}
+
+
+
+
+
+	iBellCreateCounter++;
+
 	return S_OK;
 }
 

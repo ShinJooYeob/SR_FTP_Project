@@ -47,7 +47,8 @@ HRESULT CScene_StageSelect::Initialize()
 	}
 	else
 	{
-		_float3 TransformPos = _float3(8.f, 22.3f, 9.5f);
+		_float3 TransformPos = _float3(0.f, 0.f, 0.f);
+		//_float3 TransformPos = _float3(8.f, 22.3f, 9.5f);
 		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
 
 	}
