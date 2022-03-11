@@ -299,8 +299,9 @@ _int CPlayer::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fCollision_
 		if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_LSHIFT) & DIS_Down)
 		{
 			m_ComTexture->Change_TextureLayer_ReturnTo(TEXT("buttonclick"), TEXT("Idle"), 4.f);
-			GetSingle(CGameInstance)->PlaySound(L"EH_Orbit.wav", CHANNEL_OBJECT);
-			Set_Particle_Sweat();
+			GetSingle(CGameInstance)->PlaySound(L"EH_Orbit2.wav", CHANNEL_OBJECT);
+			Set_Particle_Dust();
+			//
 		}
 	}
 	//
@@ -505,11 +506,11 @@ void CPlayer::SetBestClear(_uint _Stage, _float _timer)
 	}
 }
 
-void CPlayer::Set_Particle_Sweat()
+void CPlayer::Set_Particle_Dust()
 {
 	PARTICLEDESC tDesc;
 	//파티클이 흩날리는 종류 설정
-	tDesc.eParticleID = Particle_Straight;
+	tDesc.eParticleID = Particle_Fixed;
 
 	//총 파티클이 몇초동안 흩날릴 것인지 설정
 	tDesc.TotalParticleTime = 0.f;
@@ -518,20 +519,20 @@ void CPlayer::Set_Particle_Sweat()
 	tDesc.EachParticleLifeTime = 1.f;
 
 	//파티클의 사이즈를 설정
-	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
+	tDesc.ParticleSize = _float3(10.f, 10.f, 10.f);
 	//파티클의 파워(이동속도)를 결정
 	tDesc.Particle_Power = 5;
 	//파티클의 파워(이동속도)의 랜덤 범위를 결정
 	tDesc.PowerRandomRange = _float2(0.8f, 1.2f);
 	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
-	tDesc.MaxParticleCount = 5;
+	tDesc.MaxParticleCount = 1;
 
 	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
 	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
 	//파티클 텍스처 레이어 스테이트키를 변경할 수 있음
-	tDesc.szTextureLayerTag = TEXT("Particle_Sweat");
+	tDesc.szTextureLayerTag = TEXT("Particle_NewDust");
 	//텍스처 오토프레임을 사용할 것인지 말 것인지 결정
-	tDesc.m_bIsTextureAutoFrame = false;
+	tDesc.m_bIsTextureAutoFrame = true;
 
 
 	//FixedTarget 을 사용하면 고정된 위치에서 계속해서 나오고
@@ -567,17 +568,18 @@ void CPlayer::Set_Particle_Sweat()
 	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
 	//혹은 x축의 양의 방향으로 뿌리고 싶으면 _float3(1,0,0); 이런식으로 넣어주면 됨;
 
-	tDesc.vUp = _float3(0, -1, 0);
+	tDesc.vUp = _float3(0, 0, 0);
 
-	tDesc.ParticleStartRandomPosMin = _float3(-0.4f, 0.4f, -0.4f);
-	tDesc.ParticleStartRandomPosMax = _float3(0.4f, 0.4f, 0.4f);
+	tDesc.ParticleStartRandomPosMin = _float3(0.f, 0.f, 0.f);
+	tDesc.ParticleStartRandomPosMax = _float3(0.0f, 0.f, 0.f);
 
 	tDesc.MustDraw = true;
 	//오브젝트 뒤에 가려지지 않게 만듬
 
-	//tDesc.IsParticleFameEndtoDie = false;
+	tDesc.IsParticleFameEndtoDie = true;
 	//프레임이 한번만 돌것인지 정함
-
+	tDesc.AlphaBlendON = true;
+	tDesc.m_fAlphaTestValue = 0.f;
 
 	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
 	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);

@@ -29,8 +29,8 @@ HRESULT CScene_StageSelect::Initialize()
 
 	FAILED_CHECK(Ready_Layer_SkyBox(TEXT("Layer_SkyBox")))
 
-	if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
-		return E_FAIL;
+		if (FAILED(Ready_Layer_MainCamera(TAG_LAY(Layer_Camera_Main))))
+			return E_FAIL;
 	if (FAILED(Ready_Layer_Shop(TAG_LAY(Layer_Shop))))
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Quest(TAG_LAY(Layer_Quest))))
@@ -40,9 +40,17 @@ HRESULT CScene_StageSelect::Initialize()
 	Make_Particle();
 	FAILED_CHECK(Ready_Layer_StageEntryCollsionObject(L"Layer_Collision_StageEntry"));
 
-	if (FAILED(Ready_Layer_Object_QrcodeCube(TEXT("Layer_Object_QrcodeCube"))))
-		return E_FAIL;
-	
+	if (GetSingle(CQuest)->Get_QuestComplete())
+	{
+		if (FAILED(Ready_Layer_Object_QrcodeCube(TEXT("Layer_Object_QrcodeCube"))))
+			return E_FAIL;
+	}
+	else
+	{
+		_float3 TransformPos = _float3(8.f, 22.3f, 9.5f);
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
+
+	}
 
 	//FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
 

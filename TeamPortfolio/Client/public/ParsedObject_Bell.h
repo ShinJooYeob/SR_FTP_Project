@@ -53,6 +53,9 @@ private:
 	_float					seconds = 0;
 	_float					m_RotAngle = 0;
 
+	_float					m_distance = 8;
+	_float					i = 1;
+
 
 public:
 	static CParsedObject_Bell* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);

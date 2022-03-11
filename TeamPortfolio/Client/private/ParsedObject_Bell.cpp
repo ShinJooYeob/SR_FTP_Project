@@ -33,7 +33,7 @@ HRESULT CParsedObject_Bell::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_Bell"));
-		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
+		m_ComTransform->Scaled(_float3(0.8f, 0.8f, 0.8f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
@@ -63,26 +63,37 @@ _int CParsedObject_Bell::LateUpdate(_float fTimeDelta)
 	seconds += fTimeDelta;
 
 	//시간단위 fTimeDelta는 1초를 뜻함
-	if (seconds > 3.f)
+	//if (seconds > 3.f)
+	//{
+
+	//	//////////////////////////////////////////////쓰고 싶은 보간타입,    시작각도,    몇도를 돌릴지,  몇초부터~,  몇초동안~
+	//	_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds - 3.f, 2.0f);
+
+
+	//	if (seconds > 5.f)
+	//	{
+	//		seconds = 0;
+	//		m_RotAngle = m_RotAngle + 90;  //각도를 돌렸으니 m_RotAngle에 넣어준다. 이걸 넣어주지 않는다면 계속 초기화가 된다.
+	//		TempAngle = m_RotAngle;//시간이 끝날 때 오차가 발생하기 때문에 타겟앵글로 한번 더 예외처리를 해준다. 지금 세컨드를 float으로 받고 델타도 사실 일정하지 않기 때문
+	//							   //GetSingle(CGameInstance)->PlaySound(L"EH_SelfRotationCube.wav", CHANNEL_OBJECT);
+	//	}
+
+	//	///////////////////////////임의의 축,       라디안
+	//	m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
+
+	//}
+	if (m_distance > 12.5)
 	{
-
-		//////////////////////////////////////////////쓰고 싶은 보간타입,    시작각도,    몇도를 돌릴지,  몇초부터~,  몇초동안~
-		_float TempAngle = GetSingle(CGameInstance)->Easing(TYPE_BounceOut, m_RotAngle, m_RotAngle + 90, seconds - 3.f, 2.0f);
-
-
-		if (seconds > 5.f)
-		{
-			seconds = 0;
-			m_RotAngle = m_RotAngle + 90;  //각도를 돌렸으니 m_RotAngle에 넣어준다. 이걸 넣어주지 않는다면 계속 초기화가 된다.
-			TempAngle = m_RotAngle;//시간이 끝날 때 오차가 발생하기 때문에 타겟앵글로 한번 더 예외처리를 해준다. 지금 세컨드를 float으로 받고 델타도 사실 일정하지 않기 때문
-								   //GetSingle(CGameInstance)->PlaySound(L"EH_SelfRotationCube.wav", CHANNEL_OBJECT);
-		}
-
-		///////////////////////////임의의 축,       라디안
-		m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(TempAngle));
-
+		i = -1;
 	}
+	if (m_distance < 6.5)
+	{
+		i = 1;
+	}
+	m_distance += (fTimeDelta * i);
+	_float3 Pos = _float3(8.f, 25.3f, m_distance);
 
+	m_ComTransform->LookAt(Pos);
 
 	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
