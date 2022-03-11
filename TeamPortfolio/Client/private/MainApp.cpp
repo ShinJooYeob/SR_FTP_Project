@@ -196,10 +196,10 @@ HRESULT CMainApp::Ready_SingletonMgr()
 	FAILED_CHECK(GetSingle(CParticleMgr)->Initialize_ParticleMgr(m_pGraphicDevice));
 
 	GetSingle(CQuest)->Initialize_Quest(QUEST_END);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_1, 6);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_2, 12);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_3, 4);
-	GetSingle(CQuest)->Set_QuestGoal(QUEST_4, 1);
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_1, 1); //6
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_2, 1); //12
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_3, 1); //4
+	GetSingle(CQuest)->Set_QuestGoal(QUEST_4, 1); //1
 
 	GetSingle(CLoginMgr)->Initialize_LoginMgr();
 

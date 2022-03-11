@@ -636,8 +636,10 @@
     <ClInclude Include="..\public\Effect_StageClear.h">
       <Filter>01.GameObject\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ParsedObject_TreeOfDeath.h" />
     <ClInclude Include="..\public\UI_Complete.h" />
+    <ClInclude Include="..\public\ParsedObject_TreeOfDeath.h">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\TreeOfDeath</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -931,8 +933,10 @@
     <ClCompile Include="..\private\Effect_StageClear.cpp">
       <Filter>01.GameObject\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ParsedObject_TreeOfDeath.cpp" />
     <ClCompile Include="..\private\UI_Complete.cpp" />
+    <ClCompile Include="..\private\ParsedObject_TreeOfDeath.cpp">
+      <Filter>01.GameObject\ParsedObject\EH_ParsedObject\TreeOfDeath</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

@@ -445,15 +445,15 @@ HRESULT CUI_BossStatusUI::SetUp_UIDesc()
 
 HRESULT CUI_BossStatusUI::Update_MouseButton(_float fTimeDelta)
 {
-	//if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_O) & DIS_Down )
-	//{
-	//	Change_VersusPoint(1);
-	//}
-	//if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_P) & DIS_Down)
-	//{
-	//	Change_VersusPoint(-1);
+	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_O) & DIS_Down )
+	{
+		Change_VersusPoint(1);
+	}
+	if (GetSingle(CGameInstance)->Get_DIKeyState(DIK_P) & DIS_Down)
+	{
+		Change_VersusPoint(-1);
 
-	//}
+	}
 
 
 

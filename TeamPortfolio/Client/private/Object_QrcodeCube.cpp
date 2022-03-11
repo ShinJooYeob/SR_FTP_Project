@@ -33,7 +33,7 @@ HRESULT CObject_QrcodeCube::Initialize_Clone(void * pArg)
 
 	m_ComTransform->Scaled(_float3(4.f, 4.f, 4.f));
 
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(9.f, 50.f, 9.5f));
+	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(9.f, 22.f, 9.5f));
 
 	m_Layer_Tag = (TEXT("Layer_Object_QrcodeCube"));
 	m_ComTexture->Change_TextureLayer(TEXT("QrcodeCube"));

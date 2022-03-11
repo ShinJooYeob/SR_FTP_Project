@@ -19,6 +19,8 @@ class CParsedObject_BigWindmill final : public CParsedObject
 public:
 	typedef struct tagBigWindmill {
 		_float3 Transform;
+		_float	Angle;
+		_float3 Axis;
 	}BIGWINDMILLDESC;
 private:
 	explicit CParsedObject_BigWindmill(LPDIRECT3DDEVICE9 pGraphic_Device);

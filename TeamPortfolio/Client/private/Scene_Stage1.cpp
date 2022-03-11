@@ -72,6 +72,7 @@ HRESULT CScene_Stage1::Initialize()
 
 	Set_WindmillBlue();
 	Set_BigWindmill();
+	Set_Particle_Blossom();
 	
 	return S_OK;
 }
@@ -215,7 +216,6 @@ HRESULT CScene_Stage1::Ready_Layer_UI_Result(const _tchar * pLayerTag)
 		return E_FAIL;
 	pResult->Set_MaxTime(300.f); //MAX시간을 나타냄
 
-
 	return S_OK;
 }
 
@@ -313,6 +313,47 @@ HRESULT CScene_Stage1::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerT
 	return S_OK;
 }
 
+HRESULT CScene_Stage1::Set_Particle_Blossom()
+{
+	PARTICLEDESC tDesc;
+	tDesc.eParticleID = Particle_Cone;
+	tDesc.TotalParticleTime = 3600.f;
+	tDesc.EachParticleLifeTime = 3.0f;
+	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
+	tDesc.Particle_Power = 2;
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+	tDesc.MaxParticleCount = 10;
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	tDesc.szTextureLayerTag = TEXT("greenleaf");
+	tDesc.m_bIsTextureAutoFrame = false;
+	tDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player))->Get_Component(TAG_COM(Com_Transform)));
+	//tDesc.FixedTarget = _float3(10, 10, 1);
+	tDesc.MaxBoundary = _float3(30, 30, 30);
+	tDesc.ParticleColorChage = true;
+	tDesc.TargetColor = _float3(237, 186, 186);
+	tDesc.TargetColor2 = _float3(200.f, 192.f, 231.f);
+	tDesc.ParticleStartRandomPosMin = _float3(-15, -10, -15);
+	tDesc.ParticleStartRandomPosMax = _float3(15, 10, 15);
+
+
+	tDesc.m_bIsUI = false;
+	tDesc.vUp = _float3(0.f, -1.f, 0.f);
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGE1, tDesc);
+
+	tDesc.TargetColor = _float3(255.f, 149.f, 184.f);
+	tDesc.TargetColor2 = _float3(255.f, 91.f, 145.f);
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGE1, tDesc);
+	
+	tDesc.TargetColor = _float3(255.f, 151.f, 250.f);
+	tDesc.TargetColor2 = _float3(255.f, 151.f, 250.f);
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGE1, tDesc);
+
+
+
+	return S_OK;
+}
+
 HRESULT CScene_Stage1::Set_WindmillBlue()
 {
 	CParsedObject_WindmillBlue::WINDMILLBLUEDESC WindmillBlueDesc;
@@ -320,12 +361,53 @@ HRESULT CScene_Stage1::Set_WindmillBlue()
 	//풍차는 최종 막대 + 1시켜줄 것 또한 z축은 -2
 
 	_float3 TransformPos;
-
+	/////
 	WindmillBlueDesc.fTransform = _float3(4.f, 3.f, -2.f);
+	WindmillBlueDesc.Angle = 180;
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_WindmillBlue"), &WindmillBlueDesc));
-
 	TransformPos = _float3(4.f, 2.f, 0.f);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+	////
+	WindmillBlueDesc.fTransform = _float3(55.f, 60.f, 27.f);
+	WindmillBlueDesc.Angle = 180;
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_WindmillBlue"), &WindmillBlueDesc));
+	TransformPos = _float3(55.f, 58.f, 29.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+	///
+	WindmillBlueDesc.fTransform = _float3(59.f, 60.f, 27.f);
+	WindmillBlueDesc.Angle = 180;
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_WindmillBlue"), &WindmillBlueDesc));
+	TransformPos = _float3(59.f, 58.f, 29.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+	////
+	WindmillBlueDesc.fTransform = _float3(51.f, 60.f, 27.f);
+	WindmillBlueDesc.Angle = 180;
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_WindmillBlue"), &WindmillBlueDesc));
+	TransformPos = _float3(51.f, 58.f, 29.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+	////
+	
+	
+	////
+	WindmillBlueDesc.fTransform = _float3(6.f, 17.f, 17.f);
+	WindmillBlueDesc.Angle = 180;
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_WindmillBlue"), &WindmillBlueDesc));
+	TransformPos = _float3(6.f, 15.f, 19.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+	
+	////
+	WindmillBlueDesc.fTransform = _float3(10.f, 17.f, 17.f);
+	WindmillBlueDesc.Angle = 180;
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_WindmillBlue"), &WindmillBlueDesc));
+	TransformPos = _float3(10.f, 15.f, 19.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+	////
+	WindmillBlueDesc.fTransform = _float3(2.f, 17.f, 17.f);
+	WindmillBlueDesc.Angle = 180;
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillBlue", TEXT("Prototype_GameObject_WindmillBlue"), &WindmillBlueDesc));
+	TransformPos = _float3(2.f, 15.f, 19.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+	////
 
 	return S_OK;
 }
@@ -336,14 +418,24 @@ HRESULT CScene_Stage1::Set_BigWindmill()
 	////풍차는 최종 막대 + 1시켜줄 것 또한 z축은 -4
 	_float3 TransformPos;
 
-	BigWindmillDesc.Transform = _float3(4.f, 7.f, -4.f);
+	BigWindmillDesc.Transform = _float3(-9.f, 35.f, 14.f);
+	BigWindmillDesc.Angle = 0;
+	BigWindmillDesc.Axis = _float3(0, 0, 1);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_BigWindmill", TEXT("Prototype_GameObject_BigWindmill"), &BigWindmillDesc));
-
-	TransformPos = _float3(4.f, 2.f, 0.f);
+	TransformPos = _float3(-9.f, 30.f, 10.f);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
-	TransformPos = _float3(4.f, 6.f, 0.f);
+	TransformPos = _float3(-9.f, 34.f, 10.f);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
-
+	/////
+	BigWindmillDesc.Transform = _float3(51.f, 51.f, -16.f);
+	BigWindmillDesc.Angle = 90;
+	BigWindmillDesc.Axis = _float3(1, 0, 0);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_BigWindmill", TEXT("Prototype_GameObject_BigWindmill"), &BigWindmillDesc));
+	TransformPos = _float3(47.f, 50.f, -16.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+	TransformPos = _float3(47.f, 48.f, -16.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE1, L"Layer_WindmillStick", TEXT("Prototype_GameObject_WindmillStick"), &TransformPos));
+	//////
 
 
 	return S_OK;
