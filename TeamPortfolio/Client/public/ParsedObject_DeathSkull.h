@@ -32,6 +32,9 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
+	virtual _int Obsever_On_Trigger(CGameObject* pDestObjects, _float3 fCollision_Distance, _float fTimeDelta)override;
+
+
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_RenderState();
