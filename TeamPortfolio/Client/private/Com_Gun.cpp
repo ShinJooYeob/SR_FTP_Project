@@ -88,7 +88,8 @@ HRESULT CCom_Gun::Update_CreateBullet(float deltatime)
 	// 2. 시간에 맞게 총알을 쏨
 	// 3. 애니메이션이 끝날때까지 기다림
 
-
+	if (mBossMonster->Get_IsDying())
+		return S_OK;
 
 	switch (mStateGun)
 	{

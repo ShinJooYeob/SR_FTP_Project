@@ -42,6 +42,7 @@ public: // For. ObjectFunc
 	_float3 GetScale() { return m_ComTransform->Get_MatrixScale(); }
 	HRESULT MoveDir(_float3 Dir, _float Timer){	m_ComTransform->MovetoDir(Dir, Timer);}
 	_float3 GetScreenToWorld(_float2 screenPos);
+	bool Get_IsDying() const { return mbDying; }
 
 
 	// 생성 피격 죽음 연출 개별 설정

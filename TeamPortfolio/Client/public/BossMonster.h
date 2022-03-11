@@ -19,6 +19,11 @@ class CBossMonster final : public CMonsterParent
 {
 public:
 	const float FIX_DEADANIMATIONTIMER = 2;
+	const float	RIGHT_POS = 10;
+	const float	LEFT_POS = -10;
+	const float	TOP_POS = 5;
+	const float	BOTTOM_POS= -5;
+
 
 protected:
 	explicit CBossMonster(LPDIRECT3DDEVICE9	pGraphicDevice);
@@ -55,7 +60,6 @@ public:
 	void	Start_AttackAniMaion(float frameSpeed=6.0f);
 
 	virtual _float3 Update_CameraPosition(_float3 localPos);
-
 	virtual HRESULT ViewPortHit(CGameObject* hitobj)override;
 
 
@@ -74,6 +78,8 @@ private:
 
 	// #TODO 심화 몬스터 패턴 정의
 	HRESULT Set_TestPattern1();
+	HRESULT Set_TestPattern_Create();
+
 	HRESULT Set_TestAttackPattern();
 //	HRESULT Set_TestPattern3();
 	HRESULT Choose_NextPattern();
@@ -110,7 +116,6 @@ protected:
 	D3DVIEWPORT9			mViewPort;
 
 
-	_int					mHp;
 	_int					mMaxHp;
 
 

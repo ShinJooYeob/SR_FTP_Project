@@ -40,8 +40,6 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 	mPlayerTarget = nullptr;
 	mCurrentPattern = nullptr;
 
-
-
 	m_ComTexture->Change_TextureLayer(TEXT("Idle1"));
 	Set_Scale(8);
 
@@ -55,12 +53,14 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 	mNextPattern = 0;
 
 	mMaxHp = 6;
-	mHp = mMaxHp;
+
 	m_Sphere.mRadius = 150.0f;
 	
-	// #TODO 피격 공격음 넣기
-	// GetSingle(CGameInstance)->PlaySound();
+	// 보스 등장음
+	GetSingle(CGameInstance)->PlaySound(TEXT("JH_Boss_Create.mp3"), CHANNEL_EFFECT, 0.8f);
 
+	// 등장패턴
+	Set_TestPattern_Create();
 	return S_OK;
 }
 
@@ -76,7 +76,7 @@ _int CBossMonster::Update(_float fDeltaTime)
 			return 0;
 
 		// 위치 초기화
-		mCameralocalPosition = _float3(100, 0, 20);
+		mCameralocalPosition = _float3(-100,-100, 20);
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, Update_CameraPosition(mCameralocalPosition));
 
 
@@ -108,8 +108,6 @@ _int CBossMonster::LateUpdate(_float fDeltaTime)
 	FAILED_CHECK(__super::LateUpdate(fDeltaTime));
 	if (m_ComRenderer == nullptr)
 		return -1;
-	if (mHp <= 0)
-		Die();
 
 	m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
@@ -160,7 +158,7 @@ void CBossMonster::Update_Die(float deltatime)
 	mTimer -= deltatime;;
 	if (mTimer <= 0)
 	{
-		DIED();
+		Die();
 	}
 }
 
@@ -204,14 +202,13 @@ HRESULT CBossMonster::Hit(_int Damage)
 	if (mbDying)
 		return S_OK;
 
-	mHp += Damage;
 	m_BossStatusUI->Change_VersusPoint(Damage);
 	
 
-	if (mMaxHp >= m_BossStatusUI->Get_TargetPotint())
+	if (mMaxHp <= m_BossStatusUI->Get_TargetPotint())
 	{
 		mbDying = true;
-		m_ComTexture->Change_TextureLayer_Wait(TEXT("Die"), 6.0f);
+		m_ComTexture->Change_TextureLayer_Wait(TEXT("Die"), 8.0f);
 		GetSingle(CGameInstance)->PlaySound(TEXT("JH_Boss_Destory.wav"), CHANNEL_EFFECT);
 
 		mTimer = FIX_DEADANIMATIONTIMER;
@@ -229,7 +226,8 @@ HRESULT CBossMonster::Hit(_int Damage)
 HRESULT CBossMonster::Die()
 {
 	
-
+	DIED();
+	m_BossStatusUI->Change_VersusPoint(-5);
 	return S_OK;
 }
 
@@ -265,9 +263,6 @@ void CBossMonster::Update_BossPattern(_float deltatime)
 
 HRESULT CBossMonster::Set_TestPattern1()
 {
-	float RightX = 10;
-	float Topy = 5;
-	float Bottomy = -5;
 
 
 	//Set_AttackPattern(startPos, _float3(-1, 0, 0), 10, 6,0.5f,
@@ -276,8 +271,6 @@ HRESULT CBossMonster::Set_TestPattern1()
 	//Set_AttackPattern(startPos, _float3(-1, 0, 0), 10, 6, 0.5f,
 	//	BULLETTYPE_CREATE_DIR, BULLETTYPE_MOVE_NOMAL);
 
-	Set_MovePattern(_float2(RightX, Topy), 1.f, TYPE_Linear);
-	Set_MovePattern(_float2(RightX, Bottomy), 1.f, TYPE_Linear);
 	
 	//Set_MovePattern(_float2(RightX, Topy), 1.f, TYPE_Linear);
 	//Set_MovePattern(_float2(RightX, Bottomy), 1.f, TYPE_Linear);
@@ -285,6 +278,28 @@ HRESULT CBossMonster::Set_TestPattern1()
 	//Set_MovePattern(_float2(RightX, Topy), 1.f, TYPE_Linear);
 	//Set_MovePattern(_float2(RightX, Bottomy), 1.f, TYPE_Linear);
 
+
+	Set_MovePattern(_float2(RIGHT_POS, TOP_POS), 1.f, TYPE_Linear);
+	Set_MovePattern(_float2(RIGHT_POS, BOTTOM_POS), 1.f, TYPE_Linear);
+
+
+	return S_OK;
+}
+
+HRESULT CBossMonster::Set_TestPattern_Create()
+{
+	// 등장 이동 연출
+
+
+
+	// 5초후에 오른쪽 아래~ 위 가운데 오른쪽 위 순으로 천천히 등장
+	Set_MovePattern(_float2(LEFT_POS -5, BOTTOM_POS -3), 5.0f, TYPE_Linear);
+
+	Set_MovePattern(_float2(LEFT_POS, BOTTOM_POS), 2, TYPE_SinInOut);
+	Set_MovePattern(_float2(LEFT_POS, BOTTOM_POS - 3), 1, TYPE_SinInOut);
+	Set_MovePattern(_float2(LEFT_POS, TOP_POS), 2, TYPE_QuadIn);
+	Set_MovePattern(_float2(0, 0), 2, TYPE_QuadInOut);
+	Set_MovePattern(_float2(RIGHT_POS, TOP_POS), 2, TYPE_CubicInOut);
 
 	return S_OK;
 }

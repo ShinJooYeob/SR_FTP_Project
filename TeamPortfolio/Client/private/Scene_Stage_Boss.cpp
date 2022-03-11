@@ -58,6 +58,7 @@ HRESULT CScene_Stage_Boss::Initialize()
 
 	//////////////////////////////////////////////////////////////////////////
 
+	Ready_Layer_Parsed(TEXT("Parsed"));
 
 
 	return S_OK;
@@ -247,6 +248,16 @@ HRESULT CScene_Stage_Boss::Ready_Layer_PauseUI(const _tchar * pLayerTag)
 {
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("Prototype_GameObject_PauseUI")))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CScene_Stage_Boss::Ready_Layer_Parsed(const _tchar * pLayerTag)
+{
+	// 파서 초기화
+	_float3 TransformPos = _float3(0.f, 3.f, 0.f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("Prototype_GameObject_DeathSkul"), &TransformPos));
+
 
 	return S_OK;
 }

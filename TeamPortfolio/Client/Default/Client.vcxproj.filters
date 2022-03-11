@@ -962,5 +962,8 @@
     <FxCompile Include="..\bin\ShaderFiles\Shader_Monster.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Skual.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

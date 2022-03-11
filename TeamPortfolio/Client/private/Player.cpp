@@ -435,20 +435,16 @@ HRESULT CPlayer::Set_StageEnd(_int IsKindsOfEnd)
 			GetSingle(CGameInstance)->PlaySound(TEXT("JY_opentreasure.wav"), CHANNEL_PLAYER);
 
 			_float3 PlayerPos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
-			_float4 Arg = { PlayerPos.x,PlayerPos.y,PlayerPos.z,_float(TempResult->Get_RankStar()) };
-
+			_float4 Arg = { PlayerPos.x,PlayerPos.y,PlayerPos.z,_float(TempResult->Get_RankStar())};
 
 
 			if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENE_STATIC, L"Layer_ClearEffect", TEXT("ProtoType_GameObject_Effect_StageClear")
 			,&Arg))
 				return E_FAIL;
-
-
 			break;
 		}
 
 		case 2:
-
 			m_bIsStageEnd = 3;
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("enter"), 8.f);
 			GetSingle(CGameInstance)->PlaySound(TEXT("JY_enterdoor.wav"), CHANNEL_PLAYER, 1.f);

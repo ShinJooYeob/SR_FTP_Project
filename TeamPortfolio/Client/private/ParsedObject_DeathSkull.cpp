@@ -33,7 +33,7 @@ HRESULT CParsedObject_DeathSkull::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_DeathSkull"));
-		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
+		m_ComTransform->Scaled(_float3(0.3f, 0.3f, 0.3f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
@@ -86,6 +86,9 @@ _int CParsedObject_DeathSkull::Render()
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
+
+
+	// 셰이더로 랜더링 변경
 
 	return _int();
 }
