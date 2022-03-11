@@ -19,6 +19,7 @@ class CParsedObject_WindmillBlue final : public CParsedObject
 public:
 	typedef struct tagWindmillBlue {
 		_float3 fTransform;
+		_float	Angle;
 	}WINDMILLBLUEDESC;
 private:
 	explicit CParsedObject_WindmillBlue(LPDIRECT3DDEVICE9 pGraphic_Device);

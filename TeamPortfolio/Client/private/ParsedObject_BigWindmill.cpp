@@ -38,7 +38,7 @@ HRESULT CParsedObject_BigWindmill::Initialize_Clone(void * pArg)
 
 	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("BigWindmill")));
 
-	m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(180));
+	m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(m_BigWindmill.Angle));
 
 	return S_OK;
 }
@@ -48,7 +48,7 @@ _int CParsedObject_BigWindmill::Update(_float fTimeDelta)
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
 
-	m_ComTransform->Turn_CW(_float3(0, 0, 1), fTimeDelta);
+	m_ComTransform->Turn_CCW(m_BigWindmill.Axis , fTimeDelta);
 
 
 
