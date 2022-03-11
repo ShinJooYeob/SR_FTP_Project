@@ -92,7 +92,8 @@ HRESULT CScene_StageSelect::Initialize()
 	SpecialCubeList.clear();
 
 	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"JW_SelectBGM.ogg")));
-	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Penguine", TEXT("Prototype_GameObject_Penguine")));
+	_float3 temp = _float3(-6.5, 13.5, 10);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_BigGreenTree", TEXT("Prototype_GameObject_BigGreenTree"),(void*)temp));
 
 
 

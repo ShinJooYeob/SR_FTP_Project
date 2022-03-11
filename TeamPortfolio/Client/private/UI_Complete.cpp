@@ -259,7 +259,7 @@ HRESULT CUI_Complete::Update_Animation(_float fTimeDelta)
 				GetSingle(CQuest)->Set_QuestCompleteIndex(i,1);
 			}
 	}
-	if (m_eNowSceneNum==SCENE_STAGESELECT && m_bStarton)
+	if (/*m_eNowSceneNum==SCENE_STAGESELECT &&*/ m_bStarton)
 	{
 		m_fStartPoint = 0;
 		m_fTargetPoint = g_iWinCX >> 1;
@@ -272,7 +272,7 @@ HRESULT CUI_Complete::Update_Animation(_float fTimeDelta)
 			m_bStarton = false;
 	}
 	
-	else if(m_bStarton==false&&m_fCountFrame>4.5)
+	else if(m_bStarton==false&&m_fCountFrame>3.5)
 	{
 		m_bStartTime = false;
 		m_fCountFrame = 0;
