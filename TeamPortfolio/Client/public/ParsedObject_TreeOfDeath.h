@@ -41,7 +41,10 @@ private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
+	HRESULT SetUp_ParticleDesc();
+
 private:
+	PARTICLEDESC			 m_ArrParticleDesc[5];
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;

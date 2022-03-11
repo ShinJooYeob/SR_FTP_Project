@@ -44,6 +44,8 @@ private:
 private:
 	PARTICLEDESC			m_ParticleDesc;
 
+
+
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;

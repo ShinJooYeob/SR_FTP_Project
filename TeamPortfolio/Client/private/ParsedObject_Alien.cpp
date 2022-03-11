@@ -50,6 +50,11 @@ HRESULT CParsedObject_Alien::Initialize_Clone(void * pArg)
 
 	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("Alien")));
 	s_iTotalAlienCounter++;
+
+
+
+
+
 	return S_OK;
 }
 
@@ -57,7 +62,6 @@ _int CParsedObject_Alien::Update(_float fTimeDelta)
 {
 	if (0 > __super::Update(fTimeDelta))
 		return -1;
-
 
 	if (m_bIsDiag)
 	{
@@ -222,7 +226,7 @@ _int CParsedObject_Alien::LateUpdate(_float fTimeDelta)
 		return -1;
 
 
-	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS),7.f))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
@@ -335,6 +339,8 @@ HRESULT CParsedObject_Alien::SetUp_ParticleDesc()
 
 	return S_OK;
 }
+
+
 
 HRESULT CParsedObject_Alien::SetUp_RenderState()
 {

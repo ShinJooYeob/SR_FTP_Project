@@ -57,7 +57,8 @@ HRESULT CScene_Stage3::Initialize()
 	GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.5f);
 
 
-	FAILED_CHECK(Ready_Layer_ParsedObject(L"Layer_ParsedObject"))
+	FAILED_CHECK(Ready_Layer_ParsedAlienObject(L"Layer_ParsedObject"));
+	FAILED_CHECK(Ready_Layer_ParsedDeathTreeObject(L"Layer_ParsedObject"));
 
 	return S_OK;
 }
@@ -349,11 +350,123 @@ HRESULT CScene_Stage3::Ready_Layer_OrbitButton_And_Cube(const _tchar * pLayerTag
 	return S_OK;
 }
 
-HRESULT CScene_Stage3::Ready_Layer_ParsedObject(const _tchar * pLayerTag)
+HRESULT CScene_Stage3::Ready_Layer_ParsedAlienObject(const _tchar * pLayerTag)
 {
 
-	_float3 TransformPos = _float3(4.f, 2.f, 0.f);
+	_float3 TransformPos;
+
+	TransformPos = _float3(7, -1, 10);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+
+
+	TransformPos = _float3(12, 5, -17);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+
+
+	TransformPos = _float3(23, 16, -6);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+
+
+	TransformPos = _float3(12, 23, 14);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+
+
+	TransformPos = _float3(-2, 29, 8);
+
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+
+
+	TransformPos = _float3(-10, 32, 2);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+
+
+
+	TransformPos = _float3(11, 89, -13);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+
+
+
+	TransformPos = _float3(-8, 98, -9);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+
+
+
+	TransformPos = _float3(-12, 104, 11);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+
+
+
+	TransformPos = _float3(107, 105, -14);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+
+	return S_OK;
+}
+
+HRESULT CScene_Stage3::Ready_Layer_ParsedDeathTreeObject(const _tchar * pLayerTag)
+{
+	_float3 TransformPos;
+
+
+
+
+	TransformPos =	_float3(-14, 40, -11);
+
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+
+	TransformPos = _float3(1, 42, 14);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+	TransformPos = _float3(4.5, 42, 14);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+	TransformPos = _float3(8, 42, 14);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+
+	TransformPos = _float3(13.5, 46, 0.5);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+
+	TransformPos = _float3(7, 51, 10);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+
+
+	TransformPos = _float3(-4.5, 60, 2);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+
+	TransformPos = _float3(5, 59, 14);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+
+
+
+
+
+
+	TransformPos = _float3(-13, 88, 8);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+	TransformPos = _float3(-15, 103, 9);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+	TransformPos = _float3(-4, 110, 1);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
+
+
+
 
 	return S_OK;
 }
