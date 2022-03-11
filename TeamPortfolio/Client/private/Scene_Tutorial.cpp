@@ -76,9 +76,9 @@ HRESULT CScene_Tutorial::Initialize()
 
 	_float3 TransformPos = _float3(10.f, 0.f, 0.f);
 
-
-	TransformPos = _float3(0.f, 0.f, 0.f);
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));
+	/*
+		TransformPos = _float3(0.f, 0.f, 0.f);
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_Alien", TEXT("Prototype_GameObject_Alien"), &TransformPos));*/
 	//FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_TreeOfDeath", TEXT("Prototype_GameObject_TreeOfDeath"), &TransformPos));
 
 

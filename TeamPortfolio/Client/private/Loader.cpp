@@ -557,6 +557,10 @@ HRESULT CLoader::Load_Scene_Stage1(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	TextureDesc.szTextFilePath = TEXT("PotalTexture.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+
+
+
+
 	////////////////////
 #pragma endregion
 
@@ -714,6 +718,12 @@ HRESULT CLoader::Load_Scene_Stage3(_bool * _IsClientQuit, CRITICAL_SECTION * _Cr
 	TextureDesc.szTextFilePath = TEXT("Parsed.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Parsed"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("Alien_Effect.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Alien_Effect"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
 
 
 #pragma endregion
@@ -903,6 +913,8 @@ HRESULT CLoader::Load_Scene_TUTORIAL(_bool * _IsClientQuit, CRITICAL_SECTION * _
 	TextureDesc.szTextFilePath = TEXT("PotalTexture.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
+
+
 
 
 	/////////////////파서들 실험중

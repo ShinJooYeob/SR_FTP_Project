@@ -37,6 +37,10 @@ private:
 	HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);				 //==>쓴다면 따로 직접 위치 좌표 설정해줘야할 것들
 
 
+	HRESULT Ready_Layer_ParsedObject(const _tchar* pLayerTag);				 //==>쓴다면 따로 직접 위치 좌표 설정해줘야할 것들
+
+
+
 	D3DLIGHT9		m_Light;
 
 	

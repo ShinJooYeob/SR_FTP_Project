@@ -37,10 +37,13 @@ public:
 
 private:
 	HRESULT SetUp_Components();
+	HRESULT	SetUp_ParticleDesc();
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
 private:
+	PARTICLEDESC			m_ParticleDesc;
+
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;
 	CTexture*				m_ComTexture = nullptr;
@@ -57,6 +60,8 @@ private:
 
 	_float					m_fStartAngle = 0;
 	_float					m_fTargetAngle = 0;
+
+	_bool					m_bIsDiag = false;
 
 
 public:
