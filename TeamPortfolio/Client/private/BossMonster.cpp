@@ -61,6 +61,11 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 
 	// 등장패턴
 	Set_TestPattern_Create();
+
+	// 사운드 더미
+	//GetSingle(CGameInstance)->PlaySound(L"JH_Boss_Move.wav");
+
+
 	return S_OK;
 }
 

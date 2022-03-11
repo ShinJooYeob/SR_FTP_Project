@@ -106,8 +106,8 @@ void CBoss_Pattern_Attack_WorldDir::Action(float timeDelta)
 		m_isActionEnd = true;
 		return;
 	}
-	mStartPosition = mDesc.mMonsterObject->GetPos();
-	mStartPosition += mDesc.mBulletSpawnOffset;
+
+	mStartPosition = mDesc.mBulletSpawnOffset;
 
 	mCurrentTimer += timeDelta;
 	if (mCurrentTimer >= mDesc.mDealyTimeMax)
@@ -141,7 +141,7 @@ bool CBoss_Pattern_Attack_LocalDir::InitAction()
 
 	mCurrentTimer = 0;
 	mCurrentAttackCount = 0;
-	mStartPosition = mDescBullet.mMonsterObject->GetPos();
+	mStartPosition = mDescBullet.mBulletSpawnOffset;
 	mGunComponent = (CCom_Gun*)mDescBullet.mMonsterObject->Get_Component(TAG_COM(Com_Gun));
 	return false;
 
@@ -166,8 +166,8 @@ void CBoss_Pattern_Attack_LocalDir::Action(float timeDelta)
 	}
 
 	// 각도 계산
-	mStartPosition = mDescBullet.mMonsterObject->GetPos();
-	mStartPosition += mDescBullet.mBulletSpawnOffset;
+	mStartPosition = mDescBullet.mBulletSpawnOffset;
+
 
 	_float3 RightVec = mDescBullet.mMonsterObject->GetTransform()->Get_MatrixState(CTransform::STATE_RIGHT);
 	_float3 LookVec = mDescBullet.mMonsterObject->GetTransform()->Get_MatrixState(CTransform::STATE_LOOK);

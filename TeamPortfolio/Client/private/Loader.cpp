@@ -208,6 +208,9 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Shader_Cube), CShader::Create(m_pGraphicDevice, TEXT("../Bin/ShaderFiles/Shader_TerrainCube.hlsl")))))
 		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Shader_Skual), CShader::Create(m_pGraphicDevice, TEXT("../Bin/ShaderFiles/Shader_Skual.hlsl")))))
+		return E_FAIL;
+	
 	// 총 컴포넌트 생성
 	if (FAILED(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Gun), CCom_Gun::Create(m_pGraphicDevice))))
 		return E_FAIL;

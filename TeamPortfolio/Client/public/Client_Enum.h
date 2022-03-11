@@ -197,6 +197,7 @@ enum COMPONENTPROTOTYPEID
 	Prototype_CollisionView,
 	Prototype_Shader_Monster,
 	Prototype_Shader_Cube,
+	Prototype_Shader_Skual,
 	Prototype_Gun,
 	//////////////////////////////////////////////////////////////////////////
 	Prototype_VIBuffer_Rect,
@@ -236,6 +237,8 @@ static const _tchar* Tag_Component_Prototype(COMPONENTPROTOTYPEID eTag)
 	case Prototype_Shader_Cube:
 		return TEXT("Prototype_Component_Shader_Cube");
 		break;
+	case Prototype_Shader_Skual:
+		return TEXT("Prototype_Component_Shader_Skual");
 	case Prototype_Gun:
 		return TEXT("Prototype_Component_Gun");
 		break;

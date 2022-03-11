@@ -17,16 +17,16 @@ void CCom_Gun::Set_MonsterObject(CBossMonster * monster)
 	mBossMonster = monster;	
 }
 
-HRESULT CCom_Gun::CreateBullet_Target(_float3 startPos, _float3 targetPos, _float speed, E_BulletType_MOVE type)
+HRESULT CCom_Gun::CreateBullet_Target(_float3 startOffset, _float3 targetPos, _float speed, E_BulletType_MOVE type)
 {
 
 	CBullet::BULLETDESC desc;
 	desc.BulletType = type;
 
-	_float3 TargetPos = startPos - targetPos;
+	_float3 TargetPos = startOffset - targetPos;
 	TargetPos = TargetPos.Get_Nomalize();
 	desc.MoveDir = TargetPos;
-	desc.StartPos = startPos;
+	desc.StartOffset = startOffset;
 	desc.BulletSpeed = speed;
 
 	Push_BackBulletList(desc);
@@ -35,12 +35,12 @@ HRESULT CCom_Gun::CreateBullet_Target(_float3 startPos, _float3 targetPos, _floa
 	return S_OK;
 }
 
-HRESULT CCom_Gun::CreateBullet_Dir(_float3 startPos, _float3 moveidr, _float speed, E_BulletType_MOVE type)
+HRESULT CCom_Gun::CreateBullet_Dir(_float3 startOffset, _float3 moveidr, _float speed, E_BulletType_MOVE type)
 {
 	CBullet::BULLETDESC desc;
 	desc.BulletType = type;
 	desc.MoveDir = moveidr;
-	desc.StartPos = startPos;
+	desc.StartOffset = startOffset;
 	desc.BulletSpeed = speed;
 
 	// 여기서는 정보만 추가
@@ -111,6 +111,8 @@ HRESULT CCom_Gun::Update_CreateBullet(float deltatime)
 			CBullet::BULLETDESC desc = mListBullets.front();
 			mListBullets.pop_front();
 			GetSingle(CGameInstance)->PlaySound(TEXT("JH_Boss_Attack0.wav"), CHANNEL_OBJECT);
+			// 쏘는 위치 다시계산
+			desc.StartOffset = mBossMonster->GetPos() + desc.StartOffset;
 			FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(mDesc.mSceneID, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), &desc));
 			mStateGun = CCom_Gun::STATE_GUN_RETIRE;
 

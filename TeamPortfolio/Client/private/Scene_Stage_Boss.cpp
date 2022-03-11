@@ -12,6 +12,8 @@
 #include "UI_Result.h"
 #include "UI_BossStatusUI.h"
 
+#include "ParsedObject_DeathSkull.h"
+
 
 CScene_Stage_Boss::CScene_Stage_Boss(LPDIRECT3DDEVICE9 GraphicDevice)
 	:CScene(GraphicDevice)
@@ -46,9 +48,6 @@ HRESULT CScene_Stage_Boss::Initialize()
 	// GetSingle(CGameInstance)->PlayBGM(L"JH_Stage3_BGM.mp3");
 	GetSingle(CGameInstance)->PlayBGM(L"JH_Boss_BGM2.wav");
 
-
-
-
 	/////////////////////보스 엔트리 테스트/////////////////////////////////////////////////////
 
 	FAILED_CHECK(Ready_Layer_UI_Result(TEXT("Layer_UI_Result")));
@@ -60,6 +59,7 @@ HRESULT CScene_Stage_Boss::Initialize()
 
 	Ready_Layer_Parsed(TEXT("Parsed"));
 
+	
 
 	return S_OK;
 }
@@ -255,8 +255,54 @@ HRESULT CScene_Stage_Boss::Ready_Layer_PauseUI(const _tchar * pLayerTag)
 HRESULT CScene_Stage_Boss::Ready_Layer_Parsed(const _tchar * pLayerTag)
 {
 	// 파서 초기화
-	_float3 TransformPos = _float3(0.f, 3.f, 0.f);
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("Prototype_GameObject_DeathSkul"), &TransformPos));
+	SCENEID id = SCENE_BOSS;
+
+	list<CGameObject*>* ParserList = nullptr;
+
+	int RandomInt = rand() % 100;
+
+
+	for (int x=0;x<=10;x++)
+	{
+		_float3 TransformPos = _float3(x, 2.f, -1);
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("Prototype_GameObject_DeathSkul"), &TransformPos));
+	
+		if (ParserList == nullptr)
+		{
+			ParserList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(id, pLayerTag);
+	
+		}
+		CParsedObject_DeathSkull* obj = (CParsedObject_DeathSkull*)ParserList->back();
+		obj->Get_Transform()->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(180));
+	}
+	
+	for (int x = 0; x <= 10; x++)
+	{
+		_float3 TransformPos = _float3(x, 2.f, 2);
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("Prototype_GameObject_DeathSkul"), &TransformPos));
+	
+		if (ParserList == nullptr)
+		{
+			ParserList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(id, pLayerTag);
+	
+		}
+		//CParsedObject_DeathSkull* obj = (CParsedObject_DeathSkull*)ParserList->back();
+		//obj->Get_Transform()->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(180));
+	}
+
+	for (int z = 0; z <= 1; z++)
+	{
+		_float3 TransformPos = _float3(-1, 2.f, z);
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("Prototype_GameObject_DeathSkul"), &TransformPos));
+
+		CParsedObject_DeathSkull* obj = (CParsedObject_DeathSkull*)ParserList->back();
+		obj->Get_Transform()->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(-90));
+
+		TransformPos = _float3(11, 2.f, z);
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("Prototype_GameObject_DeathSkul"), &TransformPos));
+		obj = (CParsedObject_DeathSkull*)ParserList->back();
+		obj->Get_Transform()->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(90));
+	}
 
 
 	return S_OK;
