@@ -96,7 +96,7 @@ void CBoss_Pattern_Attack_WorldDir::Action(float timeDelta)
 	if (m_isActionEnd)
 		return;
 
-	if (mCurrentAttackCount > mDesc.mAttackCount)
+	if (mCurrentAttackCount >= mDesc.mAttackCount)
 	{
 		m_isActionEnd = true;
 		return;
@@ -154,7 +154,7 @@ void CBoss_Pattern_Attack_LocalDir::Action(float timeDelta)
 	if (m_isActionEnd)
 		return;
 
-	if (mCurrentAttackCount > mDescBullet.mAttackCount)
+	if (mCurrentAttackCount >= mDescBullet.mAttackCount)
 	{
 		m_isActionEnd = true;
 		return;
@@ -271,7 +271,7 @@ void CBoss_Pattern_Attack_PlayerTarget::Action(float timeDelta)
 
 CBoss_Pattern_Dealy::CBoss_Pattern_Dealy(int DealyTime)
 {
-	mDealyTimer = mCurrentTimer;
+	mDealyTimer = DealyTime;
 	m_isActionEnd = false;
 }
 
@@ -286,11 +286,13 @@ bool CBoss_Pattern_Dealy::InitAction()
 
 void CBoss_Pattern_Dealy::Action(float timeDelta)
 {
+	InitAction();
+
 	if (m_isActionEnd)
 		return;
 
 	mCurrentTimer += timeDelta;
 	if (mCurrentTimer >= mDealyTimer)
 		m_isActionEnd = true;
-
+	return;
 }

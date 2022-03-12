@@ -196,7 +196,7 @@ class CBoss_Pattern_Dealy : public IAction
 {
 public:
 private:	
-	_float mDealyTimer;
+	_float	mDealyTimer;
 	_float	mCurrentTimer;
 	
 public:

@@ -68,6 +68,9 @@ HRESULT CBossMonster::Initialize_Clone(void * pArg)
 _int CBossMonster::Update(_float fDeltaTime)
 {
 	FAILED_CHECK(__super::Update(fDeltaTime));
+	if (mbDying)
+		return 0;
+
 	if (mPlayerTarget == nullptr)
 	{
 		auto playerlist = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STATIC, TAG_LAY(Layer_Player));
@@ -105,6 +108,8 @@ _int CBossMonster::Update(_float fDeltaTime)
 	mDefaultEffect -= fDeltaTime;
 	if (mDefaultEffect < 0)
 	{
+		
+
 		if (Get_IsTurn() || 
 			CCamera_Main::CameraLookStateID::Look_Left_Axis == Get_CameraLookState() || 
 			CCamera_Main::CameraLookStateID::Look_Right_Axis == Get_CameraLookState())
@@ -308,15 +313,15 @@ HRESULT CBossMonster::Set_BossPattern1()
 	// 상하에서 플레이어쪽으로 이동하면서 총알
 	
 	Set_MovePattern(NomalPos, 1.f, TYPE_SinIn);
-	
+
 	for (int i = 0; i <1; i++)
 	{
 		Set_MovePattern(CenterPos, 0.5f, TYPE_SinInOut);
 		Set_MovePattern(UpFront, 0.5f, TYPE_SinInOut);
-		
+
 		Set_Attack_PlayerTargetPattern(
 			DefaultSpawnOffset,
-			1, 6, 0,
+			2, 6, 1.f,
 			BULLETTYPE_MOVE_NOMAL);
 		Set_Delay(2);
 
@@ -324,11 +329,12 @@ HRESULT CBossMonster::Set_BossPattern1()
 		Set_MovePattern(BottomFront, 0.5f, TYPE_SinInOut);
 		Set_Attack_PlayerTargetPattern(
 			DefaultSpawnOffset,
-			1, 6, 0,
+			3, 6, 1.f,
 			BULLETTYPE_MOVE_NOMAL);
-		Set_Delay(2);
+		Set_Delay(3);
 
 		Set_MovePattern(CenterPos, 0.5f, TYPE_SinInOut);
+		Set_Delay(2);
 	}
 
 	return S_OK;
@@ -336,22 +342,25 @@ HRESULT CBossMonster::Set_BossPattern1()
 HRESULT CBossMonster::Set_BossPattern2()
 {
 	// 위에서 아래쪽으로 탄환발사 
-	Set_MovePattern(NomalPos, 1.f, TYPE_SinIn);
-
+	Set_MovePattern(NomalPos, 0.5f, TYPE_SinIn);
 	
+	float TargetX = 0;
 
-
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		float TargetX = GetRandomFloat(LEFT_POS, RIGHT_POS);
-		Set_MovePattern(_float2(TargetX, TOP_POS), 0.5f, TYPE_SinInOut);
+		if (i % 2 == 0)
+			TargetX = GetRandomFloat(LEFT_POS + 3.f, 0);
+		
+		else
+			TargetX = GetRandomFloat(0, RIGHT_POS - 3.f);
+
+		Set_MovePattern(_float2(TargetX, TOP_POS), 0.2f, TYPE_SinInOut);
 		Set_Attack_WorldPattern(
 			DefaultSpawnOffset,
 			DOWNVEC,
 			1, 10, 0,
 			BULLETTYPE_MOVE_NOMAL);
 		Set_Delay(1);
-
 	}
 	return S_OK;
 }
@@ -361,26 +370,20 @@ HRESULT CBossMonster::Set_BossPattern3()
 {
 	// 랜덤 Y 위치에서 발사
 
-	float RightX = 10;
-	float Topy = 5.f;
-	float Bottomy = -2.f;
-	float TargetY = GetRandomFloat(Bottomy, Topy);
-	Set_MovePattern(NomalPos, 0.5f, TYPE_SinInOut);
 
+	Set_MovePattern(NomalPos, 0.3f, TYPE_SinInOut);
 
-	//for (int i = 0; i < 2; i++)
-	//{
-	//	TargetY = GetRandomFloat(Bottomy, Topy);
+	for (int i = 0; i < 1; i++)
+	{
+		Set_MovePattern(BottomFront, 3, TYPE_SinIn);
 
-	//	Set_MovePattern(NomalPos, 0.5f, TYPE_SinInOut);
-	//	Set_MovePattern(CenterPos, 0.5f, TYPE_SinInOut);
+		Set_Attack_PlayerTargetPattern(
+			DefaultSpawnOffset,
+			5, 6, 1.f,
+			BULLETTYPE_MOVE_NOMAL);
 
-	//	Set_Attack_PlayerTargetPattern(
-	//		DefaultSpawnOffset,
-	//		2, 6, 0.0f,
-	//		BULLETTYPE_MOVE_NOMAL);
-
-	//}
+		Set_Delay(6);
+	}
 
 	return S_OK;
 }
@@ -394,21 +397,24 @@ HRESULT CBossMonster::Set_BossMoveDefault()
 
 HRESULT CBossMonster::Choose_NextPattern()
 {
-	switch (mNextPattern)
-	{
-	case 0:
-		Set_BossPattern1();
-		mNextPattern++;
-		break;
-	case 1:
-		Set_BossPattern2();
-		mNextPattern++;
-		break;
-	case 2:
-		Set_BossPattern3();
-		mNextPattern = 0;
-		break;
-	}
+	// Set_BossPattern3();
+
+
+	 switch (mNextPattern)
+	 {
+	 case 0:
+	 	Set_BossPattern1();
+	 	mNextPattern++;
+	 	break;
+	 case 1:
+	 	Set_BossPattern2();
+	 	mNextPattern++;
+	 	break;
+	 case 2:
+	 	Set_BossPattern3();
+	 	mNextPattern = 0;
+	 	break;
+	 }
 	
 	return S_OK;
 }
