@@ -35,6 +35,7 @@ private:
 	HRESULT Ready_Layer_Terrain(list<SPECIALCUBE*>* listdata);
 
 	HRESULT Ready_Layer_StageEntryCollsionObject(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Door(const _tchar* pLayerTag);//º° È¹µæ
 
 
 

@@ -12,6 +12,7 @@ END
 BEGIN(Client)
 class CBackGround final :public CGameObject
 {
+	
 private:
 	explicit CBackGround(LPDIRECT3DDEVICE9 pGraphicDevice);
 	explicit CBackGround(const CBackGround& rhs);
@@ -27,8 +28,9 @@ public:
 	virtual _int Render()override;
 	virtual _int LateRender()override;
 
-
-private:
+	void RenderState();
+	void ReleaseState();
+public:
 	CTexture*				m_ComTexture = nullptr;
 	CTransform*				m_ComTransform = nullptr;
 	CVIBuffer_Rect*			m_ComVIBuffer = nullptr;

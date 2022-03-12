@@ -8,6 +8,7 @@
 #include "Object_OrbitButton.h"
 #include "Object_Star.h"
 #include "Npc.h"
+#include "BackGround.h"
 
 #include "Collision_Object_StageEntry.h"
 
@@ -24,6 +25,7 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 
 
+
 	if (FAILED(Ready_Layer_Player(TAG_LAY(Layer_Player))))
 		return E_FAIL;
 
@@ -37,25 +39,18 @@ HRESULT CScene_StageSelect::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Common(TAG_LAY(Layer_UI_Common))))
 		return E_FAIL;
+
 	FAILED_CHECK(Ready_Layer_ParsedObject());
+
 	Make_Particle();
 	FAILED_CHECK(Ready_Layer_StageEntryCollsionObject(L"Layer_Collision_StageEntry"));
 
 	if (FAILED(Ready_Layer_UI_Complete(TEXT("Layer_UI_Complete"))))
 		return E_FAIL;
-	
-	if (GetSingle(CQuest)->Get_QuestComplete())
-	{
-		if (FAILED(Ready_Layer_Object_QrcodeCube(TEXT("Layer_Object_QrcodeCube"))))
-			return E_FAIL;
-	}
-	else
-	{
-		//_float3 TransformPos = _float3(0.f, 0.f, 0.f);
-		_float3 TransformPos = _float3(8.f, 25.3f, 9.5f);
-		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
 
-	}
+	
+	
+
 
 	//FAILED_CHECK( Ready_Layer_Object_VanishCube(TAG_LAY(Layer_Terrain)));//사라지는 큐브
 
@@ -106,6 +101,9 @@ HRESULT CScene_StageSelect::Initialize()
 	
 	FAILED_CHECK(GetSingle(CGameInstance)->PlayBGM((L"JW_SelectBGM.ogg")));
 	
+
+	if (FAILED(Ready_Layer_Door(TEXT("Layer_Door"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -250,6 +248,19 @@ HRESULT CScene_StageSelect::Ready_Layer_ParsedObject()
 	temp = _float3(12.0, 15.5, -8);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_BigGreenTree", TEXT("Prototype_GameObject_BigGreenTree"), &temp));
 
+	if (GetSingle(CQuest)->Get_QuestComplete())
+	{
+		if (FAILED(Ready_Layer_Object_QrcodeCube(TEXT("Layer_Object_QrcodeCube"))))
+			return E_FAIL;
+	}
+	else
+	{
+		//_float3 TransformPos = _float3(0.f, 0.f, 0.f);
+		_float3 TransformPos = _float3(8.f, 25.3f, 9.5f);
+		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
+
+	}
+
 }
 HRESULT CScene_StageSelect::Ready_Layer_NPC(const _tchar * pLayerTag)
 {
@@ -278,6 +289,8 @@ HRESULT CScene_StageSelect::Ready_Layer_NPC(const _tchar * pLayerTag)
 	NpcDesc.pNpcTextureName = TEXT("oldy_Idle");
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TEXT("Prototype_GameObject_Npc_oldy"), (void*)&NpcDesc))
 		return E_FAIL;
+
+
 
 	return S_OK;
 
@@ -661,6 +674,55 @@ HRESULT CScene_StageSelect::Ready_Layer_StageEntryCollsionObject(const _tchar * 
 	return S_OK;
 }
 
+HRESULT CScene_StageSelect::Ready_Layer_Door(const _tchar * pLayerTag)
+{
+	_float3 scale = _float3(2, 2, 1);
+	_float3 offsetX = _float3(-0.5f, 0.5f, -0.6f);
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround)))
+		return E_FAIL;
+	// 0 
+	auto objList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENE_STAGESELECT, pLayerTag);
+	CBackGround *ObjDoor = (CBackGround*)objList->back();
+	ObjDoor->m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(6, 1, 2) + offsetX);
+	ObjDoor->m_ComTransform->Scaled(scale);
+
+	// 1
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround)))
+		return E_FAIL;
+	ObjDoor = (CBackGround*)objList->back();
+	ObjDoor->m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(12, 5, 7 )+ _float3( 0.5f,0.5f,-0.6f));
+	ObjDoor->m_ComTransform->Scaled(_float3(2, 2, 1));;
+
+	// 2
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround)))
+		return E_FAIL;
+	ObjDoor = (CBackGround*)objList->back();
+	ObjDoor->m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(6-0.5f , 8+0.5f, 13+0.6f));
+	ObjDoor->m_ComTransform->Scaled(scale);
+	ObjDoor->m_ComTransform->Rotation_CW(UPVEC, D3DXToRadian(180));
+
+
+	// 4
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround)))
+		return E_FAIL;
+	ObjDoor = (CBackGround*)objList->back();
+	ObjDoor->m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(12+0.6f, 15+0.5f, 13-0.5f));
+	ObjDoor->m_ComTransform->Scaled(scale);
+	ObjDoor->m_ComTransform->Rotation_CW(UPVEC, D3DXToRadian(270));
+
+
+	// boss
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround)))
+		return E_FAIL;
+	ObjDoor = (CBackGround*)objList->back();
+	ObjDoor->m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(9, -8, 8) + offsetX);
+	ObjDoor->m_ComTransform->Scaled(_float3(4, 5, 1));
+	ObjDoor->m_ComTexture->Set_LoadTexutreNumber(2);
+	return S_OK;
+
+}
+
 
 HRESULT CScene_StageSelect::Ready_Layer_Object_VanishCube(const _tchar * pLayerTag)
 {
@@ -804,7 +866,7 @@ CScene_StageSelect * CScene_StageSelect::Create(LPDIRECT3DDEVICE9 GraphicDevice)
 	if (FAILED(pTempGame->Initialize()))
 	{
 		Safe_Release(pTempGame);
-		MSGBOX("Failed to Creating Scene_Stage1");
+		MSGBOX("Failed to Creating CScene_StageSelect");
 		return nullptr;
 	}
 

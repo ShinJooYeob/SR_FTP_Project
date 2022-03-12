@@ -37,20 +37,8 @@ HRESULT CBackGround::Initialize_Clone(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	if (pArg != nullptr) {
-
-		_float3 vSettingPoint;
-		memcpy(&vSettingPoint, pArg, sizeof(_float3));
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
-
-
-	}
-		m_ComTransform->Scaled(_float3(10,10,1));
-	
-
-
-
-
+	m_ComTexture->Change_TextureLayer(TEXT("door"));
+	m_ComTransform->Scaled(_float3(1, 1, 1));
 	return S_OK;
 }
 
@@ -81,25 +69,18 @@ _int CBackGround::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera()))
+	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
-
-
-	//if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-	//	return E_FAIL;
 
 	if (FAILED(m_ComTexture->Bind_Texture()))
 		return E_FAIL;
 
 
+	RenderState();
 	//렌더링 그룹에 들어가면 순서에 맞게 이 랜더가 호출되고 호출이 됬으면 버텍스 버퍼를 그려줘라
 	if (FAILED(m_ComVIBuffer->Render()))
 		return E_FAIL;
-
-
-
-
-
+	ReleaseState();
 
 	return _int();
 }
@@ -110,6 +91,23 @@ _int CBackGround::LateRender()
 		return E_FAIL;
 
 	return _int();
+}
+
+void CBackGround::RenderState()
+{
+	m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 100);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+}
+
+void CBackGround::ReleaseState()
+{
+	m_pGraphicDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
 HRESULT CBackGround::SetUp_Components()
@@ -126,7 +124,7 @@ HRESULT CBackGround::SetUp_Components()
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Transform), TAG_COM(Com_Transform), (CComponent**)&m_ComTransform,&TransformDesc)))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Texture_Default), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
+	if (FAILED(__super::Add_Component(SCENEID::SCENE_STATIC, TEXT("Prototype_Component_Texture_JH_Effect"), TAG_COM(Com_Texture), (CComponent**)&m_ComTexture)))
 		return E_FAIL;
 	
 
