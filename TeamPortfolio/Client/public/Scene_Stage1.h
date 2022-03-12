@@ -34,11 +34,18 @@ private:
 	HRESULT Ready_Layer_Object_Star(const _tchar* pLayerTag);//별 획득				//==>따로 직접 위치 좌표 설정해줘야할 것들
 	HRESULT Ready_Layer_StageEndCollsionObject(const _tchar* pLayerTag);			//==>따로 직접 위치 좌표 설정해줘야할 것들
 	//HRESULT Ready_Layer_OrbitButton_And_Cube(const _tchar* pLayerTag);
-	HRESULT	Set_Particle_Blossom();
 
 private:
+	HRESULT	Ready_Layer_Particle();
+	HRESULT	Ready_Layer_Parsed();
+
+	//parsed
 	HRESULT	Set_WindmillBlue();
 	HRESULT	Set_BigWindmill();
+	HRESULT	Set_Blossom();
+
+	//particle
+	HRESULT	Set_Particle_Blossom();
 
 
 	D3DLIGHT9		m_Light;

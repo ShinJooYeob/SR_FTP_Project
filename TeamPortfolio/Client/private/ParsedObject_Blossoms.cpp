@@ -33,11 +33,15 @@ HRESULT CParsedObject_Blossoms::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_Blossoms"));
-		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
+		m_ComTransform->Scaled(_float3(1.35f, 1.35f, 1.35f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
 	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("Blossoms")));
+
+	Set_Particle_Cloud();
+	Set_Particle_Fog();
+	Set_Particle_Blossom();
 
 	return S_OK;
 }
@@ -61,7 +65,7 @@ _int CParsedObject_Blossoms::LateUpdate(_float fTimeDelta)
 		return -1;
 
 
-	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS),8))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();
@@ -160,6 +164,92 @@ HRESULT CParsedObject_Blossoms::Release_RenderState()
 
 	///////////////////////////
 	///////////////////////////////
+
+	return S_OK;
+}
+
+HRESULT CParsedObject_Blossoms::Set_Particle_Cloud()
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CParsedObject_Blossoms::Set_Particle_Fog()
+{
+	PARTICLEDESC tDesc;
+	tDesc.eParticleID = Particle_Straight;
+	tDesc.TotalParticleTime = 3600.f;
+	tDesc.EachParticleLifeTime = 10.f;
+	tDesc.ParticleSize = _float3(40.f, 40.f, 40.f);
+	tDesc.Particle_Power = 0.2;
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+	tDesc.MaxParticleCount = 3;
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	tDesc.szTextureLayerTag = TEXT("Particle_Fog");
+	tDesc.m_bIsTextureAutoFrame = false;
+	//tDesc.FollowingTarget = (CTransform*)(GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, TAG_LAY(Layer_Player))->Get_Component(TAG_COM(Com_Transform)));
+	_float3 Pos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+	tDesc.FixedTarget = Pos;
+	tDesc.MaxBoundary = _float3(30, 30, 30);
+	tDesc.ParticleColorChage = true;
+	tDesc.TargetColor = _float3(237, 186, 186);
+	tDesc.TargetColor2 = _float3(200.f, 192.f, 231.f);
+	tDesc.ParticleStartRandomPosMin = _float3(-3, -2, -3);
+	tDesc.ParticleStartRandomPosMax = _float3(2, 0, 2);
+
+
+	tDesc.m_bIsUI = false;
+	tDesc.vUp = _float3(1.f, 0.f, 1.f);
+
+	tDesc.MustDraw = true;
+	tDesc.AlphaBlendON = true;
+	tDesc.m_fAlphaTestValue = 0.f;
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+
+	tDesc.vUp = _float3(-1.f, 0.f, -1.f);
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+	return S_OK;
+}
+
+HRESULT CParsedObject_Blossoms::Set_Particle_Blossom()
+{
+	PARTICLEDESC tDesc;
+	tDesc.eParticleID = Particle_Straight;
+	tDesc.TotalParticleTime = 3600.f;
+	tDesc.EachParticleLifeTime = 5.0f;
+	tDesc.ParticleSize = _float3(0.3f, 0.3f, 0.3f);
+	tDesc.Particle_Power = 2;
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+	tDesc.MaxParticleCount = 70;
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+	tDesc.szTextureLayerTag = TEXT("greenleaf");
+	tDesc.m_bIsTextureAutoFrame = false;
+	_float3 Pos = m_ComTransform->Get_MatrixState(CTransform::STATE_POS);
+	tDesc.FixedTarget = Pos;
+	tDesc.MaxBoundary = _float3(30, 10, 30);
+	tDesc.ParticleColorChage = true;
+	tDesc.TargetColor = _float3(237, 186, 186);
+	tDesc.TargetColor2 = _float3(200.f, 192.f, 231.f);
+	tDesc.ParticleStartRandomPosMin = _float3(-15, -10, -15);
+	tDesc.ParticleStartRandomPosMax = _float3(15, 10, 15);
+
+	tDesc.MustDraw = true;
+	tDesc.m_bIsUI = false;
+	tDesc.vUp = _float3(1.f, -1.f, 1.f);
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGE1, tDesc);
+
+	tDesc.TargetColor = _float3(255.f, 149.f, 184.f);
+	tDesc.TargetColor2 = _float3(255.f, 91.f, 145.f);
+	tDesc.vUp = _float3(-1.f, -1.f, -1.f);
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGE1, tDesc);
+
+	tDesc.MaxParticleCount = 10;
+	tDesc.TargetColor = _float3(255.f, 151.f, 250.f);
+	tDesc.TargetColor2 = _float3(255.f, 151.f, 250.f);
+	tDesc.vUp = _float3(-1.f, 1.f, -1.f);
+	GetSingle(CParticleMgr)->Create_ParticleObject(SCENEID::SCENE_STAGE1, tDesc);
+
 
 	return S_OK;
 }

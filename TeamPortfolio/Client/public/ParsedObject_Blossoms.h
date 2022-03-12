@@ -40,6 +40,10 @@ private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
+	HRESULT	Set_Particle_Cloud();
+	HRESULT	Set_Particle_Fog();
+	HRESULT	Set_Particle_Blossom();
+
 private:
 	CTransform*				m_ComTransform = nullptr;
 	CRenderer*				m_ComRenderer = nullptr;

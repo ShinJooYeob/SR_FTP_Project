@@ -62,7 +62,7 @@ _int CParsedObject_WindmillBlue::LateUpdate(_float fTimeDelta)
 		return -1;
 
 
-	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS),6))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();

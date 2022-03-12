@@ -124,7 +124,7 @@ _int CObject_EscalatorCube::Render()
 		return E_FAIL;
 
 
-	if (FAILED(m_ComTexture->Bind_Texture(0)))
+	if (FAILED(m_ComTexture->Bind_Texture(1)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -394,7 +394,7 @@ HRESULT CObject_EscalatorCube::SetUp_RenderState()
 		return E_FAIL;
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 32);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	return S_OK;

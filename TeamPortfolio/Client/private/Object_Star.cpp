@@ -217,7 +217,7 @@ void CObject_Star::Set_Particle()
 	//파티클의 파워(이동속도)의 랜덤 범위를 결정
 	tDesc.PowerRandomRange = _float2(0.4f, 1.0f);
 	//파티클이 한번에 최대 몇개까지 보일 것인지 설정
-	tDesc.MaxParticleCount = 15;
+	tDesc.MaxParticleCount = 10;
 
 	//파티클 텍스처 컴포넌트 이름을 설정 (기본적으로 자기 씬에 컴포넌트가 있는지 검사하고 스테틱에있는지도 검사함)
 	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_UI_Result_Texture");
@@ -245,8 +245,8 @@ void CObject_Star::Set_Particle()
 	//만약 true로 사용할 경우 텍스처의 원래 색상은 무시되고 타겟 색상으로 반짝반짝 거리게 설정됨
 	//true로 사용할 경우 반드시 타겟 컬러를 설정해 줄 것
 	tDesc.ParticleColorChage = true;
-	tDesc.TargetColor = _float3(0, 255, 0);
-	tDesc.TargetColor2 = _float3(255.f, 0.f, 255.f);
+	tDesc.TargetColor = _float3(255.f, 125.f, 19.f);
+	tDesc.TargetColor2 = _float3(255.f, 0.f, 0.f);
 
 
 	//만약 UI에 그려져야한다면 true 월드에 그려져야한다면 false 로 설정할 것
@@ -272,6 +272,18 @@ void CObject_Star::Set_Particle()
 	//프레임이 한번만 돌것인지 정함
 
 	//Create_ParticleObject를 호출하여 스테이지 아이디와 지금까지 설정한 desc를 넣어주면 됨
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+
+	tDesc.TargetColor = _float3(37.f, 255.f, 19.f);
+	tDesc.TargetColor2 = _float3(255.f, 0.f, 0.f);
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+
+	tDesc.TargetColor = _float3(0.f, 26, 255.f);
+	tDesc.TargetColor2 = _float3(242.f, 254.f, 20.f);
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+
+	tDesc.TargetColor = _float3(197.f, 56, 154.f);
+	tDesc.TargetColor2 = _float3(96.f, 57.f, 196.f);
 	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
 
 }
