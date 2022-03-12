@@ -232,24 +232,24 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	///////////////////////////////////////스테이지 튜토리얼 사용목록
 	////
 	///////////////////////////////////////스테이지 1 사용목록
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillBlue", pGameInstance->Create_ParsedObject(L"WindmillBlueVertex.txt", L"WindmillBlueIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillStick", pGameInstance->Create_ParsedObject(L"WindmillStickVertex.txt", L"WindmillStickIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigWindmill", pGameInstance->Create_ParsedObject(L"BigWindmillVertex.txt", L"BigWindmillIndex.txt")));
-	//
-	//
-	//
-	/////////////////////////////////////스테이지 2 사용목록
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TombStone", pGameInstance->Create_ParsedObject(L"TombStoneVertex.txt", L"TombStoneIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwl", pGameInstance->Create_ParsedObject(L"BigOwlVertex.txt", L"BigOwlIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwlHead", pGameInstance->Create_ParsedObject(L"BigOwlHeadVertex.txt", L"BigOwlHeadIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillCore", pGameInstance->Create_ParsedObject(L"WindmillCoreVertex.txt", L"WindmillCoreIndex.txt")));
-	//
-	//
-	//
-	/////////////////////////////////////스테이지 3 사용목록
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Alien", pGameInstance->Create_ParsedObject(L"AlienVertex.txt", L"AlienIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreeOfDeath", pGameInstance->Create_ParsedObject(L"TreeOfDeathVertex.txt", L"TreeOfDeathIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillBlue", pGameInstance->Create_ParsedObject(L"WindmillBlueVertex.txt", L"WindmillBlueIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillStick", pGameInstance->Create_ParsedObject(L"WindmillStickVertex.txt", L"WindmillStickIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigWindmill", pGameInstance->Create_ParsedObject(L"BigWindmillVertex.txt", L"BigWindmillIndex.txt")));
+	
+	
+	
+	///////////////////////////////////스테이지 2 사용목록
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TombStone", pGameInstance->Create_ParsedObject(L"TombStoneVertex.txt", L"TombStoneIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwl", pGameInstance->Create_ParsedObject(L"BigOwlVertex.txt", L"BigOwlIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwlHead", pGameInstance->Create_ParsedObject(L"BigOwlHeadVertex.txt", L"BigOwlHeadIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillCore", pGameInstance->Create_ParsedObject(L"WindmillCoreVertex.txt", L"WindmillCoreIndex.txt")));
+	
+	
+	
+	///////////////////////////////////스테이지 3 사용목록
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Alien", pGameInstance->Create_ParsedObject(L"AlienVertex.txt", L"AlienIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreeOfDeath", pGameInstance->Create_ParsedObject(L"TreeOfDeathVertex.txt", L"TreeOfDeathIndex.txt")));
 	//
 	/////////////////////////////////////스테이지 보스 사용목록
 	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_DeathSkull", pGameInstance->Create_ParsedObject(L"DeathSkullVertex.txt", L"DeathSkullIndex.txt")));
