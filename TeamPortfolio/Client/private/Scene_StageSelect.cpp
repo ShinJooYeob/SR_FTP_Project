@@ -51,9 +51,11 @@ HRESULT CScene_StageSelect::Initialize()
 	}
 	else
 	{
-		//_float3 TransformPos = _float3(0.f, 0.f, 0.f);
-		_float3 TransformPos = _float3(8.f, 25.3f, 9.5f);
+		_float3 TransformPos = _float3(8.f, 24.3f, 9.5f);
 		FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, L"Layer_Bell", TEXT("Prototype_GameObject_Bell"), &TransformPos));
+
+		//if (FAILED(Ready_Layer_Object_QrcodeCube(TEXT("Layer_Object_QrcodeCube"))))
+		//	return E_FAIL;
 
 	}
 

@@ -33,7 +33,7 @@ HRESULT CParsedObject_Bell::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_Bell"));
-		m_ComTransform->Scaled(_float3(0.8f, 0.8f, 0.8f));
+		m_ComTransform->Scaled(_float3(0.7f, 0.7f, 0.7f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
@@ -60,7 +60,6 @@ _int CParsedObject_Bell::LateUpdate(_float fTimeDelta)
 	if (nullptr == m_ComRenderer)
 		return -1;
 
-	seconds += fTimeDelta;
 
 	////////////////////////////////////////////////시간단위 fTimeDelta는 1초를 뜻함
 	//if (seconds > 3.f)
@@ -83,19 +82,33 @@ _int CParsedObject_Bell::LateUpdate(_float fTimeDelta)
 
 //}
 
-	if (seconds < 1)
+	if (seconds < 0.5)
 	{
-		m_distance += fTimeDelta * 19;
+		seconds += (fTimeDelta);
+		m_distance += fTimeDelta * 16;
+		if (seconds > 0.5)
+		{
+			m_distance = 8;
+		}
+	}
+	else if(seconds < 1.5)
+	{
+		seconds += (fTimeDelta);
+		m_distance -= fTimeDelta * 16;
+		if (seconds > 1.5)
+		{
+			m_distance = -8;
+		}
 
 	}
-	else if(seconds < 3)
+	else if (seconds < 2)
 	{
-		m_distance -= fTimeDelta * 19;
-
-	}
-	else if (seconds < 4)
-	{
-		m_distance += fTimeDelta * 19;
+		seconds += (fTimeDelta);
+		m_distance += fTimeDelta * 16;
+		if (seconds > 2)
+		{
+			m_distance = 0;
+		}
 
 	}
 	else
