@@ -57,8 +57,8 @@ HRESULT CScene_Stage3::Initialize()
 	GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.5f);
 
 
-	//FAILED_CHECK(Ready_Layer_ParsedAlienObject(L"Layer_ParsedObject"));
-	//FAILED_CHECK(Ready_Layer_ParsedDeathTreeObject(L"Layer_ParsedObject"));
+	FAILED_CHECK(Ready_Layer_ParsedAlienObject(L"Layer_ParsedObject"));
+	FAILED_CHECK(Ready_Layer_ParsedDeathTreeObject(L"Layer_ParsedObject"));
 
 	return S_OK;
 }
