@@ -523,7 +523,7 @@ HRESULT CScene_Stage2::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerT
 	//if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(0.f, 1.f, 0.f)))
 	//	return E_FAIL; 
 
-	_float3 TransformPos = _float3(5.f, 64.5f, -27.75f);
+	_float3 TransformPos = _float3(5.f, 64.f, -28.f);
 	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TreasureBox", TEXT("Prototype_GameObject_TreasureBox"), &TransformPos));
 
 
@@ -740,13 +740,13 @@ HRESULT CScene_Stage2::Ready_Layer_Player(const _tchar * pLayerTag)
 
 		GetSingle(CGameInstance)->Get_GameObject_By_LayerIndex(SCENE_STATIC, pLayerTag)->Set_NowSceneNum(SCENE_STAGE2);
 		pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
-		(pPlayerList->front())->ReInitialize(&_float3(5.f, 64.f, -28.f));
+		//(pPlayerList->front())->ReInitialize(&_float3(5.f, 64.f, -28.f));
 	}
 	else
 	{
 
-		//(pPlayerList->front())->ReInitialize(&_float3(0.f, 1.f, 0));
-		(pPlayerList->front())->ReInitialize(&_float3(5.f, 64.f, -28.f));
+		(pPlayerList->front())->ReInitialize(&_float3(0.f, 1.f, 0));
+		//(pPlayerList->front())->ReInitialize(&_float3(5.f, 64.f, -28.f));
 
 	}
 

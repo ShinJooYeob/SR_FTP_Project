@@ -242,7 +242,7 @@ HRESULT CScene_Tutorial::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 	if (FAILED(pMainCam->Reset_LookAtAxis(&CameraDesc)))
 		return E_FAIL;
 
-	_float3 ActionPos[5] = { _float3(11.f, 4.f, 11.f) ,_float3(20.f, 1.f, 20.f) ,_float3(37.f, 1.f, 36.f),_float3(19.f, 25.f, 76.f),_float3(-3.f, 22.f, 75.f) };
+	_float3 ActionPos[5] = { _float3(11.f, 4.f, 11.f) ,_float3(20.f, 1.f, 20.f) ,_float3(37.f, 1.f, 36.f),_float3(19.f, 25.f, 76.f),_float3(-1.f, 22.f, 75.f)};
 
 	FAILED_CHECK(pMainCam->ReInitialize(ActionPos, 5))
 
@@ -385,7 +385,7 @@ HRESULT CScene_Tutorial::Ready_Layer_Object_Star(const _tchar * pLayerTag)
 	StarDesc.fTransform = _float3(19.f, 25.f, 76.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
-	StarDesc.fTransform = _float3(-3.f, 22.f, 75.f);
+	StarDesc.fTransform = _float3(-1.f, 22.f, 75.f);
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("ProtoType_GameObject_Object_Star"), &StarDesc))
 		return E_FAIL;
 
@@ -455,7 +455,14 @@ HRESULT CScene_Tutorial::Ready_Layer_StageEndCollsionObject(const _tchar * pLaye
 	//	return E_FAIL;
 
 	//튜토리얼에 쓰임
+	_float3 TransformPos = _float3(-3.f, 22.f, 75.5f);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TreasureBox", TEXT("Prototype_GameObject_TreasureBox"), &TransformPos));
+
+
+
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(-3.f, 22.f, 75.f)))
+		return E_FAIL;
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"), &_float3(-3.f, 22.f, 76.f)))
 		return E_FAIL;
 
 	return S_OK;

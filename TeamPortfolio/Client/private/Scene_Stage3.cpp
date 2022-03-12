@@ -57,8 +57,8 @@ HRESULT CScene_Stage3::Initialize()
 	GetSingle(CGameInstance)->Channel_VolumeUp(CHANNEL_BGM, 0.5f);
 
 
-	FAILED_CHECK(Ready_Layer_ParsedAlienObject(L"Layer_ParsedObject"));
-	FAILED_CHECK(Ready_Layer_ParsedDeathTreeObject(L"Layer_ParsedObject"));
+	//FAILED_CHECK(Ready_Layer_ParsedAlienObject(L"Layer_ParsedObject"));
+	//FAILED_CHECK(Ready_Layer_ParsedDeathTreeObject(L"Layer_ParsedObject"));
 
 	return S_OK;
 }
@@ -715,9 +715,24 @@ PARTICLEDESC CScene_Stage3::Create_Star()
 
 HRESULT CScene_Stage3::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerTag)
 {
+
+	_float3 TransformPos = _float3(-1, 104, -6.5);
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TreasureBox", TEXT("Prototype_GameObject_TreasureBox"), &TransformPos));
+
+
+
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"),
-		&_float3(-2, 105, -5)))
+		&_float3(-1, 104, -7.f)))
 		return E_FAIL;
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"),
+		&_float3(-2, 104, -7.f)))
+		return E_FAIL;
+
+	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, pLayerTag, TEXT("ProtoType_GameObject_Collision_Object"),
+		&_float3(0, 104, -7.f)))
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -742,14 +757,17 @@ HRESULT CScene_Stage3::Ready_Layer_Player(const _tchar * pLayerTag)
 		pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
 		mPlayer = pPlayerList->front();
 		Safe_AddRef(mPlayer);
-		mPlayer->ReInitialize(&_float3(0.f, 1.f, 0));
+		mPlayer->ReInitialize(&_float3(0, 104, -7.f));
+		//mPlayer->ReInitialize(&_float3(0.f, 1.f, 0));
 		
 	}
 	else
 	{
+		
 		mPlayer = pPlayerList->front();
 		Safe_AddRef(mPlayer);
-		mPlayer->ReInitialize(&_float3(0.f, 1.f, 0));
+		mPlayer->ReInitialize(&_float3(0, 104, -7.f));
+		//mPlayer->ReInitialize(&_float3(0.f, 1.f, 0));
 	}
 
 	return S_OK;

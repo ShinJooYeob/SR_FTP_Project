@@ -34,7 +34,8 @@ HRESULT CParsedObject_TreasureBox::Initialize_Clone(void * pArg)
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_TreasureBox"));
 		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
-		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
+		m_ComTransform->Rotation_CW(_float3(0, 1, 0), D3DXToRadian(180));
+		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint  + _float3(0,0.5f,0.25f));
 	}
 
 	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("TreasureBox")));
