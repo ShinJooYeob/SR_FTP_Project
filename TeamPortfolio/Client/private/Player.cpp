@@ -844,8 +844,8 @@ HRESULT CPlayer::SetUp_ParticleDesc()
 	m_ArrParticleDesc[4].IsParticleFameEndtoDie = false;
 
 	m_ArrParticleDesc[5].eParticleID = Particle_Straight;
-	m_ArrParticleDesc[5].TotalParticleTime = 0.5f;
-	m_ArrParticleDesc[5].EachParticleLifeTime = 0.5;
+	m_ArrParticleDesc[5].TotalParticleTime = 1.0f;
+	m_ArrParticleDesc[5].EachParticleLifeTime = 1.0;
 	m_ArrParticleDesc[5].ParticleSize = _float3(0.3f, 0.3f, 0.3f);
 	m_ArrParticleDesc[5].Particle_Power = 1;
 	m_ArrParticleDesc[5].PowerRandomRange = _float2(0.5f, 1.5f);

@@ -33,13 +33,10 @@ public:
 	virtual _int LateRender()override;
 
 	HRESULT First_SetUp_RenderState();
-	HRESULT Second_SetUp_RenderState();
 
 
 	HRESULT Release_RenderState();
 
-public:
-	void			Set_UI_TransformRect(_float4 vRect);
 
 private:
 	CTexture*				m_ComTexture = nullptr;
@@ -60,14 +57,11 @@ private:
 	_float			m_fStartPoint = 0;
 	_float			m_fTargetPoint = 0;
 	_float			m_fPassedTime = 0;
-	_float			m_fOldframe = -1.f;
-	_bool			m_bSound = false;
 
 private:
 	HRESULT			SetUp_Components();
 	HRESULT			SetUp_UIDesc();
 	HRESULT			Update_Animation(_float fTimeDelta);
-	RECT			TransUIDesc_to_Rect(_float4 UIDesc);
 
 public:
 	static CUI_Complete* Create(LPDIRECT3DDEVICE9 pGraphicDevice, void* pArg = nullptr);

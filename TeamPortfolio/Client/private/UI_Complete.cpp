@@ -37,17 +37,7 @@ HRESULT CUI_Complete::Initialize_Clone(void * pArg)
 
 	return S_OK;
 }
-void CUI_Complete::Set_UI_TransformRect(_float4 vRect)
-{
-	//vRect.x,y,z,w=top,left,bottom,right
-	_float4 vResult{};
-	/*너비*/vResult.z = vRect.w - vRect.y;
-	/*높이*/vResult.w = vRect.z - vRect.x;
-	/*x좌표*/vResult.x = vRect.y + vResult.z*0.5f;
-	/*y좌표*/vResult.y = vRect.x + vResult.w*0.5f;
-	Set_UI_Transform(m_ComTransform, vResult);
 
-}
 
 _int CUI_Complete::Update(_float fDeltaTime)
 {
@@ -142,67 +132,6 @@ HRESULT CUI_Complete::First_SetUp_RenderState()
 	return S_OK;
 }
 
-HRESULT CUI_Complete::Second_SetUp_RenderState()
-{
-
-	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 100);
-	//m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-
-	////카운트다운
-	//if (m_bStarton == false)
-	//{
-	//	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[1])))
-	//		return E_FAIL;
-
-	//	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-	//		return E_FAIL;
-
-	//	FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"UI_Num"));
-	//	FAILED_CHECK(m_ComTexture->Bind_Texture(_uint(m_fCountFrame)));
-	//	if ((_uint)m_fCountFrame != (_int)m_fOldframe)
-	//	{
-	//		GetSingle(CGameInstance)->PlaySound(L"JW_CountDown.ogg", CHANNEL_UI, 2.f);
-	//		m_fOldframe = m_fCountFrame;
-	//	}
-	//	if (FAILED(m_ComVIBuffer->Render()))
-	//		return E_FAIL;
-	//}
-
-
-	////스타트
-	//if (m_bStarton)
-	//{
-	//	FAILED_CHECK(m_ComTexture->Change_TextureLayer(L"UI_Start"));
-	//	if ((_uint)m_fCountFrame != (_uint)m_fOldframe)
-	//	{
-	//		if (m_fCountFrame < 5)
-	//		{
-	//			GetSingle(CGameInstance)->PlaySound(L"JW_stage_start.wav", CHANNEL_UI, 2.f);
-	//			m_fOldframe = m_fCountFrame;
-	//		}
-	//	}
-
-	//	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc[2])))
-	//		return E_FAIL;
-
-	//	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
-	//		return E_FAIL;
-	//	if (FAILED(m_ComTexture->Bind_Texture(0)))
-	//		return E_FAIL;
-
-	//	if (FAILED(m_ComVIBuffer->Render()))
-	//		return E_FAIL;
-	//}
-
-
-
-
-
-	return S_OK;
-}
-
 
 HRESULT CUI_Complete::Release_RenderState()
 {
@@ -259,7 +188,7 @@ HRESULT CUI_Complete::Update_Animation(_float fTimeDelta)
 				GetSingle(CQuest)->Set_QuestCompleteIndex(i,1);
 			}
 	}
-	if (/*m_eNowSceneNum==SCENE_STAGESELECT &&*/ m_bStarton)
+	if (m_bStarton)
 	{
 		m_fStartPoint = 0;
 		m_fTargetPoint = g_iWinCX >> 1;
@@ -272,7 +201,7 @@ HRESULT CUI_Complete::Update_Animation(_float fTimeDelta)
 			m_bStarton = false;
 	}
 	
-	else if(m_bStarton==false&&m_fCountFrame>3.5)
+	else if(m_bStarton==false&&m_fCountFrame>2.5)
 	{
 		m_bStartTime = false;
 		m_fCountFrame = 0;
@@ -284,18 +213,7 @@ HRESULT CUI_Complete::Update_Animation(_float fTimeDelta)
 	return S_OK;
 }
 
-RECT CUI_Complete::TransUIDesc_to_Rect(_float4 UIDesc)
-{
-	RECT tRsult{};
 
-	tRsult.left = (LONG)(UIDesc.x - UIDesc.z*0.5f);
-	tRsult.top = (LONG)(UIDesc.y - UIDesc.w*0.5f);
-	tRsult.right = (LONG)(UIDesc.x + UIDesc.z*0.5f);
-	tRsult.bottom = (LONG)(UIDesc.y + UIDesc.w*0.5f);
-
-
-	return tRsult;
-}
 
 
 
