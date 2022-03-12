@@ -640,6 +640,10 @@
     <ClInclude Include="..\public\ParsedObject_TreeOfDeath.h">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\TreeOfDeath</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParsedObject_TreeOfDeath.h" />
+    <ClInclude Include="..\public\UI_Complete.h">
+      <Filter>01.GameObject\UI\UI_Complete</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -936,6 +940,10 @@
     <ClCompile Include="..\private\UI_Complete.cpp" />
     <ClCompile Include="..\private\ParsedObject_TreeOfDeath.cpp">
       <Filter>01.GameObject\ParsedObject\EH_ParsedObject\TreeOfDeath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParsedObject_TreeOfDeath.cpp" />
+    <ClCompile Include="..\private\UI_Complete.cpp">
+      <Filter>01.GameObject\UI\UI_Complete</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

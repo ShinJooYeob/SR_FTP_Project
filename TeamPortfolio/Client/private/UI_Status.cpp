@@ -133,8 +133,16 @@ HRESULT CUI_Status::First_SetUp_RenderState()
 
 
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-
-	_uint iAlpha = (m_pResult->Get_NowTime()) / (_float)m_fTotalTimerTime * 255.f;
+	///진우추가///
+	Set_TotalTimerSec(m_pResult->Get_MaxTime());
+	
+	_float temp=0.f;
+	if (m_pResult->Get_NowTime() >= 30.1&&m_pResult->Get_MaxTimebyTimeUp() != 0)
+		temp = - m_pResult->Get_MaxTimebyTimeUp();
+	else if (m_pResult->Get_NowTime() < 30.1&&m_pResult->Get_MaxTimebyTimeUp()!=0)
+		temp = - m_pResult->Get_NowTime();
+	//////////////
+	_uint iAlpha = (m_pResult->Get_NowTime()+temp / (_float)m_fTotalTimerTime * 255.f);
 	if (iAlpha >= 254)
 	{
 		iAlpha = 255;

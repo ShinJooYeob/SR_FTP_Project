@@ -44,10 +44,12 @@ public:
 	void		Set_RankStar();
 	_int		Get_RankStar() {return RankNumber;}
 
-
+	void		Set_PlusTimer(_float fPlusTime) {m_fMaxTime += fPlusTime; }
 	void		Set_MaxTime(_float fMaxtime) { m_fMaxTime= fMaxtime; };
 	_float		Get_MaxTime() { return m_fMaxTime; };
 	_float		Get_NowTime() { return m_fTimer; };
+	void		Set_MaxTimebyTimeUp(_float fTime) { m_fMaxTimebySkill += fTime; }
+	_float		Get_MaxTimebyTimeUp() { return m_fMaxTimebySkill; }
 	//진우형 프레임워크
 private:
 	HRESULT		Ready_Layer_Button(const _tchar * pLayerTag);//버튼 클론을 만들고 있음
@@ -86,7 +88,7 @@ private:
 
 	_bool			m_isClicked = false;
 
-	
+	_float			m_fMaxTimebySkill = 0;
 	_uint			RankNumber = 0;
 	_bool			m_bStopSwitch = false; //타이며 멈춤 역할
 	_float			m_fTimer = 0.f; // 타이머
