@@ -41,8 +41,6 @@ HRESULT CScene_StageSelect::Initialize()
 	Make_Particle();
 	FAILED_CHECK(Ready_Layer_StageEntryCollsionObject(L"Layer_Collision_StageEntry"));
 
-	if (FAILED(Ready_Layer_Object_QrcodeCube(TEXT("Layer_Object_QrcodeCube"))))
-		return E_FAIL;
 	if (FAILED(Ready_Layer_UI_Complete(TEXT("Layer_UI_Complete"))))
 		return E_FAIL;
 	

@@ -33,12 +33,11 @@ HRESULT CParsedObject_MapleTree::Initialize_Clone(void * pArg)
 		_float3 vSettingPoint;
 		memcpy(&vSettingPoint, pArg, sizeof(_float3));
 		m_Layer_Tag = (TEXT("Layer_MapleTree"));
-		m_ComTransform->Scaled(_float3(1.f, 1.f, 1.f));
+		m_ComTransform->Scaled(_float3(2.f, 2.f, 2.f));
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, vSettingPoint);
 	}
 
 	FAILED_CHECK(m_ComTexture->Change_TextureLayer(TEXT("MapleTree")));
-	m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3 (5.f,5.f,5.f));
 	return S_OK;
 }
 

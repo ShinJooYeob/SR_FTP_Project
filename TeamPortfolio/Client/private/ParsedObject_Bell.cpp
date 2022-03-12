@@ -105,7 +105,7 @@ _int CParsedObject_Bell::LateUpdate(_float fTimeDelta)
 
 	m_ComTransform->Rotation_CW(_float3(1, 0, 0), D3DXToRadian(m_distance));
 
-	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS)))
+	if (GetSingle(CGameInstance)->IsNeedToRender(m_ComTransform->Get_MatrixState(CTransform::STATE_POS),7))
 		m_ComRenderer->Add_RenderGroup(CRenderer::RENDER_NONALPHA, this);
 
 	return _int();

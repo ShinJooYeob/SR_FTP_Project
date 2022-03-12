@@ -717,7 +717,7 @@ HRESULT CScene_Stage3::Ready_Layer_StageEndCollsionObject(const _tchar * pLayerT
 {
 
 	_float3 TransformPos = _float3(-1, 104, -6.5);
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TreasureBox", TEXT("Prototype_GameObject_TreasureBox"), &TransformPos));
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE3, L"Layer_TreasureBox", TEXT("Prototype_GameObject_TreasureBox"), &TransformPos));
 
 
 

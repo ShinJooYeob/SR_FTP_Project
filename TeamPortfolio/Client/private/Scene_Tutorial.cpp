@@ -50,11 +50,11 @@ HRESULT CScene_Tutorial::Initialize()
 	///////////////////
 
 	// 로드된 오브젝트 정보로 그리기
-	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
-		SCENEID::SCENE_TUTORIAL,
-		TAG_LAY(Layer_Terrain),
-		TAG_OP(Prototype_TerrainCube),
-		_float3(0, 0, 0));
+	//GetSingle(CGameInstance)->Add_GameObject_To_Layer(
+	//	SCENEID::SCENE_TUTORIAL,
+	//	TAG_LAY(Layer_Terrain),
+	//	TAG_OP(Prototype_TerrainCube),
+	//	_float3(0, 0, 0));
 
 	// 생성되지 않는 특수 큐브 저장
 	list< SPECIALCUBE*> SpecialCubeList;
@@ -456,7 +456,7 @@ HRESULT CScene_Tutorial::Ready_Layer_StageEndCollsionObject(const _tchar * pLaye
 
 	//튜토리얼에 쓰임
 	_float3 TransformPos = _float3(-3.f, 22.f, 75.5f);
-	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGE2, L"Layer_TreasureBox", TEXT("Prototype_GameObject_TreasureBox"), &TransformPos));
+	FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_TUTORIAL, L"Layer_TreasureBox", TEXT("Prototype_GameObject_TreasureBox"), &TransformPos));
 
 
 
