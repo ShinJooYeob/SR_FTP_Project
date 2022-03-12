@@ -39,7 +39,7 @@ HRESULT CScene_Tutorial::Initialize()
 	FAILED_CHECK(Ready_Layer_PlayerStatusUI(TEXT("Layer_StatusUI")));
 	FAILED_CHECK(Ready_Layer_StageEndCollsionObject(TEXT("Layer_Collision_StageEnd")));
 	FAILED_CHECK(Ready_Layer_NPC(TEXT("Layer_NPC")));
-		
+	
 
 	//////////////////¸Ê Æ©Åä¸®¾ó¿¡ ¾²ÀÓ
 	FAILED_CHECK(Ready_Layer_OrbitButton_And_Cube(TEXT("Layer_OrbitButton_And_Cube")));

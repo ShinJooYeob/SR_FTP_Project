@@ -1095,7 +1095,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 			}
 			else {
 				m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart = true;
-				GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_2,1);
+
 			}
 
 		}
