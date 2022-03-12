@@ -221,7 +221,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 
 
 
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreasureBox", pGameInstance->Create_ParsedObject(L"TreasureVertex.txt", L"TreasureIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreasureBox", pGameInstance->Create_ParsedObject(L"TreasureVertex.txt", L"TreasureIndex.txt")));
 	//////
 	/////////////////////////////////////////스테이지 셀렉 사용목록
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MiniTree", pGameInstance->Create_ParsedObject(L"MiniTreeVertex.txt", L"MiniTreeIndex.txt")));

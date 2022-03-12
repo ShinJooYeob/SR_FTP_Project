@@ -419,6 +419,7 @@ HRESULT CPlayer::Set_StageEnd(_int IsKindsOfEnd)
 			m_bIsStageEnd = 2;
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("die"), 10.f);
 			GetSingle(CGameInstance)->PlaySound(TEXT("JY_isaacdies.mp3"), CHANNEL_PLAYER, 1.f);
+			GetSingle(CGameInstance)->Stop_ChannelSound(CHANNEL_BGM);
 
 
 			break;
