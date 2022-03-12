@@ -39,6 +39,8 @@ public:
 	HRESULT Thrid_SetUp_RenderState();
 	HRESULT Release_RenderState();
 
+	void	Set_Particle_LoginFailed();
+
 private:
 	CTexture*				m_ComTexture = nullptr;
 	CTransform*				m_ComTransform = nullptr;

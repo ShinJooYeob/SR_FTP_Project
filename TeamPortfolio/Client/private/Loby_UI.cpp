@@ -175,8 +175,6 @@ HRESULT CLoby_UI::Thrid_SetUp_RenderState()
 {
 
 
-
-
 	if (FAILED(Set_UI_Transform(m_ComTransform, m_vUIDesc_FirstSound)))
 		return E_FAIL;
 
@@ -229,6 +227,48 @@ HRESULT CLoby_UI::Release_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
 
 	return S_OK;
+}
+
+void CLoby_UI::Set_Particle_LoginFailed()
+{
+	PARTICLEDESC tDesc;
+	tDesc.eParticleID = Particle_Fixed;
+	tDesc.TotalParticleTime = 1.f;
+	tDesc.EachParticleLifeTime = 1.f;
+
+	tDesc.ParticleSize = _float3(334.f, 280.f, 1.f);
+
+	tDesc.Particle_Power = -600;
+
+	tDesc.PowerRandomRange = _float2(0.5f, 1.5f);
+
+	tDesc.MaxParticleCount = 1;
+
+	tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+
+	tDesc.szTextureLayerTag = TEXT("Particle_LoginFailed");
+
+	tDesc.m_bIsTextureAutoFrame = false;
+
+	tDesc.FixedTarget = _float3(g_iWinCX>>1, g_iWinCY>>1, 0);
+
+	tDesc.MaxBoundary = _float3(1280, 720, 1);
+
+	tDesc.ParticleColorChage = false;
+	tDesc.TargetColor = _float3(46.f, 231.f, 60.f);
+	tDesc.TargetColor2 = _float3(255.f, 0.f, 00.f);
+
+	tDesc.m_bIsUI = true;
+
+	tDesc.ParticleStartRandomPosMin = _float3(0.f, 0.f, 0.f);
+	tDesc.ParticleStartRandomPosMax = _float3(0.f, 0.f, 0.f);
+
+	tDesc.MustDraw = true;
+	tDesc.IsParticleFameEndtoDie = false;
+
+	tDesc.m_bUIDepth = -1;
+
+	GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
 }
 
 
@@ -576,6 +616,8 @@ HRESULT CLoby_UI::Input_ManuIndex(_float fTimeDelta)
 					m_iPageIndex = 0;
 					m_fIndexAlpha = 510.f;
 					m_iManuIndex = 0;
+					Set_Particle_LoginFailed();
+					GetSingle(CGameInstance)->PlaySound(L"EH_WindowError.mp3", CHANNEL_UI);
 					m_pLobyCube->Strat_Turning(1);
 
 				}

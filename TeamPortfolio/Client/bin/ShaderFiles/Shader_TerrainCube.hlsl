@@ -87,6 +87,8 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
+
+
 	Out.vColor = texCUBE(DefaultSampler, In.vTexUV);
 
 	return Out;
@@ -130,6 +132,8 @@ PS_OUT PS_MAIN_CUBE(PS_IN In)
 
 	float4 vColor = texCUBE(DefaultSampler, In.vTexUV);
 
+	if (vColor.a < 0.1f)
+		discard;
 
 //	vector		vDir = vector(In.vWorldPos, 1.f) - g_vCamPosition;
 

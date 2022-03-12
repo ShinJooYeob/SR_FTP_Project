@@ -90,7 +90,7 @@ _int CObject_OrbitButton::Render()
 	if (FAILED(m_ComTransform->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture(4)))
+	if (FAILED(m_ComTexture->Bind_Texture(10)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
