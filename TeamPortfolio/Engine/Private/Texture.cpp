@@ -342,6 +342,43 @@ HRESULT CTexture::Bind_OnShader(CShader * pShader, D3DXHANDLE hParameter, _uint 
 		return m_pBindedTextureLayer->Bind_ShaderTexture(pShader, hParameter,m_SettingIndex);
 }
 
+HRESULT CTexture::Bind_OnShader_AutoFrame(CShader * shader, D3DXHANDLE hParameter, _float fTimeDelta, _float* pOutFrameCount )
+{
+	if (m_pBindedTextureLayer == nullptr)
+		return E_FAIL;
+
+
+	m_fFrameTime += m_fFramePerSec * fTimeDelta;
+
+	if (m_fFrameTime >= (_float)(m_iNumMaxTexture + 1))
+	{
+		if (m_bIsWaitTexture && m_bIsReturnTexture)
+		{
+			Change_TextureLayer_Wait(m_szReturnTag, m_iReturnFps);
+			m_szReturnTag = nullptr;
+		}
+		else if (m_bIsWaitTexture)
+		{
+			m_fFrameTime = (_float)m_iNumMaxTexture;
+			m_TagNowTexture = nullptr;
+		}
+		else if (m_bIsReturnTexture)
+		{
+			Change_TextureLayer(m_szReturnTag, m_iReturnFps);
+			m_szReturnTag = nullptr;
+		}
+		else
+		{
+			m_fFrameTime = 0.f;
+		}
+	}
+
+	if (pOutFrameCount != nullptr)
+		*pOutFrameCount = m_fFrameTime;
+
+	return m_pBindedTextureLayer->Bind_ShaderTexture(shader,hParameter,(_uint)m_fFrameTime);
+}
+
 _uint CTexture::CurrentTextureLayerSize()
 {
 	return m_pBindedTextureLayer->Get_TextureNum();

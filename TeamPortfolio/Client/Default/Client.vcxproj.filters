@@ -971,7 +971,10 @@
     <FxCompile Include="..\bin\ShaderFiles\Shader_TerrainCube.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
-    <FxCompile Include="..\bin\ShaderFiles\Shader_Test.hlsl">
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Monster.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Skual.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

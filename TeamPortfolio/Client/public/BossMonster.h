@@ -18,11 +18,23 @@ BEGIN(Client)
 class CBossMonster final : public CMonsterParent
 {
 public:
-	//enum PatternID
-	//{
-	//	PATTERN_MOVE, PATTERN_ATTACK, PATTERN_END
+	const float FIX_DEADANIMATIONTIMER = 2.f;
+	const float	RIGHT_POS = 10.f;
+	const float	LEFT_POS = -10.f;
+	const float	TOP_POS = 5.f;
+	const float	BOTTOM_PLAYER = -2.f;
+	const float	BOTTOM_POS= -5.f;
 
-	//};
+
+	const _float2 NomalPos = _float2(RIGHT_POS, TOP_POS);
+	const _float2 CenterPos = _float2(RIGHT_POS, 1.f);
+
+	const _float2 UpFront = _float2(RIGHT_POS - 3, TOP_POS);
+	const _float2 BottomFront = _float2(RIGHT_POS - 3, BOTTOM_PLAYER);
+
+	const _float3 DefaultSpawnOffset = _float3(-0.3f, -0.2f, 0);
+
+
 protected:
 	explicit CBossMonster(LPDIRECT3DDEVICE9	pGraphicDevice);
 	explicit CBossMonster(const CBossMonster& rhs);
@@ -42,6 +54,8 @@ public:
 	CCamera_Main* Get_MainCamera() { return mMainCamera; }
 	const _tchar*	Get_NowTextureTag()const;				//주엽 => 보스 스테이터스 창에 나오는 보스 이미지 변경할때 쓰려고 만든거
 	void	Set_BossStatusUI(class CUI_BossStatusUI* pObj) { m_BossStatusUI = pObj; }
+	
+	virtual void	Update_Die(float deltatime)override;
 
 
 public:
@@ -53,8 +67,9 @@ public:
 	{
 		mCameralocalPosition = pos;
 	}
-	virtual _float3 Update_CameraPosition(_float3 localPos);
+	void	Start_AttackAniMaion(float frameSpeed=6.0f);
 
+	virtual _float3 Update_CameraPosition(_float3 localPos);
 	virtual HRESULT ViewPortHit(CGameObject* hitobj)override;
 
 
@@ -72,9 +87,12 @@ private:
 	void Update_BossPattern(_float deltatime);
 
 	// #TODO 심화 몬스터 패턴 정의
-	HRESULT Set_TestPattern1();
-	HRESULT Set_TestPattern2();
-//	HRESULT Set_TestPattern3();
+	HRESULT Set_TestPattern_Create();
+	HRESULT Set_BossPattern1();
+	HRESULT Set_BossPattern2();
+	HRESULT Set_BossPattern3();
+	HRESULT Set_BossMoveDefault();
+
 	HRESULT Choose_NextPattern();
 
 private:
@@ -86,11 +104,20 @@ private:
 	void CBossMonster::Set_Attack_LocalDirPattern(_float3 startPosOffset, _float angle, _float count, _float speed, _float dealytime=1, 
 		E_BulletType_MOVE type2 = BULLETTYPE_MOVE_NOMAL);
 
+	void CBossMonster::Set_Attack_PlayerTargetPattern(_float3 startPosOffset, _float count, _float speed, _float dealytime = 1,
+		E_BulletType_MOVE type2 = BULLETTYPE_MOVE_NOMAL);
 
+	void CBossMonster::Set_Delay(_float Timer);
+
+private: // For Effect
+	PARTICLEDESC CreateMonster_Hit_ParticleDESC();
+	PARTICLEDESC CreateMonster_Default_ParticleDESC();
+
+	
 private:
 	float	mPatternTime;
 	int		mNextPattern;
-
+	float	mTimer;
 	class   CUI_BossStatusUI* m_BossStatusUI = nullptr;
 
 
@@ -109,14 +136,15 @@ protected:
 	D3DVIEWPORT9			mViewPort;
 
 
-	_int					mHp;
 	_int					mMaxHp;
+
+	_float					mDefaultEffect;
+
+
 
 public:
 	static CBossMonster* Create(LPDIRECT3DDEVICE9 pGraphic_Device, void* pArg = nullptr);
 	virtual CBossMonster* Clone(void* pArg) override;
-
-
 	virtual void Free()override;
 };
 END

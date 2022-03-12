@@ -106,8 +106,8 @@ void CBoss_Pattern_Attack_WorldDir::Action(float timeDelta)
 		m_isActionEnd = true;
 		return;
 	}
-	mStartPosition = mDesc.mMonsterObject->GetPos();
-	mStartPosition += mDesc.mBulletSpawnOffset;
+
+	mStartPosition = mDesc.mBulletSpawnOffset;
 
 	mCurrentTimer += timeDelta;
 	if (mCurrentTimer >= mDesc.mDealyTimeMax)
@@ -141,7 +141,7 @@ bool CBoss_Pattern_Attack_LocalDir::InitAction()
 
 	mCurrentTimer = 0;
 	mCurrentAttackCount = 0;
-	mStartPosition = mDescBullet.mMonsterObject->GetPos();
+	mStartPosition = mDescBullet.mBulletSpawnOffset;
 	mGunComponent = (CCom_Gun*)mDescBullet.mMonsterObject->Get_Component(TAG_COM(Com_Gun));
 	return false;
 
@@ -166,8 +166,8 @@ void CBoss_Pattern_Attack_LocalDir::Action(float timeDelta)
 	}
 
 	// 각도 계산
-	mStartPosition = mDescBullet.mMonsterObject->GetPos();
-	mStartPosition += mDescBullet.mBulletSpawnOffset;
+	mStartPosition = mDescBullet.mBulletSpawnOffset;
+
 
 	_float3 RightVec = mDescBullet.mMonsterObject->GetTransform()->Get_MatrixState(CTransform::STATE_RIGHT);
 	_float3 LookVec = mDescBullet.mMonsterObject->GetTransform()->Get_MatrixState(CTransform::STATE_LOOK);
@@ -193,5 +193,104 @@ void CBoss_Pattern_Attack_LocalDir::Action(float timeDelta)
 			mDescBullet.mBulletSpeed,
 			mDescBullet.meBulletType_Move);
 	}
+
+}
+
+CBoss_Pattern_Attack_PlayerTarget::CBoss_Pattern_Attack_PlayerTarget(Action_BulletCommon desc)
+{
+	m_isActionEnd = false;
+	memcpy(&mDescBullet, &desc, sizeof(Action_BulletCommon));
+}
+
+bool CBoss_Pattern_Attack_PlayerTarget::InitAction()
+{
+	if (__super::InitAction() == false)
+		return false;
+
+	if (mDescBullet.mMonsterObject == nullptr)
+		return false;
+	
+	mCurrentTimer = 0;
+	mCurrentAttackCount = 0;
+	mStartPosition = mDescBullet.mBulletSpawnOffset;
+	mGunComponent = (CCom_Gun*)mDescBullet.mMonsterObject->Get_Component(TAG_COM(Com_Gun));
+	return false;
+}
+
+void CBoss_Pattern_Attack_PlayerTarget::Action(float timeDelta)
+{
+	InitAction();
+	
+	if (mCurrentAttackCount > mDescBullet.mAttackCount)
+	{
+		m_isActionEnd = true;
+		return;
+	}
+
+	if (mGunComponent == nullptr ||
+		mPlayerTransformComponent == nullptr)
+	{
+		m_isActionEnd = true;
+		return;
+	}
+
+	// 플레이어 타겟 위치에 따라 LEFT / RIGHT 중 하나만 쏜다.
+	_float3 PlayerPosition = mPlayerTransformComponent->Get_MatrixState(CTransform::STATE_POS);
+	_float3 Position = mDescBullet.mMonsterObject->GetPos();
+	_float3 EndVec = PlayerPosition - Position;
+
+	EndVec = EndVec.Get_Nomalize();
+	if (EndVec.x < 0)
+		// Left
+	{
+		mDescBullet.mEndPos = LEFTVEC;
+	}
+	else
+	{
+		// Right
+		mDescBullet.mEndPos = RIGHTVEC;
+	}
+
+	mCurrentTimer += timeDelta;
+	if (mCurrentTimer >= mDescBullet.mDealyTimeMax)
+	{
+		mCurrentTimer = 0;
+		mCurrentAttackCount++;
+
+		mGunComponent->CreateBullet_Dir(
+			mStartPosition,
+			mDescBullet.mEndPos,
+			mDescBullet.mBulletSpeed,
+			mDescBullet.meBulletType_Move);
+	}
+
+
+
+
+}
+
+CBoss_Pattern_Dealy::CBoss_Pattern_Dealy(int DealyTime)
+{
+	mDealyTimer = mCurrentTimer;
+	m_isActionEnd = false;
+}
+
+bool CBoss_Pattern_Dealy::InitAction()
+{
+	if (__super::InitAction() == false)
+		return false;
+	mCurrentTimer = 0;
+	
+	return false;
+}
+
+void CBoss_Pattern_Dealy::Action(float timeDelta)
+{
+	if (m_isActionEnd)
+		return;
+
+	mCurrentTimer += timeDelta;
+	if (mCurrentTimer >= mDealyTimer)
+		m_isActionEnd = true;
 
 }

@@ -118,9 +118,20 @@ _int CTerrainCube::Render()
 
 	D3DXMatrixInverse(&ViewMatrixInverse, nullptr, &ViewMatrix);
 
+	_float3 PlayerPosition = m_PlayerTransform->Get_MatrixState(CTransform::STATE_POS);
+	
+
+//	_float3 PlayerViewPosition = PlayerPosition;
+//	D3DXVec3TransformNormal(&PlayerViewPosition, &PlayerViewPosition, &ViewMatrix);
+
 	m_ComShader->SetUp_ValueOnShader("g_WorldMatrix", D3DXMatrixTranspose(&WorldMatrix, &WorldMatrix), sizeof(_Matrix));
 	m_ComShader->SetUp_ValueOnShader("g_ViewMatrix", D3DXMatrixTranspose(&ViewMatrix, &ViewMatrix), sizeof(_Matrix));
 	m_ComShader->SetUp_ValueOnShader("g_ProjMatrix", D3DXMatrixTranspose(&ProjMatrix, &ProjMatrix), sizeof(_Matrix));
+	m_ComShader->SetUp_ValueOnShader("g_vPlayerPosition", &PlayerPosition, sizeof(_float3));
+
+//	m_ComShader->SetUp_ValueOnShader("g_vPlayerViewPosition", &PlayerViewPosition, sizeof(_float3));
+
+	
 	m_ComTexture->Bind_OnShader(m_ComShader, "g_TextureCUBE", 1);
 
 	m_ComShader->SetUp_ValueOnShader("g_vCamPosition", &ViewMatrixInverse.m[3][0], sizeof(_float4));
@@ -128,7 +139,7 @@ _int CTerrainCube::Render()
 
 
 
-	FAILED_CHECK(m_ComShader->Begin_Shader(1));
+	FAILED_CHECK(m_ComShader->Begin_Shader(2));
 	FAILED_CHECK(m_ComVIBuffer->Render());
 	FAILED_CHECK(m_ComShader->End_Shader());
 

@@ -11,6 +11,8 @@ CMonsterParent::CMonsterParent(LPDIRECT3DDEVICE9 pGraphicDevice)
 	m_ComVIBuffer = nullptr;
 	m_ComTexture = nullptr;
 	m_Com_Viewport = nullptr;
+	m_ComShader = nullptr;
+
 	m_Sphere.mCenterPosition = _float2(0, 0);
 	m_Sphere.mRadius = 10.0f;
 	mFrameCount = 0;
@@ -26,23 +28,20 @@ CMonsterParent::CMonsterParent(const CMonsterParent& rhs)
 	m_ComVIBuffer = rhs.m_ComVIBuffer;
 	m_ComTexture = rhs.m_ComTexture;
 	m_Com_Viewport = rhs.m_Com_Viewport;
-
+	m_ComShader = rhs.m_ComShader;
 
 	Safe_AddRef(m_ComTransform);
 	Safe_AddRef(m_ComRenderer);
 	Safe_AddRef(m_ComVIBuffer);
 	Safe_AddRef(m_ComTexture);
 	Safe_AddRef(m_Com_Viewport);
-
-//	Safe_AddRef(m_ComShader);
+	Safe_AddRef(m_ComShader);
 }
 
 
 HRESULT CMonsterParent::Initialize_Prototype(void * pArg)
 {
 	FAILED_CHECK(__super::Initialize_Prototype(pArg));
-
-
 	return S_OK;
 }
 
@@ -55,7 +54,7 @@ HRESULT CMonsterParent::Initialize_Clone(void * pArg)
 	m_Sphere.mCenterPosition = _float2(0, 0);
 	m_Sphere.mRadius = 30.0f;
 	mFrameCount = 0;
-
+	mbDying = false;
 	
 
 	return S_OK;
@@ -64,7 +63,8 @@ HRESULT CMonsterParent::Initialize_Clone(void * pArg)
 _int CMonsterParent::Update(_float fDeltaTime)
 {
 	FAILED_CHECK(__super::Update(fDeltaTime));
-
+	Update_Die(fDeltaTime);
+	
 	return _int();
 }
 
@@ -84,26 +84,13 @@ _int CMonsterParent::Render()
 		nullptr == m_ComTexture)
 		return E_FAIL;
 
-//	_Matrix matVeiw, matProject;
-//	m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matVeiw);
-//	m_pGraphicDevice->GetTransform(D3DTS_PROJECTION, &matProject);
-	// 셰이더 월드 설정
-//	m_ComShader->SetUp_ValueOnShader("g_WorldMatrix", m_ComTransform->Get_WorldMatrix(), sizeof(_Matrix));
-//	m_ComShader->SetUp_ValueOnShader("g_ViewMatrix", &matVeiw, sizeof(_Matrix));
-//	m_ComShader->SetUp_ValueOnShader("g_ProjMatrix", &matProject, sizeof(_Matrix));
-	// 셰이더 텍스처 설정
-//	m_ComTexture->Bind_OnShader(m_ComShader, "g_Texture");
-//	m_ComShader->Begin_Shader(0);
-//	m_ComVIBuffer->Render();
-//	m_ComShader->End_Shader();
-
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
 	if (FAILED(m_ComTransform->Bind_WorldMatrix_Look_Camera()))
 		return E_FAIL;
 
-	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(g_fDeltaTime,&mFrameCount)))
+	if (FAILED(m_ComTexture->Bind_Texture_AutoFrame(g_fDeltaTime, &mFrameCount)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_RenderState()))
@@ -114,7 +101,6 @@ _int CMonsterParent::Render()
 
 	if (FAILED(Release_RenderState()))
 		return E_FAIL;
-
 
 	return S_OK;
 }
@@ -168,6 +154,10 @@ _float3 CMonsterParent::GetScreenToWorld(_float2 screenPos)
 }
 
 
+void CMonsterParent::Update_Die(float deltatime)
+{
+}
+
 HRESULT CMonsterParent::SetUp_Components()
 {
 
@@ -191,8 +181,8 @@ HRESULT CMonsterParent::SetUp_Components()
 	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_CollisionView), TAG_COM(Com_CollisionView), (CComponent**)&m_Com_Viewport)))
 		return E_FAIL;
 	
-	//if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Test), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
-	//	return E_FAIL;
+	if (FAILED(__super::Add_Component(SCENE_STATIC, TAG_CP(Prototype_Shader_Monster), TAG_COM(Com_Shader), (CComponent**)&m_ComShader)))
+		return E_FAIL;
 	
 
 	return S_OK;
@@ -221,10 +211,9 @@ void CMonsterParent::Free()
 	Safe_Release(m_ComRenderer);
 	Safe_Release(m_ComVIBuffer);
 	Safe_Release(m_ComTexture);
-	Safe_Release(m_Com_Viewport);
+	Safe_Release(m_Com_Viewport);	
+	Safe_Release(m_ComShader);
 
-	
-//	Safe_Release(m_ComShader);
 	__super::Free();
 	
 }

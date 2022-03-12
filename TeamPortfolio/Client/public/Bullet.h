@@ -19,7 +19,7 @@ public:
 	typedef struct tag_BulletDesc
 	{
 		E_BulletType_MOVE BulletType;
-		_float3 StartPos;
+		_float3 StartOffset;
 		_float3 MoveDir;
 		_float  BulletSpeed;
 
@@ -54,6 +54,9 @@ public:
 protected:
 	virtual HRESULT SetUp_RenderState() override;
 	virtual HRESULT Release_RenderState() override;
+
+
+	PARTICLEDESC CreateBulletParticleDESC();
 
 
 

@@ -57,8 +57,10 @@
 #include "ParsedObject_Blossoms.h"
 #include "ParsedObject_Penguin.h"
 
+
 #include "BossMonster.h"
 #include "Bullet.h"
+#include "Com_Gun.h"
 
 #include "ParsedObject_BigGreenTree.h"
 #include "ParsedObject_TreasureBox.h"
@@ -202,12 +204,25 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	if (FAILED(pGameInstance->Add_Component_Prototype(SCENE_STATIC, L"Prototype_Component_Texture_JH_Effect", CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
+	// 셰이더 프로토타입 생성
+	if (FAILED(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Shader_Monster), CShader::Create(m_pGraphicDevice, TEXT("../Bin/ShaderFiles/Shader_Monster.hlsl")))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Shader_Cube), CShader::Create(m_pGraphicDevice, TEXT("../Bin/ShaderFiles/Shader_TerrainCube.hlsl")))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Shader_Skual), CShader::Create(m_pGraphicDevice, TEXT("../Bin/ShaderFiles/Shader_Skual.hlsl")))))
+		return E_FAIL;
+	
+	// 총 컴포넌트 생성
+	if (FAILED(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, TAG_CP(Prototype_Gun), CCom_Gun::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
 
 
 
 
 
 	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreasureBox", pGameInstance->Create_ParsedObject(L"TreasureVertex.txt", L"TreasureIndex.txt")));
+	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_DeathSkull", pGameInstance->Create_ParsedObject(L"DeathSkullVertex.txt", L"DeathSkullIndex.txt")));
 	//
 	/////////////////////////////////////스테이지 셀렉 사용목록
 	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MiniTree", pGameInstance->Create_ParsedObject(L"MiniTreeVertex.txt", L"MiniTreeIndex.txt")));
@@ -228,7 +243,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	/////////////////////////////////////스테이지 2 사용목록
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TombStone", pGameInstance->Create_ParsedObject(L"TombStoneVertex.txt", L"TombStoneIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwl", pGameInstance->Create_ParsedObject(L"BigOwlVertex.txt", L"BigOwlIndex.txt")));
-	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwlHead", pGameInstance->Create_ParsedObject(L"BigOwlHeadVertex.txt", L"BigOwlHeadIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillCore", pGameInstance->Create_ParsedObject(L"WindmillCoreVertex.txt", L"WindmillCoreIndex.txt")));
 	//
 	//
 	//
@@ -348,6 +363,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 		return E_FAIL;
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TombStone"), CParsedObject_TombStone::Create(m_pGraphicDevice))))
 		return E_FAIL;
+	
 	//올빼미 머리 몸통 세트------
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_BigOwl"), CParsedObject_BigOwl::Create(m_pGraphicDevice))))
 		return E_FAIL;
@@ -380,6 +396,10 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 		
 	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_TreeOfDeath"), CParsedObject_TreeOfDeath::Create(m_pGraphicDevice))))		
 		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject_Prototype(TEXT("Prototype_GameObject_DeathSkul"), CParsedObject_DeathSkull::Create(m_pGraphicDevice))))
+		return E_FAIL;
+
 	//////////////////////////////////
 
 #pragma endregion
@@ -812,6 +832,11 @@ HRESULT CLoader::Load_Scene_Stage_Boss(_bool * _IsClientQuit, CRITICAL_SECTION *
 
 	TextureDesc.szTextFilePath = TEXT("PotalTexture.txt");
 	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_PotalTexture"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
+		return E_FAIL;
+
+	TextureDesc.eTextureType = CTexture::TYPE_DEFAULT;
+	TextureDesc.szTextFilePath = TEXT("Parsed.txt");
+	if (FAILED(pGameInstance->Add_Component_Prototype(m_eSceneID, TEXT("Prototype_Component_Texture_Parsed"), CTexture::Create(m_pGraphicDevice, &TextureDesc))))
 		return E_FAIL;
 
 	// 몬스터 텍스처

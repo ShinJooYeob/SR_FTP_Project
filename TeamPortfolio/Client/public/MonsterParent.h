@@ -42,12 +42,14 @@ public: // For. ObjectFunc
 	_float3 GetScale() { return m_ComTransform->Get_MatrixScale(); }
 	HRESULT MoveDir(_float3 Dir, _float Timer){	m_ComTransform->MovetoDir(Dir, Timer);}
 	_float3 GetScreenToWorld(_float2 screenPos);
+	bool Get_IsDying() const { return mbDying; }
 
 
 	// 생성 피격 죽음 연출 개별 설정
 	virtual HRESULT CreateObject(_int Damage)PURE;
 	virtual HRESULT Hit(_int Damage)PURE;
 	virtual HRESULT Die()PURE;
+	virtual void	Update_Die(float deltatime);
 
 protected:
 	// 컴포넌트 초기화
@@ -59,6 +61,7 @@ protected:
 	// 카메라 위치 기준으로 위치 옮기기
 	virtual _float3 Update_CameraPosition(_float3 localPos);
 
+	
 
 protected:
 	// Components
@@ -67,11 +70,15 @@ protected:
 	CVIBuffer*	 m_ComVIBuffer;
 	CTexture*	 m_ComTexture;
 	
+	// 셰이더 추가
+	CShader*	 m_ComShader;
+	
+	// 뷰포트 충돌
 	CCom_CollisionViewPort* m_Com_Viewport;
 
+	// 죽기전 객체
+	bool mbDying = false;
 
-	// 셰이더 추가
-	// CShader*	 m_ComShader;
 
 
 	float mFrameCount;
