@@ -46,7 +46,7 @@ HRESULT CScene_Stage_Boss::Initialize()
 	}
 	SpecialCubeList.clear();
 	// GetSingle(CGameInstance)->PlayBGM(L"JH_Stage3_BGM.mp3");
-	GetSingle(CGameInstance)->PlayBGM(L"JH_Boss_BGM2.wav");
+	GetSingle(CGameInstance)->PlayBGM(L"JH_Boss_BGM.mp3");
 
 	/////////////////////보스 엔트리 테스트/////////////////////////////////////////////////////
 
@@ -176,8 +176,6 @@ HRESULT CScene_Stage_Boss::Ready_Layer_MainCamera(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage_Boss::Ready_Layer_SkyBox(const _tchar * pLayerTag)
 {
-
-
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_BOSS, pLayerTag, TEXT("Prototype_GameObject_SkyBox")))
 		return E_FAIL;
 

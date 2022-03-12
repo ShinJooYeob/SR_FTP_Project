@@ -42,8 +42,6 @@ CMonsterParent::CMonsterParent(const CMonsterParent& rhs)
 HRESULT CMonsterParent::Initialize_Prototype(void * pArg)
 {
 	FAILED_CHECK(__super::Initialize_Prototype(pArg));
-
-
 	return S_OK;
 }
 

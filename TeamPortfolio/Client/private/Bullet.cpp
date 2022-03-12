@@ -110,12 +110,17 @@ HRESULT CBullet::SetUp_RenderState()
 	m_pGraphicDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAREF, 10);
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 
 	return S_OK;
 }
 
 HRESULT CBullet::Release_RenderState()
 {
+	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	return S_OK;
@@ -159,8 +164,8 @@ PARTICLEDESC CBullet::CreateBulletParticleDESC()
 	tDesc.MaxBoundary = _float3(range, range, range);
 
 	// 파티클 시작 위치 랜덤
-	tDesc.ParticleStartRandomPosMin = _float3(-0.5f, -0.5f, 0);
-	tDesc.ParticleStartRandomPosMax = _float3(0.5f, 0.5f, 0);
+	tDesc.ParticleStartRandomPosMin = _float3(-0.5f, -0.5f, -2);
+	tDesc.ParticleStartRandomPosMax = _float3(0.5f, 0.5f, -1);
 
 	//방향을 설정하고 싶을 때 사용하는 옵션
 	//ex) straight를 사용하는데 오브젝트의 오른쪽으로 뿌리고 싶으면 오브젝트의 right를 넣어주면 됨
@@ -173,7 +178,7 @@ PARTICLEDESC CBullet::CreateBulletParticleDESC()
 
 	tDesc.ParticleColorChage = false;
 	tDesc.m_bIsUI = false;
-	tDesc.MustDraw = true;
+	tDesc.MustDraw = false;
 	tDesc.IsParticleFameEndtoDie = false;
 	tDesc.AlphaBlendON = true;
 

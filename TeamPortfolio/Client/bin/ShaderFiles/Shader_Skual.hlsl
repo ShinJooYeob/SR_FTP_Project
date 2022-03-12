@@ -98,7 +98,16 @@ PS_OUT PS_MAIN_COLOR(PS_IN In)
 	if (colorRatio <= 0.2f)
 		colorRatio = 0.2f;
 
-	Out.vColor *= colorRatio;
+	float redColorRatio = saturate(cos(g_Time));
+
+	if (redColorRatio < 0.2f)
+		redColorRatio = 0.2f;
+	if (redColorRatio > 0.8f)
+		redColorRatio = 0.8f;
+
+	Out.vColor = Out.vColor * colorRatio;
+	Out.vColor.r = redColorRatio;
+
 	Out.vColor.a = 1;
 
 	return Out;

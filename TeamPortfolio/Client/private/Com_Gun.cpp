@@ -112,7 +112,23 @@ HRESULT CCom_Gun::Update_CreateBullet(float deltatime)
 			mListBullets.pop_front();
 			GetSingle(CGameInstance)->PlaySound(TEXT("JH_Boss_Attack0.wav"), CHANNEL_OBJECT);
 			// 쏘는 위치 다시계산
-			desc.StartOffset = mBossMonster->GetPos() + desc.StartOffset;
+
+			if (mBossMonster->Get_CameraLookState() == CCamera_Main::CameraLookStateID::Look_Front_Axis)
+			{
+				_float3 position = mBossMonster->GetPos() + mBossMonster->GetTransform()->Get_MatrixState(CTransform::STATE_RIGHT)*desc.StartOffset.x;
+				position += mBossMonster->GetTransform()->Get_MatrixState(CTransform::STATE_UP)*desc.StartOffset.y;
+				desc.StartOffset = position;
+			}
+			else if (mBossMonster->Get_CameraLookState() == CCamera_Main::CameraLookStateID::Look_Back_Axis)
+			{
+
+				_float3 position = mBossMonster->GetPos() + mBossMonster->GetTransform()->Get_MatrixState(CTransform::STATE_RIGHT)*(-desc.StartOffset.x);
+				position += mBossMonster->GetTransform()->Get_MatrixState(CTransform::STATE_UP)*desc.StartOffset.y;
+				desc.StartOffset = position;
+			}
+			else
+				desc.StartOffset = mBossMonster->GetPos();
+
 			FAILED_CHECK(GetSingle(CGameInstance)->Add_GameObject_To_Layer(mDesc.mSceneID, TAG_LAY(Layer_Bullet), TAG_OP(Prototype_Bullet), &desc));
 			mStateGun = CCom_Gun::STATE_GUN_RETIRE;
 

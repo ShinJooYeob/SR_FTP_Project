@@ -38,11 +38,11 @@ public:
 	virtual void Action(float timeDelta)PURE;
 	bool IsPatternEnd() { return m_isActionEnd; }
 
-
 	virtual void Free() {}
 };
 
-// 움직임 패턴
+//////////////// 움직이는 패턴 //////////////////////////////////////
+
 class CBoss_Action_Move_Local : public IAction
 {
 	// 목표 위치
@@ -75,9 +75,40 @@ public:
 
 };
 
+// 회전 패턴
+//class CBoss_Pattern_Move_Rotation : public IAction
+//{
+//public:
+//	// 생성자에서 패턴 정보 받기
+//	explicit CBoss_Pattern_Move_Rotation(int desc);
+//
+//	virtual bool InitAction()override;
+//	// Pattern을(를) 통해 상속됨
+//	virtual void Action(float timeDelta) override;
+//};
 
 
-// 공격
+// Dir로 Force로 날라감
+//class CBoss_Pattern_Move_DirMove : public IAction
+//{
+//private:
+//	class CCom_Gun* mGunComponent;
+//	_float3 mStartPosition;
+//	_float	mCurrentTimer;
+//	_int	mCurrentAttackCount;
+//
+//public:
+//	// 생성자에서 패턴 정보 받기
+//	explicit CBoss_Pattern_Move_DirMove(int desc);
+//
+//	virtual bool InitAction()override;
+//	// Pattern을(를) 통해 상속됨
+//	virtual void Action(float timeDelta) override;
+//};
+
+
+
+//////////////// 공격 패턴 //////////////////////////////////////
 typedef struct Action_BulletCommon
 {
 	_uint mAttackCount; 
@@ -132,6 +163,51 @@ public:
 	virtual void Action(float timeDelta) override;
 };
 
+// 플레이어 위치로 LEFT / RIGHT 한방향
+class CBoss_Pattern_Attack_PlayerTarget : public IAction
+{
+private:
+	Action_BulletCommon mDescBullet;
+
+	
+	class CCom_Gun* mGunComponent;
+	class CTransform* mPlayerTransformComponent;
+
+	_float3 mStartPosition;
+	_float	mCurrentTimer;
+	_int	mCurrentAttackCount;
+
+public:
+	// 생성자에서 패턴 정보 받기
+	explicit CBoss_Pattern_Attack_PlayerTarget(Action_BulletCommon desc);
+
+	virtual bool InitAction()override;
+	// Pattern을(를) 통해 상속됨
+	virtual void Action(float timeDelta) override;
+
+	void SetTarget(class CTransform* com)
+	{
+		mPlayerTransformComponent = com;
+	}
+};
+
+///////////////////////// 기타 행동 /////////////////////////
+class CBoss_Pattern_Dealy : public IAction
+{
+public:
+private:	
+	_float mDealyTimer;
+	_float	mCurrentTimer;
+	
+public:
+	// 생성자에서 패턴 정보 받기
+	explicit CBoss_Pattern_Dealy(int DealyTime);
+
+	virtual bool InitAction()override;
+	// Pattern을(를) 통해 상속됨
+	virtual void Action(float timeDelta) override;
+
+};
 
 
 

@@ -25,3 +25,13 @@ using namespace Client;
 #define GETIMGUI GetSingle(CGameInstance)->GetIMGui()
 
 #define NOT_EXIST_BLOCK		_float3(9999.f,9999.f,9999.f)
+
+#define  ZEROVEC	_float3(0,0,0)
+#define  LEFTVEC	_float3(-1,0,0)	
+#define  RIGHTVEC	_float3(1,0,0)
+#define  UPVEC		_float3(0,1,0)
+#define  DOWNVEC	_float3(0,-1,0)
+#define  FRONTVEC	_float3(0,0,1)
+#define  BACKVEC	_float3(0,0,-1)
+
+
