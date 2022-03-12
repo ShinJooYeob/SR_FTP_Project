@@ -119,7 +119,7 @@ _int CObject_Star::Obsever_On_Trigger(CGameObject * pDestObjects, _float3 fColli
 		Set_Particle();
 		GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_2, 1);
 		m_ComTransform->Set_MatrixState(CTransform::STATE_POS, NOT_EXIST_BLOCK);
-		DIED();
+ 		DIED();
 		//m_pCollisionCom->Collision_Pushed(m_ComTransform, fCollision_Distance, fDeltaTime);
 	}
 

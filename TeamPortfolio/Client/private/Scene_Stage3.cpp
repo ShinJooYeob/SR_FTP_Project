@@ -757,8 +757,8 @@ HRESULT CScene_Stage3::Ready_Layer_Player(const _tchar * pLayerTag)
 		pPlayerList = GetSingle(CGameInstance)->Get_ObjectList_from_Layer(SCENEID::SCENE_STATIC, pLayerTag);
 		mPlayer = pPlayerList->front();
 		Safe_AddRef(mPlayer);
-		mPlayer->ReInitialize(&_float3(0, 104, -7.f));
-		//mPlayer->ReInitialize(&_float3(0.f, 1.f, 0));
+		//mPlayer->ReInitialize(&_float3(0, 104, -7.f));
+		mPlayer->ReInitialize(&_float3(0.f, 1.f, 0));
 		
 	}
 	else
@@ -766,8 +766,8 @@ HRESULT CScene_Stage3::Ready_Layer_Player(const _tchar * pLayerTag)
 		
 		mPlayer = pPlayerList->front();
 		Safe_AddRef(mPlayer);
-		mPlayer->ReInitialize(&_float3(0, 104, -7.f));
-		//mPlayer->ReInitialize(&_float3(0.f, 1.f, 0));
+		//mPlayer->ReInitialize(&_float3(0, 104, -7.f));
+		mPlayer->ReInitialize(&_float3(0.f, 1.f, 0));
 	}
 
 	return S_OK;

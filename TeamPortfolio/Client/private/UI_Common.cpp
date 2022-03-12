@@ -273,28 +273,32 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 			((CUI_Image*)Find_Image(L"Common_Image_15"))->Set_ImageAlpha(0);
 			((CPlayer*)pPlayer)->Set_CoolDownStart_False(SKILL_CAMERA);
 			m_fCooltime.z = 0;
-			GetSingle(CGameInstance)->PlaySoundW(TEXT("JW_Cooldown.wav"), CHANNELID::CHANNEL_UI);
-			
-			////////////////////////////////파티클///////////////////////////////////
-			PARTICLEDESC tDesc;
-			tDesc.eParticleID = Particle_Ball;
-			tDesc.TotalParticleTime = 0.5f;
-			tDesc.EachParticleLifeTime = 1.5f;
-			tDesc.ParticleSize = _float3(40.f, 40.f, 40.f);
-			tDesc.Particle_Power = 75;
-			tDesc.PowerRandomRange = _float2(1.f, 1.f);
-			tDesc.MaxParticleCount = 50;
-			tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
-			tDesc.szTextureLayerTag = TEXT("Star");
-			tDesc.m_bIsTextureAutoFrame = false;
-			tDesc.FixedTarget = _float3(m_fPosX, m_vUIDesc.y + 40.f, 0);
-			tDesc.MaxBoundary = _float3(50, 50, 0.f);
-			tDesc.ParticleColorChage = true;
-			tDesc.TargetColor = _float3(186, 227, 245);
-			tDesc.TargetColor2 = _float3(16.f, 87.f, 118.f);
-			tDesc.m_bIsUI = true;
-			tDesc.m_bUIDepth = -90.f;
-			GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+
+			if (m_bIsHide == false)
+			{
+				GetSingle(CGameInstance)->PlaySoundW(TEXT("JW_Cooldown.wav"), CHANNELID::CHANNEL_UI);
+
+				////////////////////////////////파티클///////////////////////////////////
+				PARTICLEDESC tDesc;
+				tDesc.eParticleID = Particle_Ball;
+				tDesc.TotalParticleTime = 0.5f;
+				tDesc.EachParticleLifeTime = 1.5f;
+				tDesc.ParticleSize = _float3(40.f, 40.f, 40.f);
+				tDesc.Particle_Power = 75;
+				tDesc.PowerRandomRange = _float2(1.f, 1.f);
+				tDesc.MaxParticleCount = 50;
+				tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+				tDesc.szTextureLayerTag = TEXT("Star");
+				tDesc.m_bIsTextureAutoFrame = false;
+				tDesc.FixedTarget = _float3(m_fPosX, m_vUIDesc.y + 40.f, 0);
+				tDesc.MaxBoundary = _float3(50, 50, 0.f);
+				tDesc.ParticleColorChage = true;
+				tDesc.TargetColor = _float3(186, 227, 245);
+				tDesc.TargetColor2 = _float3(16.f, 87.f, 118.f);
+				tDesc.m_bIsUI = true;
+				tDesc.m_bUIDepth = -90.f;
+				GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+			}
 		}
 	}
 	_bool CooldownStart4 = ((CPlayer*)pPlayer)->Get_CoolDownStart(SKILL_POTION);
@@ -326,28 +330,32 @@ HRESULT CUI_Common::Set_CoolDown(_float fDeltaTime)
 			((CUI_Image*)Find_Image(L"Common_Image_16"))->Set_ImageAlpha(0);
 			((CPlayer*)pPlayer)->Set_CoolDownStart_False(SKILL_POTION);
 			m_fCooltime.w = 0;
-			GetSingle(CGameInstance)->PlaySoundW(TEXT("JW_Cooldown.wav"), CHANNELID::CHANNEL_UI);
 
-			////////////////////////////////파티클///////////////////////////////////
-			PARTICLEDESC tDesc;
-			tDesc.eParticleID = Particle_Ball;
-			tDesc.TotalParticleTime = 0.5f;
-			tDesc.EachParticleLifeTime = 1.5f;
-			tDesc.ParticleSize = _float3(40.f, 40.f, 40.f);
-			tDesc.Particle_Power = 75;
-			tDesc.PowerRandomRange = _float2(1.f, 1.f);
-			tDesc.MaxParticleCount = 50;
-			tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
-			tDesc.szTextureLayerTag = TEXT("Star");
-			tDesc.m_bIsTextureAutoFrame = false;
-			tDesc.FixedTarget = _float3(m_fPosX, m_vUIDesc.y + 120.f, 0);
-			tDesc.MaxBoundary = _float3(50, 50, 0.f);
-			tDesc.ParticleColorChage = true;
-			tDesc.TargetColor = _float3(186, 227, 245);
-			tDesc.TargetColor2 = _float3(16.f, 87.f, 118.f);
-			tDesc.m_bIsUI = true;
-			tDesc.m_bUIDepth = -90.f;
-			GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+			if (m_bIsHide == false)
+			{
+				GetSingle(CGameInstance)->PlaySoundW(TEXT("JW_Cooldown.wav"), CHANNELID::CHANNEL_UI);
+
+				////////////////////////////////파티클///////////////////////////////////
+				PARTICLEDESC tDesc;
+				tDesc.eParticleID = Particle_Ball;
+				tDesc.TotalParticleTime = 0.5f;
+				tDesc.EachParticleLifeTime = 1.5f;
+				tDesc.ParticleSize = _float3(40.f, 40.f, 40.f);
+				tDesc.Particle_Power = 75;
+				tDesc.PowerRandomRange = _float2(1.f, 1.f);
+				tDesc.MaxParticleCount = 50;
+				tDesc.szTextureProtoTypeTag = TEXT("Prototype_Component_Texture_Particle");
+				tDesc.szTextureLayerTag = TEXT("Star");
+				tDesc.m_bIsTextureAutoFrame = false;
+				tDesc.FixedTarget = _float3(m_fPosX, m_vUIDesc.y + 120.f, 0);
+				tDesc.MaxBoundary = _float3(50, 50, 0.f);
+				tDesc.ParticleColorChage = true;
+				tDesc.TargetColor = _float3(186, 227, 245);
+				tDesc.TargetColor2 = _float3(16.f, 87.f, 118.f);
+				tDesc.m_bIsUI = true;
+				tDesc.m_bUIDepth = -90.f;
+				GetSingle(CParticleMgr)->Create_ParticleObject(m_eNowSceneNum, tDesc);
+			}
 		}
 	}
 

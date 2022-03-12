@@ -419,6 +419,7 @@ HRESULT CPlayer::Set_StageEnd(_int IsKindsOfEnd)
 			m_bIsStageEnd = 2;
 			m_ComTexture->Change_TextureLayer_Wait(TEXT("die"), 10.f);
 			GetSingle(CGameInstance)->PlaySound(TEXT("JY_isaacdies.mp3"), CHANNEL_PLAYER, 1.f);
+			GetSingle(CGameInstance)->Stop_ChannelSound(CHANNEL_BGM);
 
 
 			break;
@@ -1095,7 +1096,7 @@ HRESULT CPlayer::Input_Keyboard(_float fDeltaTime)
 			}
 			else {
 				m_tCoolDown[SKILL_DUBBLEJUMP].m_bCoolDownStart = true;
-				GetSingle(CQuest)->Set_QuestIndexIncrease(QUEST_2,1);
+
 			}
 
 		}
