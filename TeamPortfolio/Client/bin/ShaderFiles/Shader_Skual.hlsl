@@ -93,10 +93,10 @@ PS_OUT PS_MAIN_COLOR(PS_IN In)
 	Out.vColor = tex2D(DefaultSampler, In.vTexUV);
 	
 	float colorRatio = sin(g_Time);
-	// colorRatio = ceil(colorRatio * 5) / 5;
+//	colorRatio = ceil(colorRatio * 5) / 5;
 
-	if (colorRatio <= 0.2f)
-		colorRatio = 0.2f;
+	if (colorRatio <= 0.4f)
+		colorRatio = 0.4f;
 
 	float redColorRatio = saturate(cos(g_Time));
 
@@ -105,8 +105,8 @@ PS_OUT PS_MAIN_COLOR(PS_IN In)
 	if (redColorRatio > 0.8f)
 		redColorRatio = 0.8f;
 
-	Out.vColor = Out.vColor * colorRatio;
-	Out.vColor.r = redColorRatio;
+	Out.vColor = Out.vColor * colorRatio * 1.1f;
+//	Out.vColor.r = redColorRatio;
 
 	Out.vColor.a = 1;
 
