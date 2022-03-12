@@ -221,18 +221,17 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 
 
 
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreasureBox", pGameInstance->Create_ParsedObject(L"TreasureVertex.txt", L"TreasureIndex.txt")));
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_DeathSkull", pGameInstance->Create_ParsedObject(L"DeathSkullVertex.txt", L"DeathSkullIndex.txt")));
-	//
-	/////////////////////////////////////스테이지 셀렉 사용목록
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MiniTree", pGameInstance->Create_ParsedObject(L"MiniTreeVertex.txt", L"MiniTreeIndex.txt")));
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Bell", pGameInstance->Create_ParsedObject(L"BellVertex.txt", L"BellIndex.txt")));
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MapleTree", pGameInstance->Create_ParsedObject(L"MapleTreeVertex.txt", L"MapleTreeIndex.txt")));
-	FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigGreenTree", pGameInstance->Create_ParsedObject(L"BigGreenTreeVertex.txt", L"BigGreenTreeIndex.txt")));
-	//
-	/////////////////////////////////////스테이지 튜토리얼 사용목록
-	//
-	/////////////////////////////////////스테이지 1 사용목록
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TreasureBox", pGameInstance->Create_ParsedObject(L"TreasureVertex.txt", L"TreasureIndex.txt")));
+	//////
+	/////////////////////////////////////////스테이지 셀렉 사용목록
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MiniTree", pGameInstance->Create_ParsedObject(L"MiniTreeVertex.txt", L"MiniTreeIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Bell", pGameInstance->Create_ParsedObject(L"BellVertex.txt", L"BellIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_MapleTree", pGameInstance->Create_ParsedObject(L"MapleTreeVertex.txt", L"MapleTreeIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigGreenTree", pGameInstance->Create_ParsedObject(L"BigGreenTreeVertex.txt", L"BigGreenTreeIndex.txt")));
+	////
+	///////////////////////////////////////스테이지 튜토리얼 사용목록
+	////
+	///////////////////////////////////////스테이지 1 사용목록
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_Blossoms", pGameInstance->Create_ParsedObject(L"BlossomsVertex.txt", L"BlossomsIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillBlue", pGameInstance->Create_ParsedObject(L"WindmillBlueVertex.txt", L"WindmillBlueIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillStick", pGameInstance->Create_ParsedObject(L"WindmillStickVertex.txt", L"WindmillStickIndex.txt")));
@@ -243,6 +242,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 	/////////////////////////////////////스테이지 2 사용목록
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_TombStone", pGameInstance->Create_ParsedObject(L"TombStoneVertex.txt", L"TombStoneIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwl", pGameInstance->Create_ParsedObject(L"BigOwlVertex.txt", L"BigOwlIndex.txt")));
+	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_BigOwlHead", pGameInstance->Create_ParsedObject(L"BigOwlHeadVertex.txt", L"BigOwlHeadIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillCore", pGameInstance->Create_ParsedObject(L"WindmillCoreVertex.txt", L"WindmillCoreIndex.txt")));
 	//
 	//
@@ -257,7 +257,7 @@ HRESULT CLoader::Load_Scene_Loby(_bool * _IsClientQuit, CRITICAL_SECTION * _CriS
 
 
 
-	///////////////////////////////////////남은거
+	/////////////////////////////////////남은거
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_WindmillCore", pGameInstance->Create_ParsedObject(L"WindmillCoreVertex.txt", L"WindmillCoreIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_LightHouse", pGameInstance->Create_ParsedObject(L"LightHouseVertex.txt", L"LightHouseIndex.txt")));
 	//FAILED_CHECK(pGameInstance->Add_Component_Prototype(SCENEID::SCENE_STATIC, L"Prototype_Component_VIBuffer_ZuHeadWhite", pGameInstance->Create_ParsedObject(L"ZuHeadWhiteVertex.txt", L"ZuHeadWhiteIndex.txt")));

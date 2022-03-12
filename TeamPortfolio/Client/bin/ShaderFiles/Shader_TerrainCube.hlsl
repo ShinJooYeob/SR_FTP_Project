@@ -119,6 +119,9 @@ PS_OUT PS_MAIN_CUBE_PLAYER(PS_IN In)
 
 	float4	vColor = texCUBE(DefaultSampler, In.vTexUV);
 
+	//if (vColor.a < 0.1f)
+	//	discard;
+
 	float	fDistance = distance((In.vWorldPosition),(g_vPlayerPosition));
 	
 	float	fDistanceRatio = fDistance * 0.1f;
