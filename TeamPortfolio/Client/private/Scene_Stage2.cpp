@@ -44,11 +44,11 @@ HRESULT CScene_Stage2::Initialize()
 
 
 	// 로드된 오브젝트 정보로 그리기
-	GetSingle(CGameInstance)->Add_GameObject_To_Layer(
-		SCENEID::SCENE_STAGE2,
-		TAG_LAY(Layer_Terrain),
-		TAG_OP(Prototype_TerrainCube),
-		_float3(0, 0, 0));
+	//GetSingle(CGameInstance)->Add_GameObject_To_Layer(
+	//	SCENEID::SCENE_STAGE2,
+	//	TAG_LAY(Layer_Terrain),
+	//	TAG_OP(Prototype_TerrainCube),
+	//	_float3(0, 0, 0));
 
 	// 생성되지 않는 특수 큐브 저장
 	list< SPECIALCUBE*> SpecialCubeList;
