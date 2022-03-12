@@ -23,7 +23,7 @@ public:
 	};
 public:
 	const float FIX_BulletTime = 0.5f; // 애니메이션에서 쏘는 시간 맞춤
-	const float FIX_BulletEndTime = 1.0f; // 애니메이션 종료시간 맞추기
+	const float FIX_BulletEndTime = 0.5f; // 애니메이션 종료시간 맞추기
 
 public:
 	typedef struct tagGunDesc	

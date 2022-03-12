@@ -98,7 +98,7 @@ HRESULT CCom_Gun::Update_CreateBullet(float deltatime)
 			mStateGun = STATE_GUN_START;
 		break;
 	case Client::CCom_Gun::STATE_GUN_START:
-		mBossMonster->Start_AttackAniMaion(11.f);		
+		mBossMonster->Start_AttackAniMaion(13.f);		
 		mCurrentTimer = FIX_BulletTime;
 		mStateGun = CCom_Gun::STATE_GUN_SHOOT;
 		break;
