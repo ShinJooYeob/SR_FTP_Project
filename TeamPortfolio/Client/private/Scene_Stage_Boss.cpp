@@ -113,11 +113,11 @@ _int CScene_Stage_Boss::Render()
 
 
 
-
-#ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("GameScene"));
-#endif // _DEBUG
-
+//
+//#ifdef _DEBUG
+//	SetWindowText(g_hWnd, TEXT("GameScene"));
+//#endif // _DEBUG
+//
 
 	return 0;
 }

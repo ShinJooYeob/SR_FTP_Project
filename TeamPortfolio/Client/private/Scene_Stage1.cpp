@@ -128,10 +128,10 @@ _int CScene_Stage1::Render()
 
 
 
-#ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("GameScene"));
-#endif // _DEBUG
-
+//#ifdef _DEBUG
+//	SetWindowText(g_hWnd, TEXT("GameScene"));
+//#endif // _DEBUG
+//
 
 	return 0;
 }

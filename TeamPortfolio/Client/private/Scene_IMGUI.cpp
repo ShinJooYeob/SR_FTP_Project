@@ -91,11 +91,11 @@ _int CScene_IMGUI::Render()
 	
 
 
-
-#ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("CScene_IMGUI"));
-#endif // _DEBUG
-
+//
+//#ifdef _DEBUG
+//	SetWindowText(g_hWnd, TEXT("CScene_IMGUI"));
+//#endif // _DEBUG
+//
 	return 0;
 }
 

@@ -119,18 +119,18 @@ _int CScene_Loading::Render()
 		return -1;
 
 
-#ifdef _DEBUG
-
-	if (m_pLoader != nullptr) 
-	{
-		_int iPercent = int((m_pLoader->Get_ProgressCount() / (float)m_pLoader->Get_MaxCount()) * 100);
-		_tchar  szTempString[MAX_PATH];
-		_itow_s(iPercent, szTempString, MAX_PATH , 10);
-		lstrcat(szTempString,L"% 로딩 중 (Loading Scene)");
-
-		SetWindowText(g_hWnd, szTempString);
-	}
-#endif // _DEBUG
+//#ifdef _DEBUG
+//
+//	if (m_pLoader != nullptr) 
+//	{
+//		_int iPercent = int((m_pLoader->Get_ProgressCount() / (float)m_pLoader->Get_MaxCount()) * 100);
+//		_tchar  szTempString[MAX_PATH];
+//		_itow_s(iPercent, szTempString, MAX_PATH , 10);
+//		lstrcat(szTempString,L"% 로딩 중 (Loading Scene)");
+//
+//		SetWindowText(g_hWnd, szTempString);
+//	}
+//#endif // _DEBUG
 
 
 	return 0;

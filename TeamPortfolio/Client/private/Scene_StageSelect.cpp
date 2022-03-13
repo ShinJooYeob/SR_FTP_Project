@@ -204,12 +204,12 @@ _int CScene_StageSelect::Render()
 
 
 
-
-#ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("GameScene"));
-#endif // _DEBUG
-
-
+//
+//#ifdef _DEBUG
+//	SetWindowText(g_hWnd, TEXT("GameScene"));
+//#endif // _DEBUG
+//
+//
 	return 0;
 }
 
@@ -716,7 +716,7 @@ HRESULT CScene_StageSelect::Ready_Layer_Door(const _tchar * pLayerTag)
 	if (GetSingle(CGameInstance)->Add_GameObject_To_Layer(SCENEID::SCENE_STAGESELECT, pLayerTag, TAG_OP(Prototype_BackGround)))
 		return E_FAIL;
 	ObjDoor = (CBackGround*)objList->back();
-	ObjDoor->m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(9, -8, 8) + offsetX);
+	ObjDoor->m_ComTransform->Set_MatrixState(CTransform::STATE_POS, _float3(9, -8, 8) + offsetX + _float3(0,0,0.0899999999f));
 	ObjDoor->m_ComTransform->Scaled(_float3(4, 5, 1));
 	ObjDoor->m_ComTexture->Set_LoadTexutreNumber(2);
 	return S_OK;

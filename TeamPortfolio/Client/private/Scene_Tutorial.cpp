@@ -192,11 +192,11 @@ _int CScene_Tutorial::Render()
 
 
 
-#ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("GameScene"));
-#endif // _DEBUG
-
-
+//#ifdef _DEBUG
+//	SetWindowText(g_hWnd, TEXT("GameScene"));
+//#endif // _DEBUG
+//
+//
 	return 0;
 }
 

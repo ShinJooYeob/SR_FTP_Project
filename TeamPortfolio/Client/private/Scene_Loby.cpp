@@ -104,10 +104,10 @@ _int CScene_Loby::Render()
 	if (__super::Render() < 0)
 		return -1;
 
-#ifdef _DEBUG
-	SetWindowText(g_hWnd, TEXT("LobyScene"));
-#endif // _DEBUG
-
+//#ifdef _DEBUG
+//	SetWindowText(g_hWnd, TEXT("LobyScene"));
+//#endif // _DEBUG
+//
 	return 0;
 }
 
