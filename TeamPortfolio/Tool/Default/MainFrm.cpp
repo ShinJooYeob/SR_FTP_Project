@@ -39,6 +39,7 @@ static UINT indicators[] =
 CMainFrame::CMainFrame()
 {
 	// TODO: 여기에 멤버 초기화 코드를 추가합니다.
+
 }
 
 CMainFrame::~CMainFrame()
@@ -50,6 +51,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
+
 	return 0;
 }
 
@@ -59,7 +61,9 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
-
+	cs.lpszName = _T("JUSIN_FEZ_MAPTOOL");        //제목 바꾸기
+	cs.style &= ~FWS_ADDTOTITLE;        //제목없음 없애기       
+	cs.style &= ~WS_THICKFRAME;    //주석처리(//) 없애고 Test 해보삼=>마우스로 프로그램 크기 조절 못함
 	return TRUE;
 }
 
